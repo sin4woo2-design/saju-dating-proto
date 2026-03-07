@@ -6,30 +6,60 @@ interface PairInput {
   gender: Gender;
 }
 
-export function calculateCompatibility(me: PairInput, partner: PairInput): number {
-  const seed = `${me.birthDate}${me.birthTime}${me.gender}${partner.birthDate}${partner.birthTime}${partner.gender}`
+function seedOf(value: PairInput) {
+  return `${value.birthDate}-${value.birthTime}-${value.gender}`
     .split("")
     .reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
-  return 60 + (seed % 41);
+}
+
+export function calculateCompatibility(me: PairInput, partner: PairInput): number {
+  const meSeed = seedOf(me);
+  const partnerSeed = seedOf(partner);
+  const gap = Math.abs(meSeed - partnerSeed) % 34;
+  const boost = (me.gender === partner.gender ? 2 : 6) + ((meSeed + partnerSeed) % 11);
+  const score = 65 + boost - Math.floor(gap / 4);
+  return Math.max(58, Math.min(96, score));
 }
 
 export function generateCompatibilitySummary(score: number): { strengths: string[]; cautions: string[] } {
-  if (score >= 85) {
+  if (score >= 88) {
     return {
-      strengths: ["감정 교류가 자연스럽고 템포가 잘 맞음", "장기 관계로 발전할 가능성이 높음"],
-      cautions: ["지나친 확신보다 현실적인 조율 필요"],
+      strengths: [
+        "대화 템포와 감정 리듬이 자연스럽게 맞는 편",
+        "갈등이 생겨도 회복 속도가 빠른 궁합",
+      ],
+      cautions: ["호흡이 잘 맞을수록 현실적인 역할 분담을 더 분명히 정하면 좋아요."],
     };
   }
 
-  if (score >= 72) {
+  if (score >= 78) {
     return {
-      strengths: ["상호 보완 포인트가 분명함", "같이 성장할 여지가 큼"],
-      cautions: ["의사결정 속도 차이 조율 필요", "표현 방식의 온도 차이 주의"],
+      strengths: [
+        "서로 다른 장점을 보완해 함께 성장하기 좋은 조합",
+        "장기 관계로 갈수록 안정감이 높아지는 타입",
+      ],
+      cautions: [
+        "결정 속도 차이가 날 때 중간 체크포인트를 잡아두면 좋아요.",
+        "감정 표현 방식의 온도차를 초반에 맞추는 것이 중요해요.",
+      ],
+    };
+  }
+
+  if (score >= 68) {
+    return {
+      strengths: ["새로운 관점을 배울 수 있는 학습형 궁합", "초반에 규칙을 맞추면 관계 밀도가 올라갈 가능성"],
+      cautions: [
+        "연락 주기와 데이트 스타일 같은 생활 리듬 조율이 먼저 필요해요.",
+        "감정이 쌓이기 전 작은 불편함도 바로 말하는 습관이 중요해요.",
+      ],
     };
   }
 
   return {
-    strengths: ["새로운 관점을 배우기 좋은 조합"],
-    cautions: ["감정 표현 규칙을 초반에 맞추는 것이 중요", "기대치 조율 필요"],
+    strengths: ["서로 다른 성향이라 오히려 강한 매력을 느낄 수 있어요."],
+    cautions: [
+      "기대치와 경계선을 명확히 정하지 않으면 소모가 커질 수 있어요.",
+      "서로의 표현법을 해석하는 시간을 충분히 확보해보세요.",
+    ],
   };
 }

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import PageLayout from "../../components/layout/PageLayout";
 import { mockPersona } from "../../data/mockProfiles";
+import { useTransientMessage } from "../../hooks/useTransientMessage";
 import { shareOrCopy } from "../../lib/share";
 
 export default function PersonaPage() {
-  const [shareMessage, setShareMessage] = useState("");
+  const { message, showMessage } = useTransientMessage();
 
   const handleShare = async () => {
     const result = await shareOrCopy({
@@ -11,13 +12,11 @@ export default function PersonaPage() {
       text: `${mockPersona.title}\n성격: ${mockPersona.personality}\n직업군: ${mockPersona.career}`,
     });
 
-    setShareMessage(result === "shared" ? "공유 완료!" : "복사 완료! 원하는 SNS에 붙여넣어 보세요.");
-    setTimeout(() => setShareMessage(""), 2200);
+    showMessage(result === "shared" ? "공유 완료!" : "복사 완료! 원하는 SNS에 붙여넣어 보세요.");
   };
 
   return (
-    <div className="pageWrap">
-      <h2>운명의 이상형 페르소나</h2>
+    <PageLayout title="운명의 이상형 페르소나" subtitle="공유하기 좋은 카드 형태로 결과를 확인해보세요.">
       <article className="personaCard">
         <p className="badge">SHAREABLE RESULT</p>
         <h3>{mockPersona.title}</h3>
@@ -30,7 +29,7 @@ export default function PersonaPage() {
         <p className="hash">{mockPersona.hashtags.join(" ")}</p>
         <button type="button" className="shareBtn" onClick={handleShare}>결과 공유하기</button>
       </article>
-      {shareMessage ? <p className="toastText">{shareMessage}</p> : null}
-    </div>
+      {message ? <p className="toastText">{message}</p> : null}
+    </PageLayout>
   );
 }

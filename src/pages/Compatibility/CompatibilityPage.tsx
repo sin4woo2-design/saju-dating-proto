@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import ResultCard from "../../components/ResultCard/ResultCard";
+import PageLayout from "../../components/layout/PageLayout";
 import { genderLabels } from "../../constants/labels";
+import { useTransientMessage } from "../../hooks/useTransientMessage";
 import { calculateCompatibility, generateCompatibilitySummary } from "../../lib/compatibility";
 import { shareOrCopy } from "../../lib/share";
 import type { Gender, UserProfileInput } from "../../types/saju";
@@ -14,7 +16,7 @@ export default function CompatibilityPage({ me }: Props) {
   const [birthTime, setBirthTime] = useState("");
   const [gender, setGender] = useState<Gender>("other");
   const [score, setScore] = useState<number | null>(null);
-  const [shareMessage, setShareMessage] = useState("");
+  const { message, showMessage } = useTransientMessage();
 
   const isValid = useMemo(() => !!birthDate && !!birthTime, [birthDate, birthTime]);
 
@@ -36,13 +38,11 @@ export default function CompatibilityPage({ me }: Props) {
       text: `사주 궁합 점수 ${score}점\n강점: ${summary?.strengths.join(", ")}`,
     });
 
-    setShareMessage(result === "shared" ? "공유 완료!" : "복사 완료! 원하는 곳에 붙여넣어 공유해보세요.");
-    setTimeout(() => setShareMessage(""), 2200);
+    showMessage(result === "shared" ? "공유 완료!" : "복사 완료! 원하는 곳에 붙여넣어 공유해보세요.");
   };
 
   return (
-    <div className="pageWrap">
-      <h2>궁합 보기</h2>
+    <PageLayout title="궁합 보기" subtitle="상대 기본 정보로 오늘의 궁합 흐름을 확인해보세요.">
       <section className="formCard">
         <label className="fieldLabel">
           상대 생년월일
@@ -77,9 +77,9 @@ export default function CompatibilityPage({ me }: Props) {
             ]}
           />
           <button type="button" className="ghostBtn" onClick={handleShare}>결과 공유</button>
-          {shareMessage ? <p className="toastText">{shareMessage}</p> : null}
+          {message ? <p className="toastText">{message}</p> : null}
         </>
       )}
-    </div>
+    </PageLayout>
   );
 }

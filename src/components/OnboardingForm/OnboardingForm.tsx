@@ -69,7 +69,14 @@ export default function OnboardingForm({ onSubmit }: Props) {
             value={form.birthTime}
             onChange={(e) => setForm((prev) => ({ ...prev, birthTime: e.target.value }))}
           />
-          <p className="hint">출생 시간을 모르면 12:00으로 입력해도 됩니다.</p>
+          <p className="hint">출생 시간을 모르면 아래 버튼으로 12:00을 바로 입력할 수 있어요.</p>
+          <button
+            type="button"
+            className="ghostQuick"
+            onClick={() => setForm((prev) => ({ ...prev, birthTime: prev.birthTime || "12:00" }))}
+          >
+            시간 모름 · 12:00 사용
+          </button>
         </>
       )}
 
@@ -87,6 +94,13 @@ export default function OnboardingForm({ onSubmit }: Props) {
           ))}
         </div>
       )}
+
+      <div className="previewBox">
+        <p>입력 미리보기</p>
+        <small>
+          {form.name || "이름 미입력"} · {form.birthDate || "생년월일 미입력"} · {form.birthTime || "시간 미입력"} · {genderLabels[form.gender]}
+        </small>
+      </div>
 
       <div className="actions">
         <button type="button" disabled={step === 0} onClick={() => setStep((s) => s - 1)}>
