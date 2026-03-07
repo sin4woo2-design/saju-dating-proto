@@ -1,0 +1,42 @@
+.onboarding-card {
+  background: #141327;
+  border: 1px solid #35326a;
+  border-radius: 16px;
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.progress {
+  margin: 0;
+  color: #ada7e7;
+  font-size: 13px;
+}
+
+.onboarding-card input {
+  background: #0f0f1f;
+  border: 1px solid #2e2e58;
+  color: #f1f0ff;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.gender-wrap {
+  display: flex;
+  gap: 8px;
+}
+
+.chip {
+  flex: 1;
+}
+
+.chip.active {
+  border-color: #8f85ff;
+  color: #d8d4ff;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}

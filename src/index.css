@@ -1,0 +1,171 @@
+:root {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #0b0a15;
+  color: #efeeff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #17122f, #0b0a15 45%);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  background: #1d1a3a;
+  color: #efeeff;
+  border: 1px solid #38336f;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+input,
+select {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #343067;
+  background: #111024;
+  color: #efeeff;
+  padding: 12px;
+}
+
+.app-shell {
+  max-width: 440px;
+  min-height: 100vh;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 12px;
+  padding: 14px;
+}
+
+.topbar h1 {
+  margin: 4px 0;
+  font-size: 18px;
+}
+
+main {
+  display: grid;
+}
+
+.page-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.sub {
+  margin: 0;
+  color: #aea8e9;
+  font-size: 14px;
+}
+
+.bottom-nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  border: 1px solid #302c62;
+  background: rgba(14, 12, 28, 0.9);
+  border-radius: 14px;
+  padding: 8px;
+  position: sticky;
+  bottom: 10px;
+}
+
+.bottom-nav a {
+  text-align: center;
+  padding: 8px 6px;
+  background: #1b1834;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.empty-card,
+.form-card,
+.score-card,
+.element-card,
+.persona-card {
+  border: 1px solid #35306a;
+  background: #131129;
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.form-card {
+  display: grid;
+  gap: 10px;
+}
+
+.score-card p {
+  margin: 0;
+}
+
+.score-card h3 {
+  font-size: 34px;
+  margin: 4px 0 6px;
+  color: #d9d2ff;
+}
+
+.element-row {
+  display: grid;
+  grid-template-columns: 52px 1fr 36px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.bar-wrap {
+  height: 8px;
+  border-radius: 999px;
+  background: #252049;
+  overflow: hidden;
+}
+
+.bar-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #6e56ff, #ab9bff);
+}
+
+.persona-card {
+  background: radial-gradient(circle at top, #2b2160, #131129 62%);
+}
+
+.persona-title {
+  color: #d8d1ff;
+  font-weight: 700;
+}
+
+.persona-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+  display: grid;
+  gap: 10px;
+}
+
+.persona-card li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px dashed #403985;
+  padding-bottom: 8px;
+}
+
+.share-hint {
+  margin: 6px 0 0;
+  color: #a69fe0;
+  font-size: 13px;
+}

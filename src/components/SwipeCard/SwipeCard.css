@@ -1,0 +1,51 @@
+.swipe-card {
+  border: 1px solid #302c65;
+  background: #121126;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.swipe-image {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+
+.swipe-body {
+  padding: 14px;
+}
+
+.swipe-body h3 {
+  margin: 0 0 4px;
+}
+
+.score {
+  margin: 0 0 10px;
+  color: #c6bfff;
+  font-weight: 700;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-list span {
+  font-size: 12px;
+  background: #282351;
+  color: #ddd9ff;
+  padding: 5px 9px;
+  border-radius: 999px;
+}
+
+.swipe-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 12px;
+}
+
+.primary {
+  background: #6e56ff;
+}
