@@ -1,28 +1,26 @@
-import type { FiveElementsBalance, SajuResult, UserProfileInput } from '../types/saju';
+import type { FiveElementsBalance, SajuProfile, UserProfileInput } from "../types/saju";
 
-export function calculateSaju(input: UserProfileInput): SajuResult {
-  const fiveElements = getFiveElementsBalance(input.birthDate, input.birthTime);
-
+export function calculateSaju(_input: UserProfileInput): SajuProfile {
+  const fiveElements = getFiveElementsBalance();
   return {
-    pillars: ['갑자', '병인', '정묘', '기유'],
     fiveElements,
     personalitySummary: generatePersonalitySummary(fiveElements),
-    loveStyle: '상대를 천천히 알아가며 신뢰를 쌓는 깊은 관계형 연애 스타일',
-    idealPartnerTraits: ['정서적으로 안정된 사람', '성장 의지가 있는 사람', '솔직하게 소통하는 사람'],
+    loveStyle: "신뢰가 쌓일수록 깊어지는 타입. 표현은 신중하지만 진심은 강한 편.",
+    idealTraits: ["정서적으로 안정적인 사람", "성장 지향적인 사람", "깊은 대화가 되는 사람"],
   };
 }
 
-export function getFiveElementsBalance(_birthDate: string, _birthTime: string): FiveElementsBalance {
+export function getFiveElementsBalance(): FiveElementsBalance {
   return {
-    wood: 68,
-    fire: 56,
-    earth: 74,
+    wood: 72,
+    fire: 55,
+    earth: 64,
     metal: 43,
-    water: 81,
+    water: 86,
   };
 }
 
 export function generatePersonalitySummary(balance: FiveElementsBalance): string {
-  const top = Object.entries(balance).sort((a, b) => b[1] - a[1])[0][0];
-  return `당신은 ${top} 기운이 강한 편으로 직관이 좋고, 관계에서 진정성과 일관성을 중요하게 생각합니다.`;
+  const strongest = Object.entries(balance).sort((a, b) => b[1] - a[1])[0][0];
+  return `당신은 ${strongest} 기운이 강해 직관과 공감 능력이 좋고, 관계에서 진정성을 중요하게 여깁니다.`;
 }

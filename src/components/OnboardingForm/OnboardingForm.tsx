@@ -1,40 +1,36 @@
-import { useState } from 'react';
-import type { Gender, UserProfileInput } from '../../types/saju';
-import './OnboardingForm.css';
+import { useMemo, useState } from "react";
+import type { Gender, UserProfileInput } from "../../types/saju";
+import "./OnboardingForm.css";
 
-type Props = {
-  onComplete: (value: UserProfileInput) => void;
-};
+interface Props {
+  onSubmit: (value: UserProfileInput) => void;
+}
 
-const steps = ['이름', '생년월일', '출생시간', '성별'];
+const stepTitles = ["이름", "생년월일", "출생시간", "성별"];
 
-export default function OnboardingForm({ onComplete }: Props) {
+export default function OnboardingForm({ onSubmit }: Props) {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<UserProfileInput>({
-    name: '',
-    birthDate: '',
-    birthTime: '',
-    gender: 'other',
-    interests: ['사주', 'MBTI'],
+    name: "",
+    birthDate: "",
+    birthTime: "",
+    gender: "other",
   });
 
-  const next = () => setStep((prev) => Math.min(prev + 1, steps.length - 1));
-  const prev = () => setStep((prev) => Math.max(prev - 1, 0));
-
-  const disabled =
-    (step === 0 && !form.name) ||
-    (step === 1 && !form.birthDate) ||
-    (step === 2 && !form.birthTime);
+  const canNext = useMemo(() => {
+    if (step === 0) return form.name.trim().length > 0;
+    if (step === 1) return !!form.birthDate;
+    if (step === 2) return !!form.birthTime;
+    return true;
+  }, [form, step]);
 
   return (
-    <section className="onboarding-card">
-      <p className="progress">
-        {step + 1}/{steps.length} · {steps[step]}
-      </p>
+    <section className="onboarding">
+      <p className="step">{step + 1} / 4 · {stepTitles[step]}</p>
 
       {step === 0 && (
         <input
-          placeholder="이름 입력"
+          placeholder="이름을 입력해줘"
           value={form.name}
           onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
         />
@@ -57,33 +53,30 @@ export default function OnboardingForm({ onComplete }: Props) {
       )}
 
       {step === 3 && (
-        <div className="gender-wrap">
-          {(['male', 'female', 'other'] as Gender[]).map((gender) => (
+        <div className="genderGrid">
+          {(["male", "female", "other"] as Gender[]).map((g) => (
             <button
+              key={g}
               type="button"
-              key={gender}
-              className={form.gender === gender ? 'chip active' : 'chip'}
-              onClick={() => setForm((prev) => ({ ...prev, gender }))}
+              className={form.gender === g ? "active" : ""}
+              onClick={() => setForm((prev) => ({ ...prev, gender: g }))}
             >
-              {gender}
+              {g}
             </button>
           ))}
         </div>
       )}
 
       <div className="actions">
-        <button type="button" onClick={prev} disabled={step === 0}>
+        <button type="button" disabled={step === 0} onClick={() => setStep((s) => s - 1)}>
           이전
         </button>
-
-        {step < steps.length - 1 ? (
-          <button type="button" onClick={next} disabled={disabled}>
+        {step < 3 ? (
+          <button type="button" disabled={!canNext} onClick={() => setStep((s) => s + 1)}>
             다음
           </button>
         ) : (
-          <button type="button" onClick={() => onComplete(form)}>
-            시작하기
-          </button>
+          <button type="button" onClick={() => onSubmit(form)}>완료</button>
         )}
       </div>
     </section>

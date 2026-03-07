@@ -1,38 +1,25 @@
-import type { DatingProfile } from '../../types/saju';
-import './SwipeCard.css';
+import type { MatchCard } from "../../types/saju";
+import "./SwipeCard.css";
 
-type Props = {
-  profile: DatingProfile;
+interface Props {
+  card: MatchCard;
   onPass: () => void;
   onLike: () => void;
-};
+}
 
-export default function SwipeCard({ profile, onPass, onLike }: Props) {
+export default function SwipeCard({ card, onPass, onLike }: Props) {
   return (
-    <article className="swipe-card">
-      <img src={profile.image} alt={profile.name} className="swipe-image" />
-
-      <div className="swipe-body">
-        <h3>
-          {profile.name}, {profile.age}
-        </h3>
-        <p className="score">궁합 지수 {profile.score}</p>
-        <p>{profile.summary}</p>
-
-        <div className="tag-list">
-          {profile.tags.map((tag) => (
-            <span key={tag}>#{tag}</span>
-          ))}
-        </div>
+    <article className="swipeCard">
+      <div className="avatar">{card.name[0]}</div>
+      <h3>{card.name}, {card.age}</h3>
+      <p className="score">궁합 지수 {card.compatibility}</p>
+      <p className="note">{card.note}</p>
+      <div className="tags">
+        {card.tags.map((tag) => <span key={tag}>#{tag}</span>)}
       </div>
-
-      <div className="swipe-actions">
-        <button type="button" onClick={onPass}>
-          PASS
-        </button>
-        <button type="button" className="primary" onClick={onLike}>
-          LIKE
-        </button>
+      <div className="swipeActions">
+        <button type="button" onClick={onPass}>왼쪽 패스</button>
+        <button type="button" className="like" onClick={onLike}>오른쪽 관심</button>
       </div>
     </article>
   );

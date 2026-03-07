@@ -1,24 +1,18 @@
-import { useMemo, useState } from 'react';
-import SwipeCard from '../../components/SwipeCard/SwipeCard';
-import { mockProfiles } from '../../data/mockProfiles';
+import { useState } from "react";
+import SwipeCard from "../../components/SwipeCard/SwipeCard";
+import { mockMatchCards } from "../../data/mockProfiles";
 
 export default function HomePage() {
   const [index, setIndex] = useState(0);
-  const current = useMemo(() => mockProfiles[index], [index]);
+  const card = mockMatchCards[index];
 
   return (
-    <div className="page-grid">
-      <h2>오늘의 운명 카드</h2>
-      <p className="sub">좌우로 선택하며 인연을 탐색해보세요.</p>
-
-      {current ? (
-        <SwipeCard
-          profile={current}
-          onPass={() => setIndex((prev) => prev + 1)}
-          onLike={() => setIndex((prev) => prev + 1)}
-        />
+    <div className="pageWrap">
+      <h2>오늘의 인연 카드</h2>
+      {!card ? (
+        <p className="subtitle">오늘 확인할 카드를 모두 봤어. 내일 다시 열어봐 ✨</p>
       ) : (
-        <section className="empty-card">더 이상 남은 카드가 없어요. 내일 다시 확인해요 ✨</section>
+        <SwipeCard card={card} onPass={() => setIndex((v) => v + 1)} onLike={() => setIndex((v) => v + 1)} />
       )}
     </div>
   );

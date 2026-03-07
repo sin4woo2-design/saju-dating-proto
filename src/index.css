@@ -1,171 +1,111 @@
 :root {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: #0b0a15;
-  color: #efeeff;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color-scheme: dark;
+  background: #090b16;
+  color: #f2efff;
 }
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: radial-gradient(circle at top, #17122f, #0b0a15 45%);
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-button,
-input,
-select {
-  font: inherit;
-}
-
+* { box-sizing: border-box; }
+body { margin: 0; }
+button, input, select { font: inherit; }
 button {
-  background: #1d1a3a;
-  color: #efeeff;
-  border: 1px solid #38336f;
-  border-radius: 12px;
+  border: 1px solid #3a3f7a;
+  border-radius: 10px;
+  background: #1a1f45;
+  color: #fff;
   padding: 10px 12px;
 }
 
-input,
-select {
-  width: 100%;
-  border-radius: 12px;
-  border: 1px solid #343067;
-  background: #111024;
-  color: #efeeff;
-  padding: 12px;
-}
-
-.app-shell {
-  max-width: 440px;
-  min-height: 100vh;
+.appShell {
+  max-width: 430px;
   margin: 0 auto;
+  min-height: 100dvh;
+  padding: 12px;
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: 12px;
-  padding: 14px;
 }
-
-.topbar h1 {
-  margin: 4px 0;
+.topBar h1 {
+  margin: 8px 0 2px;
   font-size: 18px;
+  color: #d9d0ff;
 }
+.pageWrap { display: grid; gap: 12px; }
+.pageWrap h2 { margin: 0; font-size: 20px; }
+.subtitle { margin: 0; color: #b8bddf; font-size: 14px; }
 
-main {
+.formCard,
+.elementCard {
+  background: #141731;
+  border: 1px solid #323868;
+  border-radius: 14px;
+  padding: 14px;
   display: grid;
+  gap: 10px;
 }
 
-.page-grid {
+.formCard input,
+.formCard select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #3a4278;
+  background: #0f1227;
+  color: #f4f4ff;
+}
+
+.barRow {
   display: grid;
-  gap: 12px;
+  grid-template-columns: 46px 1fr 40px;
+  align-items: center;
+  gap: 8px;
+}
+.barTrack {
+  height: 8px;
+  background: #262c58;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.barTrack i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #7b5cff, #ab95ff);
 }
 
-.sub {
-  margin: 0;
-  color: #aea8e9;
-  font-size: 14px;
+.personaCard {
+  border: 1px solid #4d3f99;
+  border-radius: 16px;
+  background: radial-gradient(circle at top, #2a215f, #101325 62%);
+  padding: 16px;
 }
+.personaCard h3 { margin-top: 0; }
+.personaCard ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  background: #2f2963;
+  color: #d6ccff;
+}
+.hash { color: #b4a8f1; font-size: 13px; }
 
-.bottom-nav {
+.bottomNav {
+  position: sticky;
+  bottom: 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
-  border: 1px solid #302c62;
-  background: rgba(14, 12, 28, 0.9);
-  border-radius: 14px;
+  border: 1px solid #2f3566;
+  border-radius: 12px;
   padding: 8px;
-  position: sticky;
-  bottom: 10px;
+  background: rgba(12, 15, 35, 0.95);
 }
-
-.bottom-nav a {
+.bottomNav a {
   text-align: center;
+  text-decoration: none;
+  color: #e7e2ff;
+  background: #1b1f45;
+  border-radius: 8px;
   padding: 8px 6px;
-  background: #1b1834;
-  border-radius: 10px;
-  font-size: 13px;
-}
-
-.empty-card,
-.form-card,
-.score-card,
-.element-card,
-.persona-card {
-  border: 1px solid #35306a;
-  background: #131129;
-  border-radius: 16px;
-  padding: 14px;
-}
-
-.form-card {
-  display: grid;
-  gap: 10px;
-}
-
-.score-card p {
-  margin: 0;
-}
-
-.score-card h3 {
-  font-size: 34px;
-  margin: 4px 0 6px;
-  color: #d9d2ff;
-}
-
-.element-row {
-  display: grid;
-  grid-template-columns: 52px 1fr 36px;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.bar-wrap {
-  height: 8px;
-  border-radius: 999px;
-  background: #252049;
-  overflow: hidden;
-}
-
-.bar-fill {
-  display: block;
-  height: 100%;
-  background: linear-gradient(90deg, #6e56ff, #ab9bff);
-}
-
-.persona-card {
-  background: radial-gradient(circle at top, #2b2160, #131129 62%);
-}
-
-.persona-title {
-  color: #d8d1ff;
-  font-weight: 700;
-}
-
-.persona-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 10px 0;
-  display: grid;
-  gap: 10px;
-}
-
-.persona-card li {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  border-bottom: 1px dashed #403985;
-  padding-bottom: 8px;
-}
-
-.share-hint {
-  margin: 6px 0 0;
-  color: #a69fe0;
   font-size: 13px;
 }

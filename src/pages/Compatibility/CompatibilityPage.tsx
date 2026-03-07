@@ -1,65 +1,45 @@
-import { useState } from 'react';
-import ResultCard from '../../components/ResultCard/ResultCard';
-import { calculateCompatibility } from '../../lib/compatibility';
-import type { Gender, UserProfileInput } from '../../types/saju';
+import { useState } from "react";
+import ResultCard from "../../components/ResultCard/ResultCard";
+import { calculateCompatibility, generateCompatibilitySummary } from "../../lib/compatibility";
+import type { Gender, UserProfileInput } from "../../types/saju";
 
-const defaultPartner = {
-  birthDate: '',
-  birthTime: '',
-  gender: 'other' as Gender,
-};
+interface Props {
+  me: UserProfileInput;
+}
 
-type Props = {
-  user: UserProfileInput;
-};
+export default function CompatibilityPage({ me }: Props) {
+  const [birthDate, setBirthDate] = useState("");
+  const [birthTime, setBirthTime] = useState("");
+  const [gender, setGender] = useState<Gender>("other");
+  const [score, setScore] = useState<number | null>(null);
 
-export default function CompatibilityPage({ user }: Props) {
-  const [partner, setPartner] = useState(defaultPartner);
-  const [result, setResult] = useState<ReturnType<typeof calculateCompatibility> | null>(null);
-
-  const onSubmit = () => {
-    if (!partner.birthDate || !partner.birthTime) return;
-    setResult(calculateCompatibility(user.birthDate, user.birthTime, partner));
+  const onCalculate = () => {
+    const value = calculateCompatibility(
+      { birthDate: me.birthDate, birthTime: me.birthTime, gender: me.gender },
+      { birthDate, birthTime, gender },
+    );
+    setScore(value);
   };
 
-  return (
-    <div className="page-grid">
-      <h2>궁합 보기</h2>
-      <p className="sub">두 사람의 생년월일/시간으로 궁합을 확인해요.</p>
+  const summary = score !== null ? generateCompatibilitySummary(score) : null;
 
-      <section className="form-card">
-        <input
-          type="date"
-          value={partner.birthDate}
-          onChange={(e) => setPartner((prev) => ({ ...prev, birthDate: e.target.value }))}
-        />
-        <input
-          type="time"
-          value={partner.birthTime}
-          onChange={(e) => setPartner((prev) => ({ ...prev, birthTime: e.target.value }))}
-        />
-        <select
-          value={partner.gender}
-          onChange={(e) => setPartner((prev) => ({ ...prev, gender: e.target.value as Gender }))}
-        >
+  return (
+    <div className="pageWrap">
+      <h2>궁합 보기</h2>
+      <section className="formCard">
+        <input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
+        <input type="time" value={birthTime} onChange={(e) => setBirthTime(e.target.value)} />
+        <select value={gender} onChange={(e) => setGender(e.target.value as Gender)}>
           <option value="male">male</option>
           <option value="female">female</option>
           <option value="other">other</option>
         </select>
-        <button type="button" onClick={onSubmit}>
-          궁합 계산
-        </button>
+        <button type="button" onClick={onCalculate}>궁합 계산</button>
       </section>
 
-      {result && (
+      {summary && (
         <>
-          <section className="score-card">
-            <p>궁합 점수</p>
-            <h3>{result.score}</h3>
-            <p>{result.summary}</p>
-          </section>
-          <ResultCard title="관계 강점" items={result.strengths} />
-          <ResultCard title="주의할 점" items={result.cautions} />
+          <ResultCard title={`궁합 점수 ${score}`} rows={[...summary.strengths.map((v) => `강점: ${v}`), ...summary.cautions.map((v) => `주의: ${v}`)]} />
         </>
       )}
     </div>

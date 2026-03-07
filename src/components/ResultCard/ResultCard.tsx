@@ -1,18 +1,16 @@
-import './ResultCard.css';
+import "./ResultCard.css";
 
-type Props = {
+interface Props {
   title: string;
-  items: string[];
-};
+  rows: string[];
+}
 
-export default function ResultCard({ title, items }: Props) {
+export default function ResultCard({ title, rows }: Props) {
   return (
-    <section className="result-card">
+    <section className="resultCard">
       <h3>{title}</h3>
       <ul>
-        {items.map((item, index) => (
-          <li key={`${item}-${index}`}>{item}</li>
-        ))}
+        {rows.map((row, idx) => <li key={idx}>{row}</li>)}
       </ul>
     </section>
   );

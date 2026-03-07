@@ -1,18 +1,9 @@
-.result-card {
-  border-radius: 16px;
-  border: 1px solid #37336d;
+.resultCard {
+  background: #151833;
+  border: 1px solid #303565;
+  border-radius: 14px;
   padding: 14px;
-  background: linear-gradient(145deg, #1a1838, #121127);
 }
-
-.result-card h3 {
-  margin: 0 0 10px;
-  color: #d7d2ff;
-}
-
-.result-card ul {
-  margin: 0;
-  padding-left: 18px;
-  display: grid;
-  gap: 6px;
-}
+.resultCard h3 { margin: 0 0 8px; color: #d7d0ff; font-size: 15px; }
+.resultCard ul { margin: 0; padding-left: 18px; color: #e2e5f9; }
+.resultCard li { margin-bottom: 6px; }

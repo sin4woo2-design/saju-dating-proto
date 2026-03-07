@@ -1,40 +1,35 @@
-import type { Gender } from '../types/saju';
+import type { Gender } from "../types/saju";
 
-export interface PartnerInput {
+interface PairInput {
   birthDate: string;
   birthTime: string;
   gender: Gender;
 }
 
-export interface CompatibilityResult {
-  score: number;
-  strengths: string[];
-  cautions: string[];
-  summary: string;
+export function calculateCompatibility(me: PairInput, partner: PairInput): number {
+  const seed = `${me.birthDate}${me.birthTime}${me.gender}${partner.birthDate}${partner.birthTime}${partner.gender}`
+    .split("")
+    .reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
+  return 60 + (seed % 41);
 }
 
-export function calculateCompatibility(
-  myBirthDate: string,
-  myBirthTime: string,
-  partner: PartnerInput,
-): CompatibilityResult {
-  const seed = (myBirthDate + myBirthTime + partner.birthDate + partner.birthTime)
-    .split('')
-    .reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
+export function generateCompatibilitySummary(score: number): { strengths: string[]; cautions: string[] } {
+  if (score >= 85) {
+    return {
+      strengths: ["감정 교류가 자연스럽고 템포가 잘 맞음", "장기 관계로 발전할 가능성이 높음"],
+      cautions: ["지나친 확신보다 현실적인 조율 필요"],
+    };
+  }
 
-  const score = 60 + (seed % 41);
+  if (score >= 72) {
+    return {
+      strengths: ["상호 보완 포인트가 분명함", "같이 성장할 여지가 큼"],
+      cautions: ["의사결정 속도 차이 조율 필요", "표현 방식의 온도 차이 주의"],
+    };
+  }
 
   return {
-    score,
-    strengths: ['감정 템포가 비슷함', '생활 루틴의 보완 효과', '장기 목표의 합이 좋음'],
-    cautions: ['의사결정 속도 차이', '갈등 시 침묵 패턴'],
-    summary: generateCompatibilitySummary(score),
+    strengths: ["새로운 관점을 배우기 좋은 조합"],
+    cautions: ["감정 표현 규칙을 초반에 맞추는 것이 중요", "기대치 조율 필요"],
   };
-}
-
-export function generateCompatibilitySummary(score: number): string {
-  if (score >= 90) return '운명형 궁합. 안정감과 끌림이 동시에 강합니다.';
-  if (score >= 80) return '우수한 궁합. 관계를 키우기 좋은 조합입니다.';
-  if (score >= 70) return '발전형 궁합. 대화 방식 정렬이 중요합니다.';
-  return '탐색형 궁합. 기대치 조율이 핵심 포인트입니다.';
 }

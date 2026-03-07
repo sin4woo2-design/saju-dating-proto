@@ -1,11 +1,10 @@
-export type Gender = 'male' | 'female' | 'other';
+export type Gender = "male" | "female" | "other";
 
 export interface UserProfileInput {
   name: string;
   birthDate: string;
   birthTime: string;
   gender: Gender;
-  interests: string[];
 }
 
 export interface FiveElementsBalance {
@@ -16,20 +15,25 @@ export interface FiveElementsBalance {
   water: number;
 }
 
-export interface SajuResult {
-  pillars: string[];
+export interface SajuProfile {
   fiveElements: FiveElementsBalance;
   personalitySummary: string;
   loveStyle: string;
-  idealPartnerTraits: string[];
+  idealTraits: string[];
 }
 
-export interface DatingProfile {
+export interface MatchCard {
   id: string;
   name: string;
   age: number;
-  image: string;
-  score: number;
-  summary: string;
+  compatibility: number;
   tags: string[];
+  note: string;
+}
+
+export interface PersonaResult {
+  ageRange: string;
+  personality: string;
+  career: string;
+  appearance: string;
 }
