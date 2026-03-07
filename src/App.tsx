@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import OnboardingPage from "./pages/Onboarding/OnboardingPage";
 import HomePage from "./pages/Home/HomePage";
@@ -7,8 +7,25 @@ import CompatibilityPage from "./pages/Compatibility/CompatibilityPage";
 import PersonaPage from "./pages/Persona/PersonaPage";
 import type { UserProfileInput } from "./types/saju";
 
+const STORAGE_KEY = "saju-me-v1";
+
 export default function App() {
-  const [me, setMe] = useState<UserProfileInput | null>(null);
+  const [me, setMe] = useState<UserProfileInput | null>(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? (JSON.parse(raw) as UserProfileInput) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  useEffect(() => {
+    if (!me) {
+      localStorage.removeItem(STORAGE_KEY);
+      return;
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(me));
+  }, [me]);
 
   const gate = useMemo(() => {
     if (!me) return <Navigate to="/onboarding" replace />;
@@ -29,6 +46,7 @@ export default function App() {
             <Route path="/mysaju" element={me ? <MySajuPage me={me} /> : gate} />
             <Route path="/compatibility" element={me ? <CompatibilityPage me={me} /> : gate} />
             <Route path="/persona" element={me ? <PersonaPage /> : gate} />
+            <Route path="*" element={<Navigate to={me ? "/" : "/onboarding"} replace />} />
           </Routes>
         </main>
 
