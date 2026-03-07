@@ -1,9 +1,29 @@
 .resultCard {
   background: #151833;
   border: 1px solid #303565;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 14px;
 }
-.resultCard h3 { margin: 0 0 8px; color: #d7d0ff; font-size: 15px; }
-.resultCard ul { margin: 0; padding-left: 18px; color: #e2e5f9; }
-.resultCard li { margin-bottom: 6px; }
+
+.resultCard.highlight {
+  background: linear-gradient(165deg, #251c55, #141832 64%);
+  border-color: #5f4bd0;
+}
+
+.resultCard h3 {
+  margin: 0 0 10px;
+  color: #d7d0ff;
+  font-size: 15px;
+}
+
+.resultCard ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #e2e5f9;
+  display: grid;
+  gap: 8px;
+}
+
+.resultCard li {
+  line-height: 1.45;
+}

@@ -26,14 +26,19 @@ export interface MatchCard {
   id: string;
   name: string;
   age: number;
+  location: string;
   compatibility: number;
   tags: string[];
+  intro: string;
+  mbti: string;
   note: string;
 }
 
 export interface PersonaResult {
+  title: string;
   ageRange: string;
   personality: string;
   career: string;
   appearance: string;
+  hashtags: string[];
 }

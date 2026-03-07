@@ -8,8 +8,8 @@ interface Props {
 export default function OnboardingPage({ onComplete }: Props) {
   return (
     <div className="pageWrap">
-      <h2>Destiny Onboarding</h2>
-      <p className="subtitle">운명의 매칭을 위해 기본 정보를 입력해줘.</p>
+      <h2>사주 매칭 시작하기</h2>
+      <p className="subtitle">2분만 투자하면, 나와 잘 맞는 인연 스타일을 바로 확인할 수 있어요.</p>
       <OnboardingForm onSubmit={onComplete} />
     </div>
   );
