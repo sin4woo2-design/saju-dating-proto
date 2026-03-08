@@ -2,11 +2,11 @@
 
 _Learn about the person you're helping. Update this as you go._
 
-- **Name:**
-- **What to call them:**
+- **Name:** 용우 신
+- **What to call them:** 용우
 - **Pronouns:** _(optional)_
-- **Timezone:**
-- **Notes:**
+- **Timezone:** UTC
+- **Notes:** 블로그 주제는 시니어 건강. 콘텐츠를 2주치 백로그로 미리 쌓고, 매일 1~2개 예약 발행하는 운영을 선호함.
 
 ## Context
 
