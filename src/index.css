@@ -130,6 +130,10 @@ button:disabled {
   color: #bac1ea;
 }
 
+.quickStatsSecondary {
+  grid-template-columns: repeat(2, 1fr);
+}
+
 .summaryChips {
   display: flex;
   gap: 8px;

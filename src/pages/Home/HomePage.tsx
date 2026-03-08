@@ -2,16 +2,44 @@ import { useMemo, useState } from "react";
 import PageLayout from "../../components/layout/PageLayout";
 import SwipeCard from "../../components/SwipeCard/SwipeCard";
 import { mockMatchCards } from "../../data/mockProfiles";
+import { useSwipeActions } from "../../hooks/useSwipeActions";
+
+function findNextUnseenIndex(start: number, actions: Record<string, "like" | "pass">) {
+  for (let i = start; i < mockMatchCards.length; i += 1) {
+    if (!actions[mockMatchCards[i].id]) return i;
+  }
+  return -1;
+}
 
 export default function HomePage() {
-  const [index, setIndex] = useState(0);
-  const card = mockMatchCards[index];
+  const { actions, likedCount, passedCount, setLike, setPass, clearAll } = useSwipeActions();
+  const [index, setIndex] = useState(() => findNextUnseenIndex(0, actions));
+  const card = index >= 0 ? mockMatchCards[index] : null;
 
   const progress = useMemo(() => `${Math.min(index + 1, mockMatchCards.length)} / ${mockMatchCards.length}`, [index]);
   const average = useMemo(
     () => Math.round(mockMatchCards.reduce((sum, v) => sum + v.compatibility, 0) / mockMatchCards.length),
     []
   );
+
+  const remain = useMemo(
+    () => Math.max(0, mockMatchCards.length - Object.keys(actions).length),
+    [actions]
+  );
+
+  const handlePass = () => {
+    if (!card) return;
+    setPass(card.id);
+    const next = findNextUnseenIndex(index + 1, { ...actions, [card.id]: "pass" });
+    setIndex(next);
+  };
+
+  const handleLike = () => {
+    if (!card) return;
+    setLike(card.id);
+    const next = findNextUnseenIndex(index + 1, { ...actions, [card.id]: "like" });
+    setIndex(next);
+  };
 
   return (
     <PageLayout
@@ -29,21 +57,40 @@ export default function HomePage() {
           <span>평균 궁합</span>
         </article>
         <article>
-          <strong>{Math.max(0, mockMatchCards.length - index)}명</strong>
+          <strong>{remain}명</strong>
           <span>남은 카드</span>
+        </article>
+      </section>
+
+      <section className="quickStats quickStatsSecondary">
+        <article>
+          <strong>{likedCount}명</strong>
+          <span>관심 보냄</span>
+        </article>
+        <article>
+          <strong>{passedCount}명</strong>
+          <span>패스</span>
         </article>
       </section>
 
       {!card ? (
         <section className="emptyState">
           <p>오늘 확인할 카드를 모두 봤어요 ✨</p>
-          <button type="button" onClick={() => setIndex(0)}>다시 보기</button>
+          <button
+            type="button"
+            onClick={() => {
+              clearAll();
+              setIndex(0);
+            }}
+          >
+            다시 보기
+          </button>
         </section>
       ) : (
         <SwipeCard
           card={card}
-          onPass={() => setIndex((v) => v + 1)}
-          onLike={() => setIndex((v) => v + 1)}
+          onPass={handlePass}
+          onLike={handleLike}
         />
       )}
     </PageLayout>
