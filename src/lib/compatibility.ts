@@ -1,3 +1,4 @@
+import { calculateCompatibilityWithEngine } from "./engine";
 import type { Gender } from "../types/saju";
 
 interface PairInput {
@@ -6,19 +7,12 @@ interface PairInput {
   gender: Gender;
 }
 
-function seedOf(value: PairInput) {
-  return `${value.birthDate}-${value.birthTime}-${value.gender}`
-    .split("")
-    .reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
-}
-
+/**
+ * Legacy export 유지: 기존 페이지 코드 호환용.
+ * 실제 점수 계산 공급자는 엔진 라우터에서 선택된다.
+ */
 export function calculateCompatibility(me: PairInput, partner: PairInput): number {
-  const meSeed = seedOf(me);
-  const partnerSeed = seedOf(partner);
-  const gap = Math.abs(meSeed - partnerSeed) % 34;
-  const boost = (me.gender === partner.gender ? 2 : 6) + ((meSeed + partnerSeed) % 11);
-  const score = 65 + boost - Math.floor(gap / 4);
-  return Math.max(58, Math.min(96, score));
+  return calculateCompatibilityWithEngine(me, partner).score;
 }
 
 export function generateCompatibilitySummary(score: number): { strengths: string[]; cautions: string[] } {
