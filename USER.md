@@ -6,7 +6,7 @@ _Learn about the person you're helping. Update this as you go._
 - **What to call them:** 용우
 - **Pronouns:** _(optional)_
 - **Timezone:** UTC
-- **Notes:** 블로그 주제는 시니어 건강. 콘텐츠를 2주치 백로그로 미리 쌓고, 매일 1~2개 예약 발행하는 운영을 선호함.
+- **Notes:** 블로그 주제는 시니어 건강. 콘텐츠를 2주치 백로그로 미리 쌓고, 매일 1~2개 예약 발행하는 운영을 선호함. 웹소설 반자동 집필(Drive 기반)도 시작하려고 함.
 
 ## Context
 
