@@ -25,7 +25,7 @@ export default function App() {
         <main>
           <Routes>
             <Route path="/onboarding" element={<OnboardingPage onComplete={setMe} />} />
-            <Route path="/" element={me ? <HomePage /> : gate} />
+            <Route path="/" element={me ? <HomePage me={me} /> : gate} />
             <Route path="/mysaju" element={me ? <MySajuPage me={me} /> : gate} />
             <Route path="/compatibility" element={me ? <CompatibilityPage me={me} /> : gate} />
             <Route path="/persona" element={me ? <PersonaPage /> : gate} />

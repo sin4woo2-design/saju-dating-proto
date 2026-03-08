@@ -3,6 +3,8 @@ import PageLayout from "../../components/layout/PageLayout";
 import SwipeCard from "../../components/SwipeCard/SwipeCard";
 import { mockMatchCards } from "../../data/mockProfiles";
 import { useSwipeActions } from "../../hooks/useSwipeActions";
+import { genderLabels } from "../../constants/labels";
+import type { UserProfileInput } from "../../types/saju";
 
 function findNextUnseenIndex(start: number, actions: Record<string, "like" | "pass">) {
   for (let i = start; i < mockMatchCards.length; i += 1) {
@@ -11,7 +13,11 @@ function findNextUnseenIndex(start: number, actions: Record<string, "like" | "pa
   return -1;
 }
 
-export default function HomePage() {
+interface Props {
+  me: UserProfileInput;
+}
+
+export default function HomePage({ me }: Props) {
   const { actions, likedCount, passedCount, setLike, setPass, clearAll } = useSwipeActions();
   const [index, setIndex] = useState(() => findNextUnseenIndex(0, actions));
   const card = index >= 0 ? mockMatchCards[index] : null;
@@ -47,6 +53,11 @@ export default function HomePage() {
       subtitle="스와이프하면서 궁합이 맞는 인연 후보를 확인해 보세요."
       action={<span className="smallPill">{progress}</span>}
     >
+      <section className="profileSummary">
+        <strong>{me.name}님의 입력 정보</strong>
+        <small>{me.birthDate} · {me.birthTime} · {genderLabels[me.gender]}</small>
+      </section>
+
       <section className="quickStats">
         <article>
           <strong>{mockMatchCards.length}명</strong>

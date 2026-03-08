@@ -104,6 +104,25 @@ button:disabled {
   gap: 10px;
 }
 
+.profileSummary {
+  border: 1px solid #3a4175;
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #161b3d;
+  display: grid;
+  gap: 4px;
+}
+
+.profileSummary strong {
+  font-size: 13px;
+  color: #e6e0ff;
+}
+
+.profileSummary small {
+  color: #c1c8f1;
+  font-size: 12px;
+}
+
 .quickStats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
