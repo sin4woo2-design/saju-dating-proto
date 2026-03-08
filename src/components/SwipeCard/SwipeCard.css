@@ -48,12 +48,60 @@
   color: #e3dcff;
 }
 
-.intro,
-.note {
+.compatMeter {
+  background: #171c3c;
+  border: 1px solid #383f76;
+  border-radius: 14px;
+  padding: 10px;
+  display: grid;
+  gap: 6px;
+}
+
+.compatMeterRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #cfd5ff;
+}
+
+.compatMeterTrack {
+  height: 9px;
+  border-radius: 999px;
+  background: #29305f;
+  overflow: hidden;
+}
+
+.compatMeterTrack i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #7c63ff, #a690ff);
+}
+
+.intro {
   margin: 0;
   color: #dce0ff;
   line-height: 1.45;
   font-size: 14px;
+}
+
+.noteBox {
+  border: 1px solid #3f3b80;
+  background: #191d42;
+  border-radius: 12px;
+  padding: 10px;
+  display: grid;
+  gap: 6px;
+}
+
+.noteBox span {
+  font-size: 12px;
+  color: #cbc0ff;
+}
+
+.noteBox p {
+  margin: 0;
+  font-size: 13px;
+  color: #dce0ff;
 }
 
 .tags {

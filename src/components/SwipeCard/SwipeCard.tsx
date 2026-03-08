@@ -19,8 +19,20 @@ export default function SwipeCard({ card, onPass, onLike }: Props) {
         <span className="scorePill">{card.compatibility}%</span>
       </header>
 
+      <section className="compatMeter">
+        <div className="compatMeterRow">
+          <strong>궁합 체감도</strong>
+          <span>{card.compatibility}%</span>
+        </div>
+        <div className="compatMeterTrack"><i style={{ width: `${card.compatibility}%` }} /></div>
+      </section>
+
       <p className="intro">{card.intro}</p>
-      <p className="note">{card.note}</p>
+
+      <div className="noteBox">
+        <span>💡 매칭 포인트</span>
+        <p>{card.note}</p>
+      </div>
 
       <div className="tags">
         {card.tags.map((tag) => <span key={tag}>#{tag}</span>)}

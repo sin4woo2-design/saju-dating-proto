@@ -68,14 +68,17 @@ export default function CompatibilityPage({ me }: Props) {
 
       {summary && (
         <>
-          <ResultCard
-            title={`궁합 점수 ${score}점`}
-            tone="highlight"
-            rows={[
-              ...summary.strengths.map((v) => `강점 · ${v}`),
-              ...summary.cautions.map((v) => `주의 · ${v}`),
-            ]}
-          />
+          <section className="scoreBadgeWrap">
+            <div className="scoreBadge">
+              <strong>{score}</strong>
+              <span>/ 100</span>
+            </div>
+            <p>오늘의 궁합 체감 점수</p>
+          </section>
+
+          <ResultCard title="강점 포인트" tone="highlight" rows={summary.strengths.map((v) => `✅ ${v}`)} />
+          <ResultCard title="주의 포인트" rows={summary.cautions.map((v) => `⚠️ ${v}`)} />
+
           <button type="button" className="ghostBtn" onClick={handleShare}>결과 공유</button>
           {message ? <p className="toastText">{message}</p> : null}
         </>

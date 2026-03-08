@@ -104,6 +104,83 @@ button:disabled {
   gap: 10px;
 }
 
+.quickStats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.quickStats article {
+  background: #141a39;
+  border: 1px solid #353d73;
+  border-radius: 12px;
+  padding: 10px;
+  display: grid;
+  gap: 4px;
+  text-align: center;
+}
+
+.quickStats strong {
+  font-size: 16px;
+  color: #e7e1ff;
+}
+
+.quickStats span {
+  font-size: 11px;
+  color: #bac1ea;
+}
+
+.summaryChips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.summaryChips span {
+  padding: 7px 10px;
+  border: 1px solid #4f4aa0;
+  background: #1d2150;
+  border-radius: 999px;
+  font-size: 12px;
+  color: #ded7ff;
+}
+
+.scoreBadgeWrap {
+  border: 1px solid #4f47a0;
+  border-radius: 16px;
+  background: linear-gradient(165deg, #261f57, #131730 64%);
+  padding: 14px;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.scoreBadge {
+  width: 92px;
+  height: 92px;
+  border-radius: 999px;
+  border: 3px solid #8f78ff;
+  display: grid;
+  place-items: center;
+  background: #1a1e42;
+}
+
+.scoreBadge strong {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.scoreBadge span {
+  font-size: 11px;
+  color: #b6bdf0;
+}
+
+.scoreBadgeWrap p {
+  margin: 0;
+  font-size: 13px;
+  color: #c9d0ff;
+}
+
 .formCard input,
 .formCard select {
   width: 100%;

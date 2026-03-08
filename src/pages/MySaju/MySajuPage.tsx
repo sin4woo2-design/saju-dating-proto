@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import ResultCard from "../../components/ResultCard/ResultCard";
 import PageLayout from "../../components/layout/PageLayout";
 import { elementLabels } from "../../constants/labels";
@@ -14,6 +15,14 @@ export default function MySajuPage({ me }: Props) {
   const profile = calculateSaju(me);
   const { message, showMessage } = useTransientMessage();
 
+  const topSummary = useMemo(() => {
+    const sorted = Object.entries(profile.fiveElements).sort((a, b) => b[1] - a[1]);
+    return {
+      strong: `${elementLabels[sorted[0][0]]} 강세`,
+      weak: `${elementLabels[sorted[sorted.length - 1][0]]} 보완 필요`,
+    };
+  }, [profile.fiveElements]);
+
   const handleShare = async () => {
     const result = await shareOrCopy({
       title: `${me.name}님의 사주 요약`,
@@ -27,6 +36,11 @@ export default function MySajuPage({ me }: Props) {
       title={`${me.name}님의 사주 리포트`}
       action={<button type="button" className="ghostBtn" onClick={handleShare}>공유</button>}
     >
+      <section className="summaryChips">
+        <span>✨ {topSummary.strong}</span>
+        <span>🛠️ {topSummary.weak}</span>
+      </section>
+
       <section className="elementCard">
         {Object.entries(profile.fiveElements).map(([key, value]) => (
           <div key={key} className="barRow">
