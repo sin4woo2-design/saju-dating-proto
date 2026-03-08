@@ -105,4 +105,5 @@
 - 기본 모드: `mock`
 - 스텁 강제 확인이 필요하면 `.env`에
   - `VITE_SAJU_ENGINE_MODE=real-stub`
-- 이후 실엔진 붙일 때는 `realEngineStub.ts`만 실제 provider로 교체
+- 이후 실엔진 붙일 때는 `realEngineStub.ts`를 provider 기반 엔진으로 교체
+- 상세 provider 계약/실패정책은 `docs/saju-real-provider-spec.md` 기준으로 진행
