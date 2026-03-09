@@ -1,0 +1,9 @@
+sample_id,name,birth_date,birth_time,birth_time_known,gender,calendar_type,timezone,year_pillar,month_pillar,day_pillar,hour_pillar,wood,fire,earth,metal,water,signals,warnings,notes,review_status
+S01,Ari,1991-10-21,08:30,true,male,solar,Asia/Seoul,,,,,,,,,,,"lunar-python runtime not executed in this environment",blocked
+S02,Bora,1993-02-11,12:00,false,female,solar,Asia/Seoul,,,,,,,,,,,"birthTimeKnown=false case",blocked
+S03,Cyan,1988-07-03,23:40,true,male,solar,Asia/Seoul,,,,,,,,,,,"late-night hour case",blocked
+S04,Dami,2000-01-01,00:20,true,female,solar,Asia/Seoul,,,,,,,,,,,"boundary date/time case",blocked
+S05,Eun,1985-12-31,11:10,true,female,solar,UTC,,,,,,,,,,,"UTC timezone case",blocked
+S06,Fio,1979-05-18,15:55,true,other,solar,Asia/Seoul,,,,,,,,,,,"gender other case",blocked
+S07,Gyu,1999-09-09,12:00,false,male,solar,Asia/Seoul,,,,,,,,,,,"unknown birth time case",blocked
+S08,Hana,1995-04-27,06:05,true,female,solar,Asia/Seoul,,,,,,,,,,,"morning case",blocked
