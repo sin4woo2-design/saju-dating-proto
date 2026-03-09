@@ -54,6 +54,8 @@ def score_elements_with_breakdown(
     branches: list[str],
     rule_version: str = DEFAULT_RULE_VERSION,
     hidden_blend: float = 0.5,
+    earth_dampening_enabled: bool = False,
+    earth_dampening_strength: float = 0.5,
 ):
     rule = normalize_rule_version(rule_version)
     blend = max(0.0, min(1.0, hidden_blend))
@@ -83,6 +85,14 @@ def score_elements_with_breakdown(
             for hs, ratio in zip(hidden, ratios):
                 hidden_contrib[ELEMENT_BY_STEM[hs]] += blend * ratio
 
+    overlap_monthbonus_hidden_earth = month_bonus_contrib["earth"] > 0 and hidden_contrib["earth"] > 0
+    applied_dampening = 0.0
+
+    if rule == EXPERIMENT_RULE_VERSION and earth_dampening_enabled and overlap_monthbonus_hidden_earth:
+        strength = max(0.0, min(1.0, earth_dampening_strength))
+        applied_dampening = hidden_contrib["earth"] * strength
+        hidden_contrib["earth"] -= applied_dampening
+
     raw = {
         k: stem_contrib[k] + branch_contrib[k] + month_bonus_contrib[k] + hidden_contrib[k]
         for k in stem_contrib.keys()
@@ -96,6 +106,10 @@ def score_elements_with_breakdown(
         "branchContribution": branch_contrib,
         "monthBranchBonusContribution": month_bonus_contrib,
         "hiddenStemContribution": hidden_contrib,
+        "overlapMonthBonusHiddenEarth": overlap_monthbonus_hidden_earth,
+        "earthDampeningEnabled": earth_dampening_enabled,
+        "earthDampeningStrength": earth_dampening_strength,
+        "earthDampeningApplied": applied_dampening,
         "rawScore": raw,
         "finalNormalized": normalized,
         "winner": winner,
@@ -107,5 +121,14 @@ def score_elements(
     branches: list[str],
     rule_version: str = DEFAULT_RULE_VERSION,
     hidden_blend: float = 0.5,
+    earth_dampening_enabled: bool = False,
+    earth_dampening_strength: float = 0.5,
 ) -> dict[str, int]:
-    return score_elements_with_breakdown(stems, branches, rule_version, hidden_blend)["finalNormalized"]
+    return score_elements_with_breakdown(
+        stems,
+        branches,
+        rule_version,
+        hidden_blend,
+        earth_dampening_enabled,
+        earth_dampening_strength,
+    )["finalNormalized"]

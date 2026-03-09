@@ -93,6 +93,8 @@ curl -s -X POST http://localhost:8081/saju/compatibility-signals \
 - `CHART_RULE_VERSION=v1-current` (롤백 기준)
 - `CHART_RULE_VERSION=exp-v2-hidden-blend` (월지강화+지장간 약식 혼합 실험)
 - `CHART_HIDDEN_STEM_BLEND=0.5` (혼합안 가중치, 권장 0.4~0.6)
+- `CHART_EARTH_DAMPENING_ENABLED=false` (overlap 상황 earth 감쇠 실험 플래그)
+- `CHART_EARTH_DAMPENING_STRENGTH=0.5` (감쇠 강도)
 
 `/saju/chart` 응답에는 추적 메타가 포함됩니다.
 - `meta.providerVersion`

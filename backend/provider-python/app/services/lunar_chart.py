@@ -26,7 +26,13 @@ def _to_lunar(person: PersonInput) -> Lunar:
     return Solar.fromYmdHms(dt.year, dt.month, dt.day, dt.hour, dt.minute, 0).getLunar()
 
 
-def calculate_chart_with_lunar(person: PersonInput, rule_version: str = "v1-current", hidden_blend: float = 0.5):
+def calculate_chart_with_lunar(
+    person: PersonInput,
+    rule_version: str = "v1-current",
+    hidden_blend: float = 0.5,
+    earth_dampening_enabled: bool = False,
+    earth_dampening_strength: float = 0.5,
+):
     lunar = _to_lunar(person)
     ec = lunar.getEightChar()
 
@@ -48,6 +54,8 @@ def calculate_chart_with_lunar(person: PersonInput, rule_version: str = "v1-curr
         [year_zhi, month_zhi, day_zhi, time_zhi],
         rule,
         hidden_blend,
+        earth_dampening_enabled,
+        earth_dampening_strength,
     )
 
     strong = max(five_elements, key=five_elements.get).upper()

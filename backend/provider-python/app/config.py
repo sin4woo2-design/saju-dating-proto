@@ -11,6 +11,8 @@ class Settings:
     chart_mode: str = os.getenv("CHART_ENGINE_MODE", "fake")  # fake | lunar-prep
     chart_rule_version: str = os.getenv("CHART_RULE_VERSION", "v2-month-branch-boost")
     hidden_stem_blend: float = float(os.getenv("CHART_HIDDEN_STEM_BLEND", "0.5"))
+    earth_dampening_enabled: bool = os.getenv("CHART_EARTH_DAMPENING_ENABLED", "false").lower() == "true"
+    earth_dampening_strength: float = float(os.getenv("CHART_EARTH_DAMPENING_STRENGTH", "0.5"))
 
 
 settings = Settings()

@@ -19,6 +19,8 @@ def get_chart(person: PersonInput):
                 person,
                 rule_version=settings.chart_rule_version,
                 hidden_blend=settings.hidden_stem_blend,
+                earth_dampening_enabled=settings.earth_dampening_enabled,
+                earth_dampening_strength=settings.earth_dampening_strength,
             )
             return {
                 "five": five,
