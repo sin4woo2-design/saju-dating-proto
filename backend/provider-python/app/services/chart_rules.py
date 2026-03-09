@@ -49,34 +49,63 @@ def _hidden_ratio(length: int):
     return [0.7, 0.2, 0.1]
 
 
+def score_elements_with_breakdown(
+    stems: list[str],
+    branches: list[str],
+    rule_version: str = DEFAULT_RULE_VERSION,
+    hidden_blend: float = 0.5,
+):
+    rule = normalize_rule_version(rule_version)
+    blend = max(0.0, min(1.0, hidden_blend))
+
+    stem_contrib = {"wood": 0.0, "fire": 0.0, "earth": 0.0, "metal": 0.0, "water": 0.0}
+    branch_contrib = {"wood": 0.0, "fire": 0.0, "earth": 0.0, "metal": 0.0, "water": 0.0}
+    month_bonus_contrib = {"wood": 0.0, "fire": 0.0, "earth": 0.0, "metal": 0.0, "water": 0.0}
+    hidden_contrib = {"wood": 0.0, "fire": 0.0, "earth": 0.0, "metal": 0.0, "water": 0.0}
+
+    for s in stems:
+        if s in ELEMENT_BY_STEM:
+            stem_contrib[ELEMENT_BY_STEM[s]] += 1.6
+
+    for idx, b in enumerate(branches):
+        if b not in ELEMENT_BY_BRANCH:
+            continue
+
+        element = ELEMENT_BY_BRANCH[b]
+        branch_contrib[element] += 1.0
+
+        if rule in {V2_CANDIDATE_RULE_VERSION, EXPERIMENT_RULE_VERSION} and idx == 1:
+            month_bonus_contrib[element] += 1.0
+
+        if rule == EXPERIMENT_RULE_VERSION:
+            hidden = HIDDEN_STEMS.get(b, [])
+            ratios = _hidden_ratio(len(hidden))
+            for hs, ratio in zip(hidden, ratios):
+                hidden_contrib[ELEMENT_BY_STEM[hs]] += blend * ratio
+
+    raw = {
+        k: stem_contrib[k] + branch_contrib[k] + month_bonus_contrib[k] + hidden_contrib[k]
+        for k in stem_contrib.keys()
+    }
+    normalized = _norm(raw)
+    winner = max(normalized, key=normalized.get)
+
+    return {
+        "ruleVersion": rule,
+        "stemContribution": stem_contrib,
+        "branchContribution": branch_contrib,
+        "monthBranchBonusContribution": month_bonus_contrib,
+        "hiddenStemContribution": hidden_contrib,
+        "rawScore": raw,
+        "finalNormalized": normalized,
+        "winner": winner,
+    }
+
+
 def score_elements(
     stems: list[str],
     branches: list[str],
     rule_version: str = DEFAULT_RULE_VERSION,
     hidden_blend: float = 0.5,
 ) -> dict[str, int]:
-    rule = normalize_rule_version(rule_version)
-    blend = max(0.0, min(1.0, hidden_blend))
-
-    w = {"wood": 0.0, "fire": 0.0, "earth": 0.0, "metal": 0.0, "water": 0.0}
-
-    for s in stems:
-        if s in ELEMENT_BY_STEM:
-            w[ELEMENT_BY_STEM[s]] += 1.6
-
-    for idx, b in enumerate(branches):
-        if b not in ELEMENT_BY_BRANCH:
-            continue
-
-        if rule in {V2_CANDIDATE_RULE_VERSION, EXPERIMENT_RULE_VERSION} and idx == 1:
-            w[ELEMENT_BY_BRANCH[b]] += 2.0
-        else:
-            w[ELEMENT_BY_BRANCH[b]] += 1.0
-
-        if rule == EXPERIMENT_RULE_VERSION:
-            hidden = HIDDEN_STEMS.get(b, [])
-            ratios = _hidden_ratio(len(hidden))
-            for hs, ratio in zip(hidden, ratios):
-                w[ELEMENT_BY_STEM[hs]] += blend * ratio
-
-    return _norm(w)
+    return score_elements_with_breakdown(stems, branches, rule_version, hidden_blend)["finalNormalized"]
