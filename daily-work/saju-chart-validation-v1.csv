@@ -1,41 +1,41 @@
 sample_id,name,birth_date,birth_time,birth_time_known,gender,calendar_type,timezone,year_pillar,month_pillar,day_pillar,hour_pillar,wood,fire,earth,metal,water,signals,warnings,notes,review_status
-S01,Ari,1991-10-21,08:30,True,male,solar,Asia/Seoul,辛未,戊戌,甲子,戊辰,15,0,60,15,10,"EARTH_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S02,Bora,1993-02-11,12:00,False,female,solar,Asia/Seoul,癸酉,甲寅,癸亥,戊午,25,10,15,10,40,"WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
-S03,Cyan,1988-07-03,23:40,True,male,solar,Asia/Seoul,戊辰,戊午,己未,丙子,0,25,65,0,10,"EARTH_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S04,Dami,2000-01-01,00:20,True,female,solar,Asia/Seoul,己卯,丙子,戊午,壬子,10,25,31,0,34,"WATER_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S05,Eun,1985-12-31,11:10,True,female,solar,UTC,乙丑,戊子,甲辰,庚午,31,10,34,15,10,"EARTH_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S06,Fio,1979-05-18,15:55,True,other,solar,Asia/Seoul,己未,己巳,乙酉,甲申,31,10,40,19,0,"EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S07,Gyu,1999-09-09,12:00,False,male,solar,Asia/Seoul,己卯,癸酉,甲子,庚午,25,10,15,25,25,"WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
-S08,Hana,1995-04-27,06:05,True,female,solar,Asia/Seoul,乙亥,庚辰,戊子,乙卯,41,0,25,15,19,"WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S09,Ian,1968-03-20,23:59,True,male,solar,UTC,戊申,乙卯,己丑,丙子,25,15,40,10,10,"EARTH_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S10,Jin,1972-06-21,00:01,True,female,solar,Asia/Seoul,壬子,丙午,癸未,壬子,0,25,10,0,65,"WATER_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S11,Kai,1981-09-23,12:00,False,other,solar,UTC,辛酉,丁酉,甲辰,庚午,15,25,10,50,0,"METAL_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
-S12,Lia,1990-12-22,18:45,True,female,solar,Asia/Seoul,庚午,戊子,辛酉,丁酉,0,25,15,50,10,"METAL_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S13,Min,2003-03-01,05:10,True,male,solar,Asia/Seoul,癸未,甲寅,癸酉,乙卯,49,0,10,10,31,"WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S14,Nia,1965-07-15,14:20,True,female,solar,UTC,乙巳,癸未,庚午,癸未,15,19,19,15,32,"WATER_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S15,Owen,1975-10-30,21:35,True,male,solar,Asia/Seoul,乙卯,丙戌,己酉,乙亥,40,15,25,10,10,"WOOD_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S16,Pia,1989-01-19,12:00,False,female,solar,Asia/Seoul,戊辰,乙丑,己卯,庚午,25,10,50,15,0,"EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
-S17,Qin,1998-04-11,07:07,True,other,solar,UTC,戊寅,丙辰,戊子,丙辰,10,31,49,0,10,"EARTH_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S18,Rin,2005-08-08,16:16,True,female,solar,Asia/Seoul,乙酉,甲申,甲子,壬申,46,0,0,29,25,"WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S19,Seo,1970-11-11,22:22,True,male,solar,UTC,庚戌,丁亥,乙未,丁亥,15,32,19,15,19,"FIRE_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S20,Tae,1983-02-02,12:00,False,male,solar,Asia/Seoul,壬戌,癸丑,辛酉,甲午,15,10,19,25,31,"WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
-S21,Uma,1996-05-05,09:09,True,female,solar,Asia/Seoul,丙子,壬辰,壬寅,乙巳,25,25,10,0,40,"WATER_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S22,Vin,2001-09-17,19:50,True,other,solar,UTC,辛巳,丁酉,癸未,壬戌,0,25,19,25,31,"WATER_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S23,Won,1969-12-09,03:30,True,male,solar,Asia/Seoul,己酉,丙子,戊午,甲寅,25,25,30,10,10,"EARTH_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S24,Xia,1978-03-28,12:00,False,female,solar,UTC,戊午,乙卯,己丑,庚午,25,19,41,15,0,"EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
-S25,Yun,1986-06-09,10:40,True,male,solar,Asia/Seoul,丙寅,甲午,甲申,己巳,40,35,15,10,0,"WOOD_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S26,Zed,1994-10-14,20:05,True,other,solar,Asia/Seoul,甲戌,甲戌,癸酉,壬戌,30,0,29,10,31,"WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S27,Ahn,2002-01-07,01:01,True,female,solar,UTC,辛巳,辛丑,乙亥,丁丑,15,25,19,31,10,"METAL_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S28,Bea,1967-04-14,13:13,True,female,solar,Asia/Seoul,丁未,甲辰,戊申,己未,15,15,60,10,0,"EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S29,Cho,1976-07-29,12:00,False,male,solar,Asia/Seoul,丙辰,乙未,壬午,丙午,15,51,19,0,15,"FIRE_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
-S30,Dee,1984-11-03,17:17,True,other,solar,UTC,甲子,甲戌,辛丑,丁酉,31,15,19,25,10,"WOOD_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S31,Eli,1992-02-24,04:44,True,male,solar,Asia/Seoul,壬申,壬寅,庚午,戊寅,19,10,15,25,31,"WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S32,Fae,2004-05-30,12:00,False,female,solar,UTC,甲申,己巳,己酉,庚午,15,19,31,35,0,"METAL_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
-S33,Geo,1966-08-19,11:11,True,male,solar,Asia/Seoul,丙午,丙申,庚戌,壬午,0,50,10,25,15,"FIRE_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S34,Hee,1974-12-25,23:00,True,female,solar,Asia/Seoul,甲寅,丙子,庚子,戊子,25,15,15,15,30,"WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S35,Ira,1982-03-12,02:02,True,other,solar,UTC,壬戌,癸卯,甲午,乙丑,40,10,19,0,31,"WOOD_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S36,Jun,1997-06-18,12:00,False,male,solar,Asia/Seoul,丁丑,丙午,辛卯,甲午,25,50,10,15,0,"FIRE_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
-S37,Kyo,2006-09-02,07:45,True,female,solar,Asia/Seoul,丙戌,丙申,甲午,戊辰,15,40,35,10,0,"FIRE_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S38,Leo,1971-01-27,16:30,True,male,solar,UTC,庚戌,己丑,壬子,戊申,0,0,50,25,25,"EARTH_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S39,Moa,1987-04-04,09:00,True,female,solar,Asia/Seoul,丁卯,癸卯,癸未,丁巳,19,40,10,0,31,"FIRE_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
-S40,Neo,1990-10-10,12:00,False,other,solar,UTC,庚午,丙戌,戊申,戊午,0,35,40,25,0,"EARTH_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
+S01,Ari,1991-10-21,08:30,True,male,solar,Asia/Seoul,辛未,戊戌,甲子,戊辰,15,0,60,15,10,"EARTH_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S02,Bora,1993-02-11,12:00,False,female,solar,Asia/Seoul,癸酉,甲寅,癸亥,戊午,25,10,15,10,40,"WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
+S03,Cyan,1988-07-03,23:40,True,male,solar,Asia/Seoul,戊辰,戊午,己未,丙子,0,25,65,0,10,"EARTH_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S04,Dami,2000-01-01,00:20,True,female,solar,Asia/Seoul,己卯,丙子,戊午,壬子,10,25,31,0,34,"WATER_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S05,Eun,1985-12-31,11:10,True,female,solar,UTC,乙丑,戊子,甲辰,庚午,31,10,34,15,10,"EARTH_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S06,Fio,1979-05-18,15:55,True,other,solar,Asia/Seoul,己未,己巳,乙酉,甲申,31,10,40,19,0,"EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S07,Gyu,1999-09-09,12:00,False,male,solar,Asia/Seoul,己卯,癸酉,甲子,庚午,25,10,15,25,25,"WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
+S08,Hana,1995-04-27,06:05,True,female,solar,Asia/Seoul,乙亥,庚辰,戊子,乙卯,41,0,25,15,19,"WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S09,Ian,1968-03-20,23:59,True,male,solar,UTC,戊申,乙卯,己丑,丙子,25,15,40,10,10,"EARTH_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S10,Jin,1972-06-21,00:01,True,female,solar,Asia/Seoul,壬子,丙午,癸未,壬子,0,25,10,0,65,"WATER_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S11,Kai,1981-09-23,12:00,False,other,solar,UTC,辛酉,丁酉,甲辰,庚午,15,25,10,50,0,"METAL_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
+S12,Lia,1990-12-22,18:45,True,female,solar,Asia/Seoul,庚午,戊子,辛酉,丁酉,0,25,15,50,10,"METAL_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S13,Min,2003-03-01,05:10,True,male,solar,Asia/Seoul,癸未,甲寅,癸酉,乙卯,49,0,10,10,31,"WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S14,Nia,1965-07-15,14:20,True,female,solar,UTC,乙巳,癸未,庚午,癸未,15,19,19,15,32,"WATER_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S15,Owen,1975-10-30,21:35,True,male,solar,Asia/Seoul,乙卯,丙戌,己酉,乙亥,40,15,25,10,10,"WOOD_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S16,Pia,1989-01-19,12:00,False,female,solar,Asia/Seoul,戊辰,乙丑,己卯,庚午,25,10,50,15,0,"EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
+S17,Qin,1998-04-11,07:07,True,other,solar,UTC,戊寅,丙辰,戊子,丙辰,10,31,49,0,10,"EARTH_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S18,Rin,2005-08-08,16:16,True,female,solar,Asia/Seoul,乙酉,甲申,甲子,壬申,46,0,0,29,25,"WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S19,Seo,1970-11-11,22:22,True,male,solar,UTC,庚戌,丁亥,乙未,丁亥,15,32,19,15,19,"FIRE_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S20,Tae,1983-02-02,12:00,False,male,solar,Asia/Seoul,壬戌,癸丑,辛酉,甲午,15,10,19,25,31,"WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
+S21,Uma,1996-05-05,09:09,True,female,solar,Asia/Seoul,丙子,壬辰,壬寅,乙巳,25,25,10,0,40,"WATER_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S22,Vin,2001-09-17,19:50,True,other,solar,UTC,辛巳,丁酉,癸未,壬戌,0,25,19,25,31,"WATER_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S23,Won,1969-12-09,03:30,True,male,solar,Asia/Seoul,己酉,丙子,戊午,甲寅,25,25,30,10,10,"EARTH_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S24,Xia,1978-03-28,12:00,False,female,solar,UTC,戊午,乙卯,己丑,庚午,25,19,41,15,0,"EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
+S25,Yun,1986-06-09,10:40,True,male,solar,Asia/Seoul,丙寅,甲午,甲申,己巳,40,35,15,10,0,"WOOD_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S26,Zed,1994-10-14,20:05,True,other,solar,Asia/Seoul,甲戌,甲戌,癸酉,壬戌,30,0,29,10,31,"WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S27,Ahn,2002-01-07,01:01,True,female,solar,UTC,辛巳,辛丑,乙亥,丁丑,15,25,19,31,10,"METAL_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S28,Bea,1967-04-14,13:13,True,female,solar,Asia/Seoul,丁未,甲辰,戊申,己未,15,15,60,10,0,"EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S29,Cho,1976-07-29,12:00,False,male,solar,Asia/Seoul,丙辰,乙未,壬午,丙午,15,51,19,0,15,"FIRE_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
+S30,Dee,1984-11-03,17:17,True,other,solar,UTC,甲子,甲戌,辛丑,丁酉,31,15,19,25,10,"WOOD_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S31,Eli,1992-02-24,04:44,True,male,solar,Asia/Seoul,壬申,壬寅,庚午,戊寅,19,10,15,25,31,"WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S32,Fae,2004-05-30,12:00,False,female,solar,UTC,甲申,己巳,己酉,庚午,15,19,31,35,0,"METAL_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
+S33,Geo,1966-08-19,11:11,True,male,solar,Asia/Seoul,丙午,丙申,庚戌,壬午,0,50,10,25,15,"FIRE_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S34,Hee,1974-12-25,23:00,True,female,solar,Asia/Seoul,甲寅,丙子,庚子,戊子,25,15,15,15,30,"WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S35,Ira,1982-03-12,02:02,True,other,solar,UTC,壬戌,癸卯,甲午,乙丑,40,10,19,0,31,"WOOD_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S36,Jun,1997-06-18,12:00,False,male,solar,Asia/Seoul,丁丑,丙午,辛卯,甲午,25,50,10,15,0,"FIRE_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
+S37,Kyo,2006-09-02,07:45,True,female,solar,Asia/Seoul,丙戌,丙申,甲午,戊辰,15,40,35,10,0,"FIRE_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S38,Leo,1971-01-27,16:30,True,male,solar,UTC,庚戌,己丑,壬子,戊申,0,0,50,25,25,"EARTH_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S39,Moa,1987-04-04,09:00,True,female,solar,Asia/Seoul,丁卯,癸卯,癸未,丁巳,19,40,10,0,31,"FIRE_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",,lunar-python measured,measured
+S40,Neo,1990-10-10,12:00,False,other,solar,UTC,庚午,丙戌,戊申,戊午,0,35,40,25,0,"EARTH_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",PROVIDER_PARTIAL_DATA,lunar-python measured,measured

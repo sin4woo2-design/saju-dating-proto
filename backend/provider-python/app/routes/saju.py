@@ -37,20 +37,22 @@ def saju_chart(req: SajuChartRequest):
     if not ok:
         _raise_error(status_code=400, code=error_code, message=error_message, request_id=request_id)
 
-    five, pillars, signals, latency_ms, warnings = get_chart(req.person)
+    result = get_chart(req.person)
 
     return SajuChartResponse(
         meta=Meta(
             providerVersion=PROVIDER_VERSION,
             requestId=request_id,
-            latencyMs=latency_ms,
+            latencyMs=result["latency_ms"],
         ),
         saju=SajuBody(
-            fiveElements=five,
-            pillars=pillars if req.options.includeRawPillars else None,
-            signals=signals if req.options.includeSignals else None,
+            fiveElements=result["five"],
+            pillars=result["pillars"] if req.options.includeRawPillars else None,
+            signals=result["signals"] if req.options.includeSignals else None,
+            ruleVersion=result["rule_version"],
+            calculationSource=result["calculation_source"],
         ),
-        warnings=warnings,
+        warnings=result["warnings"],
     )
 
 

@@ -58,7 +58,9 @@ Success Response JSON
       "day": "丁丑",
       "hour": "丙午"
     },
-    "signals": ["WOOD_STRONG", "WATER_SUPPORT"]
+    "signals": ["WOOD_STRONG", "WATER_SUPPORT"],
+    "ruleVersion": "v2-month-branch-boost",
+    "calculationSource": "provider-lunar-python"
   },
   "warnings": ["PROVIDER_PARTIAL_DATA"]
 }

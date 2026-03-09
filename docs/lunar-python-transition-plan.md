@@ -17,6 +17,11 @@
 - 출력 매핑: pillars(연/월/일/시), 오행 정규화(합계 100), 기본 signals 도출
 - 남은 과제: lunar 입력(윤달 등) 정밀 처리, 신호 체계 고도화
 
+### Rule Version 도입 (진행)
+- `/saju/chart` 내부 결과에 `ruleVersion`, `calculationSource`를 남기도록 반영
+- v2 candidate: `v2-month-branch-boost`
+- 실험안: `exp-v2-hidden-blend` + `CHART_HIDDEN_STEM_BLEND(0.4~0.6)`
+
 ### Phase C (호환/궁합)
 - `/saju/compatibility-signals`는 score 직접 계산 대신
   provider raw signals를 우선 출력하고, 점수는 signals 기반 파생 규칙 유지/고도화

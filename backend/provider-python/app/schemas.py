@@ -66,6 +66,8 @@ class SajuBody(BaseModel):
     fiveElements: Optional[dict[str, int]] = None
     pillars: Optional[Pillars] = None
     signals: Optional[list[str]] = None
+    ruleVersion: Optional[str] = None
+    calculationSource: Optional[str] = None
 
 
 class CompatibilityBody(BaseModel):

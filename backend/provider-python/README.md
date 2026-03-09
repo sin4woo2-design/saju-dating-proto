@@ -85,8 +85,13 @@ curl -s -X POST http://localhost:8081/saju/compatibility-signals \
 ## 전환 준비 모드
 - `CHART_ENGINE_MODE=fake` (기본)
 - `CHART_ENGINE_MODE=lunar-prep`
-  - lunar 엔진 진입을 시도하되(현재 미구현), 실패 시 fake로 fallback
-  - fallback 시 warning에 `PROVIDER_UNAVAILABLE`가 포함될 수 있음
+  - lunar-python 계산 진입, 실패 시 fake로 fallback
+
+추가 옵션
+- `CHART_RULE_VERSION=v1-current` (현행)
+- `CHART_RULE_VERSION=v2-month-branch-boost` (v2 candidate)
+- `CHART_RULE_VERSION=exp-v2-hidden-blend` (월지강화+지장간 약식 혼합 실험)
+- `CHART_HIDDEN_STEM_BLEND=0.5` (혼합안 가중치, 권장 0.4~0.6)
 
 ## chart real 전환(최소 구현)
 - `CHART_ENGINE_MODE=lunar-prep`일 때 `/saju/chart`는 lunar-python 계산 경로를 우선 사용

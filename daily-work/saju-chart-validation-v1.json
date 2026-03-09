@@ -18,7 +18,7 @@
       "earth": 60,
       "metal": 15,
       "water": 10,
-      "signals": "EARTH_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "EARTH_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -41,7 +41,7 @@
       "earth": 15,
       "metal": 10,
       "water": 40,
-      "signals": "WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "PROVIDER_PARTIAL_DATA",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -64,7 +64,7 @@
       "earth": 65,
       "metal": 0,
       "water": 10,
-      "signals": "EARTH_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "EARTH_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -87,7 +87,7 @@
       "earth": 31,
       "metal": 0,
       "water": 34,
-      "signals": "WATER_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WATER_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -110,7 +110,7 @@
       "earth": 34,
       "metal": 15,
       "water": 10,
-      "signals": "EARTH_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "EARTH_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -133,7 +133,7 @@
       "earth": 40,
       "metal": 19,
       "water": 0,
-      "signals": "EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -156,7 +156,7 @@
       "earth": 15,
       "metal": 25,
       "water": 25,
-      "signals": "WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "PROVIDER_PARTIAL_DATA",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -179,7 +179,7 @@
       "earth": 25,
       "metal": 15,
       "water": 19,
-      "signals": "WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -202,7 +202,7 @@
       "earth": 40,
       "metal": 10,
       "water": 10,
-      "signals": "EARTH_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "EARTH_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -225,7 +225,7 @@
       "earth": 10,
       "metal": 0,
       "water": 65,
-      "signals": "WATER_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WATER_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -248,7 +248,7 @@
       "earth": 10,
       "metal": 50,
       "water": 0,
-      "signals": "METAL_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "METAL_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "PROVIDER_PARTIAL_DATA",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -271,7 +271,7 @@
       "earth": 15,
       "metal": 50,
       "water": 10,
-      "signals": "METAL_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "METAL_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -294,7 +294,7 @@
       "earth": 10,
       "metal": 10,
       "water": 31,
-      "signals": "WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -317,7 +317,7 @@
       "earth": 19,
       "metal": 15,
       "water": 32,
-      "signals": "WATER_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WATER_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -340,7 +340,7 @@
       "earth": 25,
       "metal": 10,
       "water": 10,
-      "signals": "WOOD_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WOOD_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -363,7 +363,7 @@
       "earth": 50,
       "metal": 15,
       "water": 0,
-      "signals": "EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "PROVIDER_PARTIAL_DATA",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -386,7 +386,7 @@
       "earth": 49,
       "metal": 0,
       "water": 10,
-      "signals": "EARTH_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "EARTH_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -409,7 +409,7 @@
       "earth": 0,
       "metal": 29,
       "water": 25,
-      "signals": "WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -432,7 +432,7 @@
       "earth": 19,
       "metal": 15,
       "water": 19,
-      "signals": "FIRE_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "FIRE_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -455,7 +455,7 @@
       "earth": 19,
       "metal": 25,
       "water": 31,
-      "signals": "WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "PROVIDER_PARTIAL_DATA",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -478,7 +478,7 @@
       "earth": 10,
       "metal": 0,
       "water": 40,
-      "signals": "WATER_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WATER_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -501,7 +501,7 @@
       "earth": 19,
       "metal": 25,
       "water": 31,
-      "signals": "WATER_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WATER_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -524,7 +524,7 @@
       "earth": 30,
       "metal": 10,
       "water": 10,
-      "signals": "EARTH_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "EARTH_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -547,7 +547,7 @@
       "earth": 41,
       "metal": 15,
       "water": 0,
-      "signals": "EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "PROVIDER_PARTIAL_DATA",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -570,7 +570,7 @@
       "earth": 15,
       "metal": 10,
       "water": 0,
-      "signals": "WOOD_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WOOD_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -593,7 +593,7 @@
       "earth": 29,
       "metal": 10,
       "water": 31,
-      "signals": "WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -616,7 +616,7 @@
       "earth": 19,
       "metal": 31,
       "water": 10,
-      "signals": "METAL_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "METAL_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -639,7 +639,7 @@
       "earth": 60,
       "metal": 10,
       "water": 0,
-      "signals": "EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -662,7 +662,7 @@
       "earth": 19,
       "metal": 0,
       "water": 15,
-      "signals": "FIRE_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "FIRE_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "PROVIDER_PARTIAL_DATA",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -685,7 +685,7 @@
       "earth": 19,
       "metal": 25,
       "water": 10,
-      "signals": "WOOD_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WOOD_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -708,7 +708,7 @@
       "earth": 15,
       "metal": 25,
       "water": 31,
-      "signals": "WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -731,7 +731,7 @@
       "earth": 31,
       "metal": 35,
       "water": 0,
-      "signals": "METAL_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "METAL_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "PROVIDER_PARTIAL_DATA",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -754,7 +754,7 @@
       "earth": 10,
       "metal": 25,
       "water": 15,
-      "signals": "FIRE_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "FIRE_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -777,7 +777,7 @@
       "earth": 15,
       "metal": 15,
       "water": 30,
-      "signals": "WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -800,7 +800,7 @@
       "earth": 19,
       "metal": 0,
       "water": 31,
-      "signals": "WOOD_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "WOOD_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -823,7 +823,7 @@
       "earth": 10,
       "metal": 15,
       "water": 0,
-      "signals": "FIRE_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "FIRE_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "PROVIDER_PARTIAL_DATA",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -846,7 +846,7 @@
       "earth": 35,
       "metal": 10,
       "water": 0,
-      "signals": "FIRE_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "FIRE_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -869,7 +869,7 @@
       "earth": 50,
       "metal": 25,
       "water": 25,
-      "signals": "EARTH_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "EARTH_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -892,7 +892,7 @@
       "earth": 10,
       "metal": 0,
       "water": 31,
-      "signals": "FIRE_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "FIRE_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "",
       "notes": "lunar-python measured",
       "review_status": "measured"
@@ -915,7 +915,7 @@
       "earth": 40,
       "metal": 25,
       "water": 0,
-      "signals": "EARTH_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",
+      "signals": "EARTH_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED, RULE_v1-current",
       "warnings": "PROVIDER_PARTIAL_DATA",
       "notes": "lunar-python measured",
       "review_status": "measured"
