@@ -1,33 +1,79 @@
-import type { SajuEngine } from "./types";
-import { mockEngine } from "./mockEngine";
+import type { PairInput, SajuEngine } from "./types";
+import { mockEngine, buildProfileFromFiveElements } from "./mockEngine";
+import { createHttpProviderAdapter } from "./providerAdapter";
+import { mapProviderCompatibilityToScore, mapProviderSajuResponseToProfile } from "./providerMapping";
+import type { UserProfileInput } from "../../types/saju";
+import type { CalendarType, ProviderPersonInput } from "./provider-contract";
 
-/**
- * 실제 명리 엔진 연동 전 인터페이스/흐름 검증용 스텁.
- * - 현재는 UI/호출부를 깨지 않도록 mock 엔진으로 폴백
- * - 추후 이 파일만 교체하면 실엔진 전환 가능하도록 분리
- */
+const adapter = createHttpProviderAdapter();
+
+function normalizeErrorToWarning(error: unknown): string {
+  if (!(error instanceof Error)) return "PROVIDER_UNAVAILABLE";
+  if (error.message.includes("PROVIDER_TIMEOUT") || error.message.includes("UPSTREAM_TIMEOUT")) return "PROVIDER_TIMEOUT";
+  if (error.message.includes("INVALID_INPUT") || error.message.includes("UNSUPPORTED_")) return "PROVIDER_BAD_RESPONSE";
+  return "PROVIDER_UNAVAILABLE";
+}
+
+function toProviderPerson(input: UserProfileInput | PairInput): ProviderPersonInput {
+  return {
+    name: "name" in input ? input.name : undefined,
+    birthDate: input.birthDate,
+    birthTime: input.birthTime || "12:00",
+    birthTimeKnown: !!input.birthTime,
+    gender: input.gender,
+    calendarType: "solar" as CalendarType,
+    timezone: "Asia/Seoul",
+  };
+}
+
 export const realEngineStub: SajuEngine = {
   mode: "real-stub",
-  calculateSaju(input) {
-    const fallback = mockEngine.calculateSaju(input);
-    return {
-      source: "real-stub",
-      profile: fallback.profile,
-      warnings: [
-        "REAL_ENGINE_NOT_CONNECTED",
-        "Currently falling back to mock profile output",
-      ],
-    };
+  async calculateSaju(input) {
+    const fallback = await mockEngine.calculateSaju(input);
+
+    try {
+      const raw = await adapter.calculateSaju({
+        person: toProviderPerson(input),
+        options: { includeSignals: true, includeRawPillars: true },
+      });
+
+      const mapped = mapProviderSajuResponseToProfile(raw);
+
+      return {
+        source: "real-stub",
+        profile: buildProfileFromFiveElements(mapped.fiveElements),
+        warnings: mapped.warnings,
+      };
+    } catch (error) {
+      return {
+        source: "real-stub",
+        profile: fallback.profile,
+        warnings: [normalizeErrorToWarning(error), "FALLBACK_TO_MOCK_PROFILE"],
+      };
+    }
   },
-  calculateCompatibility(me, partner) {
-    const fallback = mockEngine.calculateCompatibility(me, partner);
-    return {
-      source: "real-stub",
-      score: fallback.score,
-      warnings: [
-        "REAL_ENGINE_NOT_CONNECTED",
-        "Currently falling back to mock compatibility output",
-      ],
-    };
+  async calculateCompatibility(me, partner) {
+    const fallback = await mockEngine.calculateCompatibility(me, partner);
+
+    try {
+      const raw = await adapter.calculateCompatibility({
+        me: toProviderPerson(me),
+        partner: toProviderPerson(partner),
+        options: { includeSignals: true },
+      });
+
+      const mapped = mapProviderCompatibilityToScore(raw);
+      return {
+        source: "real-stub",
+        score: mapped.score,
+        warnings: mapped.warnings,
+      };
+    } catch (error) {
+      return {
+        source: "real-stub",
+        score: fallback.score,
+        warnings: [normalizeErrorToWarning(error), "FALLBACK_TO_MOCK_COMPATIBILITY"],
+      };
+    }
   },
 };

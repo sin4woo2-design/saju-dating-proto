@@ -1,6 +1,7 @@
 import type {
   ProviderCompatibilityRequest,
   ProviderCompatibilityResponse,
+  ProviderErrorResponse,
   ProviderSajuRequest,
   ProviderSajuResponse,
 } from "./provider-contract";
@@ -10,17 +11,51 @@ export interface ProviderAdapter {
   calculateCompatibility(request: ProviderCompatibilityRequest): Promise<ProviderCompatibilityResponse>;
 }
 
-/**
- * 실제 provider 연결 전 어댑터 자리잡기용 noop.
- * 구현 단계에서 이 함수가 실제 HTTP/SDK 어댑터를 반환하도록 교체.
- */
-export function createNoopProviderAdapter(): ProviderAdapter {
+function timeoutSignal(ms: number) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ms);
+  return { signal: controller.signal, clear: () => clearTimeout(timer) };
+}
+
+async function postJson<TResponse>(baseUrl: string, path: string, payload: unknown, timeoutMs: number): Promise<TResponse> {
+  const { signal, clear } = timeoutSignal(timeoutMs);
+
+  try {
+    const response = await fetch(`${baseUrl}${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal,
+    });
+
+    const json = (await response.json()) as TResponse | ProviderErrorResponse;
+
+    if (!response.ok) {
+      const detail = (json as ProviderErrorResponse)?.error;
+      throw new Error(detail?.code ?? `HTTP_${response.status}`);
+    }
+
+    return json as TResponse;
+  } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new Error("PROVIDER_TIMEOUT");
+    }
+    throw error;
+  } finally {
+    clear();
+  }
+}
+
+export function createHttpProviderAdapter(): ProviderAdapter {
+  const baseUrl = (import.meta.env.VITE_SAJU_PROVIDER_BASE_URL as string | undefined) ?? "http://localhost:8081";
+  const timeoutMs = Number(import.meta.env.VITE_SAJU_PROVIDER_TIMEOUT_MS ?? 1500);
+
   return {
-    async calculateSaju() {
-      throw new Error("PROVIDER_UNAVAILABLE: adapter not implemented");
+    calculateSaju(request) {
+      return postJson<ProviderSajuResponse>(baseUrl, "/saju/chart", request, timeoutMs);
     },
-    async calculateCompatibility() {
-      throw new Error("PROVIDER_UNAVAILABLE: adapter not implemented");
+    calculateCompatibility(request) {
+      return postJson<ProviderCompatibilityResponse>(baseUrl, "/saju/compatibility-signals", request, timeoutMs);
     },
   };
 }

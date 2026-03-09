@@ -1,35 +1,60 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ResultCard from "../../components/ResultCard/ResultCard";
 import PageLayout from "../../components/layout/PageLayout";
 import { elementLabels } from "../../constants/labels";
 import { useTransientMessage } from "../../hooks/useTransientMessage";
 import { calculateSaju } from "../../lib/sajuEngine";
 import { shareOrCopy } from "../../lib/share";
-import type { UserProfileInput } from "../../types/saju";
+import type { SajuProfile, UserProfileInput } from "../../types/saju";
 
 interface Props {
   me: UserProfileInput;
 }
 
 export default function MySajuPage({ me }: Props) {
-  const profile = calculateSaju(me);
+  const [profile, setProfile] = useState<SajuProfile | null>(null);
   const { message, showMessage } = useTransientMessage();
 
+  useEffect(() => {
+    let active = true;
+    calculateSaju(me)
+      .then((result) => {
+        if (active) setProfile(result);
+      })
+      .catch(() => {
+        if (active) showMessage("사주 계산에 실패했어요. 잠시 후 다시 시도해 주세요.");
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [me, showMessage]);
+
   const topSummary = useMemo(() => {
+    if (!profile) return null;
     const sorted = Object.entries(profile.fiveElements).sort((a, b) => b[1] - a[1]);
     return {
       strong: `${elementLabels[sorted[0][0]]} 강세`,
       weak: `${elementLabels[sorted[sorted.length - 1][0]]} 보완 필요`,
     };
-  }, [profile.fiveElements]);
+  }, [profile]);
 
   const handleShare = async () => {
+    if (!profile) return;
     const result = await shareOrCopy({
       title: `${me.name}님의 사주 요약`,
       text: `${profile.personalitySummary}\n연애 스타일: ${profile.loveStyle}`,
     });
     showMessage(result === "shared" ? "공유 완료!" : "복사 완료! 원하는 곳에 붙여넣어 공유해보세요.");
   };
+
+  if (!profile || !topSummary) {
+    return (
+      <PageLayout title={`${me.name}님의 사주 리포트`}>
+        <p className="subtitle">사주 데이터를 불러오는 중...</p>
+      </PageLayout>
+    );
+  }
 
   return (
     <PageLayout

@@ -16,11 +16,11 @@ export function getEngine(mode?: EngineMode): SajuEngine {
   return selected === "real-stub" ? realEngineStub : mockEngine;
 }
 
-export function calculateSajuWithEngine(input: UserProfileInput, mode?: EngineMode) {
+export async function calculateSajuWithEngine(input: UserProfileInput, mode?: EngineMode) {
   return getEngine(mode).calculateSaju(input);
 }
 
-export function calculateCompatibilityWithEngine(me: PairInput, partner: PairInput, mode?: EngineMode) {
+export async function calculateCompatibilityWithEngine(me: PairInput, partner: PairInput, mode?: EngineMode) {
   return getEngine(mode).calculateCompatibility(me, partner);
 }
 

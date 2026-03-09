@@ -16,17 +16,26 @@ export default function CompatibilityPage({ me }: Props) {
   const [birthTime, setBirthTime] = useState("");
   const [gender, setGender] = useState<Gender>("other");
   const [score, setScore] = useState<number | null>(null);
+  const [isCalculating, setIsCalculating] = useState(false);
   const { message, showMessage } = useTransientMessage();
 
   const isValid = useMemo(() => !!birthDate && !!birthTime, [birthDate, birthTime]);
 
-  const onCalculate = () => {
+  const onCalculate = async () => {
     if (!isValid) return;
-    const value = calculateCompatibility(
-      { birthDate: me.birthDate, birthTime: me.birthTime, gender: me.gender },
-      { birthDate, birthTime, gender },
-    );
-    setScore(value);
+
+    setIsCalculating(true);
+    try {
+      const value = await calculateCompatibility(
+        { birthDate: me.birthDate, birthTime: me.birthTime, gender: me.gender },
+        { birthDate, birthTime, gender },
+      );
+      setScore(value);
+    } catch {
+      showMessage("궁합 계산에 실패했어요. 잠시 후 다시 시도해 주세요.");
+    } finally {
+      setIsCalculating(false);
+    }
   };
 
   const summary = score !== null ? generateCompatibilitySummary(score) : null;
@@ -63,7 +72,9 @@ export default function CompatibilityPage({ me }: Props) {
           </select>
         </label>
 
-        <button type="button" disabled={!isValid} onClick={onCalculate}>궁합 계산하기</button>
+        <button type="button" disabled={!isValid || isCalculating} onClick={onCalculate}>
+          {isCalculating ? "계산 중..." : "궁합 계산하기"}
+        </button>
       </section>
 
       {summary && (

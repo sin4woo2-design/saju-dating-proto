@@ -39,7 +39,7 @@ export function generatePersonalitySummary(balance: FiveElementsBalance): string
   return `${strongest} 기운이 중심이라 관계에서 진정성과 몰입도가 높아요. 다만 ${weaker} 에너지가 약해 피곤할 때는 감정 표현이 줄어들 수 있어요.`;
 }
 
-function generateLoveStyle(balance: FiveElementsBalance): string {
+export function generateLoveStyle(balance: FiveElementsBalance): string {
   const fire = balance.fire;
   const water = balance.water;
 
@@ -56,7 +56,7 @@ function generateLoveStyle(balance: FiveElementsBalance): string {
   return "상대를 충분히 관찰한 뒤 안정감을 느끼면 자연스럽게 애정 표현이 커지는 타입이에요.";
 }
 
-function generateIdealTraits(balance: FiveElementsBalance): string[] {
+export function generateIdealTraits(balance: FiveElementsBalance): string[] {
   const sorted = Object.entries(balance).sort((a, b) => b[1] - a[1]);
   const main = sorted[0][0];
 
@@ -77,15 +77,18 @@ function generateIdealTraits(balance: FiveElementsBalance): string[] {
   return [...common, "기준이 분명하고 약속을 잘 지키는 사람"];
 }
 
-function calculateSajuProfile(input: UserProfileInput): SajuProfile {
-  const seed = seeded(input);
-  const fiveElements = getFiveElementsBalance(seed);
+export function buildProfileFromFiveElements(fiveElements: FiveElementsBalance): SajuProfile {
   return {
     fiveElements,
     personalitySummary: generatePersonalitySummary(fiveElements),
     loveStyle: generateLoveStyle(fiveElements),
     idealTraits: generateIdealTraits(fiveElements),
   };
+}
+
+function calculateSajuProfile(input: UserProfileInput): SajuProfile {
+  const seed = seeded(input);
+  return buildProfileFromFiveElements(getFiveElementsBalance(seed));
 }
 
 function calculateCompatibilityScore(me: PairInput, partner: PairInput): number {
@@ -99,13 +102,13 @@ function calculateCompatibilityScore(me: PairInput, partner: PairInput): number 
 
 export const mockEngine: SajuEngine = {
   mode: "mock",
-  calculateSaju(input) {
+  async calculateSaju(input) {
     return {
       source: "mock",
       profile: calculateSajuProfile(input),
     };
   },
-  calculateCompatibility(me, partner) {
+  async calculateCompatibility(me, partner) {
     return {
       source: "mock",
       score: calculateCompatibilityScore(me, partner),

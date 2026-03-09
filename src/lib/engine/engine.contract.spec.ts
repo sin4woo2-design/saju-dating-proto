@@ -43,15 +43,15 @@ const sampleProviderComp: ProviderCompatibilityResponse = {
   },
 };
 
-export function draftContractCases() {
+export async function draftContractCases() {
   const mock = getEngine("mock");
   const stub = getEngine("real-stub");
 
-  const mockSaju = mock.calculateSaju(sampleMe);
-  const stubSaju = stub.calculateSaju(sampleMe);
+  const mockSaju = await mock.calculateSaju(sampleMe);
+  const stubSaju = await stub.calculateSaju(sampleMe);
 
-  const mockComp = mock.calculateCompatibility(sampleMe, samplePartner);
-  const stubComp = stub.calculateCompatibility(sampleMe, samplePartner);
+  const mockComp = await mock.calculateCompatibility(sampleMe, samplePartner);
+  const stubComp = await stub.calculateCompatibility(sampleMe, samplePartner);
 
   const mappedSaju = mapProviderSajuResponseToProfile(sampleProviderSaju);
   const mappedComp = mapProviderCompatibilityToScore(sampleProviderComp);
@@ -65,10 +65,8 @@ export function draftContractCases() {
           mockSaju.source === "mock",
       },
       {
-        name: "real-stub includes warning",
-        pass:
-          stubSaju.source === "real-stub" &&
-          !!stubSaju.warnings?.includes("REAL_ENGINE_NOT_CONNECTED"),
+        name: "real-stub provides source",
+        pass: stubSaju.source === "real-stub",
       },
       {
         name: "compatibility score is bounded",

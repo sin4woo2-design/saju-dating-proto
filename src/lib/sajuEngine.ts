@@ -6,8 +6,9 @@ import { getFiveElementsBalance, generatePersonalitySummary } from "./engine/moc
  * Legacy export 유지: 기존 페이지 코드 호환용.
  * 실제 값은 엔진 라우터(engine/index.ts)를 통해 공급된다.
  */
-export function calculateSaju(input: UserProfileInput): SajuProfile {
-  return calculateSajuWithEngine(input).profile;
+export async function calculateSaju(input: UserProfileInput): Promise<SajuProfile> {
+  const result = await calculateSajuWithEngine(input);
+  return result.profile;
 }
 
 /**

@@ -11,8 +11,9 @@ interface PairInput {
  * Legacy export 유지: 기존 페이지 코드 호환용.
  * 실제 점수 계산 공급자는 엔진 라우터에서 선택된다.
  */
-export function calculateCompatibility(me: PairInput, partner: PairInput): number {
-  return calculateCompatibilityWithEngine(me, partner).score;
+export async function calculateCompatibility(me: PairInput, partner: PairInput): Promise<number> {
+  const result = await calculateCompatibilityWithEngine(me, partner);
+  return result.score;
 }
 
 export function generateCompatibilitySummary(score: number): { strengths: string[]; cautions: string[] } {

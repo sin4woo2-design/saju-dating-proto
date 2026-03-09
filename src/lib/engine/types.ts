@@ -22,6 +22,6 @@ export interface SajuResult {
 
 export interface SajuEngine {
   mode: EngineMode;
-  calculateSaju(input: UserProfileInput): SajuResult;
-  calculateCompatibility(me: PairInput, partner: PairInput): CompatibilityResult;
+  calculateSaju(input: UserProfileInput): Promise<SajuResult>;
+  calculateCompatibility(me: PairInput, partner: PairInput): Promise<CompatibilityResult>;
 }
