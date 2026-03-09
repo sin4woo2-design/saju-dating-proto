@@ -120,3 +120,10 @@ ProviderCompatibilityResponse {
 - warnings 정책이 케이스별 정확히 부여됨
 - 불완전 데이터 보간 시 타입 안정성 유지
 - mock 모드 회귀 없음
+
+## 8. Provider 후보/추천
+- 후보 비교 문서: `docs/saju-provider-candidates.md`
+- 1차 추천: `lunar-python + 자체 API 래핑`
+- 보완 필요 정책:
+  - timezone 기본값을 `Asia/Seoul`로 확정
+  - provider 비점수 응답 시 앱 내부 score 파생 규칙 명시
