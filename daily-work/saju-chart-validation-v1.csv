@@ -1,9 +1,9 @@
 sample_id,name,birth_date,birth_time,birth_time_known,gender,calendar_type,timezone,year_pillar,month_pillar,day_pillar,hour_pillar,wood,fire,earth,metal,water,signals,warnings,notes,review_status
-S01,Ari,1991-10-21,08:30,true,male,solar,Asia/Seoul,,,,,,,,,,,"lunar-python runtime not executed in this environment",blocked
-S02,Bora,1993-02-11,12:00,false,female,solar,Asia/Seoul,,,,,,,,,,,"birthTimeKnown=false case",blocked
-S03,Cyan,1988-07-03,23:40,true,male,solar,Asia/Seoul,,,,,,,,,,,"late-night hour case",blocked
-S04,Dami,2000-01-01,00:20,true,female,solar,Asia/Seoul,,,,,,,,,,,"boundary date/time case",blocked
-S05,Eun,1985-12-31,11:10,true,female,solar,UTC,,,,,,,,,,,"UTC timezone case",blocked
-S06,Fio,1979-05-18,15:55,true,other,solar,Asia/Seoul,,,,,,,,,,,"gender other case",blocked
-S07,Gyu,1999-09-09,12:00,false,male,solar,Asia/Seoul,,,,,,,,,,,"unknown birth time case",blocked
-S08,Hana,1995-04-27,06:05,true,female,solar,Asia/Seoul,,,,,,,,,,,"morning case",blocked
+S01,Ari,1991-10-21,08:30,True,male,solar,Asia/Seoul,辛未,戊戌,甲子,戊辰,15,0,60,15,10,"EARTH_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
+S02,Bora,1993-02-11,12:00,False,female,solar,Asia/Seoul,癸酉,甲寅,癸亥,戊午,25,10,15,10,40,"WATER_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
+S03,Cyan,1988-07-03,23:40,True,male,solar,Asia/Seoul,戊辰,戊午,己未,丙子,0,25,65,0,10,"EARTH_STRONG, WOOD_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
+S04,Dami,2000-01-01,00:20,True,female,solar,Asia/Seoul,己卯,丙子,戊午,壬子,10,25,31,0,34,"WATER_STRONG, METAL_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
+S05,Eun,1985-12-31,11:10,True,female,solar,UTC,乙丑,戊子,甲辰,庚午,31,10,34,15,10,"EARTH_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
+S06,Fio,1979-05-18,15:55,True,other,solar,Asia/Seoul,己未,己巳,乙酉,甲申,31,10,40,19,0,"EARTH_STRONG, WATER_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured
+S07,Gyu,1999-09-09,12:00,False,male,solar,Asia/Seoul,己卯,癸酉,甲子,庚午,25,10,15,25,25,"WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",PROVIDER_PARTIAL_DATA,lunar-python measured,measured
+S08,Hana,1995-04-27,06:05,True,female,solar,Asia/Seoul,乙亥,庚辰,戊子,乙卯,41,0,25,15,19,"WOOD_STRONG, FIRE_WEAK, LUNAR_PILLARS_APPLIED",,lunar-python measured,measured

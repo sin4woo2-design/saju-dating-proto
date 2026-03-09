@@ -55,8 +55,8 @@ def run() -> tuple[list[dict], dict]:
             "water": five.get("water", 0),
             "signals": ", ".join(signals),
             "warnings": ", ".join(warnings),
-            "notes": "", 
-            "review_status": "pending",
+            "notes": "lunar-python measured",
+            "review_status": "measured",
         }
         rows.append(row)
 
@@ -65,7 +65,7 @@ def run() -> tuple[list[dict], dict]:
 
 
 def main():
-    root = Path(__file__).resolve().parents[3]
+    root = Path(__file__).resolve().parents[4]
     out_dir = root / "daily-work"
     out_dir.mkdir(parents=True, exist_ok=True)
 
