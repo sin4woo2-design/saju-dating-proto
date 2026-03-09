@@ -25,11 +25,11 @@ npm run build
 
 ## Provider 연동 환경변수 (fake python provider)
 ```bash
-VITE_SAJU_ENGINE_MODE=real-stub
+VITE_SAJU_ENGINE_MODE=real-provider
 VITE_SAJU_PROVIDER_BASE_URL=http://localhost:8081
 VITE_SAJU_PROVIDER_TIMEOUT_MS=1500
 ```
-- `real-stub` 모드에서 HTTP provider 호출 후 실패 시 mock fallback 됩니다.
+- `real-provider` 모드에서 HTTP provider 호출 후 실패 시 mock fallback 됩니다.
 
 ## 현재 MVP 기능 범위
 - 온보딩 입력 (이름/생년월일/출생시간/성별)

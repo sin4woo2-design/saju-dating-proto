@@ -110,7 +110,7 @@ ProviderCompatibilityResponse {
 
 ## 6. 마이그레이션 TODO (mock -> real)
 1. `providerAdapter.ts`에 실제 API 호출 구현
-2. `realEngineStub.ts`를 `realEngineProvider.ts`로 교체
+2. `realProviderEngine.ts`를 `realProviderEngine.ts`로 교체
 3. 엔진 모드 확장(`real-provider`) 및 env 분기 추가
 4. 관측성 추가(requestId, latency, fallback rate)
 5. 계약 테스트 + 통합 테스트 통과 후 점진 rollout

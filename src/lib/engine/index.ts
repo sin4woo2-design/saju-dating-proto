@@ -1,19 +1,19 @@
 import { mockEngine } from "./mockEngine";
-import { realEngineStub } from "./realEngineStub";
+import { realProviderEngine } from "./realProviderEngine";
 import type { EngineMode, PairInput, SajuEngine } from "./types";
 import type { UserProfileInput } from "../../types/saju";
 
 const DEFAULT_MODE: EngineMode = "mock";
 
 function normalizeMode(value: string | undefined): EngineMode {
-  if (value === "real-stub") return "real-stub";
+  if (value === "real-provider" || value === "real-stub") return "real-provider";
   return DEFAULT_MODE;
 }
 
 export function getEngine(mode?: EngineMode): SajuEngine {
   const envMode = normalizeMode(import.meta.env.VITE_SAJU_ENGINE_MODE as string | undefined);
   const selected = mode ?? envMode;
-  return selected === "real-stub" ? realEngineStub : mockEngine;
+  return selected === "real-provider" ? realProviderEngine : mockEngine;
 }
 
 export async function calculateSajuWithEngine(input: UserProfileInput, mode?: EngineMode) {

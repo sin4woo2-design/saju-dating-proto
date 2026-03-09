@@ -45,7 +45,7 @@ const sampleProviderComp: ProviderCompatibilityResponse = {
 
 export async function draftContractCases() {
   const mock = getEngine("mock");
-  const stub = getEngine("real-stub");
+  const stub = getEngine("real-provider");
 
   const mockSaju = await mock.calculateSaju(sampleMe);
   const stubSaju = await stub.calculateSaju(sampleMe);
@@ -65,8 +65,8 @@ export async function draftContractCases() {
           mockSaju.source === "mock",
       },
       {
-        name: "real-stub provides source",
-        pass: stubSaju.source === "real-stub",
+        name: "real-provider provides source",
+        pass: stubSaju.source === "real-provider",
       },
       {
         name: "compatibility score is bounded",

@@ -153,6 +153,38 @@ button:disabled {
   grid-template-columns: repeat(2, 1fr);
 }
 
+.providerStatusRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sourceBadge,
+.warnBadge {
+  font-size: 11px;
+  border-radius: 999px;
+  padding: 5px 9px;
+  border: 1px solid transparent;
+}
+
+.sourceBadge.ok {
+  background: #173529;
+  border-color: #2c8f67;
+  color: #c7ffe8;
+}
+
+.sourceBadge.fallback {
+  background: #3b2a1b;
+  border-color: #a57435;
+  color: #ffe0b8;
+}
+
+.warnBadge {
+  background: #2f2347;
+  border-color: #7f5ab8;
+  color: #e5d6ff;
+}
+
 .summaryChips {
   display: flex;
   gap: 8px;

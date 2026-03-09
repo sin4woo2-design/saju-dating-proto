@@ -7,10 +7,10 @@ interface PairInput {
   gender: Gender;
 }
 
-/**
- * Legacy export 유지: 기존 페이지 코드 호환용.
- * 실제 점수 계산 공급자는 엔진 라우터에서 선택된다.
- */
+export async function calculateCompatibilityResult(me: PairInput, partner: PairInput) {
+  return calculateCompatibilityWithEngine(me, partner);
+}
+
 export async function calculateCompatibility(me: PairInput, partner: PairInput): Promise<number> {
   const result = await calculateCompatibilityWithEngine(me, partner);
   return result.score;

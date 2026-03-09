@@ -1,6 +1,6 @@
 import type { SajuProfile, UserProfileInput, Gender } from "../../types/saju";
 
-export type EngineMode = "mock" | "real-stub";
+export type EngineMode = "mock" | "real-provider";
 
 export interface PairInput {
   birthDate: string;
@@ -11,12 +11,14 @@ export interface PairInput {
 export interface CompatibilityResult {
   score: number;
   source: EngineMode;
+  providerState: "provider" | "mock-fallback";
   warnings?: string[];
 }
 
 export interface SajuResult {
   profile: SajuProfile;
   source: EngineMode;
+  providerState: "provider" | "mock-fallback";
   warnings?: string[];
 }
 

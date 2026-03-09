@@ -23,14 +23,14 @@
 추가된 레이어:
 - `src/lib/engine/types.ts`
   - `SajuEngine` 인터페이스 정의
-  - `EngineMode = "mock" | "real-stub"`
+  - `EngineMode = "mock" | "real-provider"`
   - `SajuResult`, `CompatibilityResult` 표준 출력
 - `src/lib/engine/index.ts`
   - 엔진 선택 라우터 (`getEngine`)
   - `VITE_SAJU_ENGINE_MODE` 환경변수 기반 선택
 - `src/lib/engine/mockEngine.ts`
   - 기존 mock 구현을 provider 형태로 이관
-- `src/lib/engine/realEngineStub.ts`
+- `src/lib/engine/realProviderEngine.ts`
   - 실엔진 미연동 상태를 명시하는 스텁 + mock 폴백
 
 호환성 유지:
@@ -87,9 +87,9 @@
 4. `calculateCompatibility` 점수는 0~100(또는 정의 범위) 보장
 
 ## 실엔진 전환 대비 계약(Contract) 테스트
-1. mock vs real-stub 모두 `SajuEngine` 인터페이스 만족
+1. mock vs real-provider 모두 `SajuEngine` 인터페이스 만족
 2. `source` 필드가 모드에 맞게 반환
-3. real-stub는 경고 코드(`REAL_ENGINE_NOT_CONNECTED`) 포함
+3. real-provider는 경고 코드(`REAL_ENGINE_NOT_CONNECTED`) 포함
 4. 기존 페이지(MySaju/Compatibility)가 provider 변경 후도 렌더 실패 없음
 
 ## 도메인 타당성 테스트(후속)
@@ -104,6 +104,6 @@
 
 - 기본 모드: `mock`
 - 스텁 강제 확인이 필요하면 `.env`에
-  - `VITE_SAJU_ENGINE_MODE=real-stub`
-- 이후 실엔진 붙일 때는 `realEngineStub.ts`를 provider 기반 엔진으로 교체
+  - `VITE_SAJU_ENGINE_MODE=real-provider`
+- 이후 실엔진 붙일 때는 `realProviderEngine.ts`를 provider 기반 엔진으로 교체
 - 상세 provider 계약/실패정책은 `docs/saju-real-provider-spec.md` 기준으로 진행

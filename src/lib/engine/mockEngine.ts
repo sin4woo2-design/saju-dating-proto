@@ -105,12 +105,14 @@ export const mockEngine: SajuEngine = {
   async calculateSaju(input) {
     return {
       source: "mock",
+      providerState: "mock-fallback",
       profile: calculateSajuProfile(input),
     };
   },
   async calculateCompatibility(me, partner) {
     return {
       source: "mock",
+      providerState: "mock-fallback",
       score: calculateCompatibilityScore(me, partner),
     };
   },

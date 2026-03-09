@@ -26,8 +26,8 @@ function toProviderPerson(input: UserProfileInput | PairInput): ProviderPersonIn
   };
 }
 
-export const realEngineStub: SajuEngine = {
-  mode: "real-stub",
+export const realProviderEngine: SajuEngine = {
+  mode: "real-provider",
   async calculateSaju(input) {
     const fallback = await mockEngine.calculateSaju(input);
 
@@ -40,13 +40,15 @@ export const realEngineStub: SajuEngine = {
       const mapped = mapProviderSajuResponseToProfile(raw);
 
       return {
-        source: "real-stub",
+        source: "real-provider",
+        providerState: "provider",
         profile: buildProfileFromFiveElements(mapped.fiveElements),
         warnings: mapped.warnings,
       };
     } catch (error) {
       return {
-        source: "real-stub",
+        source: "real-provider",
+        providerState: "mock-fallback",
         profile: fallback.profile,
         warnings: [normalizeErrorToWarning(error), "FALLBACK_TO_MOCK_PROFILE"],
       };
@@ -64,13 +66,15 @@ export const realEngineStub: SajuEngine = {
 
       const mapped = mapProviderCompatibilityToScore(raw);
       return {
-        source: "real-stub",
+        source: "real-provider",
+        providerState: "provider",
         score: mapped.score,
         warnings: mapped.warnings,
       };
     } catch (error) {
       return {
-        source: "real-stub",
+        source: "real-provider",
+        providerState: "mock-fallback",
         score: fallback.score,
         warnings: [normalizeErrorToWarning(error), "FALLBACK_TO_MOCK_COMPATIBILITY"],
       };

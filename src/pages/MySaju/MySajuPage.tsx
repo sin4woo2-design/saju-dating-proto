@@ -3,7 +3,7 @@ import ResultCard from "../../components/ResultCard/ResultCard";
 import PageLayout from "../../components/layout/PageLayout";
 import { elementLabels } from "../../constants/labels";
 import { useTransientMessage } from "../../hooks/useTransientMessage";
-import { calculateSaju } from "../../lib/sajuEngine";
+import { calculateSajuResult } from "../../lib/sajuEngine";
 import { shareOrCopy } from "../../lib/share";
 import type { SajuProfile, UserProfileInput } from "../../types/saju";
 
@@ -11,15 +11,27 @@ interface Props {
   me: UserProfileInput;
 }
 
+function warningLabel(code: string) {
+  if (code.includes("PARTIAL")) return "부분 데이터";
+  if (code.includes("TIMEOUT")) return "타임아웃";
+  if (code.includes("UNAVAILABLE")) return "연결 불가";
+  return code;
+}
+
 export default function MySajuPage({ me }: Props) {
   const [profile, setProfile] = useState<SajuProfile | null>(null);
+  const [providerState, setProviderState] = useState<"provider" | "mock-fallback">("mock-fallback");
+  const [warnings, setWarnings] = useState<string[]>([]);
   const { message, showMessage } = useTransientMessage();
 
   useEffect(() => {
     let active = true;
-    calculateSaju(me)
+    calculateSajuResult(me)
       .then((result) => {
-        if (active) setProfile(result);
+        if (!active) return;
+        setProfile(result.profile);
+        setProviderState(result.providerState);
+        setWarnings(result.warnings ?? []);
       })
       .catch(() => {
         if (active) showMessage("사주 계산에 실패했어요. 잠시 후 다시 시도해 주세요.");
@@ -61,6 +73,15 @@ export default function MySajuPage({ me }: Props) {
       title={`${me.name}님의 사주 리포트`}
       action={<button type="button" className="ghostBtn" onClick={handleShare}>공유</button>}
     >
+      <section className="providerStatusRow">
+        <span className={`sourceBadge ${providerState === "provider" ? "ok" : "fallback"}`}>
+          {providerState === "provider" ? "provider" : "mock fallback"}
+        </span>
+        {warnings.slice(0, 2).map((w) => (
+          <span key={w} className="warnBadge">{warningLabel(w)}</span>
+        ))}
+      </section>
+
       <section className="summaryChips">
         <span>✨ {topSummary.strong}</span>
         <span>🛠️ {topSummary.weak}</span>

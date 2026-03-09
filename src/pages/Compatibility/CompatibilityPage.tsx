@@ -3,7 +3,7 @@ import ResultCard from "../../components/ResultCard/ResultCard";
 import PageLayout from "../../components/layout/PageLayout";
 import { genderLabels } from "../../constants/labels";
 import { useTransientMessage } from "../../hooks/useTransientMessage";
-import { calculateCompatibility, generateCompatibilitySummary } from "../../lib/compatibility";
+import { calculateCompatibilityResult, generateCompatibilitySummary } from "../../lib/compatibility";
 import { shareOrCopy } from "../../lib/share";
 import type { Gender, UserProfileInput } from "../../types/saju";
 
@@ -11,11 +11,20 @@ interface Props {
   me: UserProfileInput;
 }
 
+function warningLabel(code: string) {
+  if (code.includes("PARTIAL")) return "부분 데이터";
+  if (code.includes("TIMEOUT")) return "타임아웃";
+  if (code.includes("UNAVAILABLE")) return "연결 불가";
+  return code;
+}
+
 export default function CompatibilityPage({ me }: Props) {
   const [birthDate, setBirthDate] = useState("");
   const [birthTime, setBirthTime] = useState("");
   const [gender, setGender] = useState<Gender>("other");
   const [score, setScore] = useState<number | null>(null);
+  const [providerState, setProviderState] = useState<"provider" | "mock-fallback">("mock-fallback");
+  const [warnings, setWarnings] = useState<string[]>([]);
   const [isCalculating, setIsCalculating] = useState(false);
   const { message, showMessage } = useTransientMessage();
 
@@ -26,11 +35,13 @@ export default function CompatibilityPage({ me }: Props) {
 
     setIsCalculating(true);
     try {
-      const value = await calculateCompatibility(
+      const result = await calculateCompatibilityResult(
         { birthDate: me.birthDate, birthTime: me.birthTime, gender: me.gender },
         { birthDate, birthTime, gender },
       );
-      setScore(value);
+      setScore(result.score);
+      setProviderState(result.providerState);
+      setWarnings(result.warnings ?? []);
     } catch {
       showMessage("궁합 계산에 실패했어요. 잠시 후 다시 시도해 주세요.");
     } finally {
@@ -79,6 +90,15 @@ export default function CompatibilityPage({ me }: Props) {
 
       {summary && (
         <>
+          <section className="providerStatusRow">
+            <span className={`sourceBadge ${providerState === "provider" ? "ok" : "fallback"}`}>
+              {providerState === "provider" ? "provider" : "mock fallback"}
+            </span>
+            {warnings.slice(0, 2).map((w) => (
+              <span key={w} className="warnBadge">{warningLabel(w)}</span>
+            ))}
+          </section>
+
           <section className="scoreBadgeWrap">
             <div className="scoreBadge">
               <strong>{score}</strong>
