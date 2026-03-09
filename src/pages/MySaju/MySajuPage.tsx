@@ -40,6 +40,17 @@ function statusText(providerState: "provider" | "mock-fallback", warnings: strin
   } as const;
 }
 
+function buildCautionPatterns(fiveElements: SajuProfile["fiveElements"]) {
+  const sorted = Object.entries(fiveElements).sort((a, b) => b[1] - a[1]);
+  const weak = sorted[sorted.length - 1][0];
+
+  if (weak === "fire") return ["감정 표현이 늦어 오해가 생길 수 있어요.", "관심 표현을 문장으로 자주 확인해보세요."];
+  if (weak === "water") return ["감정이 격해질 때 회복 시간이 오래 걸릴 수 있어요.", "갈등 시 대화 재개 시간을 미리 약속하면 좋아요."];
+  if (weak === "earth") return ["관계 리듬이 불규칙해지면 피로가 쌓일 수 있어요.", "연락/만남 주기를 최소 기준으로 정해두세요."];
+  if (weak === "metal") return ["기준이 흔들리면 작은 실망이 누적될 수 있어요.", "경계선과 우선순위를 초반에 명확히 합의하세요."];
+  return ["성장 속도 차이로 템포가 어긋날 수 있어요.", "서로의 목표를 월 단위로 체크하면 안정적이에요."];
+}
+
 export default function MySajuPage({ me }: Props) {
   const [profile, setProfile] = useState<SajuProfile | null>(null);
   const [providerState, setProviderState] = useState<"provider" | "mock-fallback">("mock-fallback");
@@ -75,6 +86,11 @@ export default function MySajuPage({ me }: Props) {
 
   const state = statusText(providerState, warnings);
 
+  const cautionPatterns = useMemo(
+    () => (profile ? buildCautionPatterns(profile.fiveElements) : []),
+    [profile]
+  );
+
   const handleShare = async () => {
     if (!profile) return;
     const result = await shareOrCopy({
@@ -109,10 +125,11 @@ export default function MySajuPage({ me }: Props) {
         <p className="statusHint">{state.detail}</p>
       </section>
 
-      <section className="summaryChips">
-        <span>✨ {topSummary.strong}</span>
-        <span>🛠️ {topSummary.weak}</span>
-      </section>
+      <ResultCard
+        title="핵심 요약"
+        tone="highlight"
+        rows={[`강세: ${topSummary.strong}`, `보완: ${topSummary.weak}`, "전체적으로 관계 몰입도는 높고, 감정 리듬 조율이 핵심이에요."]}
+      />
 
       <section className="elementCard">
         {Object.entries(profile.fiveElements).map(([key, value]) => (
@@ -124,9 +141,10 @@ export default function MySajuPage({ me }: Props) {
         ))}
       </section>
 
-      <ResultCard title="핵심 성향" rows={[profile.personalitySummary]} tone="highlight" />
+      <ResultCard title="성격 · 기질" rows={[profile.personalitySummary]} />
       <ResultCard title="연애 스타일" rows={[profile.loveStyle]} />
-      <ResultCard title="잘 맞는 상대 특징" rows={profile.idealTraits} />
+      <ResultCard title="잘 맞는 상대" rows={profile.idealTraits} />
+      <ResultCard title="주의할 관계 패턴" rows={cautionPatterns} />
       {message ? <p className="toastText">{message}</p> : null}
     </PageLayout>
   );
