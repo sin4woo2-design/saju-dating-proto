@@ -4,6 +4,7 @@ import PageLayout from "../../components/layout/PageLayout";
 import { genderLabels } from "../../constants/labels";
 import { useTransientMessage } from "../../hooks/useTransientMessage";
 import { calculateCompatibilityResult, generateCompatibilitySummary } from "../../lib/compatibility";
+import { buildCompatibilityNarratives } from "../../lib/resultNarratives";
 import { shareOrCopy } from "../../lib/share";
 import type { Gender, UserProfileInput } from "../../types/saju";
 
@@ -40,26 +41,6 @@ function statusText(providerState: "provider" | "mock-fallback", warnings: strin
   } as const;
 }
 
-function splitLayers(score: number) {
-  const talk = Math.max(45, Math.min(98, score + 4));
-  const emotion = Math.max(40, Math.min(98, score - 3));
-  const lifestyle = Math.max(42, Math.min(98, score + (score > 82 ? -4 : 2)));
-
-  return {
-    talk,
-    emotion,
-    lifestyle,
-    conflict: [
-      talk < 70 ? "대화 속도 차이로 오해가 생길 수 있어요." : "결론 합의 전에 감정 확인 단계를 넣으면 더 좋아요.",
-      lifestyle < 72 ? "연락 빈도/약속 스타일 기준을 먼저 맞추는 게 중요해요." : "바쁠 때의 최소 소통 규칙을 정해두면 안정적이에요.",
-    ],
-    tips: [
-      "주 1회 20분 대화 리셋 타임을 고정해보세요.",
-      "감정이 올라온 날은 사실/해석/요청 순서로 말해보세요.",
-    ],
-  };
-}
-
 export default function CompatibilityPage({ me }: Props) {
   const [birthDate, setBirthDate] = useState("");
   const [birthTime, setBirthTime] = useState("");
@@ -93,7 +74,7 @@ export default function CompatibilityPage({ me }: Props) {
 
   const summary = score !== null ? generateCompatibilitySummary(score) : null;
   const state = statusText(providerState, warnings);
-  const layers = score !== null ? splitLayers(score) : null;
+  const layers = score !== null ? buildCompatibilityNarratives(score) : null;
 
   const handleShare = async () => {
     if (score === null) return;
@@ -154,7 +135,8 @@ export default function CompatibilityPage({ me }: Props) {
             <p>전체 궁합 점수</p>
           </section>
 
-          <ResultCard title="대화 궁합" tone="highlight" rows={[`대화 궁합 ${layers.talk}점`, "의견 충돌 시 확인 질문을 먼저 하면 안정적으로 맞춰져요."]} />
+          <ResultCard title="왜 이런 궁합이 나왔을까" rows={layers.explain} />
+          <ResultCard title="대화 궁합" tone="highlight" rows={[`대화 궁합 ${layers.talk}점`, "질문-확인-합의 순서로 대화하면 강점이 더 살아나요."]} />
           <ResultCard title="감정 궁합" rows={[`감정 궁합 ${layers.emotion}점`, "감정 표현 온도차를 맞추는 것이 핵심 포인트예요."]} />
           <ResultCard title="생활 궁합" rows={[`생활 궁합 ${layers.lifestyle}점`, "연락 리듬/생활 루틴 합의가 장기 안정감을 높여요."]} />
           <ResultCard title="갈등 포인트" rows={layers.conflict} />
