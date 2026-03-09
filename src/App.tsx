@@ -20,6 +20,18 @@ export default function App() {
       <div className="appShell">
         <header className="topBar">
           <h1>Saju Dating Proto</h1>
+          {me ? (
+            <button
+              type="button"
+              className="resetBtn"
+              onClick={() => {
+                if (!confirm("입력 정보를 초기화하고 다시 온보딩할까요?")) return;
+                setMe(null);
+              }}
+            >
+              입력 다시하기
+            </button>
+          ) : null}
         </header>
 
         <main>

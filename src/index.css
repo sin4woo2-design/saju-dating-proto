@@ -46,6 +46,10 @@ button:disabled {
 
 .topBar {
   padding-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .topBar h1 {
@@ -53,6 +57,17 @@ button:disabled {
   font-size: 20px;
   letter-spacing: 0.2px;
   color: #e1d9ff;
+}
+
+.resetBtn {
+  min-height: 34px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  background: #251f4f;
+  border-color: #5c4bc8;
+  color: #ddd5ff;
+  white-space: nowrap;
 }
 
 .pageWrap {
