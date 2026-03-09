@@ -88,10 +88,17 @@ curl -s -X POST http://localhost:8081/saju/compatibility-signals \
   - lunar-python 계산 진입, 실패 시 fake로 fallback
 
 추가 옵션
-- `CHART_RULE_VERSION=v1-current` (현행)
-- `CHART_RULE_VERSION=v2-month-branch-boost` (v2 candidate)
+- `ENGINE_VERSION=chart-engine-v0.3`
+- `CHART_RULE_VERSION=v2-month-branch-boost` (현재 기본 후보)
+- `CHART_RULE_VERSION=v1-current` (롤백 기준)
 - `CHART_RULE_VERSION=exp-v2-hidden-blend` (월지강화+지장간 약식 혼합 실험)
 - `CHART_HIDDEN_STEM_BLEND=0.5` (혼합안 가중치, 권장 0.4~0.6)
+
+`/saju/chart` 응답에는 추적 메타가 포함됩니다.
+- `meta.providerVersion`
+- `meta.engineVersion`
+- `saju.ruleVersion`
+- `saju.calculationSource`
 
 ## chart real 전환(최소 구현)
 - `CHART_ENGINE_MODE=lunar-prep`일 때 `/saju/chart`는 lunar-python 계산 경로를 우선 사용

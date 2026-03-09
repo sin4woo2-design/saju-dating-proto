@@ -1,30 +1,34 @@
-# /saju/chart 오행 집계 규칙 (현재 구현)
+# /saju/chart 오행 집계 규칙 (engine v0.3)
 
-- 대상: `backend/provider-python/app/services/lunar_chart.py`
-- 입력: lunar-python `EightChar`에서 추출한 4개 천간 + 4개 지지
+대상 코드:
+- `backend/provider-python/app/services/chart_rules.py`
+- 호출 경로: `chart_service -> lunar_chart -> score_elements`
 
-집계 규칙:
-1. 천간 4개에 가중치 `1.6` 부여
-2. 지지 4개에 가중치 `1.0` 부여
-3. 오행별 합산 후 전체 합을 100으로 정규화
-4. 반올림 오차는 최강 오행에 보정
+## ruleVersion 구조
+- `v1-current` : 기준 규칙
+  - 천간 1.6 / 지지 1.0
+- `v2-month-branch-boost` : **v2 candidate (기본 후보)**
+  - 천간 1.6 / 지지 기본 1.0 + 월지 2.0
+- `exp-v2-hidden-blend` : 실험 규칙
+  - v2 + 지장간 약식 혼합 (`CHART_HIDDEN_STEM_BLEND` 0.4~0.6 권장)
 
-신호 규칙:
-- strongest element -> `{ELEMENT}_STRONG`
-- weakest element -> `{ELEMENT}_WEAK`
-- lunar 계산 경로 사용 표시 -> `LUNAR_PILLARS_APPLIED`
-- 출생시간 미상 -> warning `PROVIDER_PARTIAL_DATA`
+## 현재 채택 상태
+- 기본 런타임 기본값: `CHART_RULE_VERSION=v2-month-branch-boost`
+- 단, 언제든 env로 `v1-current`로 롤백 가능
 
-왜곡 가능성/한계:
-- 지장간 미반영
-- 월지/일간 비중 차등 미반영
-- 계절력(왕상휴수사) 미반영
-- 십성/용신/희신 기반 보정 없음
-- 음력 입력 윤달 여부 미처리(현재 스키마에 leap month 정보 없음)
+## 공통 집계 로직
+1. 오행별 가중치 합산
+2. 100 정규화
+3. 반올림 오차는 최강 오행에 보정
 
-조정 포인트(우선순위):
-1. 월지 가중치 상향
-2. 지장간 분해 반영
-3. 일간 중심 강약 보정
-4. 계절 보정 계수 도입
-5. signals 체계(합/충/형/파/해) 확장
+## 신호 규칙
+- `{STRONG}_STRONG`
+- `{WEAK}_WEAK`
+- `LUNAR_PILLARS_APPLIED`
+- `RULE_{ruleVersion}`
+
+## 보류 항목(아직 미반영)
+- 월령(계절력) 보정
+- 정식 지장간(비율/세부 파생) 고도화
+- 일간 중심 강약 보정
+- 윤달 입력 필드 확장

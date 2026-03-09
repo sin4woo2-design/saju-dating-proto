@@ -51,6 +51,7 @@ class CompatibilitySignalsRequest(BaseModel):
 
 class Meta(BaseModel):
     providerVersion: str
+    engineVersion: Optional[str] = None
     requestId: str
     latencyMs: Optional[int] = None
 

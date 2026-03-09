@@ -13,6 +13,7 @@ from app.schemas import (
     SajuChartResponse,
     CompatibilityBody,
 )
+from app.config import settings
 from app.services.fake_engine import PROVIDER_VERSION, validate_policy
 from app.services.chart_service import get_chart
 from app.services.compatibility_service import get_compatibility
@@ -42,6 +43,7 @@ def saju_chart(req: SajuChartRequest):
     return SajuChartResponse(
         meta=Meta(
             providerVersion=PROVIDER_VERSION,
+            engineVersion=settings.engine_version,
             requestId=request_id,
             latencyMs=result["latency_ms"],
         ),
@@ -71,6 +73,7 @@ def compatibility_signals(req: CompatibilitySignalsRequest):
     return CompatibilitySignalsResponse(
         meta=Meta(
             providerVersion=PROVIDER_VERSION,
+            engineVersion=settings.engine_version,
             requestId=request_id,
             latencyMs=latency_ms,
         ),

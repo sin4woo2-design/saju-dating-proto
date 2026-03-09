@@ -41,6 +41,7 @@ Success Response JSON
 {
   "meta": {
     "providerVersion": "fake-python-provider-v0",
+    "engineVersion": "chart-engine-v0.3",
     "requestId": "req_01JXYZ...",
     "latencyMs": 42
   },

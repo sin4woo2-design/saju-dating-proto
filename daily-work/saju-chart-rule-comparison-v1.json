@@ -1,24 +1,24 @@
 {
   "distribution": {
-    "current": {
+    "v1-current": {
       "wood": 8,
       "fire": 6,
       "earth": 12,
       "metal": 4,
       "water": 10
     },
-    "month_branch_boost": {
+    "v2-month-branch-boost": {
       "wood": 6,
       "fire": 7,
       "earth": 13,
       "metal": 6,
       "water": 8
     },
-    "hidden_stems": {
+    "exp-v2-hidden-blend@0.5": {
       "wood": 5,
-      "fire": 7,
-      "earth": 14,
-      "metal": 8,
+      "fire": 6,
+      "earth": 17,
+      "metal": 6,
       "water": 6
     }
   },
@@ -29,12 +29,12 @@
       "month_pillar": "戊戌",
       "day_pillar": "甲子",
       "hour_pillar": "戊辰",
-      "current_strong": "earth",
-      "month_boost_strong": "earth",
-      "hidden_stems_strong": "earth",
-      "current": "{\"wood\": 15, \"fire\": 0, \"earth\": 60, \"metal\": 15, \"water\": 10}",
-      "month_branch_boost": "{\"wood\": 14, \"fire\": 0, \"earth\": 63, \"metal\": 14, \"water\": 9}",
-      "hidden_stems": "{\"wood\": 14, \"fire\": 2, \"earth\": 57, \"metal\": 13, \"water\": 14}"
+      "v1_current_strong": "earth",
+      "v2_month_branch_boost_strong": "earth",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 15, \"fire\": 0, \"earth\": 60, \"metal\": 15, \"water\": 10}",
+      "v2_month_branch_boost": "{\"wood\": 14, \"fire\": 0, \"earth\": 63, \"metal\": 14, \"water\": 9}",
+      "exp_v2_hidden_blend": "{\"wood\": 13, \"fire\": 1, \"earth\": 61, \"metal\": 13, \"water\": 12}"
     },
     {
       "sample_id": "S02",
@@ -42,12 +42,12 @@
       "month_pillar": "甲寅",
       "day_pillar": "癸亥",
       "hour_pillar": "戊午",
-      "current_strong": "water",
-      "month_boost_strong": "water",
-      "hidden_stems_strong": "water",
-      "current": "{\"wood\": 25, \"fire\": 10, \"earth\": 15, \"metal\": 10, \"water\": 40}",
-      "month_branch_boost": "{\"wood\": 32, \"fire\": 9, \"earth\": 14, \"metal\": 9, \"water\": 36}",
-      "hidden_stems": "{\"wood\": 25, \"fire\": 13, \"earth\": 14, \"metal\": 13, \"water\": 35}"
+      "v1_current_strong": "water",
+      "v2_month_branch_boost_strong": "water",
+      "exp_v2_hidden_blend_strong": "water",
+      "v1_current": "{\"wood\": 25, \"fire\": 10, \"earth\": 15, \"metal\": 10, \"water\": 40}",
+      "v2_month_branch_boost": "{\"wood\": 32, \"fire\": 9, \"earth\": 14, \"metal\": 9, \"water\": 36}",
+      "exp_v2_hidden_blend": "{\"wood\": 31, \"fire\": 11, \"earth\": 13, \"metal\": 11, \"water\": 34}"
     },
     {
       "sample_id": "S03",
@@ -55,12 +55,12 @@
       "month_pillar": "戊午",
       "day_pillar": "己未",
       "hour_pillar": "丙子",
-      "current_strong": "earth",
-      "month_boost_strong": "earth",
-      "hidden_stems_strong": "earth",
-      "current": "{\"wood\": 0, \"fire\": 25, \"earth\": 65, \"metal\": 0, \"water\": 10}",
-      "month_branch_boost": "{\"wood\": 0, \"fire\": 32, \"earth\": 59, \"metal\": 0, \"water\": 9}",
-      "hidden_stems": "{\"wood\": 2, \"fire\": 24, \"earth\": 60, \"metal\": 0, \"water\": 14}"
+      "v1_current_strong": "earth",
+      "v2_month_branch_boost_strong": "earth",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 0, \"fire\": 25, \"earth\": 65, \"metal\": 0, \"water\": 10}",
+      "v2_month_branch_boost": "{\"wood\": 0, \"fire\": 32, \"earth\": 59, \"metal\": 0, \"water\": 9}",
+      "exp_v2_hidden_blend": "{\"wood\": 1, \"fire\": 30, \"earth\": 57, \"metal\": 0, \"water\": 12}"
     },
     {
       "sample_id": "S04",
@@ -68,12 +68,12 @@
       "month_pillar": "丙子",
       "day_pillar": "戊午",
       "hour_pillar": "壬子",
-      "current_strong": "water",
-      "month_boost_strong": "water",
-      "hidden_stems_strong": "water",
-      "current": "{\"wood\": 10, \"fire\": 25, \"earth\": 31, \"metal\": 0, \"water\": 34}",
-      "month_branch_boost": "{\"wood\": 9, \"fire\": 23, \"earth\": 28, \"metal\": 0, \"water\": 40}",
-      "hidden_stems": "{\"wood\": 13, \"fire\": 23, \"earth\": 25, \"metal\": 0, \"water\": 39}"
+      "v1_current_strong": "water",
+      "v2_month_branch_boost_strong": "water",
+      "exp_v2_hidden_blend_strong": "water",
+      "v1_current": "{\"wood\": 10, \"fire\": 25, \"earth\": 31, \"metal\": 0, \"water\": 34}",
+      "v2_month_branch_boost": "{\"wood\": 9, \"fire\": 23, \"earth\": 28, \"metal\": 0, \"water\": 40}",
+      "exp_v2_hidden_blend": "{\"wood\": 11, \"fire\": 22, \"earth\": 25, \"metal\": 0, \"water\": 42}"
     },
     {
       "sample_id": "S05",
@@ -81,12 +81,12 @@
       "month_pillar": "戊子",
       "day_pillar": "甲辰",
       "hour_pillar": "庚午",
-      "current_strong": "earth",
-      "month_boost_strong": "earth",
-      "hidden_stems_strong": "earth",
-      "current": "{\"wood\": 31, \"fire\": 10, \"earth\": 34, \"metal\": 15, \"water\": 10}",
-      "month_branch_boost": "{\"wood\": 28, \"fire\": 9, \"earth\": 31, \"metal\": 14, \"water\": 18}",
-      "hidden_stems": "{\"wood\": 25, \"fire\": 11, \"earth\": 37, \"metal\": 12, \"water\": 15}"
+      "v1_current_strong": "earth",
+      "v2_month_branch_boost_strong": "earth",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 31, \"fire\": 10, \"earth\": 34, \"metal\": 15, \"water\": 10}",
+      "v2_month_branch_boost": "{\"wood\": 28, \"fire\": 9, \"earth\": 31, \"metal\": 14, \"water\": 18}",
+      "exp_v2_hidden_blend": "{\"wood\": 25, \"fire\": 10, \"earth\": 33, \"metal\": 12, \"water\": 20}"
     },
     {
       "sample_id": "S06",
@@ -94,12 +94,12 @@
       "month_pillar": "己巳",
       "day_pillar": "乙酉",
       "hour_pillar": "甲申",
-      "current_strong": "earth",
-      "month_boost_strong": "earth",
-      "hidden_stems_strong": "earth",
-      "current": "{\"wood\": 31, \"fire\": 10, \"earth\": 40, \"metal\": 19, \"water\": 0}",
-      "month_branch_boost": "{\"wood\": 28, \"fire\": 18, \"earth\": 36, \"metal\": 18, \"water\": 0}",
-      "hidden_stems": "{\"wood\": 24, \"fire\": 13, \"earth\": 37, \"metal\": 25, \"water\": 1}"
+      "v1_current_strong": "earth",
+      "v2_month_branch_boost_strong": "earth",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 31, \"fire\": 10, \"earth\": 40, \"metal\": 19, \"water\": 0}",
+      "v2_month_branch_boost": "{\"wood\": 28, \"fire\": 18, \"earth\": 36, \"metal\": 18, \"water\": 0}",
+      "exp_v2_hidden_blend": "{\"wood\": 24, \"fire\": 18, \"earth\": 35, \"metal\": 22, \"water\": 1}"
     },
     {
       "sample_id": "S07",
@@ -107,12 +107,12 @@
       "month_pillar": "癸酉",
       "day_pillar": "甲子",
       "hour_pillar": "庚午",
-      "current_strong": "wood",
-      "month_boost_strong": "metal",
-      "hidden_stems_strong": "wood",
-      "current": "{\"wood\": 25, \"fire\": 10, \"earth\": 15, \"metal\": 25, \"water\": 25}",
-      "month_branch_boost": "{\"wood\": 23, \"fire\": 9, \"earth\": 14, \"metal\": 31, \"water\": 23}",
-      "hidden_stems": "{\"wood\": 25, \"fire\": 11, \"earth\": 14, \"metal\": 25, \"water\": 25}"
+      "v1_current_strong": "wood",
+      "v2_month_branch_boost_strong": "metal",
+      "exp_v2_hidden_blend_strong": "metal",
+      "v1_current": "{\"wood\": 25, \"fire\": 10, \"earth\": 15, \"metal\": 25, \"water\": 25}",
+      "v2_month_branch_boost": "{\"wood\": 23, \"fire\": 9, \"earth\": 14, \"metal\": 31, \"water\": 23}",
+      "exp_v2_hidden_blend": "{\"wood\": 23, \"fire\": 10, \"earth\": 13, \"metal\": 31, \"water\": 23}"
     },
     {
       "sample_id": "S08",
@@ -120,12 +120,12 @@
       "month_pillar": "庚辰",
       "day_pillar": "戊子",
       "hour_pillar": "乙卯",
-      "current_strong": "wood",
-      "month_boost_strong": "wood",
-      "hidden_stems_strong": "wood",
-      "current": "{\"wood\": 41, \"fire\": 0, \"earth\": 25, \"metal\": 15, \"water\": 19}",
-      "month_branch_boost": "{\"wood\": 36, \"fire\": 0, \"earth\": 32, \"metal\": 14, \"water\": 18}",
-      "hidden_stems": "{\"wood\": 40, \"fire\": 0, \"earth\": 23, \"metal\": 12, \"water\": 25}"
+      "v1_current_strong": "wood",
+      "v2_month_branch_boost_strong": "wood",
+      "exp_v2_hidden_blend_strong": "wood",
+      "v1_current": "{\"wood\": 41, \"fire\": 0, \"earth\": 25, \"metal\": 15, \"water\": 19}",
+      "v2_month_branch_boost": "{\"wood\": 36, \"fire\": 0, \"earth\": 32, \"metal\": 14, \"water\": 18}",
+      "exp_v2_hidden_blend": "{\"wood\": 37, \"fire\": 0, \"earth\": 29, \"metal\": 12, \"water\": 22}"
     },
     {
       "sample_id": "S09",
@@ -133,12 +133,12 @@
       "month_pillar": "乙卯",
       "day_pillar": "己丑",
       "hour_pillar": "丙子",
-      "current_strong": "earth",
-      "month_boost_strong": "earth",
-      "hidden_stems_strong": "earth",
-      "current": "{\"wood\": 25, \"fire\": 15, \"earth\": 40, \"metal\": 10, \"water\": 10}",
-      "month_branch_boost": "{\"wood\": 32, \"fire\": 14, \"earth\": 36, \"metal\": 9, \"water\": 9}",
-      "hidden_stems": "{\"wood\": 25, \"fire\": 12, \"earth\": 35, \"metal\": 12, \"water\": 16}"
+      "v1_current_strong": "earth",
+      "v2_month_branch_boost_strong": "earth",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 25, \"fire\": 15, \"earth\": 40, \"metal\": 10, \"water\": 10}",
+      "v2_month_branch_boost": "{\"wood\": 32, \"fire\": 14, \"earth\": 36, \"metal\": 9, \"water\": 9}",
+      "exp_v2_hidden_blend": "{\"wood\": 31, \"fire\": 12, \"earth\": 34, \"metal\": 10, \"water\": 13}"
     },
     {
       "sample_id": "S10",
@@ -146,12 +146,12 @@
       "month_pillar": "丙午",
       "day_pillar": "癸未",
       "hour_pillar": "壬子",
-      "current_strong": "water",
-      "month_boost_strong": "water",
-      "hidden_stems_strong": "water",
-      "current": "{\"wood\": 0, \"fire\": 25, \"earth\": 10, \"metal\": 0, \"water\": 65}",
-      "month_branch_boost": "{\"wood\": 0, \"fire\": 32, \"earth\": 9, \"metal\": 0, \"water\": 59}",
-      "hidden_stems": "{\"wood\": 1, \"fire\": 24, \"earth\": 13, \"metal\": 0, \"water\": 62}"
+      "v1_current_strong": "water",
+      "v2_month_branch_boost_strong": "water",
+      "exp_v2_hidden_blend_strong": "water",
+      "v1_current": "{\"wood\": 0, \"fire\": 25, \"earth\": 10, \"metal\": 0, \"water\": 65}",
+      "v2_month_branch_boost": "{\"wood\": 0, \"fire\": 32, \"earth\": 9, \"metal\": 0, \"water\": 59}",
+      "exp_v2_hidden_blend": "{\"wood\": 0, \"fire\": 30, \"earth\": 11, \"metal\": 0, \"water\": 59}"
     },
     {
       "sample_id": "S11",
@@ -159,12 +159,12 @@
       "month_pillar": "丁酉",
       "day_pillar": "甲辰",
       "hour_pillar": "庚午",
-      "current_strong": "metal",
-      "month_boost_strong": "metal",
-      "hidden_stems_strong": "metal",
-      "current": "{\"wood\": 15, \"fire\": 25, \"earth\": 10, \"metal\": 50, \"water\": 0}",
-      "month_branch_boost": "{\"wood\": 14, \"fire\": 23, \"earth\": 9, \"metal\": 54, \"water\": 0}",
-      "hidden_stems": "{\"wood\": 13, \"fire\": 23, \"earth\": 13, \"metal\": 50, \"water\": 1}"
+      "v1_current_strong": "metal",
+      "v2_month_branch_boost_strong": "metal",
+      "exp_v2_hidden_blend_strong": "metal",
+      "v1_current": "{\"wood\": 15, \"fire\": 25, \"earth\": 10, \"metal\": 50, \"water\": 0}",
+      "v2_month_branch_boost": "{\"wood\": 14, \"fire\": 23, \"earth\": 9, \"metal\": 54, \"water\": 0}",
+      "exp_v2_hidden_blend": "{\"wood\": 13, \"fire\": 22, \"earth\": 11, \"metal\": 54, \"water\": 0}"
     },
     {
       "sample_id": "S12",
@@ -172,12 +172,12 @@
       "month_pillar": "戊子",
       "day_pillar": "辛酉",
       "hour_pillar": "丁酉",
-      "current_strong": "metal",
-      "month_boost_strong": "metal",
-      "hidden_stems_strong": "metal",
-      "current": "{\"wood\": 0, \"fire\": 25, \"earth\": 15, \"metal\": 50, \"water\": 10}",
-      "month_branch_boost": "{\"wood\": 0, \"fire\": 23, \"earth\": 14, \"metal\": 45, \"water\": 18}",
-      "hidden_stems": "{\"wood\": 0, \"fire\": 23, \"earth\": 14, \"metal\": 50, \"water\": 13}"
+      "v1_current_strong": "metal",
+      "v2_month_branch_boost_strong": "metal",
+      "exp_v2_hidden_blend_strong": "metal",
+      "v1_current": "{\"wood\": 0, \"fire\": 25, \"earth\": 15, \"metal\": 50, \"water\": 10}",
+      "v2_month_branch_boost": "{\"wood\": 0, \"fire\": 23, \"earth\": 14, \"metal\": 45, \"water\": 18}",
+      "exp_v2_hidden_blend": "{\"wood\": 0, \"fire\": 22, \"earth\": 13, \"metal\": 46, \"water\": 19}"
     },
     {
       "sample_id": "S13",
@@ -185,12 +185,12 @@
       "month_pillar": "甲寅",
       "day_pillar": "癸酉",
       "hour_pillar": "乙卯",
-      "current_strong": "wood",
-      "month_boost_strong": "wood",
-      "hidden_stems_strong": "wood",
-      "current": "{\"wood\": 49, \"fire\": 0, \"earth\": 10, \"metal\": 10, \"water\": 31}",
-      "month_branch_boost": "{\"wood\": 54, \"fire\": 0, \"earth\": 9, \"metal\": 9, \"water\": 28}",
-      "hidden_stems": "{\"wood\": 49, \"fire\": 2, \"earth\": 12, \"metal\": 13, \"water\": 24}"
+      "v1_current_strong": "wood",
+      "v2_month_branch_boost_strong": "wood",
+      "exp_v2_hidden_blend_strong": "wood",
+      "v1_current": "{\"wood\": 49, \"fire\": 0, \"earth\": 10, \"metal\": 10, \"water\": 31}",
+      "v2_month_branch_boost": "{\"wood\": 54, \"fire\": 0, \"earth\": 9, \"metal\": 9, \"water\": 28}",
+      "exp_v2_hidden_blend": "{\"wood\": 54, \"fire\": 1, \"earth\": 10, \"metal\": 11, \"water\": 24}"
     },
     {
       "sample_id": "S14",
@@ -198,12 +198,12 @@
       "month_pillar": "癸未",
       "day_pillar": "庚午",
       "hour_pillar": "癸未",
-      "current_strong": "water",
-      "month_boost_strong": "water",
-      "hidden_stems_strong": "earth",
-      "current": "{\"wood\": 15, \"fire\": 19, \"earth\": 19, \"metal\": 15, \"water\": 32}",
-      "month_branch_boost": "{\"wood\": 14, \"fire\": 18, \"earth\": 26, \"metal\": 14, \"water\": 28}",
-      "hidden_stems": "{\"wood\": 13, \"fire\": 25, \"earth\": 26, \"metal\": 12, \"water\": 24}"
+      "v1_current_strong": "water",
+      "v2_month_branch_boost_strong": "water",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 15, \"fire\": 19, \"earth\": 19, \"metal\": 15, \"water\": 32}",
+      "v2_month_branch_boost": "{\"wood\": 14, \"fire\": 18, \"earth\": 26, \"metal\": 14, \"water\": 28}",
+      "exp_v2_hidden_blend": "{\"wood\": 13, \"fire\": 22, \"earth\": 29, \"metal\": 12, \"water\": 24}"
     },
     {
       "sample_id": "S15",
@@ -211,12 +211,12 @@
       "month_pillar": "丙戌",
       "day_pillar": "己酉",
       "hour_pillar": "乙亥",
-      "current_strong": "wood",
-      "month_boost_strong": "wood",
-      "hidden_stems_strong": "wood",
-      "current": "{\"wood\": 40, \"fire\": 15, \"earth\": 25, \"metal\": 10, \"water\": 10}",
-      "month_branch_boost": "{\"wood\": 36, \"fire\": 14, \"earth\": 32, \"metal\": 9, \"water\": 9}",
-      "hidden_stems": "{\"wood\": 40, \"fire\": 12, \"earth\": 23, \"metal\": 14, \"water\": 11}"
+      "v1_current_strong": "wood",
+      "v2_month_branch_boost_strong": "wood",
+      "exp_v2_hidden_blend_strong": "wood",
+      "v1_current": "{\"wood\": 40, \"fire\": 15, \"earth\": 25, \"metal\": 10, \"water\": 10}",
+      "v2_month_branch_boost": "{\"wood\": 36, \"fire\": 14, \"earth\": 32, \"metal\": 9, \"water\": 9}",
+      "exp_v2_hidden_blend": "{\"wood\": 37, \"fire\": 12, \"earth\": 29, \"metal\": 12, \"water\": 10}"
     },
     {
       "sample_id": "S16",
@@ -224,12 +224,12 @@
       "month_pillar": "乙丑",
       "day_pillar": "己卯",
       "hour_pillar": "庚午",
-      "current_strong": "earth",
-      "month_boost_strong": "earth",
-      "hidden_stems_strong": "earth",
-      "current": "{\"wood\": 25, \"fire\": 10, \"earth\": 50, \"metal\": 15, \"water\": 0}",
-      "month_branch_boost": "{\"wood\": 23, \"fire\": 9, \"earth\": 54, \"metal\": 14, \"water\": 0}",
-      "hidden_stems": "{\"wood\": 26, \"fire\": 11, \"earth\": 49, \"metal\": 12, \"water\": 2}"
+      "v1_current_strong": "earth",
+      "v2_month_branch_boost_strong": "earth",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 25, \"fire\": 10, \"earth\": 50, \"metal\": 15, \"water\": 0}",
+      "v2_month_branch_boost": "{\"wood\": 23, \"fire\": 9, \"earth\": 54, \"metal\": 14, \"water\": 0}",
+      "exp_v2_hidden_blend": "{\"wood\": 24, \"fire\": 10, \"earth\": 53, \"metal\": 12, \"water\": 1}"
     },
     {
       "sample_id": "S17",
@@ -237,12 +237,12 @@
       "month_pillar": "丙辰",
       "day_pillar": "戊子",
       "hour_pillar": "丙辰",
-      "current_strong": "earth",
-      "month_boost_strong": "earth",
-      "hidden_stems_strong": "earth",
-      "current": "{\"wood\": 10, \"fire\": 31, \"earth\": 49, \"metal\": 0, \"water\": 10}",
-      "month_branch_boost": "{\"wood\": 9, \"fire\": 28, \"earth\": 54, \"metal\": 0, \"water\": 9}",
-      "hidden_stems": "{\"wood\": 14, \"fire\": 25, \"earth\": 47, \"metal\": 0, \"water\": 14}"
+      "v1_current_strong": "earth",
+      "v2_month_branch_boost_strong": "earth",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 10, \"fire\": 31, \"earth\": 49, \"metal\": 0, \"water\": 10}",
+      "v2_month_branch_boost": "{\"wood\": 9, \"fire\": 28, \"earth\": 54, \"metal\": 0, \"water\": 9}",
+      "exp_v2_hidden_blend": "{\"wood\": 12, \"fire\": 25, \"earth\": 51, \"metal\": 0, \"water\": 12}"
     },
     {
       "sample_id": "S18",
@@ -250,12 +250,12 @@
       "month_pillar": "甲申",
       "day_pillar": "甲子",
       "hour_pillar": "壬申",
-      "current_strong": "wood",
-      "month_boost_strong": "wood",
-      "hidden_stems_strong": "metal",
-      "current": "{\"wood\": 46, \"fire\": 0, \"earth\": 0, \"metal\": 29, \"water\": 25}",
-      "month_branch_boost": "{\"wood\": 42, \"fire\": 0, \"earth\": 0, \"metal\": 35, \"water\": 23}",
-      "hidden_stems": "{\"wood\": 35, \"fire\": 0, \"earth\": 1, \"metal\": 37, \"water\": 27}"
+      "v1_current_strong": "wood",
+      "v2_month_branch_boost_strong": "wood",
+      "exp_v2_hidden_blend_strong": "metal",
+      "v1_current": "{\"wood\": 46, \"fire\": 0, \"earth\": 0, \"metal\": 29, \"water\": 25}",
+      "v2_month_branch_boost": "{\"wood\": 42, \"fire\": 0, \"earth\": 0, \"metal\": 35, \"water\": 23}",
+      "exp_v2_hidden_blend": "{\"wood\": 36, \"fire\": 0, \"earth\": 1, \"metal\": 38, \"water\": 25}"
     },
     {
       "sample_id": "S19",
@@ -263,12 +263,12 @@
       "month_pillar": "丁亥",
       "day_pillar": "乙未",
       "hour_pillar": "丁亥",
-      "current_strong": "fire",
-      "month_boost_strong": "fire",
-      "hidden_stems_strong": "fire",
-      "current": "{\"wood\": 15, \"fire\": 32, \"earth\": 19, \"metal\": 15, \"water\": 19}",
-      "month_branch_boost": "{\"wood\": 14, \"fire\": 28, \"earth\": 18, \"metal\": 14, \"water\": 26}",
-      "hidden_stems": "{\"wood\": 16, \"fire\": 25, \"earth\": 23, \"metal\": 13, \"water\": 23}"
+      "v1_current_strong": "fire",
+      "v2_month_branch_boost_strong": "fire",
+      "exp_v2_hidden_blend_strong": "water",
+      "v1_current": "{\"wood\": 15, \"fire\": 32, \"earth\": 19, \"metal\": 15, \"water\": 19}",
+      "v2_month_branch_boost": "{\"wood\": 14, \"fire\": 28, \"earth\": 18, \"metal\": 14, \"water\": 26}",
+      "exp_v2_hidden_blend": "{\"wood\": 15, \"fire\": 25, \"earth\": 20, \"metal\": 13, \"water\": 27}"
     },
     {
       "sample_id": "S20",
@@ -276,12 +276,12 @@
       "month_pillar": "癸丑",
       "day_pillar": "辛酉",
       "hour_pillar": "甲午",
-      "current_strong": "water",
-      "month_boost_strong": "water",
-      "hidden_stems_strong": "metal",
-      "current": "{\"wood\": 15, \"fire\": 10, \"earth\": 19, \"metal\": 25, \"water\": 31}",
-      "month_branch_boost": "{\"wood\": 14, \"fire\": 9, \"earth\": 26, \"metal\": 23, \"water\": 28}",
-      "hidden_stems": "{\"wood\": 12, \"fire\": 12, \"earth\": 25, \"metal\": 26, \"water\": 25}"
+      "v1_current_strong": "water",
+      "v2_month_branch_boost_strong": "water",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 15, \"fire\": 10, \"earth\": 19, \"metal\": 25, \"water\": 31}",
+      "v2_month_branch_boost": "{\"wood\": 14, \"fire\": 9, \"earth\": 26, \"metal\": 23, \"water\": 28}",
+      "exp_v2_hidden_blend": "{\"wood\": 12, \"fire\": 10, \"earth\": 29, \"metal\": 24, \"water\": 25}"
     },
     {
       "sample_id": "S21",
@@ -289,12 +289,12 @@
       "month_pillar": "壬辰",
       "day_pillar": "壬寅",
       "hour_pillar": "乙巳",
-      "current_strong": "water",
-      "month_boost_strong": "water",
-      "hidden_stems_strong": "water",
-      "current": "{\"wood\": 25, \"fire\": 25, \"earth\": 10, \"metal\": 0, \"water\": 40}",
-      "month_branch_boost": "{\"wood\": 23, \"fire\": 23, \"earth\": 18, \"metal\": 0, \"water\": 36}",
-      "hidden_stems": "{\"wood\": 24, \"fire\": 24, \"earth\": 13, \"metal\": 1, \"water\": 38}"
+      "v1_current_strong": "water",
+      "v2_month_branch_boost_strong": "water",
+      "exp_v2_hidden_blend_strong": "water",
+      "v1_current": "{\"wood\": 25, \"fire\": 25, \"earth\": 10, \"metal\": 0, \"water\": 40}",
+      "v2_month_branch_boost": "{\"wood\": 23, \"fire\": 23, \"earth\": 18, \"metal\": 0, \"water\": 36}",
+      "exp_v2_hidden_blend": "{\"wood\": 23, \"fire\": 23, \"earth\": 19, \"metal\": 0, \"water\": 35}"
     },
     {
       "sample_id": "S22",
@@ -302,12 +302,12 @@
       "month_pillar": "丁酉",
       "day_pillar": "癸未",
       "hour_pillar": "壬戌",
-      "current_strong": "water",
-      "month_boost_strong": "metal",
-      "hidden_stems_strong": "metal",
-      "current": "{\"wood\": 0, \"fire\": 25, \"earth\": 19, \"metal\": 25, \"water\": 31}",
-      "month_branch_boost": "{\"wood\": 0, \"fire\": 23, \"earth\": 18, \"metal\": 31, \"water\": 28}",
-      "hidden_stems": "{\"wood\": 1, \"fire\": 25, \"earth\": 24, \"metal\": 26, \"water\": 24}"
+      "v1_current_strong": "water",
+      "v2_month_branch_boost_strong": "metal",
+      "exp_v2_hidden_blend_strong": "metal",
+      "v1_current": "{\"wood\": 0, \"fire\": 25, \"earth\": 19, \"metal\": 25, \"water\": 31}",
+      "v2_month_branch_boost": "{\"wood\": 0, \"fire\": 23, \"earth\": 18, \"metal\": 31, \"water\": 28}",
+      "exp_v2_hidden_blend": "{\"wood\": 0, \"fire\": 23, \"earth\": 21, \"metal\": 32, \"water\": 24}"
     },
     {
       "sample_id": "S23",
@@ -315,12 +315,12 @@
       "month_pillar": "丙子",
       "day_pillar": "戊午",
       "hour_pillar": "甲寅",
-      "current_strong": "earth",
-      "month_boost_strong": "earth",
-      "hidden_stems_strong": "earth",
-      "current": "{\"wood\": 25, \"fire\": 25, \"earth\": 30, \"metal\": 10, \"water\": 10}",
-      "month_branch_boost": "{\"wood\": 23, \"fire\": 23, \"earth\": 27, \"metal\": 9, \"water\": 18}",
-      "hidden_stems": "{\"wood\": 23, \"fire\": 24, \"earth\": 27, \"metal\": 13, \"water\": 13}"
+      "v1_current_strong": "earth",
+      "v2_month_branch_boost_strong": "earth",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 25, \"fire\": 25, \"earth\": 30, \"metal\": 10, \"water\": 10}",
+      "v2_month_branch_boost": "{\"wood\": 23, \"fire\": 23, \"earth\": 27, \"metal\": 9, \"water\": 18}",
+      "exp_v2_hidden_blend": "{\"wood\": 22, \"fire\": 23, \"earth\": 25, \"metal\": 11, \"water\": 19}"
     },
     {
       "sample_id": "S24",
@@ -328,12 +328,12 @@
       "month_pillar": "乙卯",
       "day_pillar": "己丑",
       "hour_pillar": "庚午",
-      "current_strong": "earth",
-      "month_boost_strong": "earth",
-      "hidden_stems_strong": "earth",
-      "current": "{\"wood\": 25, \"fire\": 19, \"earth\": 41, \"metal\": 15, \"water\": 0}",
-      "month_branch_boost": "{\"wood\": 32, \"fire\": 18, \"earth\": 36, \"metal\": 14, \"water\": 0}",
-      "hidden_stems": "{\"wood\": 25, \"fire\": 23, \"earth\": 39, \"metal\": 12, \"water\": 1}"
+      "v1_current_strong": "earth",
+      "v2_month_branch_boost_strong": "earth",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 25, \"fire\": 19, \"earth\": 41, \"metal\": 15, \"water\": 0}",
+      "v2_month_branch_boost": "{\"wood\": 32, \"fire\": 18, \"earth\": 36, \"metal\": 14, \"water\": 0}",
+      "exp_v2_hidden_blend": "{\"wood\": 31, \"fire\": 20, \"earth\": 36, \"metal\": 12, \"water\": 1}"
     },
     {
       "sample_id": "S25",
@@ -341,12 +341,12 @@
       "month_pillar": "甲午",
       "day_pillar": "甲申",
       "hour_pillar": "己巳",
-      "current_strong": "wood",
-      "month_boost_strong": "fire",
-      "hidden_stems_strong": "fire",
-      "current": "{\"wood\": 40, \"fire\": 35, \"earth\": 15, \"metal\": 10, \"water\": 0}",
-      "month_branch_boost": "{\"wood\": 37, \"fire\": 40, \"earth\": 14, \"metal\": 9, \"water\": 0}",
-      "hidden_stems": "{\"wood\": 35, \"fire\": 36, \"earth\": 16, \"metal\": 12, \"water\": 1}"
+      "v1_current_strong": "wood",
+      "v2_month_branch_boost_strong": "fire",
+      "exp_v2_hidden_blend_strong": "fire",
+      "v1_current": "{\"wood\": 40, \"fire\": 35, \"earth\": 15, \"metal\": 10, \"water\": 0}",
+      "v2_month_branch_boost": "{\"wood\": 37, \"fire\": 40, \"earth\": 14, \"metal\": 9, \"water\": 0}",
+      "exp_v2_hidden_blend": "{\"wood\": 34, \"fire\": 40, \"earth\": 15, \"metal\": 10, \"water\": 1}"
     },
     {
       "sample_id": "S26",
@@ -354,12 +354,12 @@
       "month_pillar": "甲戌",
       "day_pillar": "癸酉",
       "hour_pillar": "壬戌",
-      "current_strong": "water",
-      "month_boost_strong": "earth",
-      "hidden_stems_strong": "earth",
-      "current": "{\"wood\": 30, \"fire\": 0, \"earth\": 29, \"metal\": 10, \"water\": 31}",
-      "month_branch_boost": "{\"wood\": 28, \"fire\": 0, \"earth\": 35, \"metal\": 9, \"water\": 28}",
-      "hidden_stems": "{\"wood\": 24, \"fire\": 2, \"earth\": 33, \"metal\": 17, \"water\": 24}"
+      "v1_current_strong": "water",
+      "v2_month_branch_boost_strong": "earth",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 30, \"fire\": 0, \"earth\": 29, \"metal\": 10, \"water\": 31}",
+      "v2_month_branch_boost": "{\"wood\": 28, \"fire\": 0, \"earth\": 35, \"metal\": 9, \"water\": 28}",
+      "exp_v2_hidden_blend": "{\"wood\": 24, \"fire\": 1, \"earth\": 38, \"metal\": 13, \"water\": 24}"
     },
     {
       "sample_id": "S27",
@@ -367,12 +367,12 @@
       "month_pillar": "辛丑",
       "day_pillar": "乙亥",
       "hour_pillar": "丁丑",
-      "current_strong": "metal",
-      "month_boost_strong": "metal",
-      "hidden_stems_strong": "metal",
-      "current": "{\"wood\": 15, \"fire\": 25, \"earth\": 19, \"metal\": 31, \"water\": 10}",
-      "month_branch_boost": "{\"wood\": 14, \"fire\": 23, \"earth\": 26, \"metal\": 28, \"water\": 9}",
-      "hidden_stems": "{\"wood\": 14, \"fire\": 23, \"earth\": 24, \"metal\": 25, \"water\": 14}"
+      "v1_current_strong": "metal",
+      "v2_month_branch_boost_strong": "metal",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 15, \"fire\": 25, \"earth\": 19, \"metal\": 31, \"water\": 10}",
+      "v2_month_branch_boost": "{\"wood\": 14, \"fire\": 23, \"earth\": 26, \"metal\": 28, \"water\": 9}",
+      "exp_v2_hidden_blend": "{\"wood\": 13, \"fire\": 22, \"earth\": 28, \"metal\": 25, \"water\": 12}"
     },
     {
       "sample_id": "S28",
@@ -380,12 +380,12 @@
       "month_pillar": "甲辰",
       "day_pillar": "戊申",
       "hour_pillar": "己未",
-      "current_strong": "earth",
-      "month_boost_strong": "earth",
-      "hidden_stems_strong": "earth",
-      "current": "{\"wood\": 15, \"fire\": 15, \"earth\": 60, \"metal\": 10, \"water\": 0}",
-      "month_branch_boost": "{\"wood\": 14, \"fire\": 14, \"earth\": 63, \"metal\": 9, \"water\": 0}",
-      "hidden_stems": "{\"wood\": 14, \"fire\": 14, \"earth\": 59, \"metal\": 11, \"water\": 2}"
+      "v1_current_strong": "earth",
+      "v2_month_branch_boost_strong": "earth",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 15, \"fire\": 15, \"earth\": 60, \"metal\": 10, \"water\": 0}",
+      "v2_month_branch_boost": "{\"wood\": 14, \"fire\": 14, \"earth\": 63, \"metal\": 9, \"water\": 0}",
+      "exp_v2_hidden_blend": "{\"wood\": 13, \"fire\": 13, \"earth\": 63, \"metal\": 10, \"water\": 1}"
     },
     {
       "sample_id": "S29",
@@ -393,12 +393,12 @@
       "month_pillar": "乙未",
       "day_pillar": "壬午",
       "hour_pillar": "丙午",
-      "current_strong": "fire",
-      "month_boost_strong": "fire",
-      "hidden_stems_strong": "fire",
-      "current": "{\"wood\": 15, \"fire\": 51, \"earth\": 19, \"metal\": 0, \"water\": 15}",
-      "month_branch_boost": "{\"wood\": 14, \"fire\": 46, \"earth\": 26, \"metal\": 0, \"water\": 14}",
-      "hidden_stems": "{\"wood\": 14, \"fire\": 48, \"earth\": 26, \"metal\": 0, \"water\": 12}"
+      "v1_current_strong": "fire",
+      "v2_month_branch_boost_strong": "fire",
+      "exp_v2_hidden_blend_strong": "fire",
+      "v1_current": "{\"wood\": 15, \"fire\": 51, \"earth\": 19, \"metal\": 0, \"water\": 15}",
+      "v2_month_branch_boost": "{\"wood\": 14, \"fire\": 46, \"earth\": 26, \"metal\": 0, \"water\": 14}",
+      "exp_v2_hidden_blend": "{\"wood\": 13, \"fire\": 45, \"earth\": 30, \"metal\": 0, \"water\": 12}"
     },
     {
       "sample_id": "S30",
@@ -406,12 +406,12 @@
       "month_pillar": "甲戌",
       "day_pillar": "辛丑",
       "hour_pillar": "丁酉",
-      "current_strong": "wood",
-      "month_boost_strong": "wood",
-      "hidden_stems_strong": "metal",
-      "current": "{\"wood\": 31, \"fire\": 15, \"earth\": 19, \"metal\": 25, \"water\": 10}",
-      "month_branch_boost": "{\"wood\": 28, \"fire\": 14, \"earth\": 26, \"metal\": 23, \"water\": 9}",
-      "hidden_stems": "{\"wood\": 24, \"fire\": 12, \"earth\": 23, \"metal\": 27, \"water\": 14}"
+      "v1_current_strong": "wood",
+      "v2_month_branch_boost_strong": "wood",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 31, \"fire\": 15, \"earth\": 19, \"metal\": 25, \"water\": 10}",
+      "v2_month_branch_boost": "{\"wood\": 28, \"fire\": 14, \"earth\": 26, \"metal\": 23, \"water\": 9}",
+      "exp_v2_hidden_blend": "{\"wood\": 24, \"fire\": 12, \"earth\": 28, \"metal\": 24, \"water\": 12}"
     },
     {
       "sample_id": "S31",
@@ -419,12 +419,12 @@
       "month_pillar": "壬寅",
       "day_pillar": "庚午",
       "hour_pillar": "戊寅",
-      "current_strong": "water",
-      "month_boost_strong": "water",
-      "hidden_stems_strong": "water",
-      "current": "{\"wood\": 19, \"fire\": 10, \"earth\": 15, \"metal\": 25, \"water\": 31}",
-      "month_branch_boost": "{\"wood\": 26, \"fire\": 9, \"earth\": 14, \"metal\": 23, \"water\": 28}",
-      "hidden_stems": "{\"wood\": 23, \"fire\": 14, \"earth\": 15, \"metal\": 23, \"water\": 25}"
+      "v1_current_strong": "water",
+      "v2_month_branch_boost_strong": "water",
+      "exp_v2_hidden_blend_strong": "wood",
+      "v1_current": "{\"wood\": 19, \"fire\": 10, \"earth\": 15, \"metal\": 25, \"water\": 31}",
+      "v2_month_branch_boost": "{\"wood\": 26, \"fire\": 9, \"earth\": 14, \"metal\": 23, \"water\": 28}",
+      "exp_v2_hidden_blend": "{\"wood\": 27, \"fire\": 12, \"earth\": 14, \"metal\": 22, \"water\": 25}"
     },
     {
       "sample_id": "S32",
@@ -432,12 +432,12 @@
       "month_pillar": "己巳",
       "day_pillar": "己酉",
       "hour_pillar": "庚午",
-      "current_strong": "metal",
-      "month_boost_strong": "metal",
-      "hidden_stems_strong": "metal",
-      "current": "{\"wood\": 15, \"fire\": 19, \"earth\": 31, \"metal\": 35, \"water\": 0}",
-      "month_branch_boost": "{\"wood\": 14, \"fire\": 26, \"earth\": 28, \"metal\": 32, \"water\": 0}",
-      "hidden_stems": "{\"wood\": 12, \"fire\": 23, \"earth\": 27, \"metal\": 37, \"water\": 1}"
+      "v1_current_strong": "metal",
+      "v2_month_branch_boost_strong": "metal",
+      "exp_v2_hidden_blend_strong": "metal",
+      "v1_current": "{\"wood\": 15, \"fire\": 19, \"earth\": 31, \"metal\": 35, \"water\": 0}",
+      "v2_month_branch_boost": "{\"wood\": 14, \"fire\": 26, \"earth\": 28, \"metal\": 32, \"water\": 0}",
+      "exp_v2_hidden_blend": "{\"wood\": 12, \"fire\": 28, \"earth\": 26, \"metal\": 33, \"water\": 1}"
     },
     {
       "sample_id": "S33",
@@ -445,12 +445,12 @@
       "month_pillar": "丙申",
       "day_pillar": "庚戌",
       "hour_pillar": "壬午",
-      "current_strong": "fire",
-      "month_boost_strong": "fire",
-      "hidden_stems_strong": "fire",
-      "current": "{\"wood\": 0, \"fire\": 50, \"earth\": 10, \"metal\": 25, \"water\": 15}",
-      "month_branch_boost": "{\"wood\": 0, \"fire\": 45, \"earth\": 9, \"metal\": 32, \"water\": 14}",
-      "hidden_stems": "{\"wood\": 0, \"fire\": 47, \"earth\": 16, \"metal\": 24, \"water\": 13}"
+      "v1_current_strong": "fire",
+      "v2_month_branch_boost_strong": "fire",
+      "exp_v2_hidden_blend_strong": "fire",
+      "v1_current": "{\"wood\": 0, \"fire\": 50, \"earth\": 10, \"metal\": 25, \"water\": 15}",
+      "v2_month_branch_boost": "{\"wood\": 0, \"fire\": 45, \"earth\": 9, \"metal\": 32, \"water\": 14}",
+      "exp_v2_hidden_blend": "{\"wood\": 0, \"fire\": 44, \"earth\": 13, \"metal\": 30, \"water\": 13}"
     },
     {
       "sample_id": "S34",
@@ -458,12 +458,12 @@
       "month_pillar": "丙子",
       "day_pillar": "庚子",
       "hour_pillar": "戊子",
-      "current_strong": "water",
-      "month_boost_strong": "water",
-      "hidden_stems_strong": "water",
-      "current": "{\"wood\": 25, \"fire\": 15, \"earth\": 15, \"metal\": 15, \"water\": 30}",
-      "month_branch_boost": "{\"wood\": 23, \"fire\": 14, \"earth\": 14, \"metal\": 14, \"water\": 35}",
-      "hidden_stems": "{\"wood\": 23, \"fire\": 13, \"earth\": 12, \"metal\": 12, \"water\": 40}"
+      "v1_current_strong": "water",
+      "v2_month_branch_boost_strong": "water",
+      "exp_v2_hidden_blend_strong": "water",
+      "v1_current": "{\"wood\": 25, \"fire\": 15, \"earth\": 15, \"metal\": 15, \"water\": 30}",
+      "v2_month_branch_boost": "{\"wood\": 23, \"fire\": 14, \"earth\": 14, \"metal\": 14, \"water\": 35}",
+      "exp_v2_hidden_blend": "{\"wood\": 22, \"fire\": 13, \"earth\": 12, \"metal\": 12, \"water\": 41}"
     },
     {
       "sample_id": "S35",
@@ -471,12 +471,12 @@
       "month_pillar": "癸卯",
       "day_pillar": "甲午",
       "hour_pillar": "乙丑",
-      "current_strong": "wood",
-      "month_boost_strong": "wood",
-      "hidden_stems_strong": "wood",
-      "current": "{\"wood\": 40, \"fire\": 10, \"earth\": 19, \"metal\": 0, \"water\": 31}",
-      "month_branch_boost": "{\"wood\": 45, \"fire\": 9, \"earth\": 18, \"metal\": 0, \"water\": 28}",
-      "hidden_stems": "{\"wood\": 36, \"fire\": 12, \"earth\": 25, \"metal\": 2, \"water\": 25}"
+      "v1_current_strong": "wood",
+      "v2_month_branch_boost_strong": "wood",
+      "exp_v2_hidden_blend_strong": "wood",
+      "v1_current": "{\"wood\": 40, \"fire\": 10, \"earth\": 19, \"metal\": 0, \"water\": 31}",
+      "v2_month_branch_boost": "{\"wood\": 45, \"fire\": 9, \"earth\": 18, \"metal\": 0, \"water\": 28}",
+      "exp_v2_hidden_blend": "{\"wood\": 43, \"fire\": 10, \"earth\": 21, \"metal\": 1, \"water\": 25}"
     },
     {
       "sample_id": "S36",
@@ -484,12 +484,12 @@
       "month_pillar": "丙午",
       "day_pillar": "辛卯",
       "hour_pillar": "甲午",
-      "current_strong": "fire",
-      "month_boost_strong": "fire",
-      "hidden_stems_strong": "fire",
-      "current": "{\"wood\": 25, \"fire\": 50, \"earth\": 10, \"metal\": 15, \"water\": 0}",
-      "month_branch_boost": "{\"wood\": 23, \"fire\": 54, \"earth\": 9, \"metal\": 14, \"water\": 0}",
-      "hidden_stems": "{\"wood\": 25, \"fire\": 47, \"earth\": 15, \"metal\": 12, \"water\": 1}"
+      "v1_current_strong": "fire",
+      "v2_month_branch_boost_strong": "fire",
+      "exp_v2_hidden_blend_strong": "fire",
+      "v1_current": "{\"wood\": 25, \"fire\": 50, \"earth\": 10, \"metal\": 15, \"water\": 0}",
+      "v2_month_branch_boost": "{\"wood\": 23, \"fire\": 54, \"earth\": 9, \"metal\": 14, \"water\": 0}",
+      "exp_v2_hidden_blend": "{\"wood\": 23, \"fire\": 52, \"earth\": 12, \"metal\": 12, \"water\": 1}"
     },
     {
       "sample_id": "S37",
@@ -497,12 +497,12 @@
       "month_pillar": "丙申",
       "day_pillar": "甲午",
       "hour_pillar": "戊辰",
-      "current_strong": "fire",
-      "month_boost_strong": "fire",
-      "hidden_stems_strong": "fire",
-      "current": "{\"wood\": 15, \"fire\": 40, \"earth\": 35, \"metal\": 10, \"water\": 0}",
-      "month_branch_boost": "{\"wood\": 14, \"fire\": 36, \"earth\": 32, \"metal\": 18, \"water\": 0}",
-      "hidden_stems": "{\"wood\": 13, \"fire\": 36, \"earth\": 36, \"metal\": 13, \"water\": 2}"
+      "v1_current_strong": "fire",
+      "v2_month_branch_boost_strong": "fire",
+      "exp_v2_hidden_blend_strong": "fire",
+      "v1_current": "{\"wood\": 15, \"fire\": 40, \"earth\": 35, \"metal\": 10, \"water\": 0}",
+      "v2_month_branch_boost": "{\"wood\": 14, \"fire\": 36, \"earth\": 32, \"metal\": 18, \"water\": 0}",
+      "exp_v2_hidden_blend": "{\"wood\": 13, \"fire\": 34, \"earth\": 34, \"metal\": 18, \"water\": 1}"
     },
     {
       "sample_id": "S38",
@@ -510,12 +510,12 @@
       "month_pillar": "己丑",
       "day_pillar": "壬子",
       "hour_pillar": "戊申",
-      "current_strong": "earth",
-      "month_boost_strong": "earth",
-      "hidden_stems_strong": "earth",
-      "current": "{\"wood\": 0, \"fire\": 0, \"earth\": 50, \"metal\": 25, \"water\": 25}",
-      "month_branch_boost": "{\"wood\": 0, \"fire\": 0, \"earth\": 54, \"metal\": 23, \"water\": 23}",
-      "hidden_stems": "{\"wood\": 0, \"fire\": 1, \"earth\": 47, \"metal\": 25, \"water\": 27}"
+      "v1_current_strong": "earth",
+      "v2_month_branch_boost_strong": "earth",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 0, \"fire\": 0, \"earth\": 50, \"metal\": 25, \"water\": 25}",
+      "v2_month_branch_boost": "{\"wood\": 0, \"fire\": 0, \"earth\": 54, \"metal\": 23, \"water\": 23}",
+      "exp_v2_hidden_blend": "{\"wood\": 0, \"fire\": 0, \"earth\": 52, \"metal\": 23, \"water\": 25}"
     },
     {
       "sample_id": "S39",
@@ -523,12 +523,12 @@
       "month_pillar": "癸卯",
       "day_pillar": "癸未",
       "hour_pillar": "丁巳",
-      "current_strong": "fire",
-      "month_boost_strong": "fire",
-      "hidden_stems_strong": "fire",
-      "current": "{\"wood\": 19, \"fire\": 40, \"earth\": 10, \"metal\": 0, \"water\": 31}",
-      "month_branch_boost": "{\"wood\": 26, \"fire\": 37, \"earth\": 9, \"metal\": 0, \"water\": 28}",
-      "hidden_stems": "{\"wood\": 27, \"fire\": 35, \"earth\": 13, \"metal\": 1, \"water\": 24}"
+      "v1_current_strong": "fire",
+      "v2_month_branch_boost_strong": "fire",
+      "exp_v2_hidden_blend_strong": "fire",
+      "v1_current": "{\"wood\": 19, \"fire\": 40, \"earth\": 10, \"metal\": 0, \"water\": 31}",
+      "v2_month_branch_boost": "{\"wood\": 26, \"fire\": 37, \"earth\": 9, \"metal\": 0, \"water\": 28}",
+      "exp_v2_hidden_blend": "{\"wood\": 30, \"fire\": 35, \"earth\": 11, \"metal\": 0, \"water\": 24}"
     },
     {
       "sample_id": "S40",
@@ -536,12 +536,12 @@
       "month_pillar": "丙戌",
       "day_pillar": "戊申",
       "hour_pillar": "戊午",
-      "current_strong": "earth",
-      "month_boost_strong": "earth",
-      "hidden_stems_strong": "earth",
-      "current": "{\"wood\": 0, \"fire\": 35, \"earth\": 40, \"metal\": 25, \"water\": 0}",
-      "month_branch_boost": "{\"wood\": 0, \"fire\": 32, \"earth\": 45, \"metal\": 23, \"water\": 0}",
-      "hidden_stems": "{\"wood\": 0, \"fire\": 35, \"earth\": 40, \"metal\": 24, \"water\": 1}"
+      "v1_current_strong": "earth",
+      "v2_month_branch_boost_strong": "earth",
+      "exp_v2_hidden_blend_strong": "earth",
+      "v1_current": "{\"wood\": 0, \"fire\": 35, \"earth\": 40, \"metal\": 25, \"water\": 0}",
+      "v2_month_branch_boost": "{\"wood\": 0, \"fire\": 32, \"earth\": 45, \"metal\": 23, \"water\": 0}",
+      "exp_v2_hidden_blend": "{\"wood\": 0, \"fire\": 32, \"earth\": 44, \"metal\": 23, \"water\": 1}"
     }
   ]
 }
