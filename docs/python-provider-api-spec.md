@@ -71,6 +71,7 @@ Success Response JSON
 설명
 - 두 사람의 궁합 원시 신호 + 점수(있으면) 반환
 - 점수 미반환도 허용(프론트 파생 점수 사용)
+- 현재 fake provider는 signals 기반 임시 규칙으로 score를 파생함
 
 Request JSON
 ```json

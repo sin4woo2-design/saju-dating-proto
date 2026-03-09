@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import hashlib
 
+from app.config import settings
 from app.schemas import PersonInput
 
-PROVIDER_VERSION = "fake-python-provider-v0"
+PROVIDER_VERSION = settings.provider_version
 ALLOWED_TIMEZONES = {"Asia/Seoul", "UTC"}
 
 STEMS = list("甲乙丙丁戊己庚辛壬癸")
@@ -24,7 +25,7 @@ def validate_policy(p: PersonInput) -> tuple[bool, str | None, str | None]:
     if p.timezone not in ALLOWED_TIMEZONES:
         return False, "UNSUPPORTED_TIMEZONE", f"timezone '{p.timezone}' is not supported"
     if p.calendarType != "solar":
-        return False, "UNSUPPORTED_CALENDAR_TYPE", "calendarType 'lunar' is not supported in fake provider v0"
+        return False, "UNSUPPORTED_CALENDAR_TYPE", "calendarType 'lunar' is not supported in provider v0"
     return True, None, None
 
 
@@ -46,11 +47,9 @@ def calculate_chart(p: PersonInput) -> tuple[dict[str, int], dict[str, str], lis
         "hour": f"{STEMS[(s // 19) % 10]}{BRANCHES[(s // 19) % 12]}",
     }
 
-    signals: list[str] = []
     strong = max(five, key=five.get)
     weak = min(five, key=five.get)
-    signals.append(f"{strong.upper()}_STRONG")
-    signals.append(f"{weak.upper()}_WEAK")
+    signals = [f"{strong.upper()}_STRONG", f"{weak.upper()}_WEAK"]
 
     warnings: list[str] = []
     if not p.birthTimeKnown:
@@ -60,16 +59,15 @@ def calculate_chart(p: PersonInput) -> tuple[dict[str, int], dict[str, str], lis
     return five, pillars, signals, latency_ms, warnings
 
 
-def calculate_compatibility(me: PersonInput, partner: PersonInput) -> tuple[int, list[str], int, list[str]]:
+def calculate_compatibility_signals(me: PersonInput, partner: PersonInput) -> tuple[list[str], int, list[str]]:
     s1 = _seed(_person_key(me))
     s2 = _seed(_person_key(partner))
     mix = _seed(f"{min(s1, s2)}:{max(s1, s2)}")
 
-    score = 60 + (mix % 36)
-
     signals = [
         "HAP_YEAR_BRANCH" if (s1 + s2) % 2 == 0 else "CHUNG_YEAR_BRANCH",
         "CHUNG_DAY_STEM" if abs((s1 % 10) - (s2 % 10)) > 4 else "HAP_DAY_STEM",
+        "COMPLEMENT_FIVE_ELEMENTS" if mix % 3 == 0 else "BALANCED_RHYTHM",
     ]
 
     warnings: list[str] = []
@@ -77,4 +75,4 @@ def calculate_compatibility(me: PersonInput, partner: PersonInput) -> tuple[int,
         warnings.append("PROVIDER_PARTIAL_DATA")
 
     latency_ms = 35 + (mix % 55)
-    return score, signals, latency_ms, warnings
+    return signals, latency_ms, warnings

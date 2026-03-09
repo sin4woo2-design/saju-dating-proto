@@ -13,12 +13,9 @@ from app.schemas import (
     SajuChartResponse,
     CompatibilityBody,
 )
-from app.services.fake_engine import (
-    PROVIDER_VERSION,
-    calculate_chart,
-    calculate_compatibility,
-    validate_policy,
-)
+from app.services.fake_engine import PROVIDER_VERSION, validate_policy
+from app.services.chart_service import get_chart
+from app.services.compatibility_service import get_compatibility
 from app.services.request_id import deterministic_request_id
 
 router = APIRouter(prefix="/saju", tags=["saju"])
@@ -40,7 +37,7 @@ def saju_chart(req: SajuChartRequest):
     if not ok:
         _raise_error(status_code=400, code=error_code, message=error_message, request_id=request_id)
 
-    five, pillars, signals, latency_ms, warnings = calculate_chart(req.person)
+    five, pillars, signals, latency_ms, warnings = get_chart(req.person)
 
     return SajuChartResponse(
         meta=Meta(
@@ -67,7 +64,7 @@ def compatibility_signals(req: CompatibilitySignalsRequest):
         if not ok:
             _raise_error(status_code=400, code=error_code, message=error_message, request_id=request_id)
 
-    score, signals, latency_ms, warnings = calculate_compatibility(req.me, req.partner)
+    score, signals, latency_ms, warnings = get_compatibility(req.me, req.partner)
 
     return CompatibilitySignalsResponse(
         meta=Meta(

@@ -80,9 +80,16 @@ curl -s -X POST http://localhost:8081/saju/compatibility-signals \
 - `calendarType=lunar` 요청 시 400 + `UNSUPPORTED_CALENDAR_TYPE`
 - `birthTimeKnown=false`이면 warning에 `PROVIDER_PARTIAL_DATA` 추가 가능
 
+## 전환 준비 모드
+- `CHART_ENGINE_MODE=fake` (기본)
+- `CHART_ENGINE_MODE=lunar-prep`
+  - lunar 엔진 진입을 시도하되(현재 미구현), 실패 시 fake로 fallback
+  - fallback 시 warning에 `PROVIDER_UNAVAILABLE`가 포함될 수 있음
+
 ## deterministic fake 계산
 - 동일 입력(payload)이면 동일 결과를 반환
-- `requestId`, `latencyMs`, 계산 결과(score/오행/신호)가 입력 해시 기반으로 고정됨
+- `requestId`, `latencyMs`, 계산 결과(오행/신호)가 입력 해시 기반으로 고정됨
+- 궁합 점수는 임시로 signals 기반 파생 규칙으로 계산됨
 
 ## 범위
 - 현재는 fake 로직만 구현됨
