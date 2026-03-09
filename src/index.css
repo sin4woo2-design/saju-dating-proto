@@ -168,10 +168,25 @@ button:disabled {
   grid-template-columns: repeat(2, 1fr);
 }
 
+.providerStatusBox {
+  border: 1px solid #3d4377;
+  border-radius: 12px;
+  padding: 8px 10px;
+  background: #161a3a;
+  display: grid;
+  gap: 6px;
+}
+
 .providerStatusRow {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+.statusHint {
+  margin: 0;
+  font-size: 12px;
+  color: #c9cffa;
 }
 
 .sourceBadge,
@@ -186,6 +201,12 @@ button:disabled {
   background: #173529;
   border-color: #2c8f67;
   color: #c7ffe8;
+}
+
+.sourceBadge.warn {
+  background: #3b2f16;
+  border-color: #b08a35;
+  color: #ffe9be;
 }
 
 .sourceBadge.fallback {

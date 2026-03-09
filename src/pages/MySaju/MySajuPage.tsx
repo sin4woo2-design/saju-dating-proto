@@ -18,6 +18,28 @@ function warningLabel(code: string) {
   return code;
 }
 
+function statusText(providerState: "provider" | "mock-fallback", warnings: string[]) {
+  if (providerState === "mock-fallback") {
+    return {
+      badge: "fallback 사용",
+      detail: "현재는 백업 규칙 결과를 보여주고 있어요.",
+      tone: "fallback",
+    } as const;
+  }
+  if (warnings.some((w) => w.includes("PARTIAL"))) {
+    return {
+      badge: "일부 보정됨",
+      detail: "출생시간 미상/부분 데이터가 있어 결과 해석에 주의가 필요해요.",
+      tone: "warn",
+    } as const;
+  }
+  return {
+    badge: "실계산 사용",
+    detail: "lunar-python 계산 결과가 정상 반영되었어요.",
+    tone: "ok",
+  } as const;
+}
+
 export default function MySajuPage({ me }: Props) {
   const [profile, setProfile] = useState<SajuProfile | null>(null);
   const [providerState, setProviderState] = useState<"provider" | "mock-fallback">("mock-fallback");
@@ -51,6 +73,8 @@ export default function MySajuPage({ me }: Props) {
     };
   }, [profile]);
 
+  const state = statusText(providerState, warnings);
+
   const handleShare = async () => {
     if (!profile) return;
     const result = await shareOrCopy({
@@ -73,13 +97,16 @@ export default function MySajuPage({ me }: Props) {
       title={`${me.name}님의 사주 리포트`}
       action={<button type="button" className="ghostBtn" onClick={handleShare}>공유</button>}
     >
-      <section className="providerStatusRow">
-        <span className={`sourceBadge ${providerState === "provider" ? "ok" : "fallback"}`}>
-          {providerState === "provider" ? "provider" : "mock fallback"}
-        </span>
-        {warnings.slice(0, 2).map((w) => (
-          <span key={w} className="warnBadge">{warningLabel(w)}</span>
-        ))}
+      <section className="providerStatusBox">
+        <div className="providerStatusRow">
+          <span className={`sourceBadge ${state.tone === "ok" ? "ok" : state.tone === "warn" ? "warn" : "fallback"}`}>
+            {state.badge}
+          </span>
+          {warnings.slice(0, 2).map((w) => (
+            <span key={w} className="warnBadge">{warningLabel(w)}</span>
+          ))}
+        </div>
+        <p className="statusHint">{state.detail}</p>
       </section>
 
       <section className="summaryChips">
