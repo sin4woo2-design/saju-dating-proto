@@ -11,10 +11,11 @@
 - lunar 준비용 엔진 자리 추가: `lunar_chart.calculate_chart_with_lunar()` (미구현)
 - `CHART_ENGINE_MODE=lunar-prep`일 때 lunar 시도 후 실패 시 fake fallback
 
-### Phase B (다음 구현)
-- `lunar_chart.py`에 실제 lunar-python 계산 로직 연결
-- 입력 변환: timezone/calendarType/birthTimeKnown 반영
-- 출력 매핑: 오행 정규화(0~100), pillars(연/월/일/시), signals 도출
+### Phase B (진행 중)
+- `lunar_chart.py`에 실제 lunar-python 계산 로직 최소 연결 완료
+- 입력 변환: timezone/calendarType/birthTimeKnown 반영(최소)
+- 출력 매핑: pillars(연/월/일/시), 오행 정규화(합계 100), 기본 signals 도출
+- 남은 과제: lunar 입력(윤달 등) 정밀 처리, 신호 체계 고도화
 
 ### Phase C (호환/궁합)
 - `/saju/compatibility-signals`는 score 직접 계산 대신

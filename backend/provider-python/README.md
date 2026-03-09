@@ -17,6 +17,8 @@ cd backend/provider-python
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+# real chart 준비 모드
+export CHART_ENGINE_MODE=lunar-prep
 uvicorn app.main:app --host 0.0.0.0 --port 8081 --reload
 ```
 
@@ -86,11 +88,22 @@ curl -s -X POST http://localhost:8081/saju/compatibility-signals \
   - lunar 엔진 진입을 시도하되(현재 미구현), 실패 시 fake로 fallback
   - fallback 시 warning에 `PROVIDER_UNAVAILABLE`가 포함될 수 있음
 
+## chart real 전환(최소 구현)
+- `CHART_ENGINE_MODE=lunar-prep`일 때 `/saju/chart`는 lunar-python 계산 경로를 우선 사용
+- 실패 시 자동으로 fake chart로 fallback (`PROVIDER_UNAVAILABLE` warning)
+- `/saju/compatibility-signals`는 아직 fake signal + 파생 점수 유지
+
 ## deterministic fake 계산
 - 동일 입력(payload)이면 동일 결과를 반환
 - `requestId`, `latencyMs`, 계산 결과(오행/신호)가 입력 해시 기반으로 고정됨
 - 궁합 점수는 임시로 signals 기반 파생 규칙으로 계산됨
 
+## 간단 검증
+```bash
+# 로컬 smoke 테스트
+python -m app.tests.test_chart_service
+```
+
 ## 범위
-- 현재는 fake 로직만 구현됨
-- 아직 lunar-python 설치/실연동은 하지 않음
+- `/saju/chart`는 lunar-python 최소 구현 반영됨(모드: lunar-prep)
+- `/saju/compatibility-signals`는 아직 fake 로직 유지
