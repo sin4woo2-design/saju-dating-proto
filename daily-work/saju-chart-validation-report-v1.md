@@ -38,8 +38,17 @@
 3. signals 확장(합/충/형/파/해)
 4. 윤달(leap month) 입력 스키마 확장
 
+## 규칙 비교 요약(S01~S08)
+- 상세 결과: `daily-work/saju-chart-rule-comparison-report-v1.md`
+- strong 분포:
+  - 현행: wood 2 / earth 4 / water 2
+  - 월지 강화: wood 1 / earth 4 / metal 1 / water 2
+  - 지장간 포함: wood 2 / earth 4 / water 2
+- 1차 추천: 월지 강화 규칙(분포 민감도 확인 가능)
+
 ## 다음 단계 제안
-1. 가중치 실험안 A/B (현재 vs 월지강화 vs 지장간포함)
-2. 음력 입력 윤달(leap month) 필드 확장
-3. signals 확장(합/충/형/파/해 + 일간 중심)
-4. 결과 리뷰 후 `/saju/chart` 집계 규칙 v2 확정
+1. 표본을 30~50건으로 확대하고 규칙 3안 재비교
+2. 월지강화 + 지장간 포함 복합 규칙 추가
+3. 음력 입력 윤달(leap month) 필드 확장
+4. signals 확장(합/충/형/파/해 + 일간 중심)
+5. 결과 리뷰 후 `/saju/chart` 집계 규칙 v2 확정
