@@ -17,6 +17,8 @@ export interface HomeTimeFlow {
 
 export interface HomeNarrativeSnapshot {
   providerState: ProviderState;
+  heroLead: string;
+  heroSupport: string;
   todaySummary: [string, string, string];
   todayPoints: HomeTodayPoints;
   timeFlow: HomeTimeFlow;
@@ -35,6 +37,18 @@ function seedFromProfile(input: UserProfileInput) {
 function pick<T>(seed: number, list: readonly T[]): T {
   return list[seed % list.length];
 }
+
+const heroLeadLines = [
+  "오늘은 대화의 시작 톤이 흐름을 만듭니다.",
+  "오늘은 작은 조율이 관계 리듬을 살립니다.",
+  "오늘은 핵심을 짧게 말할수록 안정적입니다.",
+] as const;
+
+const heroSupportLines = [
+  "첫 문장을 부드럽게 열면 반응이 편안해져요.",
+  "속도보다 순서를 맞추면 갈등을 줄일 수 있어요.",
+  "오후 집중 구간을 먼저 확보하면 흐름이 좋아요.",
+] as const;
 
 const summaryLine1 = [
   "핵심 대화는 오늘 짧게 시작하세요.",
@@ -128,12 +142,16 @@ export function buildMockHomeNarrative(input: UserProfileInput, providerState: P
   const confidence: NarrativeConfidence = providerState === "provider" ? "high" : providerState === "mock-fallback" ? "medium" : "low";
 
   const usedSummary = new Set<string>();
+  const heroLead = trimSentence(pick(seed + 2, heroLeadLines));
+  const heroSupport = trimSentence(pick(seed + 5, heroSupportLines));
   const line1 = uniqueLine(pick(seed, summaryLine1), usedSummary, summaryLine1[0]);
   const line2 = uniqueLine(pick(seed + 3, summaryLine2), usedSummary, summaryLine2[1]);
   const line3 = uniqueLine(pick(seed + 7, summaryLine3), usedSummary, summaryLine3[2]);
 
   return {
     providerState,
+    heroLead,
+    heroSupport,
     todaySummary: [trimSentence(line1), trimSentence(line2), trimSentence(line3)],
     todayPoints: {
       conversation: trimSentence(pick(seed + 11, pointConversation)),

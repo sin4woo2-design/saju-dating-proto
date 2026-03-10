@@ -13,10 +13,13 @@ function dailySeed(me: UserProfileInput) {
   return `${me.birthDate}-${me.birthTime}-${today}`.split("").reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
 }
 
+const defaultHeroLead = "오늘은 대화의 시작 톤이 흐름을 만듭니다.";
+const defaultHeroSupport = "첫 문장을 부드럽게 열면 반응이 편안해져요.";
+
 const defaultSummary: [string, string, string] = [
-  "중요한 대화 시작에 좋은 타이밍이에요.",
-  "톤을 맞추면 관계 리듬이 안정돼요.",
-  "관계 조율에서 좋은 흐름이 보여요.",
+  "핵심 대화는 오늘 짧게 시작하세요.",
+  "속도보다 톤을 맞추면 흐름이 안정돼요.",
+  "오후에 집중이 올라오니 핵심을 배치하세요.",
 ];
 
 const defaultPoints = {
@@ -59,6 +62,9 @@ export default function HomePage({ me }: Props) {
     return [line1 || defaultSummary[0], line2 || defaultSummary[1], line3 || defaultSummary[2]];
   }, [narrative]);
 
+  const heroLead = narrative?.heroLead || defaultHeroLead;
+  const heroSupport = narrative?.heroSupport || defaultHeroSupport;
+
   const points = {
     conversation: narrative?.todayPoints?.conversation || defaultPoints.conversation,
     wealth: narrative?.todayPoints?.wealth || defaultPoints.wealth,
@@ -88,8 +94,8 @@ export default function HomePage({ me }: Props) {
           </div>
         </div>
 
-        <p className="heroDescLine">{summary[0]}</p>
-        <p className="heroConclusion">{summary[1]}</p>
+        <p className="heroDescLine">{heroLead}</p>
+        <p className="heroConclusion">{heroSupport}</p>
 
         <Link to="/mysaju" className="heroInlineCta heroGoldCta full">내 사주 상세 보기</Link>
       </section>
