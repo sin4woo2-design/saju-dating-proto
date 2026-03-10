@@ -41,31 +41,31 @@ export default function HomePage({ me }: Props) {
       </section>
 
       <section className="homeHubGrid homeTripletGrid">
-        <article className="hubCard summaryCard metricCard">
+        <article className="metricCard">
           <strong>◷</strong>
           <p className="metricLabel">집중 시간</p>
           <b>2 - 4 PM</b>
         </article>
-        <article className="hubCard summaryCard metricCard">
+        <article className="metricCard">
           <strong>◔</strong>
           <p className="metricLabel">관계 온도</p>
           <b>75°C</b>
         </article>
-        <article className="hubCard summaryCard metricCard">
+        <article className="metricCard">
           <strong>⌘</strong>
           <p className="metricLabel">오늘의 키워드</p>
           <b>화합</b>
         </article>
       </section>
 
-      <section className="hubCard summaryCard dailySummaryCard">
+      <section className="dailySummarySection">
         <h4>오늘의 운세 요약</h4>
         <ul>
           <li>오늘은 중요한 대화를 시작하기 좋은 흐름이에요.</li>
           <li>{me.name}님의 강한 기운을 보완하는 톤을 선택해보세요.</li>
           <li>가까운 사람과의 관계 조율에서 좋은 결과가 기대돼요.</li>
         </ul>
-        <Link to="/mysaju" className="heroInlineCta summaryCta">사주 전체 분석 보기 →</Link>
+        <Link to="/mysaju" className="summaryFullCta">사주 전체 분석 보기</Link>
       </section>
 
       <section className="hubCard utilityCard continueCard">

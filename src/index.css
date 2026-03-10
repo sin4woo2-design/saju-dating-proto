@@ -263,6 +263,10 @@ button:disabled {
   padding: 18px;
 }
 
+.refHeroCard::before {
+  content: none;
+}
+
 .refHeroHead {
   width: 100%;
   display: grid;
@@ -273,8 +277,8 @@ button:disabled {
 
 .refHeroHead h3 {
   margin: 6px 0 0;
-  font-size: 34px;
-  line-height: 1.05;
+  font-size: 33px;
+  line-height: 1.06;
   color: #1f1f1d;
 }
 
@@ -285,8 +289,8 @@ button:disabled {
 }
 
 .heroScoreOrb {
-  width: 96px;
-  height: 96px;
+  width: 92px;
+  height: 92px;
   border-radius: 999px;
   border: 1px solid #d8c39f;
   background: #fffdfa;
@@ -348,44 +352,55 @@ button:disabled {
 .refHighlightBox {
   width: 100%;
   border: 1px solid #ece7dc;
-  border-radius: 12px;
-  padding: 10px 12px;
+  border-radius: 10px;
+  padding: 9px 11px;
   background: #fffdf8;
-  font-size: 15px;
+  font-size: 14px;
   color: #4b4237;
 }
 
 .metricCard {
+  border: 1px solid #ebecef;
+  border-radius: 11px;
+  background: #ffffff;
+  padding: 10px 8px;
   text-align: center;
+  display: grid;
   justify-items: center;
-  gap: 4px;
+  gap: 3px;
 }
 
 .metricCard strong {
-  font-size: 18px;
-  color: #b3904f;
+  font-size: 14px;
+  color: #8f764f;
 }
 
 .metricCard .metricLabel {
   margin: 0;
-  font-size: 12px;
+  font-size: 11px;
   color: #6b7280;
 }
 
 .metricCard b {
-  font-size: 28px;
-  line-height: 1;
-  color: #222;
-}
-
-.dailySummaryCard h4 {
-  margin: 0;
-  font-size: 30px;
-  line-height: 1.1;
+  font-size: 22px;
+  line-height: 1.05;
   color: #1f1f1d;
 }
 
-.dailySummaryCard ul {
+.dailySummarySection {
+  display: grid;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.dailySummarySection h4 {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.12;
+  color: #1f1f1d;
+}
+
+.dailySummarySection ul {
   margin: 0;
   padding-left: 18px;
   display: grid;
@@ -393,8 +408,18 @@ button:disabled {
   color: #4b5563;
 }
 
-.summaryCta {
-  align-self: start;
+.summaryFullCta {
+  display: block;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  color: #f9fafb;
+  background: #2b2f36;
+  border: 1px solid #2b2f36;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .heroCard h3 {
