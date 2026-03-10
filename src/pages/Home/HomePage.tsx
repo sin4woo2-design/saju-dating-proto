@@ -28,27 +28,39 @@ export default function HomePage({ me }: Props) {
 
   return (
     <PageLayout title="오늘의 사주 홈" subtitle="오늘의 흐름을 먼저 보고, 필요한 리포트로 바로 이어가세요.">
-      <section className="heroCard homeHeroVisual signatureCard">
+      <section className="heroCard homeHeroVisual signatureCard posterHero">
         <div className="heroWave" />
         <div className="heroOrbit" aria-hidden />
 
-        <div className="homeHeroTop">
+        <div className="heroCenterTop">
           <p className="smallBadge">✨ 오늘의 기운</p>
-          <span className="smallPill">{luckScore}점</span>
+          <div className="heroScoreOrb">
+            <strong>{luckScore}</strong>
+            <span>{luckLevel}</span>
+          </div>
         </div>
 
-        <h3>{me.name}님의 오늘 흐름 · {luckLevel}</h3>
+        <h3>{me.name}님의 오늘 사주 흐름</h3>
         <p className="statusHint">{todayLine}</p>
-        <p className="heroMetaLine">집중 17:00-20:00 · 관계 온도 차분한 대화 · 키워드 리듬 정리</p>
+        <p className="heroMetaLine">행동 포인트 · 중요한 이야기는 저녁 전에 정리해보세요.</p>
         <p className="heroSubLine">{me.birthDate} · {me.birthTime} · {genderLabels[me.gender]}</p>
 
-        <Link to="/fortune" className="heroInlineCta">오늘 운세 자세히 보기</Link>
+        <Link to="/fortune" className="heroInlineCta heroPrimaryCta">오늘 운세 자세히 보기</Link>
       </section>
 
-      <section className="hubCard summaryCard fortuneCard">
-        <strong>📈 오늘 요약</strong>
-        <p>종합 점수 {luckScore}점. 오늘은 중요한 대화를 저녁 전에 정리하고, 내 사주의 보완 포인트를 한 번 확인해두면 좋아요.</p>
-        <p className="heroSubLine"><Link to="/mysaju">내 사주 리포트 이어서 보기</Link></p>
+      <section className="homeHubGrid homeTripletGrid">
+        <article className="hubCard summaryCard">
+          <strong>집중 타이밍</strong>
+          <p>17:00 ~ 20:00</p>
+        </article>
+        <article className="hubCard summaryCard">
+          <strong>관계 온도</strong>
+          <p>차분한 대화가 유리해요.</p>
+        </article>
+        <article className="hubCard summaryCard">
+          <strong>오늘 키워드</strong>
+          <p>리듬 정리</p>
+        </article>
       </section>
 
       <section className="hubCard utilityCard continueCard">
