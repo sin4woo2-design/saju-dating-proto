@@ -37,36 +37,26 @@ export default function HomePage({ me }: Props) {
           <span className="smallPill">{luckScore}점</span>
         </div>
 
-        <h3>{me.name}님의 오늘 운 흐름 · {luckLevel}</h3>
+        <h3>{me.name}님의 오늘 흐름 · {luckLevel}</h3>
         <p className="statusHint">{todayLine}</p>
-
-        <p className="heroMetaLine">
-          집중 17:00-20:00 · 관계 온도 차분한 대화 · 키워드 리듬 정리
-        </p>
-
+        <p className="heroMetaLine">집중 17:00-20:00 · 관계 온도 차분한 대화 · 키워드 리듬 정리</p>
         <p className="heroSubLine">{me.birthDate} · {me.birthTime} · {genderLabels[me.gender]}</p>
 
-        <Link to="/fortune" className="heroInlineCta">오늘 운세 자세히 보기 →</Link>
+        <Link to="/fortune" className="heroInlineCta">오늘 운세 자세히 보기</Link>
       </section>
 
       <section className="hubCard summaryCard fortuneCard">
         <strong>📈 오늘 요약</strong>
-        <p>종합 점수 {luckScore}점 · 오늘은 중요한 대화를 저녁 전에 정리하고, 내 사주 보완 포인트를 먼저 확인해두면 좋아요.</p>
-        <p className="heroSubLine">
-          <Link to="/fortune">운세 보기</Link> · <Link to="/mysaju">내 사주</Link> · <Link to="/persona">페르소나</Link>
-        </p>
+        <p>종합 점수 {luckScore}점. 오늘은 중요한 대화를 저녁 전에 정리하고, 내 사주의 보완 포인트를 한 번 확인해두면 좋아요.</p>
+        <p className="heroSubLine"><Link to="/mysaju">내 사주 리포트 이어서 보기</Link></p>
       </section>
-
-      <p className="heroSubLine">
-        빠른 이동: <Link to="/mysaju">원국 보기</Link> · <Link to="/fortune">오늘 운세</Link> · <Link to="/persona">페르소나 카드</Link> · <Link to="/inyeon">인연 콘텐츠</Link>
-      </p>
 
       <section className="hubCard utilityCard continueCard">
         <strong>⏱️ 이어보기</strong>
-        <p>최근 많이 보는 리포트부터 다시 시작해보세요.</p>
+        <p>최근 보던 화면으로 바로 돌아가세요.</p>
         <div className="continueLinks">
-          <Link to="/mysaju">내 사주 리포트 이어보기</Link>
-          <Link to="/compatibility">궁합 계산 바로가기</Link>
+          <Link to="/compatibility">궁합 계산 이어보기</Link>
+          <span className="heroSubLine"><Link to="/persona">페르소나 카드 보기</Link></span>
         </div>
       </section>
     </PageLayout>
