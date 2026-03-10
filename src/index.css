@@ -161,6 +161,7 @@ button:disabled {
 .homeHeroVisual {
   position: relative;
   overflow: hidden;
+  padding-top: 18px;
 }
 
 .homeHeroVisual::after {
@@ -190,7 +191,9 @@ button:disabled {
   gap: 8px;
   position: absolute;
   right: 14px;
-  top: 12px;
+  top: 4px;
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 .heroSparkRow i {
@@ -209,6 +212,8 @@ button:disabled {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  z-index: 1;
 }
 
 .smallBadge {
