@@ -20,7 +20,9 @@ export default function PersonaPage() {
       <article className="personaCard posterCard">
         <div className="posterGlow" />
         <div className="posterStars">✦ ✧ ✦</div>
+        <div className="posterRing" aria-hidden />
         <p className="badge">SHAREABLE RESULT</p>
+        <p className="posterLead">운명의 취향 코드</p>
         <h3>{mockPersona.title}</h3>
         <ul>
           <li><strong>🕰️ 연령대</strong> {mockPersona.ageRange}</li>

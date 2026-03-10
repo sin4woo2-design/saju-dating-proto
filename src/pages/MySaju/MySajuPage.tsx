@@ -305,8 +305,15 @@ export default function MySajuPage({ me }: Props) {
         ]}
       />
 
-      <section className="elementCard">
-        <h3 className="sectionTitle">오행 밸런스</h3>
+      <section className="elementCard sajuDashboardCard">
+        <div className="fiveHeader">
+          <h3 className="sectionTitle">오행 밸런스</h3>
+          <span className="smallPill">대시보드</span>
+        </div>
+        <div className="fiveInsightRow">
+          <span>강한 기운 · {elementLabels[topSummary.strongKey]}</span>
+          <span>보완 기운 · {elementLabels[topSummary.weakKey]}</span>
+        </div>
         <div className="fiveVisualWrap">
           <div className="fiveWheelZone">
             <div
@@ -333,6 +340,13 @@ export default function MySajuPage({ me }: Props) {
             <span className="wheelLabel water">수</span>
           </div>
           <p className="statusHint">오행의 상대 비율과 위치를 함께 보여줘, 기운 흐름을 더 직관적으로 볼 수 있어요.</p>
+          <div className="fiveFlowLine">
+            <span>목</span><i />
+            <span>화</span><i />
+            <span>토</span><i />
+            <span>금</span><i />
+            <span>수</span>
+          </div>
         </div>
         <div className="elementOrbit">
           {Object.entries(profile.fiveElements).map(([key, value]) => (

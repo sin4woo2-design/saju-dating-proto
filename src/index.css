@@ -170,9 +170,40 @@ button:disabled {
   height: 220px;
   right: -90px;
   top: -90px;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.18), transparent 70%);
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.2), transparent 70%);
   pointer-events: none;
 }
+
+.heroWave {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: 42%;
+  height: 80px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(129, 140, 248, 0.08), rgba(59, 130, 246, 0.18), rgba(16, 185, 129, 0.08));
+  filter: blur(1px);
+}
+
+.heroSparkRow {
+  display: flex;
+  gap: 8px;
+  position: absolute;
+  right: 14px;
+  top: 12px;
+}
+
+.heroSparkRow i {
+  width: 6px;
+  border-radius: 999px;
+  background: #c7d8fd;
+}
+
+.heroSparkRow i:nth-child(1) { height: 10px; }
+.heroSparkRow i:nth-child(2) { height: 16px; }
+.heroSparkRow i:nth-child(3) { height: 22px; background: #8fb0f8; }
+.heroSparkRow i:nth-child(4) { height: 14px; }
+.heroSparkRow i:nth-child(5) { height: 9px; }
 
 .homeHeroTop {
   display: flex;
@@ -199,6 +230,32 @@ button:disabled {
   border-radius: 10px;
   padding: 8px 10px;
   font-size: 12px;
+  font-weight: 600;
+}
+
+.heroMetricRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.heroMetricRow article {
+  border: 1px solid #d9e4f3;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.75);
+  padding: 7px 8px;
+  display: grid;
+  gap: 2px;
+}
+
+.heroMetricRow small {
+  font-size: 10px;
+  color: #64748b;
+}
+
+.heroMetricRow b {
+  font-size: 12px;
+  color: #1e3a8a;
 }
 
 .heroCard h3 {
@@ -404,6 +461,31 @@ button:disabled {
   color: #64748b;
 }
 
+.sajuDashboardCard {
+  background: linear-gradient(180deg, #ffffff, #f7fbff);
+}
+
+.fiveHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fiveInsightRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.fiveInsightRow span {
+  font-size: 12px;
+  color: #334155;
+  border: 1px solid #d8e4f6;
+  background: #f8fbff;
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+
 .fiveVisualWrap {
   display: grid;
   gap: 8px;
@@ -462,6 +544,21 @@ button:disabled {
 .wheelLabel.earth { bottom: 8px; right: 18px; }
 .wheelLabel.metal { bottom: 8px; left: 18px; }
 .wheelLabel.water { top: 42px; left: -8px; }
+
+.fiveFlowLine {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-size: 11px;
+}
+
+.fiveFlowLine i {
+  width: 14px;
+  height: 2px;
+  background: linear-gradient(90deg, #cbd9f5, #9bb9f8);
+  border-radius: 999px;
+}
 
 .elementOrbit {
   display: grid;
@@ -756,6 +853,24 @@ button:disabled {
   letter-spacing: 2px;
 }
 
+.posterRing {
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  border-radius: 999px;
+  border: 1px solid rgba(124, 99, 245, 0.2);
+  right: -45px;
+  bottom: -45px;
+}
+
+.posterLead {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6d5ce7;
+}
+
 .personaCard h3 {
   margin: 0;
   font-size: 20px;
@@ -922,7 +1037,8 @@ button:disabled {
 @media (max-width: 420px) {
   .homeHubGrid,
   .pillarsGrid,
-  .quickStats {
+  .quickStats,
+  .heroMetricRow {
     grid-template-columns: 1fr;
   }
 

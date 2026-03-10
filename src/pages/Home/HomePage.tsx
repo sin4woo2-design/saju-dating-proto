@@ -29,12 +29,34 @@ export default function HomePage({ me }: Props) {
   return (
     <PageLayout title="오늘의 사주 홈" subtitle="가볍게 확인하고, 필요한 리포트로 바로 이어가세요.">
       <section className="heroCard homeHeroVisual">
+        <div className="heroWave" />
+        <div className="heroSparkRow" aria-hidden>
+          <i />
+          <i />
+          <i />
+          <i />
+          <i />
+        </div>
         <div className="homeHeroTop">
           <p className="smallBadge">✨ 오늘의 기운</p>
           <span className="smallPill">{luckScore}점</span>
         </div>
         <h3>{me.name}님의 오늘 운 흐름 · {luckLevel}</h3>
         <p className="statusHint">{todayLine}</p>
+        <div className="heroMetricRow">
+          <article>
+            <small>집중 타이밍</small>
+            <b>17:00-20:00</b>
+          </article>
+          <article>
+            <small>관계 온도</small>
+            <b>차분한 대화</b>
+          </article>
+          <article>
+            <small>오늘 키워드</small>
+            <b>리듬 정리</b>
+          </article>
+        </div>
         <div className="summaryChips">
           <span>🗓️ {me.birthDate} · {me.birthTime} · {genderLabels[me.gender]}</span>
           <span>🔮 저녁 전 중요한 대화 정리 추천</span>
