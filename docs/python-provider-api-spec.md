@@ -106,14 +106,25 @@ Success Response JSON
 {
   "meta": {
     "providerVersion": "fake-python-provider-v0",
+    "engineVersion": "compat-engine-v0.1-draft",
     "requestId": "req_01JXYZ...",
     "latencyMs": 58
   },
   "compatibility": {
     "score": 84,
-    "signals": ["HAP_YEAR_BRANCH", "CHUNG_DAY_STEM"]
+    "signals": ["HAP_YEAR_BRANCH", "CHUNG_DAY_STEM"],
+    "rawSignals": [
+      { "code": "BRANCH_HAP_YEAR", "category": "relation-branch", "polarity": "positive", "weight": 7 },
+      { "code": "STEM_CHUNG_DAY", "category": "relation-stem", "polarity": "negative", "weight": -4 },
+      { "code": "RELIABILITY_TIME_UNKNOWN_PARTNER", "category": "reliability", "polarity": "neutral", "weight": -3 }
+    ],
+    "reliability": {
+      "timeKnownMe": true,
+      "timeKnownPartner": false,
+      "confidence": "medium"
+    }
   },
-  "warnings": []
+  "warnings": ["PROVIDER_PARTIAL_DATA"]
 }
 ```
 
@@ -191,7 +202,11 @@ Timeout
 
 ---
 
-## 6) fake Python provider 구조(초안)
+## 6) chart baseline 고정 상태
+- chart baseline: `v2-month-branch-boost` (잠정)
+- 이번 문서의 compatibility raw signals는 **설계 초안**이며, 실제 계산 구현은 후속 단계
+
+## 7) fake Python provider 구조(초안)
 
 권장 폴더
 - `backend/provider-python/`

@@ -35,11 +35,13 @@ export interface ProviderCompatibilityRequest {
   partner: ProviderPersonInput;
   options?: {
     includeSignals?: boolean;
+    includeRawSignals?: boolean;
   };
 }
 
 export interface ProviderMeta {
   providerVersion: string;
+  engineVersion?: string;
   requestId: string;
   latencyMs?: number;
 }
@@ -59,11 +61,34 @@ export interface ProviderSajuResponse {
   warnings?: ProviderWarningCode[];
 }
 
+export type CompatibilitySignalCategory =
+  | "relation-branch"
+  | "relation-stem"
+  | "element-dynamics"
+  | "daymaster-dynamics"
+  | "reliability";
+
+export type CompatibilitySignalPolarity = "positive" | "negative" | "neutral";
+
+export interface CompatibilityRawSignal {
+  code: string;
+  category: CompatibilitySignalCategory;
+  polarity: CompatibilitySignalPolarity;
+  weight?: number;
+  note?: string;
+}
+
 export interface ProviderCompatibilityResponse {
   meta: ProviderMeta;
   compatibility: {
     score?: number;
     signals?: string[];
+    rawSignals?: CompatibilityRawSignal[];
+    reliability?: {
+      timeKnownMe?: boolean;
+      timeKnownPartner?: boolean;
+      confidence?: "high" | "medium" | "low";
+    };
   };
   warnings?: ProviderWarningCode[];
 }
