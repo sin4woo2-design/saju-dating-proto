@@ -1,5 +1,7 @@
 import type { SajuProfile, UserProfileInput, Gender } from "../../types/saju";
 import type { CompatibilityRawSignal } from "./provider-contract";
+import type { HomeNarrativeSnapshot } from "./homeNarrative";
+import type { PersonaNarrativeSnapshot } from "./personaNarrative";
 
 export type EngineMode = "mock" | "real-provider";
 
@@ -48,4 +50,6 @@ export interface SajuEngine {
   mode: EngineMode;
   calculateSaju(input: UserProfileInput): Promise<SajuResult>;
   calculateCompatibility(me: PairInput, partner: PairInput): Promise<CompatibilityResult>;
+  calculateHomeNarrative?(input: UserProfileInput): Promise<HomeNarrativeSnapshot>;
+  calculatePersonaNarrative?(input: UserProfileInput): Promise<PersonaNarrativeSnapshot>;
 }

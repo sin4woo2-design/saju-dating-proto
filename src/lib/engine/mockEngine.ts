@@ -1,5 +1,7 @@
 import { elementLabels } from "../../constants/labels";
 import type { FiveElementsBalance, SajuProfile, UserProfileInput } from "../../types/saju";
+import { buildMockHomeNarrative } from "./homeNarrative";
+import { buildMockPersonaNarrative } from "./personaNarrative";
 import type { PairInput, SajuEngine } from "./types";
 
 function seeded(input: UserProfileInput) {
@@ -117,5 +119,11 @@ export const mockEngine: SajuEngine = {
       rawSignals: [],
       reliability: { confidence: "low", timeKnownMe: true, timeKnownPartner: true },
     };
+  },
+  async calculateHomeNarrative(input) {
+    return buildMockHomeNarrative(input, "mock");
+  },
+  async calculatePersonaNarrative(input) {
+    return buildMockPersonaNarrative(input, "mock");
   },
 };
