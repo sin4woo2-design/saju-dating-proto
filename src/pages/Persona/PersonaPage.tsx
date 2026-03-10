@@ -19,6 +19,7 @@ export default function PersonaPage() {
     <PageLayout title="운명의 이상형 페르소나" subtitle="공유하고 싶은 포스터 카드로 결과를 확인해보세요.">
       <article className="personaCard posterCard">
         <div className="posterGlow" />
+        <div className="posterStars">✦ ✧ ✦</div>
         <p className="badge">SHAREABLE RESULT</p>
         <h3>{mockPersona.title}</h3>
         <ul>
@@ -28,11 +29,12 @@ export default function PersonaPage() {
           <li><strong>✨ 인상</strong> {mockPersona.appearance}</li>
         </ul>
         <p className="hash">{mockPersona.hashtags.join(" ")}</p>
-        <div className="summaryChips">
+        <div className="summaryChips personaChips">
           <span>저장용 카드</span>
           <span>지인 공유 추천</span>
         </div>
-        <button type="button" className="shareBtn" onClick={handleShare}>결과 공유하기</button>
+        <p className="posterCaption">오늘의 취향 코드를 한 장으로 정리한 결과예요. 스토리 캡처로 공유해보세요.</p>
+        <button type="button" className="shareBtn posterCta" onClick={handleShare}>결과 공유하기</button>
       </article>
       {message ? <p className="toastText">{message}</p> : null}
     </PageLayout>

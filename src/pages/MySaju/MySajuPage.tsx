@@ -308,24 +308,31 @@ export default function MySajuPage({ me }: Props) {
       <section className="elementCard">
         <h3 className="sectionTitle">오행 밸런스</h3>
         <div className="fiveVisualWrap">
-          <div
-            className="fiveWheel"
-            style={{
-              background: `conic-gradient(
-                ${elementColor("wood")} 0 ${profile.fiveElements.wood * 3.6}deg,
-                ${elementColor("fire")} ${profile.fiveElements.wood * 3.6}deg ${(profile.fiveElements.wood + profile.fiveElements.fire) * 3.6}deg,
-                ${elementColor("earth")} ${(profile.fiveElements.wood + profile.fiveElements.fire) * 3.6}deg ${(profile.fiveElements.wood + profile.fiveElements.fire + profile.fiveElements.earth) * 3.6}deg,
-                ${elementColor("metal")} ${(profile.fiveElements.wood + profile.fiveElements.fire + profile.fiveElements.earth) * 3.6}deg ${(profile.fiveElements.wood + profile.fiveElements.fire + profile.fiveElements.earth + profile.fiveElements.metal) * 3.6}deg,
-                ${elementColor("water")} ${(profile.fiveElements.wood + profile.fiveElements.fire + profile.fiveElements.earth + profile.fiveElements.metal) * 3.6}deg 360deg
-              )`,
-            }}
-          >
-            <div className="fiveWheelInner">
-              <strong>{elementLabels[topSummary.strongKey]}</strong>
-              <small>가장 강한 기운</small>
+          <div className="fiveWheelZone">
+            <div
+              className="fiveWheel"
+              style={{
+                background: `conic-gradient(
+                  ${elementColor("wood")} 0 ${profile.fiveElements.wood * 3.6}deg,
+                  ${elementColor("fire")} ${profile.fiveElements.wood * 3.6}deg ${(profile.fiveElements.wood + profile.fiveElements.fire) * 3.6}deg,
+                  ${elementColor("earth")} ${(profile.fiveElements.wood + profile.fiveElements.fire) * 3.6}deg ${(profile.fiveElements.wood + profile.fiveElements.fire + profile.fiveElements.earth) * 3.6}deg,
+                  ${elementColor("metal")} ${(profile.fiveElements.wood + profile.fiveElements.fire + profile.fiveElements.earth) * 3.6}deg ${(profile.fiveElements.wood + profile.fiveElements.fire + profile.fiveElements.earth + profile.fiveElements.metal) * 3.6}deg,
+                  ${elementColor("water")} ${(profile.fiveElements.wood + profile.fiveElements.fire + profile.fiveElements.earth + profile.fiveElements.metal) * 3.6}deg 360deg
+                )`,
+              }}
+            >
+              <div className="fiveWheelInner">
+                <strong>{elementLabels[topSummary.strongKey]}</strong>
+                <small>가장 강한 기운</small>
+              </div>
             </div>
+            <span className="wheelLabel wood">목</span>
+            <span className="wheelLabel fire">화</span>
+            <span className="wheelLabel earth">토</span>
+            <span className="wheelLabel metal">금</span>
+            <span className="wheelLabel water">수</span>
           </div>
-          <p className="statusHint">오행의 상대 비율을 원형으로 보여줘, 강/보완 포인트를 한눈에 볼 수 있어요.</p>
+          <p className="statusHint">오행의 상대 비율과 위치를 함께 보여줘, 기운 흐름을 더 직관적으로 볼 수 있어요.</p>
         </div>
         <div className="elementOrbit">
           {Object.entries(profile.fiveElements).map(([key, value]) => (

@@ -43,14 +43,23 @@ export default function HomePage({ me }: Props) {
       </section>
 
       <section className="homeHubGrid">
-        <article className="hubCard">
+        <article className="hubCard fortuneCard">
           <strong>📈 오늘 운세 요약</strong>
           <p>종합 점수 {luckScore}점 · 중요한 대화는 저녁 전에 마무리하면 좋아요.</p>
+          <div className="miniStatRow">
+            <span>기운 상승 시간</span>
+            <b>17:00 ~ 20:00</b>
+          </div>
           <Link to="/fortune">자세히 보기</Link>
         </article>
-        <article className="hubCard">
+        <article className="hubCard recommendCard">
           <strong>🪄 추천 카드</strong>
           <p>내 사주의 강세/보완 포인트를 먼저 보고 오늘 행동 포인트를 정해보세요.</p>
+          <div className="miniDots">
+            <i />
+            <i />
+            <i />
+          </div>
           <Link to="/mysaju">내 사주 열기</Link>
         </article>
       </section>
@@ -62,7 +71,7 @@ export default function HomePage({ me }: Props) {
         <Link to="/inyeon">🧭 인연 콘텐츠</Link>
       </section>
 
-      <section className="hubCard">
+      <section className="hubCard continueCard">
         <strong>⏱️ 이어보기</strong>
         <p>최근 많이 보는 리포트부터 다시 시작해보세요.</p>
         <div className="continueLinks">

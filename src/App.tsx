@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, NavLink, Navigate, Route, Routes } from "react-router-dom";
 import OnboardingPage from "./pages/Onboarding/OnboardingPage";
 import HomePage from "./pages/Home/HomePage";
 import MySajuPage from "./pages/MySaju/MySajuPage";
@@ -21,7 +21,7 @@ export default function App() {
     <BrowserRouter>
       <div className="appShell">
         <header className="topBar">
-          <h1>Saju Dating Proto</h1>
+          <h1>사주 라운지</h1>
           {me ? (
             <button
               type="button"
@@ -50,11 +50,11 @@ export default function App() {
         </main>
 
         <nav className="bottomNav bottomNavFive">
-          <Link to="/">홈</Link>
-          <Link to="/mysaju">내 사주</Link>
-          <Link to="/fortune">운세</Link>
-          <Link to="/persona">페르소나</Link>
-          <Link to="/inyeon">인연</Link>
+          <NavLink to="/" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>홈</NavLink>
+          <NavLink to="/mysaju" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>내 사주</NavLink>
+          <NavLink to="/fortune" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>운세</NavLink>
+          <NavLink to="/persona" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>페르소나</NavLink>
+          <NavLink to="/inyeon" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>인연</NavLink>
         </nav>
       </div>
     </BrowserRouter>
