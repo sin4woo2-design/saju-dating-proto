@@ -1,10 +1,11 @@
 .onboarding {
-  background: #15162b;
-  border: 1px solid #2e305a;
+  background: #ffffff;
+  border: 1px solid #e1eaf5;
   border-radius: 18px;
   padding: 16px;
   display: grid;
   gap: 12px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
 }
 
 .stepWrap {
@@ -14,7 +15,7 @@
 
 .step {
   margin: 0;
-  color: #b7b2de;
+  color: #64748b;
   font-size: 14px;
 }
 
@@ -22,28 +23,28 @@
   height: 8px;
   border-radius: 999px;
   overflow: hidden;
-  background: #262a53;
+  background: #e8eef8;
 }
 
 .progressTrack i {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, #7a5cff, #a48fff);
+  background: linear-gradient(90deg, #3b82f6, #6366f1);
 }
 
 .onboarding input {
   width: 100%;
   padding: 12px;
   border-radius: 12px;
-  border: 1px solid #383b70;
-  background: #0d1022;
-  color: #f6f2ff;
+  border: 1px solid #d4ddea;
+  background: #ffffff;
+  color: #111827;
 }
 
 .hint {
   margin: 0;
   font-size: 12px;
-  color: #9ca2d8;
+  color: #64748b;
 }
 
 .genderGrid {
@@ -57,32 +58,33 @@
 }
 
 .genderGrid .active {
-  border-color: #8f7bff;
-  color: #e0daff;
-  background: #2a2559;
+  border-color: #bfd4fb;
+  color: #1d4ed8;
+  background: #eef5ff;
 }
 
 .ghostQuick {
   min-height: 40px;
-  background: #181c3d;
-  border-color: #3b3f71;
+  background: #f8fbff;
+  border-color: #d4deee;
+  color: #334155;
 }
 
 .previewBox {
-  border: 1px dashed #3a3f70;
+  border: 1px dashed #d6e0ee;
   border-radius: 12px;
   padding: 10px 12px;
-  background: #121531;
+  background: #f8fbff;
 }
 
 .previewBox p {
   margin: 0 0 4px;
   font-size: 12px;
-  color: #aab0df;
+  color: #64748b;
 }
 
 .previewBox small {
-  color: #d8ddff;
+  color: #334155;
   line-height: 1.45;
 }
 
@@ -97,6 +99,7 @@
 }
 
 .actions .primary {
-  background: linear-gradient(90deg, #6f55ff, #8f6bff);
-  border-color: #8365ff;
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
 }

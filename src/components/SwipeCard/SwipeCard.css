@@ -1,11 +1,11 @@
 .swipeCard {
-  background: linear-gradient(165deg, #1a1d3e, #11142a 62%);
-  border: 1px solid #3a3f75;
+  background: #ffffff;
+  border: 1px solid #e2eaf5;
   border-radius: 22px;
   padding: 16px;
   display: grid;
   gap: 12px;
-  box-shadow: 0 16px 32px rgba(13, 14, 30, 0.4);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
 }
 
 .swipeHead {
@@ -21,7 +21,7 @@
   border-radius: 999px;
   display: grid;
   place-items: center;
-  background: radial-gradient(circle at top, #8f79ff, #5640d6);
+  background: linear-gradient(180deg, #4f8df8, #3c6ef0);
   color: #fff;
   font-size: 24px;
   font-weight: 700;
@@ -30,27 +30,28 @@
 .swipeHead h3 {
   margin: 0;
   font-size: 18px;
+  color: #1f2937;
 }
 
 .meta {
   margin: 2px 0 0;
-  color: #bfc4ec;
+  color: #64748b;
   font-size: 13px;
 }
 
 .scorePill {
-  background: #2f2868;
-  border: 1px solid #6858d8;
+  background: #eef4ff;
+  border: 1px solid #c8dafd;
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 700;
-  color: #e3dcff;
+  color: #2756c9;
 }
 
 .compatMeter {
-  background: #171c3c;
-  border: 1px solid #383f76;
+  background: #f8fbff;
+  border: 1px solid #dce5f3;
   border-radius: 14px;
   padding: 10px;
   display: grid;
@@ -61,32 +62,32 @@
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: #cfd5ff;
+  color: #64748b;
 }
 
 .compatMeterTrack {
   height: 9px;
   border-radius: 999px;
-  background: #29305f;
+  background: #e5edf8;
   overflow: hidden;
 }
 
 .compatMeterTrack i {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, #7c63ff, #a690ff);
+  background: linear-gradient(90deg, #4f8df8, #7b9fff);
 }
 
 .intro {
   margin: 0;
-  color: #dce0ff;
+  color: #334155;
   line-height: 1.45;
   font-size: 14px;
 }
 
 .noteBox {
-  border: 1px solid #3f3b80;
-  background: #191d42;
+  border: 1px solid #dce5f3;
+  background: #f8fbff;
   border-radius: 12px;
   padding: 10px;
   display: grid;
@@ -95,13 +96,13 @@
 
 .noteBox span {
   font-size: 12px;
-  color: #cbc0ff;
+  color: #2563eb;
 }
 
 .noteBox p {
   margin: 0;
   font-size: 13px;
-  color: #dce0ff;
+  color: #475569;
 }
 
 .tags {
@@ -111,11 +112,12 @@
 }
 
 .tags span {
-  background: #252752;
+  background: #f2f6fc;
+  border: 1px solid #d9e2ef;
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 12px;
-  color: #d7d9ff;
+  color: #475569;
 }
 
 .swipeActions {
@@ -130,10 +132,12 @@
 }
 
 .swipeActions .ghost {
-  background: #1b1f45;
+  background: #f8fbff;
+  border-color: #d8e2f1;
 }
 
 .swipeActions .like {
-  background: linear-gradient(90deg, #6f55ff, #8f6bff);
-  border-color: #8365ff;
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
 }
