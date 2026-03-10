@@ -150,6 +150,49 @@ button:disabled {
   background: linear-gradient(180deg, #ffffff, #f7fbff);
 }
 
+.homeHeroVisual {
+  position: relative;
+  overflow: hidden;
+}
+
+.homeHeroVisual::after {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  right: -90px;
+  top: -90px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.18), transparent 70%);
+  pointer-events: none;
+}
+
+.homeHeroTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.smallBadge {
+  margin: 0;
+  font-size: 11px;
+  color: #4f46e5;
+  border: 1px solid #d8d7ff;
+  background: #f3f2ff;
+  border-radius: 999px;
+  padding: 5px 9px;
+}
+
+.heroInlineCta {
+  width: fit-content;
+  text-decoration: none;
+  color: #1d4ed8;
+  border: 1px solid #c7dafd;
+  background: #eef5ff;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 12px;
+}
+
 .heroCard h3 {
   margin: 0;
   font-size: 19px;
@@ -351,6 +394,42 @@ button:disabled {
 
 .tabPane small {
   color: #64748b;
+}
+
+.fiveVisualWrap {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  margin-bottom: 4px;
+}
+
+.fiveWheel {
+  width: 164px;
+  height: 164px;
+  border-radius: 999px;
+  padding: 16px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.85), 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.fiveWheelInner {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #e5ecf6;
+  display: grid;
+  place-content: center;
+  text-align: center;
+}
+
+.fiveWheelInner strong {
+  font-size: 14px;
+  color: #1f2937;
+}
+
+.fiveWheelInner small {
+  color: #64748b;
+  font-size: 11px;
 }
 
 .elementOrbit {
@@ -562,6 +641,47 @@ button:disabled {
   width: fit-content;
 }
 
+.personaCard {
+  position: relative;
+  border: 1px solid #dfe7f4;
+  border-radius: 20px;
+  background: #ffffff;
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.posterCard {
+  background: linear-gradient(180deg, #ffffff, #f8f5ff 90%);
+}
+
+.posterGlow {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  right: -80px;
+  top: -90px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.2), transparent 70%);
+}
+
+.personaCard h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #1f2937;
+  position: relative;
+}
+
+.personaCard ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+  color: #475569;
+  position: relative;
+}
+
 .homeMenuChips {
   display: flex;
   gap: 8px;
@@ -576,6 +696,13 @@ button:disabled {
   background: #ffffff;
   border-radius: 999px;
   padding: 7px 10px;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.04);
+}
+
+.homeMenuChips a:hover {
+  border-color: #bfd4fb;
+  background: #f2f7ff;
+  color: #1d4ed8;
 }
 
 .continueLinks {
