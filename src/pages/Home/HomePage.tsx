@@ -47,25 +47,11 @@ export default function HomePage({ me }: Props) {
         <h3>{me.name}님의 오늘 운 흐름 · {luckLevel}</h3>
         <p className="statusHint">{todayLine}</p>
 
-        <div className="heroMetricRow">
-          <article>
-            <small>집중 타이밍</small>
-            <b>17:00-20:00</b>
-          </article>
-          <article>
-            <small>관계 온도</small>
-            <b>차분한 대화</b>
-          </article>
-          <article>
-            <small>오늘 키워드</small>
-            <b>리듬 정리</b>
-          </article>
-        </div>
+        <p className="heroMetaLine">
+          집중 17:00-20:00 · 관계 온도 차분한 대화 · 키워드 리듬 정리
+        </p>
 
-        <div className="summaryChips">
-          <span>🗓️ {me.birthDate} · {me.birthTime} · {genderLabels[me.gender]}</span>
-          <span>🔮 행동 포인트: 중요한 얘기는 저녁 전에</span>
-        </div>
+        <p className="heroSubLine">{me.birthDate} · {me.birthTime} · {genderLabels[me.gender]}</p>
 
         <Link to="/fortune" className="heroInlineCta">오늘 운세 자세히 보기 →</Link>
       </section>

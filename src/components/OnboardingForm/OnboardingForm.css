@@ -1,11 +1,11 @@
 .onboarding {
-  background: #fffdf9;
-  border: 1px solid #e2d8c8;
+  background: #ffffff;
+  border: 1px solid #e5e6e9;
   border-radius: 18px;
-  padding: 16px;
+  padding: 18px;
   display: grid;
   gap: 12px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 6px 14px rgba(16, 24, 40, 0.04);
 }
 
 .stepWrap {
@@ -149,10 +149,10 @@
 }
 
 .previewBox {
-  border: 1px dashed #d6e0ee;
+  border: 1px solid #d9dcc1;
   border-radius: 12px;
   padding: 10px 12px;
-  background: #f8fbff;
+  background: #fffdfa;
 }
 
 .previewBox p {
@@ -169,7 +169,7 @@
 .actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 8px;
 }
 
 .actions button {

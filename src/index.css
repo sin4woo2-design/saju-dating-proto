@@ -133,24 +133,24 @@ button:disabled {
 .foldSection,
 .segmentedWrap,
 .scoreBadgeWrap {
-  background: #fffefe;
-  border: 1px solid #e4e6ea;
+  background: #ffffff;
+  border: 1px solid #e6e7ea;
   border-radius: 16px;
-  box-shadow: 0 10px 22px rgba(16, 24, 40, 0.06);
+  box-shadow: 0 6px 14px rgba(16, 24, 40, 0.04);
 }
 
 .signatureCard {
   border-width: 1.5px;
-  border-color: #c8ad72;
-  box-shadow: 0 14px 30px rgba(98, 76, 38, 0.14);
+  border-color: #ccb27a;
+  box-shadow: 0 8px 18px rgba(16, 24, 40, 0.06);
   position: relative;
 }
 
 .signatureCard::before {
   content: "";
   position: absolute;
-  inset: 8px;
-  border: 1px solid rgba(200, 173, 114, 0.35);
+  inset: 10px;
+  border: 1px solid rgba(204, 178, 122, 0.45);
   border-radius: 12px;
   pointer-events: none;
 }
@@ -178,8 +178,8 @@ button:disabled {
 .heroCard {
   display: grid;
   gap: 10px;
-  border-color: #e1e3e7;
-  background: linear-gradient(180deg, #ffffff, #fafbfc);
+  border-color: #e3e5e8;
+  background: #ffffff;
 }
 
 .homeHeroVisual {
@@ -191,11 +191,11 @@ button:disabled {
 .homeHeroVisual::after {
   content: "";
   position: absolute;
-  width: 220px;
-  height: 220px;
+  width: 200px;
+  height: 200px;
   right: -90px;
   top: -90px;
-  background: radial-gradient(circle, rgba(186, 143, 76, 0.22), transparent 70%);
+  background: radial-gradient(circle, rgba(204, 178, 122, 0.14), transparent 70%);
   pointer-events: none;
 }
 
@@ -213,21 +213,15 @@ button:disabled {
   position: absolute;
   left: -10%;
   right: -10%;
-  top: 42%;
-  height: 80px;
+  top: 44%;
+  height: 68px;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(150, 122, 76, 0.08), rgba(186, 143, 76, 0.16), rgba(114, 133, 152, 0.1));
+  background: linear-gradient(90deg, rgba(156, 163, 175, 0.05), rgba(204, 178, 122, 0.08), rgba(148, 163, 184, 0.05));
   filter: blur(1px);
 }
 
 .heroSparkRow {
-  display: flex;
-  gap: 8px;
-  position: absolute;
-  right: 14px;
-  top: 4px;
-  opacity: 0.6;
-  pointer-events: none;
+  display: none;
 }
 
 .heroSparkRow i {
@@ -272,29 +266,17 @@ button:disabled {
   font-weight: 600;
 }
 
-.heroMetricRow {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-
-.heroMetricRow article {
-  border: 1px solid #dfd3c1;
-  border-radius: 10px;
-  background: rgba(255, 253, 249, 0.92);
-  padding: 7px 8px;
-  display: grid;
-  gap: 2px;
-}
-
-.heroMetricRow small {
-  font-size: 10px;
-  color: #64748b;
-}
-
-.heroMetricRow b {
+.heroMetaLine {
+  margin: 0;
   font-size: 12px;
-  color: #5a4324;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.heroSubLine {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
 }
 
 .heroCard h3 {
@@ -418,12 +400,12 @@ button:disabled {
 }
 
 .summaryChips span {
-  padding: 7px 10px;
-  border: 1px solid #d6e1f2;
-  background: #f7faff;
-  border-radius: 999px;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  border-radius: 0;
   font-size: 12px;
-  color: #334155;
+  color: #556070;
 }
 
 .formCard,
@@ -822,15 +804,15 @@ button:disabled {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px dashed #d6e1f0;
-  border-radius: 10px;
-  padding: 7px 9px;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
   font-size: 11px;
-  color: #64748b;
+  color: #6b7280;
 }
 
 .miniStatRow b {
-  color: #1d4ed8;
+  color: #374151;
   font-size: 12px;
 }
 
@@ -840,18 +822,18 @@ button:disabled {
 }
 
 .miniDots i {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 999px;
-  background: #c6d8fb;
+  background: #d5dae1;
 }
 
 .miniDots i:nth-child(2) {
-  background: #9bb9f8;
+  background: #bcc5d1;
 }
 
 .miniDots i:nth-child(3) {
-  background: #748ff3;
+  background: #9aa7b8;
 }
 
 .hubCard strong {
