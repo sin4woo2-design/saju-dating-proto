@@ -1038,12 +1038,12 @@ button:disabled {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
-  border: 1px solid #e7e8eb;
-  border-radius: 18px;
-  padding: 8px 10px;
+  border: 1px solid #ececee;
+  border-radius: 15px;
+  padding: 5px 8px;
   background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(8px);
-  box-shadow: 0 -8px 24px rgba(17, 24, 39, 0.08);
+  box-shadow: 0 -4px 14px rgba(17, 24, 39, 0.05);
 }
 
 .bottomNavFive {
@@ -1053,38 +1053,41 @@ button:disabled {
 .tabLink {
   text-align: center;
   text-decoration: none;
-  color: #8b919b;
+  color: #6d737d;
   border: 0;
   background: transparent;
-  border-radius: 12px;
-  min-height: 54px;
-  padding: 6px 2px 4px;
-  font-size: 11px;
+  border-radius: 10px;
+  min-height: 48px;
+  padding: 4px 1px 3px;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
   display: grid;
   justify-items: center;
   align-content: center;
-  gap: 2px;
+  gap: 1px;
 }
 
 .tabIcon {
-  font-size: 19px;
+  font-size: 17px;
   line-height: 1;
-  color: #a3a9b2;
+  color: #808792;
+  transform: translateY(0.2px);
 }
 
 .tabLink:hover {
-  color: #6b7280;
+  color: #5f6570;
   background: transparent;
 }
 
 .tabLink.active {
-  color: #8c6a35;
+  color: #7f6641;
   background: transparent;
   font-weight: 600;
 }
 
 .tabLink.active .tabIcon {
-  color: #b08a4f;
+  color: #9f8358;
 }
 
 @media (max-width: 420px) {
@@ -1110,6 +1113,6 @@ button:disabled {
   }
 
   .tabLink {
-    font-size: 12px;
+    font-size: 11px;
   }
 }
