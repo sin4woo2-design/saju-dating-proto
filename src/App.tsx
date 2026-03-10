@@ -50,11 +50,26 @@ export default function App() {
         </main>
 
         <nav className="bottomNav bottomNavFive">
-          <NavLink to="/" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>홈</NavLink>
-          <NavLink to="/mysaju" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>내 사주</NavLink>
-          <NavLink to="/fortune" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>운세</NavLink>
-          <NavLink to="/persona" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>페르소나</NavLink>
-          <NavLink to="/inyeon" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>인연</NavLink>
+          <NavLink to="/" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>
+            <span className="tabIcon">⌂</span>
+            <span>홈</span>
+          </NavLink>
+          <NavLink to="/mysaju" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>
+            <span className="tabIcon">▣</span>
+            <span>내 사주</span>
+          </NavLink>
+          <NavLink to="/fortune" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>
+            <span className="tabIcon">◌</span>
+            <span>운세</span>
+          </NavLink>
+          <NavLink to="/persona" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>
+            <span className="tabIcon">◔</span>
+            <span>페르소나</span>
+          </NavLink>
+          <NavLink to="/inyeon" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>
+            <span className="tabIcon">♡</span>
+            <span>인연</span>
+          </NavLink>
         </nav>
       </div>
     </BrowserRouter>
