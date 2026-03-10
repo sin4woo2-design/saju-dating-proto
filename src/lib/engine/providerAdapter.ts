@@ -50,6 +50,11 @@ function resolveProviderBaseUrl(): string {
   const configured = (import.meta.env.VITE_SAJU_PROVIDER_BASE_URL as string | undefined)?.trim();
   if (configured) return configured.replace(/\/$/, "");
 
+  const engineMode = (import.meta.env.VITE_SAJU_ENGINE_MODE as string | undefined) ?? "mock";
+  if (engineMode !== "real-provider") {
+    return "http://localhost:8081";
+  }
+
   if (typeof window !== "undefined") {
     const host = window.location.hostname;
     if (host === "localhost" || host === "127.0.0.1") {
