@@ -27,9 +27,10 @@ export default function HomePage({ me }: Props) {
   ][seed % 4];
 
   return (
-    <PageLayout title="오늘의 사주 홈" subtitle="가볍게 확인하고, 필요한 리포트로 바로 이어가세요.">
-      <section className="heroCard homeHeroVisual">
+    <PageLayout title="오늘의 사주 홈" subtitle="오늘의 흐름을 먼저 보고, 필요한 리포트로 바로 이어가세요.">
+      <section className="heroCard homeHeroVisual signatureCard">
         <div className="heroWave" />
+        <div className="heroOrbit" aria-hidden />
         <div className="heroSparkRow" aria-hidden>
           <i />
           <i />
@@ -37,12 +38,15 @@ export default function HomePage({ me }: Props) {
           <i />
           <i />
         </div>
+
         <div className="homeHeroTop">
           <p className="smallBadge">✨ 오늘의 기운</p>
           <span className="smallPill">{luckScore}점</span>
         </div>
+
         <h3>{me.name}님의 오늘 운 흐름 · {luckLevel}</h3>
         <p className="statusHint">{todayLine}</p>
+
         <div className="heroMetricRow">
           <article>
             <small>집중 타이밍</small>
@@ -57,15 +61,17 @@ export default function HomePage({ me }: Props) {
             <b>리듬 정리</b>
           </article>
         </div>
+
         <div className="summaryChips">
           <span>🗓️ {me.birthDate} · {me.birthTime} · {genderLabels[me.gender]}</span>
-          <span>🔮 저녁 전 중요한 대화 정리 추천</span>
+          <span>🔮 행동 포인트: 중요한 얘기는 저녁 전에</span>
         </div>
+
         <Link to="/fortune" className="heroInlineCta">오늘 운세 자세히 보기 →</Link>
       </section>
 
       <section className="homeHubGrid">
-        <article className="hubCard fortuneCard">
+        <article className="hubCard summaryCard fortuneCard">
           <strong>📈 오늘 운세 요약</strong>
           <p>종합 점수 {luckScore}점 · 중요한 대화는 저녁 전에 마무리하면 좋아요.</p>
           <div className="miniStatRow">
@@ -74,14 +80,11 @@ export default function HomePage({ me }: Props) {
           </div>
           <Link to="/fortune">자세히 보기</Link>
         </article>
-        <article className="hubCard recommendCard">
+
+        <article className="hubCard summaryCard recommendCard">
           <strong>🪄 추천 카드</strong>
           <p>내 사주의 강세/보완 포인트를 먼저 보고 오늘 행동 포인트를 정해보세요.</p>
-          <div className="miniDots">
-            <i />
-            <i />
-            <i />
-          </div>
+          <div className="miniDots"><i /><i /><i /></div>
           <Link to="/mysaju">내 사주 열기</Link>
         </article>
       </section>
@@ -93,7 +96,7 @@ export default function HomePage({ me }: Props) {
         <Link to="/inyeon">🧭 인연 콘텐츠</Link>
       </section>
 
-      <section className="hubCard continueCard">
+      <section className="hubCard utilityCard continueCard">
         <strong>⏱️ 이어보기</strong>
         <p>최근 많이 보는 리포트부터 다시 시작해보세요.</p>
         <div className="continueLinks">

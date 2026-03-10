@@ -350,7 +350,10 @@ export default function MySajuPage({ me }: Props) {
         </div>
         <div className="elementOrbit">
           {Object.entries(profile.fiveElements).map(([key, value]) => (
-            <article key={key} className="elementMiniCard">
+            <article
+              key={key}
+              className={`elementMiniCard ${key === topSummary.strongKey ? "isStrong" : ""} ${key === topSummary.weakKey ? "isWeak" : ""}`}
+            >
               <div className="elementMiniHead">
                 <span className="dot" style={{ background: elementColor(key) }} />
                 <strong>{elementLabels[key] ?? key}</strong>

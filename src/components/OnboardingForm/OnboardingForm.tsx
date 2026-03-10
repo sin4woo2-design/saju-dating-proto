@@ -9,6 +9,27 @@ interface Props {
 
 const stepTitles = ["이름", "생년월일", "출생시간", "성별"];
 
+const traditionalTimes = [
+  { key: "ja", hanja: "子時", ko: "자시", range: "23:00~00:59", value: "00:00" },
+  { key: "chuk", hanja: "丑時", ko: "축시", range: "01:00~02:59", value: "02:00" },
+  { key: "in", hanja: "寅時", ko: "인시", range: "03:00~04:59", value: "04:00" },
+  { key: "myo", hanja: "卯時", ko: "묘시", range: "05:00~06:59", value: "06:00" },
+  { key: "jin", hanja: "辰時", ko: "진시", range: "07:00~08:59", value: "08:00" },
+  { key: "sa", hanja: "巳時", ko: "사시", range: "09:00~10:59", value: "10:00" },
+  { key: "o", hanja: "午時", ko: "오시", range: "11:00~12:59", value: "12:00" },
+  { key: "mi", hanja: "未時", ko: "미시", range: "13:00~14:59", value: "14:00" },
+  { key: "sin", hanja: "申時", ko: "신시", range: "15:00~16:59", value: "16:00" },
+  { key: "yu", hanja: "酉時", ko: "유시", range: "17:00~18:59", value: "18:00" },
+  { key: "sul", hanja: "戌時", ko: "술시", range: "19:00~20:59", value: "20:00" },
+  { key: "hae", hanja: "亥時", ko: "해시", range: "21:00~22:59", value: "22:00" },
+];
+
+function selectedTimeLabel(value: string) {
+  const selected = traditionalTimes.find((t) => t.value === value);
+  if (!selected) return value || "시간 미입력";
+  return `${selected.hanja} · ${selected.ko} · ${selected.range}`;
+}
+
 export default function OnboardingForm({ onSubmit }: Props) {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<UserProfileInput>({
@@ -64,18 +85,26 @@ export default function OnboardingForm({ onSubmit }: Props) {
 
       {step === 2 && (
         <>
-          <input
-            type="time"
-            value={form.birthTime}
-            onChange={(e) => setForm((prev) => ({ ...prev, birthTime: e.target.value }))}
-          />
-          <p className="hint">출생 시간을 모르면 아래 버튼으로 12:00을 바로 입력할 수 있어요.</p>
+          <p className="hint">사주 입력은 전통 시각(時) 기준 선택이 더 편해요.</p>
+          <div className="timeSelectGrid">
+            {traditionalTimes.map((slot) => (
+              <button
+                key={slot.key}
+                type="button"
+                className={`timeSlotBtn ${form.birthTime === slot.value ? "active" : ""}`}
+                onClick={() => setForm((prev) => ({ ...prev, birthTime: slot.value }))}
+              >
+                <strong>{slot.hanja} · {slot.ko}</strong>
+                <small>{slot.range}</small>
+              </button>
+            ))}
+          </div>
           <button
             type="button"
             className="ghostQuick"
-            onClick={() => setForm((prev) => ({ ...prev, birthTime: prev.birthTime || "12:00" }))}
+            onClick={() => setForm((prev) => ({ ...prev, birthTime: "12:00" }))}
           >
-            시간 모름 · 12:00 사용
+            정확한 시간을 모름 · 午時(11:00~12:59) 기준 사용
           </button>
         </>
       )}
@@ -98,7 +127,7 @@ export default function OnboardingForm({ onSubmit }: Props) {
       <div className="previewBox">
         <p>입력 미리보기</p>
         <small>
-          {form.name || "이름 미입력"} · {form.birthDate || "생년월일 미입력"} · {form.birthTime || "시간 미입력"} · {genderLabels[form.gender]}
+          {form.name || "이름 미입력"} · {form.birthDate || "생년월일 미입력"} · {selectedTimeLabel(form.birthTime)} · {genderLabels[form.gender]}
         </small>
       </div>
 

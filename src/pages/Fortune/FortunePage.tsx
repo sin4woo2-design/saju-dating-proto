@@ -22,32 +22,32 @@ export default function FortunePage({ me }: Props) {
   const score = makeFortune(me);
 
   return (
-    <PageLayout title="오늘 운세" subtitle="오늘 하루에 맞춘 가벼운 가이드예요.">
-      <section className="heroCard">
-        <h3>오늘의 종합 운세 {score.total}점</h3>
-        <p className="statusHint">큰 결정보다는 리듬 정리가 잘 맞는 날이에요.</p>
+    <PageLayout title="오늘 운세" subtitle="매일 확인하기 좋은 가벼운 운세 피드예요.">
+      <section className="heroCard signatureCard">
+        <h3>오늘의 총운 {score.total}점</h3>
+        <p className="statusHint">큰 결정보다는 리듬 정리와 커뮤니케이션 정돈이 잘 맞는 날이에요.</p>
       </section>
 
-      <section className="quickStats">
-        <article>
-          <strong>{score.love}</strong>
-          <span>연애운</span>
+      <section className="homeHubGrid">
+        <article className="hubCard summaryCard">
+          <strong>💘 연애운</strong>
+          <p>{score.love}점 · 빠른 결론보다 공감형 대화가 더 유리해요.</p>
         </article>
-        <article>
-          <strong>{score.work}</strong>
-          <span>일·학업운</span>
+        <article className="hubCard summaryCard">
+          <strong>📚 일·학업운</strong>
+          <p>{score.work}점 · 오늘은 한 번에 하나씩 정리하면 효율이 올라가요.</p>
         </article>
-        <article>
-          <strong>{score.health}</strong>
-          <span>컨디션운</span>
+        <article className="hubCard summaryCard">
+          <strong>🫧 컨디션운</strong>
+          <p>{score.health}점 · 휴식 타이밍을 미리 넣어두면 리듬이 안정돼요.</p>
         </article>
       </section>
 
-      <section className="hubCard">
-        <strong>오늘의 추천 액션</strong>
-        <p>1) 연락은 짧고 명확하게
-          <br />2) 일정은 여유 10% 남기기
-          <br />3) 감정이 올라오면 한 템포 쉬고 말하기
+      <section className="hubCard utilityCard">
+        <strong>✅ 오늘의 추천 액션</strong>
+        <p>• 연락은 짧고 명확하게
+          <br />• 일정은 여유 10% 남기기
+          <br />• 감정이 올라오면 한 템포 쉬고 말하기
         </p>
       </section>
     </PageLayout>

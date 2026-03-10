@@ -139,6 +139,19 @@ button:disabled {
   box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
 }
 
+.signatureCard {
+  border-width: 1.5px;
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.12);
+}
+
+.summaryCard {
+  background: #ffffff;
+}
+
+.utilityCard {
+  background: #fcfdff;
+}
+
 .heroCard,
 .formCard,
 .elementCard,
@@ -173,6 +186,16 @@ button:disabled {
   top: -90px;
   background: radial-gradient(circle, rgba(99, 102, 241, 0.2), transparent 70%);
   pointer-events: none;
+}
+
+.heroOrbit {
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  border-radius: 999px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  left: -55px;
+  bottom: -55px;
 }
 
 .heroWave {
@@ -247,7 +270,7 @@ button:disabled {
 .heroMetricRow article {
   border: 1px solid #d9e4f3;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.9);
   padding: 7px 8px;
   display: grid;
   gap: 2px;
@@ -579,6 +602,16 @@ button:disabled {
   gap: 7px;
 }
 
+.elementMiniCard.isStrong {
+  border-color: #b9d8c2;
+  background: linear-gradient(180deg, #f6fffa, #fcfffd);
+}
+
+.elementMiniCard.isWeak {
+  border-color: #f1d7bd;
+  background: linear-gradient(180deg, #fffaf4, #fffdf9);
+}
+
 .elementMiniHead {
   display: grid;
   grid-template-columns: 16px 1fr auto;
@@ -763,6 +796,15 @@ button:disabled {
 
 .continueCard {
   background: linear-gradient(180deg, #ffffff, #f8fbff);
+}
+
+.inyeonHero {
+  border-color: #dbe5f8;
+  background: linear-gradient(180deg, #ffffff, #f8fbff);
+}
+
+.inyeonStatusCard {
+  border-style: dashed;
 }
 
 .miniStatRow {
