@@ -49,26 +49,17 @@ export default function HomePage({ me }: Props) {
         <Link to="/fortune" className="heroInlineCta">오늘 운세 자세히 보기 →</Link>
       </section>
 
-      <section className="homeHubGrid">
-        <article className="hubCard summaryCard fortuneCard">
-          <strong>📈 오늘 운세 요약</strong>
-          <p>종합 점수 {luckScore}점 · 중요한 대화는 저녁 전에 마무리하면 좋아요.</p>
-          <Link to="/fortune">자세히 보기</Link>
-        </article>
-
-        <article className="hubCard summaryCard recommendCard">
-          <strong>🪄 추천 카드</strong>
-          <p>내 사주의 강세/보완 포인트를 먼저 보고 오늘 행동 포인트를 정해보세요.</p>
-          <Link to="/mysaju">내 사주 열기</Link>
-        </article>
+      <section className="hubCard summaryCard fortuneCard">
+        <strong>📈 오늘 요약</strong>
+        <p>종합 점수 {luckScore}점 · 오늘은 중요한 대화를 저녁 전에 정리하고, 내 사주 보완 포인트를 먼저 확인해두면 좋아요.</p>
+        <p className="heroSubLine">
+          <Link to="/fortune">운세 보기</Link> · <Link to="/mysaju">내 사주</Link> · <Link to="/persona">페르소나</Link>
+        </p>
       </section>
 
-      <section className="homeMenuChips">
-        <Link to="/mysaju">🌙 원국 보기</Link>
-        <Link to="/fortune">☀️ 오늘 운세</Link>
-        <Link to="/persona">💌 페르소나 카드</Link>
-        <Link to="/inyeon">🧭 인연 콘텐츠</Link>
-      </section>
+      <p className="heroSubLine">
+        빠른 이동: <Link to="/mysaju">원국 보기</Link> · <Link to="/fortune">오늘 운세</Link> · <Link to="/persona">페르소나 카드</Link> · <Link to="/inyeon">인연 콘텐츠</Link>
+      </p>
 
       <section className="hubCard utilityCard continueCard">
         <strong>⏱️ 이어보기</strong>
