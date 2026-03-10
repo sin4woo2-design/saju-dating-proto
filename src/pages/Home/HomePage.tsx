@@ -26,18 +26,19 @@ export default function HomePage({ me }: Props) {
     <PageLayout title="" subtitle="">
       <section className="heroCard homeHeroVisual signatureCard refHeroCard">
         <div className="refHeroHead">
-          <div>
-            <p className="smallBadge">오늘의 운세</p>
-            <h3>최고의 하루</h3>
-          </div>
+          <p className="smallBadge">오늘의 운세</p>
           <div className="heroScoreOrb">
             <strong>{luckScore}</strong>
             <span>점</span>
           </div>
         </div>
 
+        <h3>{me.name}님의 오늘 흐름</h3>
         <p className="statusHint">{todayLine}</p>
-        <div className="refHighlightBox">✦ 금전운과 애정운이 조화롭게 작용하고 있어요.</div>
+        <p className="heroDescLine">중요한 결정은 서두르기보다 대화와 리듬을 먼저 맞추면 더 좋은 결과로 이어져요.</p>
+
+        <div className="refHighlightBox">금전운과 애정운의 균형이 좋아, 관계 조율에 힘이 실리는 하루예요.</div>
+        <Link to="/fortune" className="heroInlineCta heroPrimaryCta">오늘 운세 자세히 보기</Link>
       </section>
 
       <section className="homeHubGrid homeTripletGrid">
