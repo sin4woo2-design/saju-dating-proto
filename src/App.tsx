@@ -4,7 +4,9 @@ import OnboardingPage from "./pages/Onboarding/OnboardingPage";
 import HomePage from "./pages/Home/HomePage";
 import MySajuPage from "./pages/MySaju/MySajuPage";
 import CompatibilityPage from "./pages/Compatibility/CompatibilityPage";
+import FortunePage from "./pages/Fortune/FortunePage";
 import PersonaPage from "./pages/Persona/PersonaPage";
+import InyeonPage from "./pages/Inyeon/InyeonPage";
 import { usePersistedProfile } from "./hooks/usePersistedProfile";
 
 export default function App() {
@@ -39,17 +41,20 @@ export default function App() {
             <Route path="/onboarding" element={<OnboardingPage onComplete={setMe} />} />
             <Route path="/" element={me ? <HomePage me={me} /> : gate} />
             <Route path="/mysaju" element={me ? <MySajuPage me={me} /> : gate} />
-            <Route path="/compatibility" element={me ? <CompatibilityPage me={me} /> : gate} />
+            <Route path="/fortune" element={me ? <FortunePage me={me} /> : gate} />
             <Route path="/persona" element={me ? <PersonaPage /> : gate} />
+            <Route path="/inyeon" element={me ? <InyeonPage /> : gate} />
+            <Route path="/compatibility" element={me ? <CompatibilityPage me={me} /> : gate} />
             <Route path="*" element={<Navigate to={me ? "/" : "/onboarding"} replace />} />
           </Routes>
         </main>
 
-        <nav className="bottomNav">
+        <nav className="bottomNav bottomNavFive">
           <Link to="/">홈</Link>
           <Link to="/mysaju">내 사주</Link>
-          <Link to="/compatibility">궁합</Link>
+          <Link to="/fortune">운세</Link>
           <Link to="/persona">페르소나</Link>
+          <Link to="/inyeon">인연</Link>
         </nav>
       </div>
     </BrowserRouter>

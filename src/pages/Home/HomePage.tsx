@@ -1,109 +1,70 @@
-import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
-import SwipeCard from "../../components/SwipeCard/SwipeCard";
-import { mockMatchCards } from "../../data/mockProfiles";
-import { useSwipeActions } from "../../hooks/useSwipeActions";
 import { genderLabels } from "../../constants/labels";
 import type { UserProfileInput } from "../../types/saju";
-
-function findNextUnseenIndex(start: number, actions: Record<string, "like" | "pass">) {
-  for (let i = start; i < mockMatchCards.length; i += 1) {
-    if (!actions[mockMatchCards[i].id]) return i;
-  }
-  return -1;
-}
 
 interface Props {
   me: UserProfileInput;
 }
 
+function dailySeed(me: UserProfileInput) {
+  const today = new Date().toISOString().slice(0, 10);
+  return `${me.birthDate}-${me.birthTime}-${today}`.split("").reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+}
+
+const fortuneLevels = ["매우 좋음", "좋음", "보통", "집중 필요"] as const;
+
 export default function HomePage({ me }: Props) {
-  const { actions, likedCount, passedCount, setLike, setPass, clearAll } = useSwipeActions();
-  const [index, setIndex] = useState(() => findNextUnseenIndex(0, actions));
-  const card = index >= 0 ? mockMatchCards[index] : null;
+  const seed = dailySeed(me);
+  const luckScore = 60 + (seed % 36);
+  const luckLevel = fortuneLevels[Math.min(3, Math.floor((96 - luckScore) / 10))] ?? "보통";
 
-  const progress = useMemo(() => `${Math.min(index + 1, mockMatchCards.length)} / ${mockMatchCards.length}`, [index]);
-  const average = useMemo(
-    () => Math.round(mockMatchCards.reduce((sum, v) => sum + v.compatibility, 0) / mockMatchCards.length),
-    []
-  );
-
-  const remain = useMemo(
-    () => Math.max(0, mockMatchCards.length - Object.keys(actions).length),
-    [actions]
-  );
-
-  const handlePass = () => {
-    if (!card) return;
-    setPass(card.id);
-    const next = findNextUnseenIndex(index + 1, { ...actions, [card.id]: "pass" });
-    setIndex(next);
-  };
-
-  const handleLike = () => {
-    if (!card) return;
-    setLike(card.id);
-    const next = findNextUnseenIndex(index + 1, { ...actions, [card.id]: "like" });
-    setIndex(next);
-  };
+  const todayLine = [
+    "작은 루틴을 지키면 큰 흐름이 따라오는 날이에요.",
+    "감정 표현을 한 템포만 천천히 하면 관계가 부드러워져요.",
+    "오늘은 결론보다 대화의 분위기를 먼저 챙겨보세요.",
+    "가벼운 약속 하나가 좋은 기회를 만들 수 있어요.",
+  ][seed % 4];
 
   return (
-    <PageLayout
-      title="오늘의 인연 카드"
-      subtitle="스와이프하면서 궁합이 맞는 인연 후보를 확인해 보세요."
-      action={<span className="smallPill">{progress}</span>}
-    >
-      <section className="profileSummary">
-        <strong>{me.name}님의 입력 정보</strong>
-        <small>{me.birthDate} · {me.birthTime} · {genderLabels[me.gender]}</small>
+    <PageLayout title="오늘의 사주 홈" subtitle="가볍게 확인하고, 필요한 리포트로 바로 이어가세요.">
+      <section className="heroCard">
+        <h3>오늘의 한 줄</h3>
+        <p className="statusHint">{todayLine}</p>
+        <div className="summaryChips">
+          <span>{me.name}님의 오늘 운 흐름 · {luckLevel}</span>
+          <span>입력 정보 · {me.birthDate} · {me.birthTime} · {genderLabels[me.gender]}</span>
+        </div>
       </section>
 
-      <section className="quickStats">
-        <article>
-          <strong>{mockMatchCards.length}명</strong>
-          <span>오늘 추천</span>
+      <section className="homeHubGrid">
+        <article className="hubCard">
+          <strong>오늘 운세 요약</strong>
+          <p>종합 점수 {luckScore}점 · 중요한 대화는 저녁 전에 마무리하면 좋아요.</p>
+          <Link to="/fortune">자세히 보기</Link>
         </article>
-        <article>
-          <strong>{average}%</strong>
-          <span>평균 궁합</span>
-        </article>
-        <article>
-          <strong>{remain}명</strong>
-          <span>남은 카드</span>
-        </article>
-      </section>
-
-      <section className="quickStats quickStatsSecondary">
-        <article>
-          <strong>{likedCount}명</strong>
-          <span>관심 보냄</span>
-        </article>
-        <article>
-          <strong>{passedCount}명</strong>
-          <span>패스</span>
+        <article className="hubCard">
+          <strong>추천 카드</strong>
+          <p>내 사주의 강세/보완 포인트를 먼저 보고 오늘 행동 포인트를 정해보세요.</p>
+          <Link to="/mysaju">내 사주 열기</Link>
         </article>
       </section>
 
-      {!card ? (
-        <section className="emptyState">
-          <p>오늘 확인할 카드를 모두 봤어요 ✨</p>
-          <button
-            type="button"
-            onClick={() => {
-              clearAll();
-              setIndex(0);
-            }}
-          >
-            다시 보기
-          </button>
-        </section>
-      ) : (
-        <SwipeCard
-          card={card}
-          onPass={handlePass}
-          onLike={handleLike}
-        />
-      )}
+      <section className="homeMenuChips">
+        <Link to="/mysaju">원국 보기</Link>
+        <Link to="/fortune">오늘 운세</Link>
+        <Link to="/persona">페르소나 카드</Link>
+        <Link to="/inyeon">인연 콘텐츠</Link>
+      </section>
+
+      <section className="hubCard">
+        <strong>이어보기</strong>
+        <p>최근 많이 보는 리포트부터 다시 시작해보세요.</p>
+        <div className="continueLinks">
+          <Link to="/mysaju">내 사주 리포트 이어보기</Link>
+          <Link to="/compatibility">궁합 계산 바로가기</Link>
+        </div>
+      </section>
     </PageLayout>
   );
 }

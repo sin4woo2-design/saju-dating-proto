@@ -393,6 +393,10 @@ button:disabled {
   backdrop-filter: blur(8px);
 }
 
+.bottomNavFive {
+  grid-template-columns: repeat(5, 1fr);
+}
+
 .bottomNav a {
   text-align: center;
   text-decoration: none;
@@ -639,6 +643,65 @@ button:disabled {
   border-radius: 10px;
   padding: 9px 10px;
   background: #1c2350;
+}
+
+.homeHubGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.hubCard {
+  border: 1px solid #394171;
+  border-radius: 14px;
+  background: #161b3d;
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.hubCard strong {
+  font-size: 14px;
+  color: #e6deff;
+}
+
+.hubCard p {
+  margin: 0;
+  color: #c5cdf6;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.hubCard a {
+  font-size: 12px;
+  color: #d7cbff;
+  text-decoration: none;
+  border: 1px solid #5f52bf;
+  background: #252053;
+  border-radius: 10px;
+  padding: 7px 9px;
+  width: fit-content;
+}
+
+.homeMenuChips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.homeMenuChips a {
+  text-decoration: none;
+  font-size: 12px;
+  color: #e0d8ff;
+  border: 1px solid #5345b3;
+  background: #201b49;
+  border-radius: 999px;
+  padding: 7px 10px;
+}
+
+.continueLinks {
+  display: grid;
+  gap: 7px;
 }
 
 @media (min-width: 540px) {

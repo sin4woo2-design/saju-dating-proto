@@ -321,7 +321,7 @@ export default function MySajuPage({ me }: Props) {
         </div>
       </section>
 
-      <details className="foldSection" open>
+      <details className="foldSection">
         <summary>왜 이런 결과가 나왔을까</summary>
         <ResultCard title="근거 요약" rows={narratives.reasonCard} />
       </details>
@@ -331,12 +331,12 @@ export default function MySajuPage({ me }: Props) {
         <ResultCard title="나의 기질" rows={[profile.personalitySummary, ...narratives.personality]} />
       </details>
 
-      <details className="foldSection" open>
+      <details className="foldSection">
         <summary>연애 스타일</summary>
         <ResultCard title="연애 온도" rows={[profile.loveStyle, ...narratives.loveStyle]} />
       </details>
 
-      <details className="foldSection" open>
+      <details className="foldSection">
         <summary>잘 맞는 상대</summary>
         <ResultCard title="이런 사람에게 끌리기 쉬워요" rows={[...profile.idealTraits, ...narratives.idealPartner]} />
       </details>
