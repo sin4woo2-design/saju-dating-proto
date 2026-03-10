@@ -1,8 +1,8 @@
 :root {
   font-family: Inter, "Pretendard", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color-scheme: light;
-  background: #f5f1e8;
-  color: #1f1a14;
+  background: #f7f7f5;
+  color: #1f1f1d;
 }
 
 * {
@@ -11,8 +11,8 @@
 
 body {
   margin: 0;
-  background: linear-gradient(180deg, #fbf7ef 0%, #f4eee3 100%);
-  color: #1f1a14;
+  background: linear-gradient(180deg, #fcfcfb 0%, #f6f6f4 100%);
+  color: #1f1f1d;
 }
 
 button,
@@ -22,10 +22,10 @@ select {
 }
 
 button {
-  border: 1px solid #d8cebc;
+  border: 1px solid #d9dbdf;
   border-radius: 12px;
-  background: #fffdf9;
-  color: #2b241b;
+  background: #ffffff;
+  color: #2a2a28;
   padding: 10px 12px;
   cursor: pointer;
   transition: all 0.18s ease;
@@ -60,8 +60,8 @@ button:disabled {
   top: 0;
   z-index: 20;
   backdrop-filter: blur(10px);
-  background: rgba(245, 241, 232, 0.9);
-  border-bottom: 1px solid #e5d9c6;
+  background: rgba(248, 248, 246, 0.92);
+  border-bottom: 1px solid #e6e7ea;
   margin: -14px -14px 0;
   padding: 10px 14px 8px;
 }
@@ -116,9 +116,9 @@ button:disabled {
 }
 
 .smallPill {
-  background: #f6efe0;
-  color: #6a4f2a;
-  border: 1px solid #dcc49a;
+  background: #f1f3f6;
+  color: #4b5563;
+  border: 1px solid #d8dde3;
   border-radius: 999px;
   padding: 5px 10px;
   font-size: 12px;
@@ -133,10 +133,10 @@ button:disabled {
 .foldSection,
 .segmentedWrap,
 .scoreBadgeWrap {
-  background: #fffaf2;
-  border: 1px solid #e2d8c7;
+  background: #fffefe;
+  border: 1px solid #e4e6ea;
   border-radius: 16px;
-  box-shadow: 0 10px 24px rgba(58, 42, 24, 0.08);
+  box-shadow: 0 10px 22px rgba(16, 24, 40, 0.06);
 }
 
 .signatureCard {
@@ -160,7 +160,7 @@ button:disabled {
 }
 
 .utilityCard {
-  background: #fdfbf7;
+  background: #fbfcfd;
 }
 
 .heroCard,
@@ -178,8 +178,8 @@ button:disabled {
 .heroCard {
   display: grid;
   gap: 10px;
-  border-color: #d8c8ab;
-  background: linear-gradient(180deg, #fffaf1, #f9f1e4);
+  border-color: #e1e3e7;
+  background: linear-gradient(180deg, #ffffff, #fafbfc);
 }
 
 .homeHeroVisual {
@@ -253,9 +253,9 @@ button:disabled {
 .smallBadge {
   margin: 0;
   font-size: 11px;
-  color: #715426;
-  border: 1px solid #decaa4;
-  background: #f7f0e1;
+  color: #6a4f2a;
+  border: 1px solid #dcc49a;
+  background: #faf5ea;
   border-radius: 999px;
   padding: 5px 9px;
 }
@@ -263,9 +263,9 @@ button:disabled {
 .heroInlineCta {
   width: fit-content;
   text-decoration: none;
-  color: #5a4324;
-  border: 1px solid #d8bf91;
-  background: #f8f0df;
+  color: #f8fafc;
+  border: 1px solid #2b2f36;
+  background: #2b2f36;
   border-radius: 10px;
   padding: 8px 10px;
   font-size: 12px;
@@ -307,10 +307,10 @@ button:disabled {
   margin: 0;
   padding: 10px 11px;
   border-radius: 10px;
-  border: 1px solid #dfcfb6;
-  background: #fbf6ee;
+  border: 1px solid #d9dee5;
+  background: #f7f9fc;
   font-size: 12px;
-  color: #5f4b2e;
+  color: #44505f;
 }
 
 .profileSummary {
@@ -476,9 +476,9 @@ button:disabled {
 }
 
 .segmentedControl button.active {
-  background: #f6efdf;
-  border-color: #dcc49a;
-  color: #5f4726;
+  background: #eceff3;
+  border-color: #cfd5dd;
+  color: #2d3748;
   font-weight: 600;
 }
 
@@ -595,7 +595,7 @@ button:disabled {
 .fiveFlowLine i {
   width: 14px;
   height: 2px;
-  background: linear-gradient(90deg, #d8c6a7, #b89559);
+  background: linear-gradient(90deg, #d5dbe3, #aeb7c4);
   border-radius: 999px;
 }
 
@@ -681,16 +681,16 @@ button:disabled {
   width: 92px;
   height: 92px;
   border-radius: 999px;
-  border: 3px solid #dcc49a;
+  border: 3px solid #cfd6df;
   display: grid;
   place-items: center;
-  background: #faf4e8;
+  background: #f4f7fb;
 }
 
 .scoreBadge strong {
   font-size: 28px;
   line-height: 1;
-  color: #5a4324;
+  color: #2d3748;
 }
 
 .scoreBadge span {
@@ -714,9 +714,9 @@ button:disabled {
 }
 
 .signalChip.active {
-  background: #f7f0e2;
-  border-color: #dcc49a;
-  color: #5b4424;
+  background: #eceff3;
+  border-color: #cfd5dd;
+  color: #2d3748;
 }
 
 .signalDesc,
@@ -868,10 +868,10 @@ button:disabled {
 
 .hubCard a {
   font-size: 12px;
-  color: #5b4322;
+  color: #2d3748;
   text-decoration: none;
-  border: 1px solid #dcc49a;
-  background: #f8f0df;
+  border: 1px solid #d0d6de;
+  background: #f6f8fb;
   border-radius: 10px;
   padding: 7px 9px;
   width: fit-content;
@@ -981,9 +981,9 @@ button:disabled {
 }
 
 .homeMenuChips a:hover {
-  border-color: #d8bf91;
-  background: #f8f0df;
-  color: #5b4322;
+  border-color: #cfd5dd;
+  background: #f1f4f8;
+  color: #2d3748;
 }
 
 .continueLinks {
@@ -1080,15 +1080,15 @@ button:disabled {
 }
 
 .tabLink:hover {
-  color: #5f4727;
-  border-color: #d8bf91;
-  background: #f8f0df;
+  color: #2d3748;
+  border-color: #cfd5dd;
+  background: #f1f4f8;
 }
 
 .tabLink.active {
-  color: #5d4522;
-  border-color: #d5bf95;
-  background: linear-gradient(180deg, #f8f1e3, #f2e7d3);
+  color: #1f2937;
+  border-color: #c8cfd8;
+  background: linear-gradient(180deg, #eef1f5, #e7ebf0);
   font-weight: 600;
 }
 

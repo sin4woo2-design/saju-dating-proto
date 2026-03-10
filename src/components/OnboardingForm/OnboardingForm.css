@@ -29,7 +29,7 @@
 .progressTrack i {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, #b89258, #8a6b3f);
+  background: linear-gradient(90deg, #4b5563, #374151);
 }
 
 .onboarding input {
@@ -82,9 +82,9 @@
 }
 
 .timeSlotBtn.active {
-  border-color: #dcc49a;
-  background: #f8f0df;
-  box-shadow: 0 0 0 2px rgba(220, 196, 154, 0.45);
+  border-color: #cfd5dd;
+  background: #eff3f8;
+  box-shadow: 0 0 0 2px rgba(207, 213, 221, 0.45);
 }
 
 .timeCheck {
@@ -99,7 +99,7 @@
   font-style: normal;
   font-size: 11px;
   color: #fff;
-  background: #6a4f2a;
+  background: #374151;
 }
 
 .timeUnknownBtn {
