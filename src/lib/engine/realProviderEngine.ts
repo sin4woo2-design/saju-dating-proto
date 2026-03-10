@@ -70,6 +70,8 @@ export const realProviderEngine: SajuEngine = {
         providerState: "provider",
         score: mapped.score,
         warnings: mapped.warnings,
+        rawSignals: mapped.rawSignals,
+        reliability: mapped.reliability,
       };
     } catch (error) {
       return {

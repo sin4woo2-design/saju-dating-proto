@@ -114,6 +114,8 @@ export const mockEngine: SajuEngine = {
       source: "mock",
       providerState: "mock-fallback",
       score: calculateCompatibilityScore(me, partner),
+      rawSignals: [],
+      reliability: { confidence: "low", timeKnownMe: true, timeKnownPartner: true },
     };
   },
 };

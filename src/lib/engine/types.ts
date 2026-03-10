@@ -1,4 +1,5 @@
 import type { SajuProfile, UserProfileInput, Gender } from "../../types/saju";
+import type { CompatibilityRawSignal } from "./provider-contract";
 
 export type EngineMode = "mock" | "real-provider";
 
@@ -13,6 +14,12 @@ export interface CompatibilityResult {
   source: EngineMode;
   providerState: "provider" | "mock-fallback";
   warnings?: string[];
+  rawSignals?: CompatibilityRawSignal[];
+  reliability?: {
+    timeKnownMe?: boolean;
+    timeKnownPartner?: boolean;
+    confidence?: "high" | "medium" | "low";
+  };
 }
 
 export interface SajuResult {

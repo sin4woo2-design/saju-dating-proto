@@ -51,6 +51,8 @@ export function mapProviderSajuResponseToProfile(raw: ProviderSajuResponse): {
 export function mapProviderCompatibilityToScore(raw: ProviderCompatibilityResponse): {
   score: number;
   warnings?: string[];
+  rawSignals?: ProviderCompatibilityResponse["compatibility"]["rawSignals"];
+  reliability?: ProviderCompatibilityResponse["compatibility"]["reliability"];
 } {
   const warnings = new Set<string>(mapProviderWarnings(raw.warnings) ?? []);
   const score = raw.compatibility.score;
@@ -59,6 +61,8 @@ export function mapProviderCompatibilityToScore(raw: ProviderCompatibilityRespon
     return {
       score: clamp100(score),
       warnings: warnings.size ? Array.from(warnings) : undefined,
+      rawSignals: raw.compatibility.rawSignals,
+      reliability: raw.compatibility.reliability,
     };
   }
 
@@ -68,6 +72,8 @@ export function mapProviderCompatibilityToScore(raw: ProviderCompatibilityRespon
     return {
       score: clamp100(derived),
       warnings: warnings.size ? Array.from(warnings) : undefined,
+      rawSignals: raw.compatibility.rawSignals,
+      reliability: raw.compatibility.reliability,
     };
   }
 
@@ -75,5 +81,7 @@ export function mapProviderCompatibilityToScore(raw: ProviderCompatibilityRespon
   return {
     score: DEFAULT_COMPAT_SCORE,
     warnings: Array.from(warnings),
+    rawSignals: raw.compatibility.rawSignals,
+    reliability: raw.compatibility.reliability,
   };
 }
