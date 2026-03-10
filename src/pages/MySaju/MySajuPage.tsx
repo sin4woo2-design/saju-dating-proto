@@ -101,10 +101,24 @@ const branchGuide: Record<string, string> = {
   해: "공감력과 직관이 깊게 작동하는 편이에요.",
 };
 
-function guideText(type: "stem" | "branch", key: string) {
-  if (key === "-" || !key) return "해당 정보가 아직 없거나 계산 중이에요.";
-  if (type === "stem") return stemGuide[key] ?? `${key} 천간 해석은 곧 더 자세히 제공될 예정이에요.`;
-  return branchGuide[key] ?? `${key} 지지 해석은 곧 더 자세히 제공될 예정이에요.`;
+const pillarContextGuide: Record<string, string> = {
+  "연주": "연주는 타고난 배경과 어린 시절 분위기를 보여줘요.",
+  "월주": "월주는 사회 속 역할감, 청년기 흐름, 환경 적응력을 보여줘요.",
+  "일주": "일주는 나의 핵심 성향과 관계에서의 기본 태도를 보여줘요.",
+  "시주": "시주는 내면의 깊은 결, 후반 인생 흐름, 말년 분위기를 보여줘요.",
+};
+
+function guideText(type: "stem" | "branch", key: string, pillarLabel: string) {
+  const context = pillarContextGuide[pillarLabel] ?? "이 기둥은 삶의 한 축을 보여주는 단서예요.";
+  if (key === "-" || !key) return `${context} 현재 값은 아직 없거나 계산 중이에요.`;
+
+  if (type === "stem") {
+    const base = stemGuide[key] ?? `${key} 천간 해석은 곧 더 자세히 제공될 예정이에요.`;
+    return `${context} 천간은 겉으로 드러나는 성향과 표현 방식을 읽는 단서예요. ${base}`;
+  }
+
+  const base = branchGuide[key] ?? `${key} 지지 해석은 곧 더 자세히 제공될 예정이에요.`;
+  return `${context} 지지는 내면 리듬과 생활 패턴을 읽는 단서예요. ${base}`;
 }
 
 export default function MySajuPage({ me }: Props) {
@@ -225,19 +239,20 @@ export default function MySajuPage({ me }: Props) {
                 return (
                   <article key={row.label} className="pillarCard">
                     <strong>{row.label}</strong>
+                    <em className="pillarContext">{pillarContextGuide[row.label]}</em>
                     <span>{row.value.raw}</span>
                     <div className="pillarTokenRow">
                       <button
                         type="button"
                         className={`pillarToken ${activePillarHint?.key === stemKey ? "active" : ""}`}
-                        onClick={() => setActivePillarHint((prev) => prev?.key === stemKey ? null : { key: stemKey, text: `천간 ${row.value.stem} · ${guideText("stem", row.value.stem)}` })}
+                        onClick={() => setActivePillarHint((prev) => prev?.key === stemKey ? null : { key: stemKey, text: `천간 ${row.value.stem} · ${guideText("stem", row.value.stem, row.label)}` })}
                       >
                         천간 {row.value.stem}
                       </button>
                       <button
                         type="button"
                         className={`pillarToken ${activePillarHint?.key === branchKey ? "active" : ""}`}
-                        onClick={() => setActivePillarHint((prev) => prev?.key === branchKey ? null : { key: branchKey, text: `지지 ${row.value.branch} · ${guideText("branch", row.value.branch)}` })}
+                        onClick={() => setActivePillarHint((prev) => prev?.key === branchKey ? null : { key: branchKey, text: `지지 ${row.value.branch} · ${guideText("branch", row.value.branch, row.label)}` })}
                       >
                         지지 {row.value.branch}
                       </button>

@@ -600,6 +600,13 @@ button:disabled {
   color: #f2ebff;
 }
 
+.pillarContext {
+  font-style: normal;
+  font-size: 11px;
+  color: #b9c3f2;
+  line-height: 1.35;
+}
+
 .pillarCard small {
   font-size: 11px;
   color: #b5bde9;
