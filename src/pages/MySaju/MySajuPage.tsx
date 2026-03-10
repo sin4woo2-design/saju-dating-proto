@@ -14,7 +14,7 @@ interface Props {
 
 function warningLabel(code: string) {
   if (code.includes("PARTIAL")) return "부분 데이터";
-  if (code.includes("TIMEOUT")) return "타임아웃";
+  if (code.includes("TIMEOUT")) return "지연 발생";
   if (code.includes("UNAVAILABLE")) return "연결 불가";
   return code;
 }
@@ -23,35 +23,51 @@ function statusText(providerState: "mock" | "provider" | "mock-fallback", warnin
   if (providerState === "mock") {
     return {
       badge: "mock 모드",
-      detail: "provider 연결 없이 mock 규칙 결과를 보여주고 있어요.",
+      detail: "현재는 데모 계산 결과를 보여주고 있어요.",
       tone: "fallback",
     } as const;
   }
   if (providerState === "mock-fallback") {
     return {
       badge: "fallback 사용",
-      detail: "provider 호출 실패로 백업 규칙 결과를 보여주고 있어요.",
+      detail: "실계산 연결이 잠시 불안정해 백업 규칙으로 안내해요.",
       tone: "fallback",
     } as const;
   }
   if (warnings.some((w) => w.includes("PARTIAL"))) {
     return {
       badge: "일부 보정됨",
-      detail: "출생시간 미상/부분 데이터가 있어 결과 해석에 주의가 필요해요.",
+      detail: "출생시간 미상/부분 데이터가 있어 해석은 참고용으로 봐주세요.",
       tone: "warn",
     } as const;
   }
   return {
     badge: "실계산 사용",
-    detail: "lunar-python 계산 결과가 정상 반영되었어요.",
+    detail: "lunar-python 계산 결과가 반영된 리포트예요.",
     tone: "ok",
   } as const;
+}
+
+function elementColor(key: string) {
+  const map: Record<string, string> = {
+    wood: "#64d2a8",
+    fire: "#ff7b91",
+    earth: "#f3c56a",
+    metal: "#a6b4ff",
+    water: "#67c8ff",
+  };
+  return map[key] ?? "#ab95ff";
+}
+
+function todayLine(strong: string, weak: string) {
+  return `${elementLabels[strong]}로 힘을 내고, ${elementLabels[weak]}는 천천히 보완하는 하루가 좋아요.`;
 }
 
 export default function MySajuPage({ me }: Props) {
   const [profile, setProfile] = useState<SajuProfile | null>(null);
   const [providerState, setProviderState] = useState<"mock" | "provider" | "mock-fallback">("mock");
   const [warnings, setWarnings] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState<"pillars" | "ten-god" | "strength">("pillars");
   const { message, showMessage } = useTransientMessage();
 
   useEffect(() => {
@@ -72,27 +88,32 @@ export default function MySajuPage({ me }: Props) {
     };
   }, [me, showMessage]);
 
-  const topSummary = useMemo(() => {
-    if (!profile) return null;
-    const sorted = Object.entries(profile.fiveElements).sort((a, b) => b[1] - a[1]);
-    return {
-      strong: `${elementLabels[sorted[0][0]]} 강세`,
-      weak: `${elementLabels[sorted[sorted.length - 1][0]]} 보완 필요`,
-    };
+  const sortedElements = useMemo(() => {
+    if (!profile) return [];
+    return Object.entries(profile.fiveElements).sort((a, b) => b[1] - a[1]);
   }, [profile]);
 
-  const state = statusText(providerState, warnings);
+  const topSummary = useMemo(() => {
+    if (!sortedElements.length) return null;
+    return {
+      strongKey: sortedElements[0][0],
+      weakKey: sortedElements[sortedElements.length - 1][0],
+      strong: `${elementLabels[sortedElements[0][0]]} 강세`,
+      weak: `${elementLabels[sortedElements[sortedElements.length - 1][0]]} 보완 필요`,
+    };
+  }, [sortedElements]);
 
+  const state = statusText(providerState, warnings);
   const narratives = useMemo(
     () => (profile ? buildSajuNarratives(profile.fiveElements) : null),
     [profile]
   );
 
   const handleShare = async () => {
-    if (!profile) return;
+    if (!profile || !topSummary) return;
     const result = await shareOrCopy({
       title: `${me.name}님의 사주 요약`,
-      text: `${profile.personalitySummary}\n연애 스타일: ${profile.loveStyle}`,
+      text: `핵심: ${topSummary.strong}, ${topSummary.weak}\n${profile.personalitySummary}`,
     });
     showMessage(result === "shared" ? "공유 완료!" : "복사 완료! 원하는 곳에 붙여넣어 공유해보세요.");
   };
@@ -108,9 +129,10 @@ export default function MySajuPage({ me }: Props) {
   return (
     <PageLayout
       title={`${me.name}님의 사주 리포트`}
+      subtitle="핵심은 먼저, 디테일은 아래에서 천천히 확인해보세요."
       action={<button type="button" className="ghostBtn" onClick={handleShare}>공유</button>}
     >
-      <section className="providerStatusBox">
+      <section className="heroCard">
         <div className="providerStatusRow">
           <span className={`sourceBadge ${state.tone === "ok" ? "ok" : state.tone === "warn" ? "warn" : "fallback"}`}>
             {state.badge}
@@ -119,30 +141,92 @@ export default function MySajuPage({ me }: Props) {
             <span key={w} className="warnBadge">{warningLabel(w)}</span>
           ))}
         </div>
+        <h3>{topSummary.strong}</h3>
         <p className="statusHint">{state.detail}</p>
+        <div className="summaryChips">
+          <span>나를 가장 잘 설명하는 기운 · {elementLabels[topSummary.strongKey]}</span>
+          <span>관계 주의 포인트 · {elementLabels[topSummary.weakKey]}</span>
+        </div>
+        <p className="todayLine">오늘의 한 줄 · {todayLine(topSummary.strongKey, topSummary.weakKey)}</p>
+      </section>
+
+      <section className="segmentedWrap">
+        <div className="segmentedControl">
+          <button type="button" className={activeTab === "pillars" ? "active" : ""} onClick={() => setActiveTab("pillars")}>사주원국</button>
+          <button type="button" className={activeTab === "ten-god" ? "active" : ""} onClick={() => setActiveTab("ten-god")}>오행·십성</button>
+          <button type="button" className={activeTab === "strength" ? "active" : ""} onClick={() => setActiveTab("strength")}>신강·신약</button>
+        </div>
+        {activeTab === "pillars" ? (
+          <div className="tabPane">
+            <p>현재 버전에서는 오행 중심 분석을 우선 제공하고 있어요.</p>
+            <small>사주원국(연/월/일/시) 표시는 provider raw pillars 연결 후 활성화됩니다.</small>
+          </div>
+        ) : null}
+        {activeTab === "ten-god" ? (
+          <div className="tabPane">
+            <p>오행 밸런스 기반 해석은 제공 중이며, 십성 상세 해석은 준비 중이에요.</p>
+            <small>다음 업데이트에서 십성 배지/해석 카드가 추가됩니다.</small>
+          </div>
+        ) : null}
+        {activeTab === "strength" ? (
+          <div className="tabPane">
+            <p>신강/신약 요약 UI는 먼저 오픈했어요.</p>
+            <small>현재는 placeholder 단계이며 실제 판정 규칙 연결은 준비 중입니다.</small>
+          </div>
+        ) : null}
       </section>
 
       <ResultCard
         title="핵심 요약"
         tone="highlight"
-        rows={[`강세: ${topSummary.strong}`, `보완: ${topSummary.weak}`, "전체적으로 관계 몰입도는 높고, 감정 리듬 조율이 핵심이에요."]}
+        rows={[
+          `강세: ${topSummary.strong}`,
+          `보완: ${topSummary.weak}`,
+          "관계 몰입도는 높고, 감정 리듬 조율이 핵심이에요.",
+        ]}
       />
 
       <section className="elementCard">
-        {Object.entries(profile.fiveElements).map(([key, value]) => (
-          <div key={key} className="barRow">
-            <strong>{elementLabels[key] ?? key}</strong>
-            <div className="barTrack"><i style={{ width: `${value}%` }} /></div>
-            <span>{value}</span>
-          </div>
-        ))}
+        <h3 className="sectionTitle">오행 밸런스</h3>
+        <div className="elementOrbit">
+          {Object.entries(profile.fiveElements).map(([key, value]) => (
+            <article key={key} className="elementMiniCard">
+              <div className="elementMiniHead">
+                <span className="dot" style={{ background: elementColor(key) }} />
+                <strong>{elementLabels[key] ?? key}</strong>
+                <b>{value}%</b>
+              </div>
+              <div className="barTrack"><i style={{ width: `${value}%`, background: elementColor(key) }} /></div>
+            </article>
+          ))}
+        </div>
       </section>
 
-      <ResultCard title="왜 이런 결과가 나왔을까" rows={narratives.reasonCard} />
-      <ResultCard title="성격 · 기질" rows={[profile.personalitySummary, ...narratives.personality]} />
-      <ResultCard title="연애 스타일" rows={[profile.loveStyle, ...narratives.loveStyle]} />
-      <ResultCard title="잘 맞는 상대" rows={[...profile.idealTraits, ...narratives.idealPartner]} />
-      <ResultCard title="주의할 관계 패턴" rows={narratives.cautionPatterns} />
+      <details className="foldSection" open>
+        <summary>왜 이런 결과가 나왔을까</summary>
+        <ResultCard title="근거 요약" rows={narratives.reasonCard} />
+      </details>
+
+      <details className="foldSection" open>
+        <summary>성격 · 기질</summary>
+        <ResultCard title="나의 기질" rows={[profile.personalitySummary, ...narratives.personality]} />
+      </details>
+
+      <details className="foldSection" open>
+        <summary>연애 스타일</summary>
+        <ResultCard title="연애 온도" rows={[profile.loveStyle, ...narratives.loveStyle]} />
+      </details>
+
+      <details className="foldSection" open>
+        <summary>잘 맞는 상대</summary>
+        <ResultCard title="이런 사람에게 끌리기 쉬워요" rows={[...profile.idealTraits, ...narratives.idealPartner]} />
+      </details>
+
+      <details className="foldSection">
+        <summary>주의할 관계 패턴</summary>
+        <ResultCard title="관계 주의 한마디" rows={narratives.cautionPatterns} />
+      </details>
+
       {message ? <p className="toastText">{message}</p> : null}
     </PageLayout>
   );
