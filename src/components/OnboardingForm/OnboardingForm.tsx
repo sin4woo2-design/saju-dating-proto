@@ -86,6 +86,14 @@ export default function OnboardingForm({ onSubmit }: Props) {
       {step === 2 && (
         <>
           <p className="hint">태어난 시간대에 가장 가까운 시각을 골라주세요. 정확한 분까지 몰라도 괜찮아요.</p>
+          <button
+            type="button"
+            className="timeUnknownBtn"
+            onClick={() => setForm((prev) => ({ ...prev, birthTime: "12:00" }))}
+          >
+            <strong>정확한 시간을 모르겠어요</strong>
+            <small>기본값으로 午時(11:00~12:59) 중심 시각을 사용해 분석해요.</small>
+          </button>
           <div className="timeSelectGrid">
             {traditionalTimes.map((slot) => (
               <button
@@ -101,14 +109,6 @@ export default function OnboardingForm({ onSubmit }: Props) {
               </button>
             ))}
           </div>
-          <button
-            type="button"
-            className="timeUnknownBtn"
-            onClick={() => setForm((prev) => ({ ...prev, birthTime: "12:00" }))}
-          >
-            <strong>정확한 시간을 모르겠어요</strong>
-            <small>기본값으로 午時(11:00~12:59) 중심 시각을 사용해 분석해요.</small>
-          </button>
         </>
       )}
 
