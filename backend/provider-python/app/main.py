@@ -54,4 +54,4 @@ async def validation_exception_handler(_: Request, __: RequestValidationError):
 
 @app.get("/health")
 def health():
-    return {"ok": True, "service": "provider-python", "mode": "fake"}
+    return {"ok": True, "service": "provider-python", "mode": settings.chart_mode}

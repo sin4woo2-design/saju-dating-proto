@@ -19,11 +19,18 @@ function warningLabel(code: string) {
   return code;
 }
 
-function statusText(providerState: "provider" | "mock-fallback", warnings: string[]) {
+function statusText(providerState: "mock" | "provider" | "mock-fallback", warnings: string[]) {
+  if (providerState === "mock") {
+    return {
+      badge: "mock 모드",
+      detail: "provider 연결 없이 mock 규칙 결과를 보여주고 있어요.",
+      tone: "fallback",
+    } as const;
+  }
   if (providerState === "mock-fallback") {
     return {
       badge: "fallback 사용",
-      detail: "현재는 백업 규칙 결과를 보여주고 있어요.",
+      detail: "provider 호출 실패로 백업 규칙 결과를 보여주고 있어요.",
       tone: "fallback",
     } as const;
   }
@@ -43,7 +50,7 @@ function statusText(providerState: "provider" | "mock-fallback", warnings: strin
 
 export default function MySajuPage({ me }: Props) {
   const [profile, setProfile] = useState<SajuProfile | null>(null);
-  const [providerState, setProviderState] = useState<"provider" | "mock-fallback">("mock-fallback");
+  const [providerState, setProviderState] = useState<"mock" | "provider" | "mock-fallback">("mock");
   const [warnings, setWarnings] = useState<string[]>([]);
   const { message, showMessage } = useTransientMessage();
 

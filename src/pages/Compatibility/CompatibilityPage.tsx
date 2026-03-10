@@ -20,11 +20,18 @@ function warningLabel(code: string) {
   return code;
 }
 
-function statusText(providerState: "provider" | "mock-fallback", warnings: string[]) {
+function statusText(providerState: "mock" | "provider" | "mock-fallback", warnings: string[]) {
+  if (providerState === "mock") {
+    return {
+      badge: "mock 모드",
+      detail: "provider 연결 없이 mock 규칙으로 궁합 점수를 계산했어요.",
+      tone: "fallback",
+    } as const;
+  }
   if (providerState === "mock-fallback") {
     return {
       badge: "fallback 사용",
-      detail: "현재는 백업 규칙으로 궁합 점수를 계산했어요.",
+      detail: "provider 호출 실패로 백업 규칙으로 궁합 점수를 계산했어요.",
       tone: "fallback",
     } as const;
   }
@@ -70,7 +77,7 @@ export default function CompatibilityPage({ me }: Props) {
   const [birthTime, setBirthTime] = useState("");
   const [gender, setGender] = useState<Gender>("other");
   const [score, setScore] = useState<number | null>(null);
-  const [providerState, setProviderState] = useState<"provider" | "mock-fallback">("mock-fallback");
+  const [providerState, setProviderState] = useState<"mock" | "provider" | "mock-fallback">("mock");
   const [warnings, setWarnings] = useState<string[]>([]);
   const [rawSignals, setRawSignals] = useState<CompatibilityRawSignal[]>([]);
   const [confidence, setConfidence] = useState<"high" | "medium" | "low">("low");

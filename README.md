@@ -37,6 +37,14 @@ CORS_ALLOW_ORIGINS=http://localhost:5173,https://saju-dating-proto.vercel.app
 - 배포 환경에서 provider base URL이 비어 있으면 `PROVIDER_BASE_URL_NOT_CONFIGURED`로 처리되고 mock fallback 됩니다.
 - `real-provider` 모드에서 HTTP provider 호출 실패 시 mock fallback 됩니다.
 
+## providerState 해석
+- `mock`: 앱이 mock 엔진 모드로 동작 (provider 호출 안 함)
+- `provider`: provider 호출 성공
+- `mock-fallback`: provider 호출 실패 후 mock 대체
+
+## 배포 연결 가이드
+- `docs/provider-vm-vercel-deployment.md`
+
 ## 현재 MVP 기능 범위
 - 온보딩 입력 (이름/생년월일/출생시간/성별)
 - 홈 인연 카드 리스트(mock)

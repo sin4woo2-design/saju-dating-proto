@@ -10,7 +10,7 @@ lunar-python 실연동 전 단계의 **FastAPI fake provider 서버**입니다.
 API 계약 기준 문서:
 - `docs/python-provider-api-spec.md`
 
-## 실행 방법
+## 실행 방법 (개발)
 
 ```bash
 cd backend/provider-python
@@ -21,6 +21,13 @@ pip install -r requirements.txt
 export CHART_ENGINE_MODE=lunar-prep
 uvicorn app.main:app --host 0.0.0.0 --port 8081 --reload
 ```
+
+## 상시 실행 (VM / systemd)
+- 서비스 유닛: `deploy/systemd/saju-provider.service`
+- 환경변수 파일: `deploy/env/provider.env`
+- 실행 스크립트: `scripts/run-provider.sh`
+
+상세 절차는 `docs/provider-vm-vercel-deployment.md` 참고.
 
 서버 확인:
 ```bash

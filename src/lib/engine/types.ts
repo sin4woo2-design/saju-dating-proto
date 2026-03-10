@@ -9,10 +9,12 @@ export interface PairInput {
   gender: Gender;
 }
 
+export type ProviderState = "mock" | "provider" | "mock-fallback";
+
 export interface CompatibilityResult {
   score: number;
   source: EngineMode;
-  providerState: "provider" | "mock-fallback";
+  providerState: ProviderState;
   warnings?: string[];
   rawSignals?: CompatibilityRawSignal[];
   reliability?: {
@@ -25,7 +27,7 @@ export interface CompatibilityResult {
 export interface SajuResult {
   profile: SajuProfile;
   source: EngineMode;
-  providerState: "provider" | "mock-fallback";
+  providerState: ProviderState;
   warnings?: string[];
 }
 
