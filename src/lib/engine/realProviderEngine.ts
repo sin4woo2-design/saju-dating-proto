@@ -61,7 +61,7 @@ export const realProviderEngine: SajuEngine = {
       const raw = await adapter.calculateCompatibility({
         me: toProviderPerson(me),
         partner: toProviderPerson(partner),
-        options: { includeSignals: true },
+        options: { includeSignals: true, includeRawSignals: true },
       });
 
       const mapped = mapProviderCompatibilityToScore(raw);

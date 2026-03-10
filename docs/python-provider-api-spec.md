@@ -96,7 +96,8 @@ Request JSON
     "timezone": "Asia/Seoul"
   },
   "options": {
-    "includeSignals": true
+    "includeSignals": true,
+    "includeRawSignals": true
   }
 }
 ```

@@ -68,7 +68,7 @@ def compatibility_signals(req: CompatibilitySignalsRequest):
         if not ok:
             _raise_error(status_code=400, code=error_code, message=error_message, request_id=request_id)
 
-    score, signals, latency_ms, warnings = get_compatibility(req.me, req.partner)
+    score, signals, raw_signals, reliability, latency_ms, warnings = get_compatibility(req.me, req.partner)
 
     return CompatibilitySignalsResponse(
         meta=Meta(
@@ -80,6 +80,8 @@ def compatibility_signals(req: CompatibilitySignalsRequest):
         compatibility=CompatibilityBody(
             score=score,
             signals=signals if req.options.includeSignals else None,
+            rawSignals=raw_signals if req.options.includeRawSignals else None,
+            reliability=reliability,
         ),
         warnings=warnings,
     )

@@ -11,6 +11,11 @@
 2. Backend/Front는 동일 룰 테이블로 score 파생
 3. reliability(시간 미상, 부분 데이터) 신호를 명시 반영
 
+## 현재 반영
+- `/saju/compatibility-signals` 응답에 `rawSignals`, `reliability` 필드 반영
+- `derive_score_from_signals` -> rawSignals weight 합산 방식으로 전환
+- score/signal 하위호환 유지
+
 ## 연결 전략
 - 1단계(이번): 계약/타입/문서 정리
 - 2단계: fake provider에서 `rawSignals` 필드 추가(기존 signals 유지)

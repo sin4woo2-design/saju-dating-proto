@@ -55,16 +55,25 @@ export function mapProviderCompatibilityToScore(raw: ProviderCompatibilityRespon
   const warnings = new Set<string>(mapProviderWarnings(raw.warnings) ?? []);
   const score = raw.compatibility.score;
 
-  if (typeof score !== "number") {
-    warnings.add("PROVIDER_PARTIAL_DATA");
+  if (typeof score === "number") {
     return {
-      score: DEFAULT_COMPAT_SCORE,
-      warnings: Array.from(warnings),
+      score: clamp100(score),
+      warnings: warnings.size ? Array.from(warnings) : undefined,
     };
   }
 
+  const rawSignals = raw.compatibility.rawSignals ?? [];
+  if (rawSignals.length > 0) {
+    const derived = rawSignals.reduce((acc, s) => acc + (s.weight ?? 0), 70);
+    return {
+      score: clamp100(derived),
+      warnings: warnings.size ? Array.from(warnings) : undefined,
+    };
+  }
+
+  warnings.add("PROVIDER_PARTIAL_DATA");
   return {
-    score: clamp100(score),
-    warnings: warnings.size ? Array.from(warnings) : undefined,
+    score: DEFAULT_COMPAT_SCORE,
+    warnings: Array.from(warnings),
   };
 }

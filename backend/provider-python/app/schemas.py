@@ -36,6 +36,7 @@ class SajuOptions(BaseModel):
 
 class CompatibilityOptions(BaseModel):
     includeSignals: bool = True
+    includeRawSignals: bool = True
 
 
 class SajuChartRequest(BaseModel):
@@ -71,9 +72,31 @@ class SajuBody(BaseModel):
     calculationSource: Optional[str] = None
 
 
+class CompatibilityRawSignal(BaseModel):
+    code: str
+    category: Literal[
+        "relation-branch",
+        "relation-stem",
+        "element-dynamics",
+        "daymaster-dynamics",
+        "reliability",
+    ]
+    polarity: Literal["positive", "negative", "neutral"]
+    weight: Optional[int] = None
+    note: Optional[str] = None
+
+
+class CompatibilityReliability(BaseModel):
+    timeKnownMe: Optional[bool] = None
+    timeKnownPartner: Optional[bool] = None
+    confidence: Optional[Literal["high", "medium", "low"]] = None
+
+
 class CompatibilityBody(BaseModel):
     score: Optional[int] = None
     signals: Optional[list[str]] = None
+    rawSignals: Optional[list[CompatibilityRawSignal]] = None
+    reliability: Optional[CompatibilityReliability] = None
 
 
 class SajuChartResponse(BaseModel):

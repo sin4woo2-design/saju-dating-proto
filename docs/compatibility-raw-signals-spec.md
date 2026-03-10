@@ -60,6 +60,7 @@
 - reliability signal 포함 시 warnings에 `PROVIDER_PARTIAL_DATA` 권장
 - score는 optional, raw signals만으로도 계산 가능해야 함
 
-## 이번 턴 범위
-- 설계/스펙만 반영
-- 실제 compatibility real 계산은 다음 단계
+## 현재 구현 상태
+- fake provider(`/saju/compatibility-signals`)가 `rawSignals` + `reliability`를 함께 반환
+- 기존 `signals` / `score`도 동시 반환(하위호환)
+- score는 raw signal weight 합산(base 70) 방식으로 파생
