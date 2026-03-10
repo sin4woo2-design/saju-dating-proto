@@ -71,16 +71,25 @@ button:disabled {
   font-size: 20px;
   letter-spacing: 0.1px;
   color: #2c241b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.brandMark {
+  color: #b99a5a;
+  font-size: 15px;
+  transform: translateY(-1px);
 }
 
 .resetBtn {
-  min-height: 36px;
-  padding: 6px 10px;
-  border-radius: 10px;
+  min-height: 32px;
+  padding: 5px 10px;
+  border-radius: 9px;
   font-size: 12px;
   background: #ffffff;
-  border-color: #d5dfec;
-  color: #4b5563;
+  border-color: #dde1e8;
+  color: #5f6672;
   white-space: nowrap;
 }
 
@@ -249,6 +258,26 @@ button:disabled {
   justify-items: center;
 }
 
+.refHeroCard {
+  gap: 14px;
+  padding: 18px;
+}
+
+.refHeroHead {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.refHeroHead h3 {
+  margin: 6px 0 0;
+  font-size: 34px;
+  line-height: 1.05;
+  color: #1f1f1d;
+}
+
 .heroCenterTop {
   display: grid;
   justify-items: center;
@@ -314,6 +343,58 @@ button:disabled {
   margin: 0;
   font-size: 12px;
   color: #6b7280;
+}
+
+.refHighlightBox {
+  width: 100%;
+  border: 1px solid #ece7dc;
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #fffdf8;
+  font-size: 15px;
+  color: #4b4237;
+}
+
+.metricCard {
+  text-align: center;
+  justify-items: center;
+  gap: 4px;
+}
+
+.metricCard strong {
+  font-size: 18px;
+  color: #b3904f;
+}
+
+.metricCard .metricLabel {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.metricCard b {
+  font-size: 28px;
+  line-height: 1;
+  color: #222;
+}
+
+.dailySummaryCard h4 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.1;
+  color: #1f1f1d;
+}
+
+.dailySummaryCard ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+  color: #4b5563;
+}
+
+.summaryCta {
+  align-self: start;
 }
 
 .heroCard h3 {

@@ -21,7 +21,7 @@ export default function App() {
     <BrowserRouter>
       <div className="appShell">
         <header className="topBar">
-          <h1>사주 라운지</h1>
+          <h1><span className="brandMark">✦</span> 사주 라운지</h1>
           {me ? (
             <button
               type="button"

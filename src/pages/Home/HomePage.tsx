@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
-import { genderLabels } from "../../constants/labels";
 import type { UserProfileInput } from "../../types/saju";
 
 interface Props {
@@ -12,12 +11,9 @@ function dailySeed(me: UserProfileInput) {
   return `${me.birthDate}-${me.birthTime}-${today}`.split("").reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
 }
 
-const fortuneLevels = ["매우 좋음", "좋음", "보통", "집중 필요"] as const;
-
 export default function HomePage({ me }: Props) {
   const seed = dailySeed(me);
   const luckScore = 60 + (seed % 36);
-  const luckLevel = fortuneLevels[Math.min(3, Math.floor((96 - luckScore) / 10))] ?? "보통";
 
   const todayLine = [
     "작은 루틴을 지키면 큰 흐름이 따라오는 날이에요.",
@@ -27,40 +23,49 @@ export default function HomePage({ me }: Props) {
   ][seed % 4];
 
   return (
-    <PageLayout title="오늘의 사주 홈" subtitle="오늘의 흐름을 먼저 보고, 필요한 리포트로 바로 이어가세요.">
-      <section className="heroCard homeHeroVisual signatureCard posterHero">
-        <div className="heroWave" />
-        <div className="heroOrbit" aria-hidden />
-
-        <div className="heroCenterTop">
-          <p className="smallBadge">✨ 오늘의 기운</p>
+    <PageLayout title="" subtitle="">
+      <section className="heroCard homeHeroVisual signatureCard refHeroCard">
+        <div className="refHeroHead">
+          <div>
+            <p className="smallBadge">오늘의 운세</p>
+            <h3>최고의 하루</h3>
+          </div>
           <div className="heroScoreOrb">
             <strong>{luckScore}</strong>
-            <span>{luckLevel}</span>
+            <span>점</span>
           </div>
         </div>
 
-        <h3>{me.name}님의 오늘 사주 흐름</h3>
         <p className="statusHint">{todayLine}</p>
-        <p className="heroMetaLine">행동 포인트 · 중요한 이야기는 저녁 전에 정리해보세요.</p>
-        <p className="heroSubLine">{me.birthDate} · {me.birthTime} · {genderLabels[me.gender]}</p>
-
-        <Link to="/fortune" className="heroInlineCta heroPrimaryCta">오늘 운세 자세히 보기</Link>
+        <div className="refHighlightBox">✦ 금전운과 애정운이 조화롭게 작용하고 있어요.</div>
       </section>
 
       <section className="homeHubGrid homeTripletGrid">
-        <article className="hubCard summaryCard">
-          <strong>집중 타이밍</strong>
-          <p>17:00 ~ 20:00</p>
+        <article className="hubCard summaryCard metricCard">
+          <strong>◷</strong>
+          <p className="metricLabel">집중 시간</p>
+          <b>2 - 4 PM</b>
         </article>
-        <article className="hubCard summaryCard">
-          <strong>관계 온도</strong>
-          <p>차분한 대화가 유리해요.</p>
+        <article className="hubCard summaryCard metricCard">
+          <strong>◔</strong>
+          <p className="metricLabel">관계 온도</p>
+          <b>75°C</b>
         </article>
-        <article className="hubCard summaryCard">
-          <strong>오늘 키워드</strong>
-          <p>리듬 정리</p>
+        <article className="hubCard summaryCard metricCard">
+          <strong>⌘</strong>
+          <p className="metricLabel">오늘의 키워드</p>
+          <b>화합</b>
         </article>
+      </section>
+
+      <section className="hubCard summaryCard dailySummaryCard">
+        <h4>오늘의 운세 요약</h4>
+        <ul>
+          <li>오늘은 중요한 대화를 시작하기 좋은 흐름이에요.</li>
+          <li>{me.name}님의 강한 기운을 보완하는 톤을 선택해보세요.</li>
+          <li>가까운 사람과의 관계 조율에서 좋은 결과가 기대돼요.</li>
+        </ul>
+        <Link to="/mysaju" className="heroInlineCta summaryCta">사주 전체 분석 보기 →</Link>
       </section>
 
       <section className="hubCard utilityCard continueCard">
