@@ -46,8 +46,22 @@ async function postJson<TResponse>(baseUrl: string, path: string, payload: unkno
   }
 }
 
+function resolveProviderBaseUrl(): string {
+  const configured = (import.meta.env.VITE_SAJU_PROVIDER_BASE_URL as string | undefined)?.trim();
+  if (configured) return configured.replace(/\/$/, "");
+
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    if (host === "localhost" || host === "127.0.0.1") {
+      return "http://localhost:8081";
+    }
+  }
+
+  throw new Error("PROVIDER_BASE_URL_NOT_CONFIGURED");
+}
+
 export function createHttpProviderAdapter(): ProviderAdapter {
-  const baseUrl = (import.meta.env.VITE_SAJU_PROVIDER_BASE_URL as string | undefined) ?? "http://localhost:8081";
+  const baseUrl = resolveProviderBaseUrl();
   const timeoutMs = Number(import.meta.env.VITE_SAJU_PROVIDER_TIMEOUT_MS ?? 1500);
 
   return {

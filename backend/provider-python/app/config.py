@@ -7,6 +7,11 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class Settings:
     provider_version: str = os.getenv("PROVIDER_VERSION", "fake-python-provider-v0")
+    cors_allow_origins: list[str] = [
+        origin.strip()
+        for origin in os.getenv("CORS_ALLOW_ORIGINS", "http://localhost:5173,https://saju-dating-proto.vercel.app").split(",")
+        if origin.strip()
+    ]
     engine_version: str = os.getenv("ENGINE_VERSION", "chart-engine-v0.3")
     chart_mode: str = os.getenv("CHART_ENGINE_MODE", "fake")  # fake | lunar-prep
     # chart baseline (잠정 고정): v2-month-branch-boost

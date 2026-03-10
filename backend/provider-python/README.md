@@ -88,6 +88,7 @@ curl -s -X POST http://localhost:8081/saju/compatibility-signals \
   - lunar-python 계산 진입, 실패 시 fake로 fallback
 
 추가 옵션
+- `CORS_ALLOW_ORIGINS=http://localhost:5173,https://saju-dating-proto.vercel.app`
 - `ENGINE_VERSION=chart-engine-v0.3`
 - `CHART_RULE_VERSION=v2-month-branch-boost` (**chart baseline 잠정 고정**)
 - `CHART_RULE_VERSION=v1-current` (롤백 기준, 검증용)

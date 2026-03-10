@@ -25,11 +25,17 @@ npm run build
 
 ## Provider 연동 환경변수 (fake python provider)
 ```bash
+# Frontend (Vercel)
 VITE_SAJU_ENGINE_MODE=real-provider
-VITE_SAJU_PROVIDER_BASE_URL=http://localhost:8081
+VITE_SAJU_PROVIDER_BASE_URL=https://<public-provider-domain>
 VITE_SAJU_PROVIDER_TIMEOUT_MS=1500
+
+# Python provider (backend)
+CORS_ALLOW_ORIGINS=http://localhost:5173,https://saju-dating-proto.vercel.app
 ```
-- `real-provider` 모드에서 HTTP provider 호출 후 실패 시 mock fallback 됩니다.
+- 로컬 개발에서만 `VITE_SAJU_PROVIDER_BASE_URL=http://localhost:8081`를 사용하세요.
+- 배포 환경에서 provider base URL이 비어 있으면 `PROVIDER_BASE_URL_NOT_CONFIGURED`로 처리되고 mock fallback 됩니다.
+- `real-provider` 모드에서 HTTP provider 호출 실패 시 mock fallback 됩니다.
 
 ## 현재 MVP 기능 범위
 - 온보딩 입력 (이름/생년월일/출생시간/성별)
