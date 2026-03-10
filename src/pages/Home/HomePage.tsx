@@ -24,57 +24,60 @@ export default function HomePage({ me }: Props) {
 
   return (
     <PageLayout title="" subtitle="">
-      <section className="heroCard homeHeroVisual signatureCard refHeroCard">
+      <section className="heroCard homeHeroVisual signatureCard refHeroCard compactHeroCard heroRefined heroLuxury">
+        <div className="heroAura" aria-hidden />
+        <div className="heroWave" />
+        <div className="heroOrbit" aria-hidden />
+
         <div className="refHeroHead">
-          <p className="smallBadge">오늘의 운세</p>
-          <div className="heroScoreOrb">
+          <p className="heroMicroLabel plain">오늘의 운세</p>
+          <div className="heroScoreOrb compact luxe">
             <strong>{luckScore}</strong>
             <span>점</span>
           </div>
         </div>
 
         <h3>{me.name}님의 오늘 흐름</h3>
-        <p className="statusHint">{todayLine}</p>
-        <p className="heroDescLine">중요한 결정은 서두르기보다 대화와 리듬을 먼저 맞추면 더 좋은 결과로 이어져요.</p>
+        <p className="heroDescLine">{todayLine}</p>
+        <p className="heroConclusion">관계 조율과 대화 정리가 운의 흐름을 더 좋게 만들어요.</p>
 
-        <div className="refHighlightBox">금전운과 애정운의 균형이 좋아, 관계 조율에 힘이 실리는 하루예요.</div>
-        <Link to="/fortune" className="heroInlineCta heroPrimaryCta">오늘 운세 자세히 보기</Link>
+        <Link to="/fortune" className="heroInlineCta heroGoldCta">오늘 운세 자세히 보기</Link>
       </section>
 
       <section className="homeHubGrid homeTripletGrid">
-        <article className="metricCard">
+        <article className="metricCard premiumMetricCard">
           <strong>◷</strong>
           <p className="metricLabel">집중 시간</p>
           <b>2 - 4 PM</b>
         </article>
-        <article className="metricCard">
+        <article className="metricCard premiumMetricCard">
           <strong>◔</strong>
           <p className="metricLabel">관계 온도</p>
           <b>75°C</b>
         </article>
-        <article className="metricCard">
+        <article className="metricCard premiumMetricCard">
           <strong>⌘</strong>
           <p className="metricLabel">오늘의 키워드</p>
           <b>화합</b>
         </article>
       </section>
 
-      <section className="dailySummarySection">
+      <section className="dailySummarySection premiumSummarySection">
         <h4>오늘의 운세 요약</h4>
-        <ul>
-          <li>오늘은 중요한 대화를 시작하기 좋은 흐름이에요.</li>
-          <li>{me.name}님의 강한 기운을 보완하는 톤을 선택해보세요.</li>
-          <li>가까운 사람과의 관계 조율에서 좋은 결과가 기대돼요.</li>
+        <ul className="dailySummaryList">
+          <li>중요한 대화를 시작하기 좋은 흐름이에요.</li>
+          <li>{me.name}님은 강한 기운을 보완하는 톤 선택이 핵심이에요.</li>
+          <li>가까운 관계 조율에서 좋은 결과가 기대돼요.</li>
         </ul>
         <Link to="/mysaju" className="summaryFullCta">사주 전체 분석 보기</Link>
       </section>
 
-      <section className="hubCard utilityCard continueCard">
+      <section className="hubCard utilityCard continueCard homeContinueCard promoContinueCard">
         <strong>⏱️ 이어보기</strong>
-        <p>최근 보던 화면으로 바로 돌아가세요.</p>
+        <p>최근 보던 흐름으로 바로 돌아가세요.</p>
         <div className="continueLinks">
-          <Link to="/compatibility">궁합 계산 이어보기</Link>
-          <span className="heroSubLine"><Link to="/persona">페르소나 카드 보기</Link></span>
+          <Link to="/compatibility" className="continuePrimaryLink">궁합 계산 이어보기</Link>
+          <Link to="/persona" className="continueSecondaryLink">페르소나 카드 보기</Link>
         </div>
       </section>
     </PageLayout>
