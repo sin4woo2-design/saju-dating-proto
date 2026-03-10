@@ -54,16 +54,24 @@
 }
 
 .timeSlotBtn {
-  min-height: 62px;
+  min-height: 74px;
   text-align: left;
   border-radius: 12px;
   border: 1px solid #d8e3f3;
   background: #f9fbff;
   display: grid;
-  gap: 3px;
+  gap: 2px;
+  position: relative;
+  padding: 10px;
 }
 
 .timeSlotBtn strong {
+  font-size: 14px;
+  color: #1e293b;
+  letter-spacing: 0.02em;
+}
+
+.timeSlotBtn span {
   font-size: 12px;
   color: #334155;
 }
@@ -74,8 +82,46 @@
 }
 
 .timeSlotBtn.active {
-  border-color: #bfd4fb;
+  border-color: #9fc0fb;
   background: #eef5ff;
+  box-shadow: 0 0 0 2px rgba(191, 212, 251, 0.45);
+}
+
+.timeCheck {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-style: normal;
+  font-size: 11px;
+  color: #fff;
+  background: #2563eb;
+}
+
+.timeUnknownBtn {
+  min-height: 54px;
+  border-style: dashed;
+  border-color: #c8d6ea;
+  background: #f8fbff;
+  color: #334155;
+  text-align: left;
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+}
+
+.timeUnknownBtn strong {
+  font-size: 13px;
+  color: #334155;
+}
+
+.timeUnknownBtn small {
+  font-size: 11px;
+  color: #64748b;
 }
 
 .genderGrid {
