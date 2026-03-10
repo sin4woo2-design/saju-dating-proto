@@ -51,23 +51,33 @@ export default function App() {
 
         <nav className="bottomNav bottomNavFive">
           <NavLink to="/" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>
-            <span className="tabIcon">⌂</span>
+            <span className="tabIcon" aria-hidden>
+              <svg viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5" /><path d="M6 9.8V20h12V9.8" /></svg>
+            </span>
             <span>홈</span>
           </NavLink>
           <NavLink to="/mysaju" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>
-            <span className="tabIcon">▣</span>
+            <span className="tabIcon" aria-hidden>
+              <svg viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="15" height="15" rx="2.5" /><path d="M8 9h8M8 12h8M8 15h5" /></svg>
+            </span>
             <span>내 사주</span>
           </NavLink>
           <NavLink to="/fortune" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>
-            <span className="tabIcon">◌</span>
+            <span className="tabIcon" aria-hidden>
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.2" /><path d="M12 7.2v9.6M7.2 12h9.6" /></svg>
+            </span>
             <span>운세</span>
           </NavLink>
           <NavLink to="/persona" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>
-            <span className="tabIcon">◔</span>
+            <span className="tabIcon" aria-hidden>
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.2" /><path d="M5.5 19c1.8-2.8 4-4.2 6.5-4.2S16.7 16.2 18.5 19" /></svg>
+            </span>
             <span>페르소나</span>
           </NavLink>
           <NavLink to="/inyeon" className={({ isActive }) => `tabLink ${isActive ? "active" : ""}`}>
-            <span className="tabIcon">♡</span>
+            <span className="tabIcon" aria-hidden>
+              <svg viewBox="0 0 24 24"><path d="M12 19.2s-6.7-3.9-6.7-8.3a3.7 3.7 0 0 1 6.7-2.1 3.7 3.7 0 0 1 6.7 2.1c0 4.4-6.7 8.3-6.7 8.3Z" /></svg>
+            </span>
             <span>인연</span>
           </NavLink>
         </nav>
