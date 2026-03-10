@@ -574,6 +574,37 @@ button:disabled {
   background: #1a2148;
 }
 
+.pillarsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pillarCard {
+  border: 1px solid #3f477f;
+  border-radius: 10px;
+  background: #1a1f45;
+  padding: 8px;
+  display: grid;
+  gap: 3px;
+}
+
+.pillarCard strong {
+  font-size: 12px;
+  color: #cfc5ff;
+}
+
+.pillarCard span {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f2ebff;
+}
+
+.pillarCard small {
+  font-size: 11px;
+  color: #b5bde9;
+}
+
 @media (min-width: 540px) {
   .appShell {
     padding-top: 18px;

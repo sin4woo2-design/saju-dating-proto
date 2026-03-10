@@ -57,6 +57,8 @@ export interface ProviderSajuResponse {
       hour?: string;
     };
     signals?: string[];
+    ruleVersion?: string;
+    calculationSource?: string;
   };
   warnings?: ProviderWarningCode[];
 }

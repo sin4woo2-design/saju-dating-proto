@@ -24,11 +24,24 @@ export interface CompatibilityResult {
   };
 }
 
+export interface SajuChartSnapshot {
+  pillars?: {
+    year?: string;
+    month?: string;
+    day?: string;
+    hour?: string;
+  };
+  signals?: string[];
+  ruleVersion?: string;
+  calculationSource?: string;
+}
+
 export interface SajuResult {
   profile: SajuProfile;
   source: EngineMode;
   providerState: ProviderState;
   warnings?: string[];
+  chart?: SajuChartSnapshot;
 }
 
 export interface SajuEngine {

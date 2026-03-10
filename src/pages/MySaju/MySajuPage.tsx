@@ -7,6 +7,7 @@ import { calculateSajuResult } from "../../lib/sajuEngine";
 import { buildSajuNarratives } from "../../lib/resultNarratives";
 import { shareOrCopy } from "../../lib/share";
 import type { SajuProfile, UserProfileInput } from "../../types/saju";
+import type { SajuChartSnapshot } from "../../lib/engine/types";
 
 interface Props {
   me: UserProfileInput;
@@ -63,10 +64,20 @@ function todayLine(strong: string, weak: string) {
   return `${elementLabels[strong]}로 힘을 내고, ${elementLabels[weak]}는 천천히 보완하는 하루가 좋아요.`;
 }
 
+function splitPillar(value?: string) {
+  if (!value) return { stem: "-", branch: "-", raw: "-" };
+  const trimmed = value.trim();
+  if (trimmed.length >= 2) {
+    return { stem: trimmed[0], branch: trimmed.slice(1), raw: trimmed };
+  }
+  return { stem: trimmed, branch: "-", raw: trimmed };
+}
+
 export default function MySajuPage({ me }: Props) {
   const [profile, setProfile] = useState<SajuProfile | null>(null);
   const [providerState, setProviderState] = useState<"mock" | "provider" | "mock-fallback">("mock");
   const [warnings, setWarnings] = useState<string[]>([]);
+  const [chart, setChart] = useState<SajuChartSnapshot | undefined>(undefined);
   const [activeTab, setActiveTab] = useState<"pillars" | "ten-god" | "strength">("pillars");
   const { message, showMessage } = useTransientMessage();
 
@@ -78,6 +89,7 @@ export default function MySajuPage({ me }: Props) {
         setProfile(result.profile);
         setProviderState(result.providerState);
         setWarnings(result.warnings ?? []);
+        setChart(result.chart);
       })
       .catch(() => {
         if (active) showMessage("사주 계산에 실패했어요. 잠시 후 다시 시도해 주세요.");
@@ -108,6 +120,18 @@ export default function MySajuPage({ me }: Props) {
     () => (profile ? buildSajuNarratives(profile.fiveElements) : null),
     [profile]
   );
+
+  const pillarRows = useMemo(
+    () => [
+      { label: "연주", value: splitPillar(chart?.pillars?.year) },
+      { label: "월주", value: splitPillar(chart?.pillars?.month) },
+      { label: "일주", value: splitPillar(chart?.pillars?.day) },
+      { label: "시주", value: splitPillar(chart?.pillars?.hour) },
+    ],
+    [chart]
+  );
+
+  const availableSignals = chart?.signals?.filter(Boolean) ?? [];
 
   const handleShare = async () => {
     if (!profile || !topSummary) return;
@@ -158,20 +182,45 @@ export default function MySajuPage({ me }: Props) {
         </div>
         {activeTab === "pillars" ? (
           <div className="tabPane">
-            <p>현재 버전에서는 오행 중심 분석을 우선 제공하고 있어요.</p>
-            <small>사주원국(연/월/일/시) 표시는 provider raw pillars 연결 후 활성화됩니다.</small>
+            <p>사주원국 (연/월/일/시주)</p>
+            <div className="pillarsGrid">
+              {pillarRows.map((row) => (
+                <article key={row.label} className="pillarCard">
+                  <strong>{row.label}</strong>
+                  <span>{row.value.raw}</span>
+                  <small>천간 {row.value.stem} · 지지 {row.value.branch}</small>
+                </article>
+              ))}
+            </div>
+            <small>
+              {chart?.calculationSource
+                ? `계산 소스: ${chart.calculationSource}${chart.ruleVersion ? ` · 규칙: ${chart.ruleVersion}` : ""}`
+                : "원국 상세 계산 소스 정보는 provider 연결 시 함께 표시돼요."}
+            </small>
           </div>
         ) : null}
         {activeTab === "ten-god" ? (
           <div className="tabPane">
-            <p>오행 밸런스 기반 해석은 제공 중이며, 십성 상세 해석은 준비 중이에요.</p>
-            <small>다음 업데이트에서 십성 배지/해석 카드가 추가됩니다.</small>
+            <p>오행은 실데이터로 반영 중, 십성은 준비 중이에요.</p>
+            <div className="summaryChips">
+              {Object.entries(profile.fiveElements).map(([key, value]) => (
+                <span key={key}>{elementLabels[key]} {value}%</span>
+              ))}
+            </div>
+            {availableSignals.length ? (
+              <div className="summaryChips">
+                {availableSignals.slice(0, 6).map((signal) => <span key={signal}>{signal}</span>)}
+              </div>
+            ) : (
+              <small>현재 provider에서 십성용 상세 신호는 제공되지 않아 오행 중심으로 먼저 안내합니다.</small>
+            )}
           </div>
         ) : null}
         {activeTab === "strength" ? (
           <div className="tabPane">
-            <p>신강/신약 요약 UI는 먼저 오픈했어요.</p>
-            <small>현재는 placeholder 단계이며 실제 판정 규칙 연결은 준비 중입니다.</small>
+            <p>신강/신약 판정은 현재 준비 중입니다.</p>
+            <small>필요 데이터 구조: 일간 기준 강약 점수, 월지 계절 가중치, 통근/투간 여부, 용신/희신 후보.</small>
+            <small>지금은 오행 밸런스 + 원국 기둥을 참고해 흐름 중심으로 봐주세요.</small>
           </div>
         ) : null}
       </section>

@@ -21,6 +21,12 @@ export function mapProviderWarnings(raw?: ProviderWarningCode[]): string[] | und
 export function mapProviderSajuResponseToProfile(raw: ProviderSajuResponse): {
   fiveElements: SajuProfile["fiveElements"];
   warnings?: string[];
+  chart: {
+    pillars?: ProviderSajuResponse["saju"]["pillars"];
+    signals?: string[];
+    ruleVersion?: string;
+    calculationSource?: string;
+  };
 } {
   const warnings = new Set<string>(mapProviderWarnings(raw.warnings) ?? []);
   const source = raw.saju.fiveElements ?? {};
@@ -45,6 +51,12 @@ export function mapProviderSajuResponseToProfile(raw: ProviderSajuResponse): {
   return {
     fiveElements,
     warnings: warnings.size ? Array.from(warnings) : undefined,
+    chart: {
+      pillars: raw.saju.pillars,
+      signals: raw.saju.signals,
+      ruleVersion: raw.saju.ruleVersion,
+      calculationSource: raw.saju.calculationSource,
+    },
   };
 }
 

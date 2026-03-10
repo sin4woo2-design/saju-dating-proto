@@ -44,6 +44,7 @@ export const realProviderEngine: SajuEngine = {
         providerState: "provider",
         profile: buildProfileFromFiveElements(mapped.fiveElements),
         warnings: mapped.warnings,
+        chart: mapped.chart,
       };
     } catch (error) {
       return {
