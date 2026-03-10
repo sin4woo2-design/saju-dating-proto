@@ -1,11 +1,11 @@
 .swipeCard {
-  background: #ffffff;
-  border: 1px solid #e2eaf5;
+  background: #fffdf9;
+  border: 1px solid #e2d8c8;
   border-radius: 22px;
   padding: 16px;
   display: grid;
   gap: 12px;
-  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 14px 30px rgba(58, 42, 24, 0.08);
 }
 
 .swipeHead {
@@ -40,13 +40,13 @@
 }
 
 .scorePill {
-  background: #eef4ff;
-  border: 1px solid #c8dafd;
+  background: #f7f0e1;
+  border: 1px solid #dcc49a;
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 700;
-  color: #2756c9;
+  color: #6a4f2a;
 }
 
 .compatMeter {

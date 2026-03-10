@@ -70,7 +70,7 @@ button:disabled {
   margin: 8px 0 2px;
   font-size: 20px;
   letter-spacing: 0.1px;
-  color: #0f172a;
+  color: #2c241b;
 }
 
 .resetBtn {
@@ -98,7 +98,7 @@ button:disabled {
 
 .subtitle {
   margin: 0;
-  color: #64748b;
+  color: #6e6559;
   font-size: 14px;
   line-height: 1.5;
 }
@@ -160,7 +160,7 @@ button:disabled {
 }
 
 .utilityCard {
-  background: #fcfdff;
+  background: #fdfbf7;
 }
 
 .heroCard,
@@ -204,7 +204,7 @@ button:disabled {
   width: 190px;
   height: 190px;
   border-radius: 999px;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(180, 146, 88, 0.28);
   left: -55px;
   bottom: -55px;
 }
@@ -216,7 +216,7 @@ button:disabled {
   top: 42%;
   height: 80px;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(129, 140, 248, 0.08), rgba(59, 130, 246, 0.18), rgba(16, 185, 129, 0.08));
+  background: linear-gradient(90deg, rgba(150, 122, 76, 0.08), rgba(186, 143, 76, 0.16), rgba(114, 133, 152, 0.1));
   filter: blur(1px);
 }
 
@@ -233,12 +233,12 @@ button:disabled {
 .heroSparkRow i {
   width: 6px;
   border-radius: 999px;
-  background: #c7d8fd;
+  background: #d8c39f;
 }
 
 .heroSparkRow i:nth-child(1) { height: 10px; }
 .heroSparkRow i:nth-child(2) { height: 16px; }
-.heroSparkRow i:nth-child(3) { height: 22px; background: #8fb0f8; }
+.heroSparkRow i:nth-child(3) { height: 22px; background: #b89258; }
 .heroSparkRow i:nth-child(4) { height: 14px; }
 .heroSparkRow i:nth-child(5) { height: 9px; }
 
@@ -279,9 +279,9 @@ button:disabled {
 }
 
 .heroMetricRow article {
-  border: 1px solid #d9e4f3;
+  border: 1px solid #dfd3c1;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 253, 249, 0.92);
   padding: 7px 8px;
   display: grid;
   gap: 2px;
@@ -294,7 +294,7 @@ button:disabled {
 
 .heroMetricRow b {
   font-size: 12px;
-  color: #1e3a8a;
+  color: #5a4324;
 }
 
 .heroCard h3 {
@@ -307,10 +307,10 @@ button:disabled {
   margin: 0;
   padding: 10px 11px;
   border-radius: 10px;
-  border: 1px solid #d8e6ff;
-  background: #f3f8ff;
+  border: 1px solid #dfcfb6;
+  background: #fbf6ee;
   font-size: 12px;
-  color: #315ea8;
+  color: #5f4b2e;
 }
 
 .profileSummary {
@@ -350,7 +350,7 @@ button:disabled {
 
 .quickStats strong {
   font-size: 17px;
-  color: #1e3a8a;
+  color: #5b4528;
 }
 
 .quickStats span {
@@ -476,17 +476,17 @@ button:disabled {
 }
 
 .segmentedControl button.active {
-  background: #eaf2ff;
-  border-color: #c6d7fc;
-  color: #1d4ed8;
+  background: #f6efdf;
+  border-color: #dcc49a;
+  color: #5f4726;
   font-weight: 600;
 }
 
 .tabPane {
-  border: 1px solid #e2eaf6;
+  border: 1px solid #e2d8c8;
   border-radius: 10px;
   padding: 10px;
-  background: #f8fbff;
+  background: #fffdf9;
   display: grid;
   gap: 7px;
 }
@@ -595,7 +595,7 @@ button:disabled {
 .fiveFlowLine i {
   width: 14px;
   height: 2px;
-  background: linear-gradient(90deg, #cbd9f5, #9bb9f8);
+  background: linear-gradient(90deg, #d8c6a7, #b89559);
   border-radius: 999px;
 }
 
@@ -637,7 +637,7 @@ button:disabled {
 
 .elementMiniHead b {
   font-size: 12px;
-  color: #1e3a8a;
+  color: #5f4727;
 }
 
 .dot {
@@ -681,16 +681,16 @@ button:disabled {
   width: 92px;
   height: 92px;
   border-radius: 999px;
-  border: 3px solid #c6d7fc;
+  border: 3px solid #dcc49a;
   display: grid;
   place-items: center;
-  background: #f2f7ff;
+  background: #faf4e8;
 }
 
 .scoreBadge strong {
   font-size: 28px;
   line-height: 1;
-  color: #1e40af;
+  color: #5a4324;
 }
 
 .scoreBadge span {
@@ -714,9 +714,9 @@ button:disabled {
 }
 
 .signalChip.active {
-  background: #eaf2ff;
-  border-color: #c6d7fc;
-  color: #1d4ed8;
+  background: #f7f0e2;
+  border-color: #dcc49a;
+  color: #5b4424;
 }
 
 .signalDesc,
@@ -868,10 +868,10 @@ button:disabled {
 
 .hubCard a {
   font-size: 12px;
-  color: #2563eb;
+  color: #5b4322;
   text-decoration: none;
-  border: 1px solid #cddcfa;
-  background: #f3f8ff;
+  border: 1px solid #dcc49a;
+  background: #f8f0df;
   border-radius: 10px;
   padding: 7px 9px;
   width: fit-content;
@@ -981,9 +981,9 @@ button:disabled {
 }
 
 .homeMenuChips a:hover {
-  border-color: #bfd4fb;
-  background: #f2f7ff;
-  color: #1d4ed8;
+  border-color: #d8bf91;
+  background: #f8f0df;
+  color: #5b4322;
 }
 
 .continueLinks {
@@ -1012,13 +1012,13 @@ button:disabled {
   padding: 4px 8px;
   border-radius: 999px;
   font-size: 11px;
-  background: #eef4ff;
-  color: #2d5fd0;
-  border: 1px solid #d0def9;
+  background: #f7f0e1;
+  color: #6a4f2a;
+  border: 1px solid #dcc49a;
 }
 
 .hash {
-  color: #4f46e5;
+  color: #6a4f2a;
   font-size: 13px;
   margin: 0;
 }
@@ -1080,9 +1080,9 @@ button:disabled {
 }
 
 .tabLink:hover {
-  color: #1d4ed8;
-  border-color: #c7dafd;
-  background: #eef5ff;
+  color: #5f4727;
+  border-color: #d8bf91;
+  background: #f8f0df;
 }
 
 .tabLink.active {
