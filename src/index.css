@@ -1,8 +1,8 @@
 :root {
   font-family: Inter, "Pretendard", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color-scheme: light;
-  background: #f4f7fb;
-  color: #111827;
+  background: #f5f1e8;
+  color: #1f1a14;
 }
 
 * {
@@ -11,8 +11,8 @@
 
 body {
   margin: 0;
-  background: linear-gradient(180deg, #f8fbff 0%, #f3f6fb 100%);
-  color: #111827;
+  background: linear-gradient(180deg, #fbf7ef 0%, #f4eee3 100%);
+  color: #1f1a14;
 }
 
 button,
@@ -22,10 +22,10 @@ select {
 }
 
 button {
-  border: 1px solid #d5deeb;
+  border: 1px solid #d8cebc;
   border-radius: 12px;
-  background: #ffffff;
-  color: #1f2937;
+  background: #fffdf9;
+  color: #2b241b;
   padding: 10px 12px;
   cursor: pointer;
   transition: all 0.18s ease;
@@ -60,8 +60,8 @@ button:disabled {
   top: 0;
   z-index: 20;
   backdrop-filter: blur(10px);
-  background: rgba(244, 247, 251, 0.82);
-  border-bottom: 1px solid #e7edf6;
+  background: rgba(245, 241, 232, 0.9);
+  border-bottom: 1px solid #e5d9c6;
   margin: -14px -14px 0;
   padding: 10px 14px 8px;
 }
@@ -116,9 +116,9 @@ button:disabled {
 }
 
 .smallPill {
-  background: #eef4ff;
-  color: #2c5dd2;
-  border: 1px solid #c9dafd;
+  background: #f6efe0;
+  color: #6a4f2a;
+  border: 1px solid #dcc49a;
   border-radius: 999px;
   padding: 5px 10px;
   font-size: 12px;
@@ -133,15 +133,26 @@ button:disabled {
 .foldSection,
 .segmentedWrap,
 .scoreBadgeWrap {
-  background: #ffffff;
-  border: 1px solid #e4ebf5;
+  background: #fffaf2;
+  border: 1px solid #e2d8c7;
   border-radius: 16px;
-  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 10px 24px rgba(58, 42, 24, 0.08);
 }
 
 .signatureCard {
   border-width: 1.5px;
-  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.12);
+  border-color: #c8ad72;
+  box-shadow: 0 14px 30px rgba(98, 76, 38, 0.14);
+  position: relative;
+}
+
+.signatureCard::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(200, 173, 114, 0.35);
+  border-radius: 12px;
+  pointer-events: none;
 }
 
 .summaryCard {
@@ -167,8 +178,8 @@ button:disabled {
 .heroCard {
   display: grid;
   gap: 10px;
-  border-color: #d6e4ff;
-  background: linear-gradient(180deg, #ffffff, #f7fbff);
+  border-color: #d8c8ab;
+  background: linear-gradient(180deg, #fffaf1, #f9f1e4);
 }
 
 .homeHeroVisual {
@@ -184,7 +195,7 @@ button:disabled {
   height: 220px;
   right: -90px;
   top: -90px;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.2), transparent 70%);
+  background: radial-gradient(circle, rgba(186, 143, 76, 0.22), transparent 70%);
   pointer-events: none;
 }
 
@@ -242,9 +253,9 @@ button:disabled {
 .smallBadge {
   margin: 0;
   font-size: 11px;
-  color: #4f46e5;
-  border: 1px solid #d8d7ff;
-  background: #f3f2ff;
+  color: #715426;
+  border: 1px solid #decaa4;
+  background: #f7f0e1;
   border-radius: 999px;
   padding: 5px 9px;
 }
@@ -252,9 +263,9 @@ button:disabled {
 .heroInlineCta {
   width: fit-content;
   text-decoration: none;
-  color: #1d4ed8;
-  border: 1px solid #c7dafd;
-  background: #eef5ff;
+  color: #5a4324;
+  border: 1px solid #d8bf91;
+  background: #f8f0df;
   border-radius: 10px;
   padding: 8px 10px;
   font-size: 12px;
@@ -786,16 +797,16 @@ button:disabled {
 }
 
 .fortuneCard {
-  background: linear-gradient(180deg, #f8fbff, #ffffff);
+  background: linear-gradient(180deg, #fffaf1, #fffdf8);
 }
 
 .recommendCard {
-  background: linear-gradient(180deg, #faf8ff, #ffffff);
-  border-color: #e5def8;
+  background: linear-gradient(180deg, #fdf8f1, #fffdf8);
+  border-color: #e5d8c2;
 }
 
 .continueCard {
-  background: linear-gradient(180deg, #ffffff, #f8fbff);
+  background: linear-gradient(180deg, #fffdf8, #faf3e6);
 }
 
 .inyeonHero {
@@ -879,7 +890,7 @@ button:disabled {
 }
 
 .posterCard {
-  background: linear-gradient(180deg, #ffffff, #f8f5ff 90%);
+  background: linear-gradient(180deg, #fffdf8, #f8efdf 90%);
 }
 
 .posterGlow {
@@ -888,7 +899,7 @@ button:disabled {
   height: 220px;
   right: -80px;
   top: -90px;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.26), transparent 70%);
+  background: radial-gradient(circle, rgba(184, 146, 88, 0.28), transparent 70%);
 }
 
 .posterStars {
@@ -1018,13 +1029,13 @@ button:disabled {
 }
 
 .shareBtn {
-  background: #2563eb;
-  border-color: #2563eb;
-  color: #fff;
+  background: #3a2d1d;
+  border-color: #3a2d1d;
+  color: #fff7eb;
 }
 
 .shareBtn:hover {
-  background: #1d4ed8;
+  background: #2f2417;
 }
 
 .ghostBtn {
@@ -1075,9 +1086,9 @@ button:disabled {
 }
 
 .tabLink.active {
-  color: #1d4ed8;
-  border-color: #bcd1fb;
-  background: linear-gradient(180deg, #eff5ff, #e5efff);
+  color: #5d4522;
+  border-color: #d5bf95;
+  background: linear-gradient(180deg, #f8f1e3, #f2e7d3);
   font-weight: 600;
 }
 

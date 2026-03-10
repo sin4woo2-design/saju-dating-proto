@@ -176,9 +176,9 @@
 }
 
 .actions .primary {
-  background: #2563eb;
-  border-color: #2563eb;
-  color: #fff;
+  background: #3a2d1d;
+  border-color: #3a2d1d;
+  color: #fff7eb;
 }
 
 @media (max-width: 420px) {

@@ -51,13 +51,13 @@ function statusText(providerState: "mock" | "provider" | "mock-fallback", warnin
 
 function elementColor(key: string) {
   const map: Record<string, string> = {
-    wood: "#64d2a8",
-    fire: "#ff7b91",
-    earth: "#f3c56a",
-    metal: "#a6b4ff",
-    water: "#67c8ff",
+    wood: "#5f8f6b",
+    fire: "#b86d60",
+    earth: "#b59a6a",
+    metal: "#9ca3af",
+    water: "#5f7f9a",
   };
-  return map[key] ?? "#ab95ff";
+  return map[key] ?? "#9b8b73";
 }
 
 function todayLine(strong: string, weak: string) {
