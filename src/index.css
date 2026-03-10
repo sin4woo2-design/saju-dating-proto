@@ -95,7 +95,7 @@ button:disabled {
 
 .pageWrap {
   display: grid;
-  gap: 12px;
+  gap: 14px;
   align-content: start;
 }
 
@@ -264,8 +264,8 @@ button:disabled {
 }
 
 .compactHeroCard {
-  gap: 7px;
-  padding: 13px;
+  gap: 8px;
+  padding: 14px 14px;
 }
 
 .refHeroCard::before {
@@ -300,14 +300,15 @@ button:disabled {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr auto;
-  align-items: center;
+  align-items: start;
   gap: 10px;
 }
 
 .refHeroCard h3 {
-  margin: 2px 0 0;
-  font-size: 30px;
+  margin: 0;
+  font-size: 32px;
   line-height: 1.08;
+  font-weight: 800;
   color: #1f1f1d;
 }
 
@@ -333,11 +334,12 @@ button:disabled {
 }
 
 .heroScoreOrb.luxe {
-  width: 74px;
-  height: 74px;
-  border-color: rgba(188, 145, 73, 0.52);
-  box-shadow: 0 0 0 6px rgba(255, 250, 240, 0.7), 0 6px 18px rgba(171, 126, 64, 0.24);
+  width: 66px;
+  height: 66px;
+  border-color: rgba(188, 145, 73, 0.44);
+  box-shadow: 0 0 0 4px rgba(255, 250, 240, 0.68), 0 4px 12px rgba(171, 126, 64, 0.18);
   background: linear-gradient(180deg, #fffefb, #f8efdc);
+  margin-top: 3px;
 }
 
 .heroScoreOrb strong {
@@ -351,8 +353,9 @@ button:disabled {
 }
 
 .heroScoreOrb.luxe strong {
-  font-size: 24px;
+  font-size: 20px;
   color: #5f4725;
+  white-space: nowrap;
 }
 
 .heroScoreOrb span {
@@ -365,8 +368,7 @@ button:disabled {
 }
 
 .heroScoreOrb.luxe span {
-  font-size: 10px;
-  color: #7a6340;
+  display: none;
 }
 
 .smallBadge {
@@ -388,8 +390,20 @@ button:disabled {
 }
 
 .heroMicroLabel.plain {
-  font-size: 11px;
-  color: #7b7468;
+  font-size: 19px;
+  font-weight: 700;
+  color: #5f4d31;
+  letter-spacing: 0.02em;
+  margin-bottom: 2px;
+}
+
+.heroTitleWrap {
+  display: grid;
+  gap: 6px;
+}
+
+.heroTitleWrap h3 {
+  margin: 0;
 }
 
 .heroInlineCta {
@@ -436,10 +450,32 @@ button:disabled {
   background: linear-gradient(140deg, #7f602f, #b79053);
   border: 1px solid #9d7740;
   border-radius: 10px;
-  padding: 8px 12px;
-  font-size: 12px;
+  padding: 9px 12px;
+  font-size: 13px;
   font-weight: 600;
   box-shadow: 0 6px 14px rgba(147, 107, 50, 0.24);
+}
+
+.heroGoldCta.full {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin-top: 6px;
+}
+
+.summaryFullCta {
+  display: block;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  color: #fff9ef;
+  background: linear-gradient(140deg, #7f602f, #b79053);
+  border: 1px solid #9d7740;
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 6px 14px rgba(147, 107, 50, 0.22);
 }
 
 .heroMetaLine {
@@ -456,14 +492,14 @@ button:disabled {
 }
 
 .heroDescLine {
-  margin: 0;
+  margin: 8px 0 0;
   font-size: 13px;
   line-height: 1.42;
   color: #4f5560;
 }
 
 .heroConclusion {
-  margin: 0;
+  margin: 2px 0 0;
   font-size: 12px;
   line-height: 1.4;
   color: #6d6559;
@@ -481,46 +517,50 @@ button:disabled {
 }
 
 .metricCard {
-  border: 1px solid #e6dfd0;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #fffefb, #faf5ea);
-  padding: 8px 6px;
+  border: 1px solid #e9edf3;
+  border-radius: 11px;
+  background: #ffffff;
+  padding: 9px 7px;
   min-width: 0;
   text-align: center;
   display: grid;
   justify-items: center;
   align-content: center;
-  gap: 2px;
+  gap: 4px;
 }
 
 .premiumMetricCard {
-  box-shadow: 0 6px 14px rgba(35, 28, 18, 0.07);
+  box-shadow: none;
+  border-color: #eaedf2;
+  background: #ffffff;
 }
 
 .metricCard strong {
-  font-size: 13px;
-  color: #8f764f;
+  font-size: 16px;
+  color: #7f8792;
 }
 
 .metricCard .metricLabel {
   margin: 0;
   font-size: 10px;
-  color: #6b7280;
+  font-weight: 500;
+  color: #6f7681;
   white-space: nowrap;
 }
 
 .metricCard b {
-  font-size: 19px;
-  line-height: 1.05;
-  color: #1f1f1d;
+  font-size: 15px;
+  line-height: 1.12;
+  color: #2a2f37;
   white-space: nowrap;
+  margin-top: 7px;
 }
 
 .dailySummarySection {
   display: grid;
-  gap: 10px;
-  margin-top: 2px;
-  padding: 12px;
+  gap: 11px;
+  margin-top: 8px;
+  padding: 14px;
   border: 1px solid #e8dfcf;
   border-radius: 14px;
   background: linear-gradient(180deg, #fffefb, #fbf6ec);
@@ -532,8 +572,9 @@ button:disabled {
 
 .dailySummarySection h4 {
   margin: 0;
-  font-size: 22px;
-  line-height: 1.18;
+  font-size: 21px;
+  line-height: 1.2;
+  font-weight: 700;
   color: #1f1f1d;
 }
 
@@ -541,25 +582,11 @@ button:disabled {
   margin: 0;
   padding-left: 18px;
   display: grid;
-  gap: 7px;
+  gap: 8px;
   color: #4b5563;
-  line-height: 1.45;
+  line-height: 1.48;
 }
 
-.summaryFullCta {
-  display: block;
-  width: 100%;
-  text-align: center;
-  text-decoration: none;
-  color: #fff9ef;
-  background: linear-gradient(140deg, #7f602f, #b79053);
-  border: 1px solid #9d7740;
-  border-radius: 10px;
-  padding: 9px 12px;
-  font-size: 13px;
-  font-weight: 600;
-  box-shadow: 0 6px 14px rgba(147, 107, 50, 0.22);
-}
 
 .heroCard h3 {
   margin: 0;
@@ -1057,7 +1084,7 @@ button:disabled {
 
 .homeTripletGrid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 6px;
+  gap: 8px;
 }
 
 .hubCard {
@@ -1079,14 +1106,85 @@ button:disabled {
 }
 
 .homeContinueCard {
-  border-color: #e1d3ba;
-  background: linear-gradient(140deg, #fbf2df, #f3e2c1);
-  box-shadow: 0 8px 18px rgba(122, 90, 40, 0.18);
+  border-color: #eef0f3;
+  background: #fcfdfd;
+  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.03);
 }
 
 .promoContinueCard strong,
 .promoContinueCard p {
-  color: #4f3b20;
+  color: #545c69;
+}
+
+.continueLabel {
+  color: #8b93a1;
+  font-size: 11px;
+}
+
+.microInfoBlock,
+.timeFlowBlock {
+  display: grid;
+  gap: 8px;
+  padding: 10px 0 2px;
+}
+
+.microInfoBlock h5,
+.timeFlowBlock h5 {
+  margin: 0;
+  font-size: 16px;
+  color: #1f1f1d;
+}
+
+.microInfoBlock ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 7px;
+}
+
+.microInfoBlock li {
+  display: grid;
+  grid-template-columns: 86px 1fr;
+  gap: 10px;
+  font-size: 12px;
+  color: #4b5563;
+}
+
+.microInfoBlock li strong {
+  color: #6b5a42;
+}
+
+.timeFlowRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.timeFlowRow article {
+  border: 1px solid #eceff3;
+  border-radius: 10px;
+  padding: 8px;
+  background: #ffffff;
+  display: grid;
+  gap: 3px;
+}
+
+.timeFlowRow small {
+  color: #8b93a1;
+  font-size: 10px;
+}
+
+.timeFlowRow b {
+  font-size: 14px;
+  color: #2b2f36;
+}
+
+.timeFlowRow p {
+  margin: 0;
+  font-size: 11px;
+  color: #5f6774;
+  line-height: 1.35;
 }
 
 .inyeonHero {
@@ -1159,88 +1257,165 @@ button:disabled {
 
 .personaCard {
   position: relative;
-  border: 1px solid #dfe7f4;
-  border-radius: 20px;
+  border: 1px solid #d7c7ac;
+  border-radius: 22px;
   background: #ffffff;
-  padding: 16px;
+  padding: 24px 20px;
+  min-height: 520px;
   display: grid;
-  gap: 10px;
-  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+  grid-template-rows: auto 1fr auto;
+  gap: 18px;
+  box-shadow: 0 16px 34px rgba(26, 18, 8, 0.14);
   overflow: hidden;
 }
 
 .posterCard {
-  background: linear-gradient(180deg, #fffdf8, #f8efdf 90%);
+  background: radial-gradient(circle at 80% 10%, #fff2d9 0%, transparent 36%), linear-gradient(160deg, #fffefb 0%, #f8ebd2 88%);
 }
 
 .posterGlow {
   position: absolute;
-  width: 220px;
-  height: 220px;
-  right: -80px;
-  top: -90px;
-  background: radial-gradient(circle, rgba(184, 146, 88, 0.28), transparent 70%);
+  width: 240px;
+  height: 240px;
+  right: -90px;
+  top: -100px;
+  background: radial-gradient(circle, rgba(196, 150, 78, 0.32), transparent 68%);
 }
 
-.posterStars {
-  position: absolute;
-  left: 14px;
-  top: 12px;
-  color: #7c63f5;
-  font-size: 12px;
-  letter-spacing: 2px;
+.posterGlow.secondary {
+  width: 180px;
+  height: 180px;
+  left: -70px;
+  bottom: -80px;
+  top: auto;
+  right: auto;
+  background: radial-gradient(circle, rgba(122, 99, 190, 0.14), transparent 70%);
 }
+
 
 .posterRing {
   position: absolute;
-  width: 170px;
-  height: 170px;
+  width: 180px;
+  height: 180px;
   border-radius: 999px;
-  border: 1px solid rgba(124, 99, 245, 0.2);
+  border: 1px solid rgba(163, 129, 73, 0.28);
   right: -45px;
   bottom: -45px;
+}
+
+.posterRing.inner {
+  width: 124px;
+  height: 124px;
+  right: -14px;
+  bottom: -12px;
+  border-color: rgba(163, 129, 73, 0.18);
 }
 
 .posterLead {
   margin: 0;
   font-size: 11px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #6d5ce7;
+  color: #7d6641;
 }
 
 .personaCard h3 {
   margin: 0;
-  font-size: 20px;
+  font-size: 26px;
+  line-height: 1.18;
   color: #1f2937;
   position: relative;
 }
 
-.personaCard ul {
-  margin: 0;
-  padding-left: 18px;
+.personaTop {
   display: grid;
-  gap: 8px;
+  gap: 10px;
+}
+
+.personaSubcopy {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #566071;
+}
+
+.personaFacts {
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+  display: grid;
+  gap: 13px;
   color: #475569;
   position: relative;
+  align-content: start;
+}
+
+.personaFacts li {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  align-items: start;
+  gap: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.personaFacts strong {
+  color: #6b5a42;
+  font-weight: 600;
+}
+
+.personaFacts span {
+  color: #374151;
+  line-height: 1.55;
 }
 
 .personaChips span {
-  background: #f3f1ff;
-  border-color: #dad3ff;
-  color: #5a4bc9;
+  background: #f9f2e5;
+  border-color: #e3cfa9;
+  color: #6a5430;
 }
 
 .posterCaption {
   margin: 0;
   font-size: 12px;
-  color: #64748b;
-  line-height: 1.45;
+  color: #5f6570;
+  line-height: 1.5;
+}
+
+.personaSignals {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.personaSignals span {
+  border: 1px solid #e1d2b6;
+  background: #fbf5e8;
+  color: #6c5430;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.personaAppeal {
+  margin: 0;
+  font-size: 12.5px;
+  color: #4f5a6a;
+}
+
+.personaBottom {
+  display: grid;
+  align-content: end;
+  padding-top: 12px;
 }
 
 .posterCta {
   position: relative;
   z-index: 1;
+  width: 100%;
+  background: linear-gradient(140deg, #6a4d27, #ae8850);
+  border-color: #916b39;
+  color: #fff8ec;
 }
 
 .homeMenuChips {
@@ -1268,14 +1443,21 @@ button:disabled {
 
 .continueLinks {
   display: grid;
-  gap: 6px;
+  gap: 8px;
+}
+
+.continueLinks.row.inlineLinks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  align-items: center;
 }
 
 .continuePrimaryLink {
   text-decoration: none;
-  color: #fff8ed;
-  border: 1px solid #6c4f27;
-  background: #6c4f27;
+  color: #39404a;
+  border: 1px solid #dbe0e7;
+  background: #f7f9fb;
   border-radius: 9px;
   padding: 8px 10px;
   font-size: 12px;
@@ -1283,9 +1465,14 @@ button:disabled {
   text-align: center;
 }
 
+.continuePrimaryLink.secondary {
+  color: #596272;
+  background: #fafbfd;
+}
+
 .continueSecondaryLink {
   text-decoration: none;
-  color: #6a583f;
+  color: #6b7280;
   font-size: 12px;
   width: fit-content;
 }
