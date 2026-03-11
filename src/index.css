@@ -95,7 +95,7 @@ button:disabled {
 
 .pageWrap {
   display: grid;
-  gap: 14px;
+  gap: 16px;
   align-content: start;
 }
 
@@ -294,6 +294,7 @@ button:disabled {
   background: transparent;
   box-shadow: none;
   min-height: 318px;
+  margin-bottom: 2px;
 }
 
 .heroImageCard::after,
@@ -546,14 +547,14 @@ button:disabled {
   width: 100%;
   text-align: center;
   text-decoration: none;
-  color: #fff9ef;
-  background: linear-gradient(140deg, #7f602f, #b79053);
-  border: 1px solid #9d7740;
+  color: #4f5560;
+  background: #f7f9fc;
+  border: 1px solid #d9dee6;
   border-radius: 10px;
   padding: 9px 12px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  box-shadow: 0 6px 14px rgba(147, 107, 50, 0.22);
+  box-shadow: none;
 }
 
 .heroMetaLine {
@@ -598,7 +599,7 @@ button:disabled {
   border: 1px solid #e9edf3;
   border-radius: 11px;
   background: #ffffff;
-  padding: 9px 7px;
+  padding: 10px 7px;
   min-width: 0;
   text-align: center;
   display: grid;
@@ -631,21 +632,21 @@ button:disabled {
   line-height: 1.12;
   color: #2a2f37;
   white-space: nowrap;
-  margin-top: 7px;
+  margin-top: 6px;
 }
 
 .dailySummarySection {
   display: grid;
-  gap: 11px;
-  margin-top: 8px;
-  padding: 14px;
+  gap: 10px;
+  margin-top: 6px;
+  padding: 13px;
   border: 1px solid #e8dfcf;
   border-radius: 14px;
   background: linear-gradient(180deg, #fffefb, #fbf6ec);
 }
 
 .premiumSummarySection {
-  box-shadow: 0 8px 18px rgba(30, 24, 14, 0.08);
+  box-shadow: 0 6px 14px rgba(30, 24, 14, 0.06);
 }
 
 .dailySummarySection h4 {
@@ -1162,7 +1163,7 @@ button:disabled {
 
 .homeTripletGrid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: 9px;
 }
 
 .hubCard {
@@ -1186,9 +1187,9 @@ button:disabled {
 .homeContinueCard {
   border-color: #e7ebf1;
   background: #fcfdff;
-  box-shadow: 0 3px 10px rgba(16, 24, 40, 0.04);
-  padding: 12px;
-  gap: 7px;
+  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.03);
+  padding: 11px 12px;
+  gap: 6px;
 }
 
 .promoContinueCard strong,
@@ -1217,7 +1218,7 @@ button:disabled {
 .timeFlowBlock {
   display: grid;
   gap: 10px;
-  padding: 10px 2px 4px;
+  padding: 8px 2px 2px;
 }
 
 .microInfoBlock h5,
@@ -1240,7 +1241,7 @@ button:disabled {
   position: relative;
   display: grid;
   gap: 4px;
-  padding: 6px 0 6px 12px;
+  padding: 6px 0 7px 12px;
   border-bottom: 1px solid #edf1f5;
 }
 
@@ -1273,10 +1274,10 @@ button:disabled {
 }
 
 .emphasisFlowBlock .timeFlowRow article {
-  border: 1px solid #dee5ee;
+  border: 1px solid #e1e7ef;
   border-radius: 12px;
-  padding: 12px 10px;
-  min-height: 98px;
+  padding: 11px 10px;
+  min-height: 96px;
   background: linear-gradient(180deg, #ffffff, #f9fbfe);
   display: grid;
   align-content: start;
