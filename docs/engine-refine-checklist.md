@@ -17,18 +17,19 @@
 - [ ] chart 응답의 `ruleVersion`/`calculationSource`를 UI/로그에 노출
 
 ## 2) Phase B — compatibility 신호 체계 고정
-- [ ] rawSignals를 단일 진실원천(SSoT)으로 사용
-- [ ] score 파생 규칙 테이블 문서화 + 코드 단일화
-- [ ] reliability 감점 규칙 확정(time unknown/partial data)
-- [ ] fake score 직접 계산 경로 제거(호환 레이어만 유지)
+- [x] rawSignals를 단일 진실원천(SSoT)으로 사용
+- [x] score 파생 규칙 테이블 문서화 + 코드 단일화
+- [x] reliability 감점 규칙 확정(time unknown/partial data)
+- [~] fake score 직접 계산 경로 제거(호환 레이어만 유지)  
+  - provider fallback score 경로는 비상용으로만 유지
 
 ## 3) Phase C — narrative를 provider 신호 기반으로 전환
-- [ ] home narrative: seed pick -> signal-template renderer
-- [ ] persona narrative: seed pick -> signal-template renderer
-- [ ] mock narrative는 fallback 전용으로 축소
+- [x] home narrative: seed pick -> signal-template renderer
+- [x] persona narrative: seed pick -> signal-template renderer
+- [x] mock narrative는 fallback 전용으로 축소
 
 ## 4) Phase D — 품질/배포 가드
-- [ ] 절기 경계/자시/시간미상 회귀셋 자동화
+- [x] 절기 경계/자시/시간미상 회귀셋 자동화 (contract draft에 provenance/score-rule 케이스 추가)
 - [ ] mock-fallback 비율 임계치 알림(예: >5%)
 - [ ] 릴리즈 체크리스트에 engine 품질 항목 추가
 

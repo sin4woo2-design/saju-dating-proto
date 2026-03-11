@@ -205,41 +205,42 @@ function summaryLinePoolByTone(tone: HomeNarrativeBasis["relationTone"]) {
   } as const;
 }
 
-function buildSummary(seed: number, basis: HomeNarrativeBasis): [string, string, string] {
+function buildSummary(basis: HomeNarrativeBasis): [string, string, string] {
   const pool = summaryLinePoolByTone(basis.relationTone);
   const usedSummary = new Set<string>();
 
-  const line1 = uniqueLine(pick(seed, pool.line1), usedSummary, pool.line1[0]);
-  const line2 = uniqueLine(pick(seed + 3, pool.line2), usedSummary, pool.line2[0]);
-  const line3 = uniqueLine(pick(seed + 7, pool.line3), usedSummary, pool.line3[0]);
+  const line1 = uniqueLine(pool.line1[0], usedSummary, pool.line1[0]);
+  const line2 = uniqueLine(pool.line2[0], usedSummary, pool.line2[0]);
+  const line3Base = basis.flowBias === "afternoon-peak" ? pool.line3[0] : pool.line3[1] ?? pool.line3[0];
+  const line3 = uniqueLine(line3Base, usedSummary, pool.line3[0]);
 
   return [trimSentence(line1), trimSentence(line2), trimSentence(line3)];
 }
 
-function buildTodayPoints(seed: number, basis: HomeNarrativeBasis): HomeTodayPoints {
-  const conversationPool = basis.relationTone === "soft"
-    ? ["질문을 먼저 두면 대화가 부드러워져요.", "공감 한 문장을 먼저 건네보세요."]
-    : ["핵심을 한 문장으로 먼저 꺼내세요.", "한 번에 한 메시지가 더 정확해요."];
+function buildTodayPoints(basis: HomeNarrativeBasis): HomeTodayPoints {
+  const conversation = basis.relationTone === "soft"
+    ? "질문을 먼저 두면 대화가 부드러워져요."
+    : "핵심을 한 문장으로 먼저 꺼내세요.";
 
-  const wealthPool = basis.dominantElement === "earth"
-    ? ["고정 지출만 점검해도 흐름이 안정돼요.", "오늘은 지출 기록 정리에 유리해요."]
-    : ["작은 결제는 낮 시간에 묶어 처리하세요.", "결제 전 우선순위만 확인해도 좋아요."];
+  const wealth = basis.dominantElement === "earth"
+    ? "고정 지출만 점검해도 흐름이 안정돼요."
+    : "작은 결제는 낮 시간에 묶어 처리하세요.";
 
-  const cautionPool = basis.supportElement === "water"
-    ? ["감정 반응은 한 템포 늦추는 편이 좋아요.", "즉답보다 확인 한 번이 안전해요."]
-    : ["약속 시간 겹침만 먼저 막아두세요.", "확정 전 체크리스트를 한 번 보세요."];
+  const caution = basis.supportElement === "water"
+    ? "감정 반응은 한 템포 늦추는 편이 좋아요."
+    : "약속 시간 겹침만 먼저 막아두세요.";
 
   return {
-    conversation: trimSentence(pick(seed + 11, conversationPool), 34),
-    wealth: trimSentence(pick(seed + 13, wealthPool), 34),
-    caution: trimSentence(pick(seed + 17, cautionPool), 34),
+    conversation: trimSentence(conversation, 34),
+    wealth: trimSentence(wealth, 34),
+    caution: trimSentence(caution, 34),
   };
 }
 
-function buildTimeFlow(seed: number, basis: HomeNarrativeBasis): HomeTimeFlow {
+function buildTimeFlow(basis: HomeNarrativeBasis): HomeTimeFlow {
   const morning = basis.focusWindow === "morning-setup"
     ? "루틴 정리와 일정 확인에 집중하세요."
-    : "가벼운 작업부터 마감선을 세우세요.";
+    : "오전엔 준비 속도를 올리는 게 좋아요.";
 
   const afternoon = basis.flowBias === "afternoon-peak"
     ? "핵심 업무와 결정은 오후에 배치하세요."
@@ -247,12 +248,12 @@ function buildTimeFlow(seed: number, basis: HomeNarrativeBasis): HomeTimeFlow {
 
   const evening = basis.focusWindow === "evening-wrap"
     ? "관계 대화와 하루 정리에 맞는 시간이에요."
-    : "결과를 짧게 기록하고 마무리하세요.";
+    : "저녁엔 내일 준비를 가볍게 끝내세요.";
 
   return {
-    morning: trimSentence(seed % 2 === 0 ? morning : "오전엔 준비 속도를 올리는 게 좋아요."),
-    afternoon: trimSentence(seed % 3 === 0 ? afternoon : "협업 조율은 오후에 결론이 잘 납니다."),
-    evening: trimSentence(seed % 5 === 0 ? evening : "저녁엔 내일 준비를 가볍게 끝내세요."),
+    morning: trimSentence(morning),
+    afternoon: trimSentence(afternoon),
+    evening: trimSentence(evening),
   };
 }
 
@@ -264,15 +265,15 @@ export function buildMockHomeNarrative(input: UserProfileInput, providerState: P
 
   const heroLead = trimSentence(heroLeadFromBasis(basis));
   const heroSupport = trimSentence(heroSupportFromBasis(basis));
-  const todaySummary = buildSummary(seed, basis);
+  const todaySummary = buildSummary(basis);
 
   return {
     providerState,
     heroLead,
     heroSupport,
     todaySummary,
-    todayPoints: buildTodayPoints(seed, basis),
-    timeFlow: buildTimeFlow(seed, basis),
+    todayPoints: buildTodayPoints(basis),
+    timeFlow: buildTimeFlow(basis),
     confidence: confidenceByState(providerState),
     basisLabel: basisLabelByState(providerState),
     basisCodes: basis.basisCodes,

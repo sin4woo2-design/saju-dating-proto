@@ -191,26 +191,26 @@ function supportElementLabel(element: PersonaNarrativeBasis["supportElement"]) {
   return map[element];
 }
 
-function buildTraits(seed: number, basis: PersonaNarrativeBasis): PersonaTraits {
-  const ageRange = pick(seed + 3, ["27~33세", "29~35세", "30~36세"] as const);
+function buildTraits(basis: PersonaNarrativeBasis): PersonaTraits {
+  const ageRange = basis.personaTone === "warm" ? "27~33세" : "29~35세";
 
-  const personalityPool = basis.personaTone === "warm"
-    ? ["따뜻하지만 기준이 분명한 성향", "배려 깊고 공감력이 높은 성향"]
-    : ["차분하고 관찰력이 좋은 성향", "현실 감각이 좋은 조율형 성향"];
+  const personality = basis.personaTone === "warm"
+    ? "따뜻하지만 기준이 분명한 성향"
+    : "차분하고 관찰력이 좋은 성향";
 
-  const careerPool = basis.relationStyle === "strategist"
-    ? ["기획·디자인·창작 분야", "연구·분석·전략 분야"]
-    : ["서비스·운영·기획 분야", "코칭·상담·커뮤니케이션 분야"];
+  const career = basis.relationStyle === "strategist"
+    ? "연구·분석·전략 분야"
+    : "서비스·운영·기획 분야";
 
-  const appearancePool = basis.personaTone === "warm"
-    ? ["부드럽고 단정한 분위기", "온화하고 안정감 있는 분위기"]
-    : ["차분하고 지적인 분위기", "깔끔하고 신뢰감 있는 분위기"];
+  const appearance = basis.personaTone === "warm"
+    ? "부드럽고 단정한 분위기"
+    : "차분하고 지적인 분위기";
 
   return {
     ageRange,
-    personality: trimSentence(pick(seed + 5, personalityPool), 24),
-    career: trimSentence(pick(seed + 7, careerPool), 24),
-    appearance: trimSentence(pick(seed + 11, appearancePool), 22),
+    personality: trimSentence(personality, 24),
+    career: trimSentence(career, 24),
+    appearance: trimSentence(appearance, 22),
   };
 }
 
@@ -230,7 +230,7 @@ export function buildMockPersonaNarrative(input: UserProfileInput, providerState
     providerState,
     personaTitle: personaTitleFromBasis(basis),
     personaSubtitle: trimSentence(subtitleFromBasis(basis), 38),
-    personaTraits: buildTraits(seed, basis),
+    personaTraits: buildTraits(basis),
     dominantElement: dominantElementLabel(basis.dominantElement),
     supportElement: supportElementLabel(basis.supportElement),
     appealPoint: trimSentence(appealPointFromBasis(basis), 42),

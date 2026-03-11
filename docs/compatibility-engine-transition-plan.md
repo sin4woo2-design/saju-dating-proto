@@ -22,7 +22,8 @@
 - 3단계: `derive_score_from_signals`를 rawSignals 기반으로 전환
 - 4단계: score + rawSignals 동시 검증 후 score 필드 optional화
 
-## 점수 파생 구조(초안)
+## 점수 파생 구조(운영 v1)
+- ruleVersion: `compat-v1-rawsignals`
 - base 70
 - branch 합/충/형/파/해 +7/-6/-4/-3/-2
 - stem 합/충 +4/-4
@@ -30,6 +31,9 @@
 - daymaster support/clash +3/-4
 - reliability(time unknown) -3, partial pillars -4
 - clamp 40~96
+
+현재 프론트 매핑은 provider score보다 `rawSignals` 파생 점수를 우선 사용한다.
+(큰 차이 발생 시 `COMPAT_SCORE_MISMATCH` 경고)
 
 ## 보류 항목
 - 실제 명리 궁합 룰 정밀화(용신/희신, 대운 연동)
