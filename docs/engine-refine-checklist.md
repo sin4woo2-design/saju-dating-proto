@@ -14,7 +14,7 @@
 - [x] 운영 env에서 `VITE_SAJU_PROVIDER_BASE_URL` 명시 (`.env.example` 추가)
 - [x] `/saju/chart` 성공/실패 비율 로깅 기준 정의 (engine observability 경고 임계치 추가)
 - [x] fallback 경고 코드 집계(예: PROVIDER_TIMEOUT, PROVIDER_UNAVAILABLE) (release checklist에 반영)
-- [ ] chart 응답의 `ruleVersion`/`calculationSource`를 UI/로그에 노출
+- [x] chart 응답의 `ruleVersion`/`calculationSource`를 UI/로그에 노출 (MySaju + Home/Persona QA line + observability log)
 
 ## 2) Phase B — compatibility 신호 체계 고정
 - [x] rawSignals를 단일 진실원천(SSoT)으로 사용

@@ -2,7 +2,7 @@ import { mockEngine } from "./mockEngine";
 import { realProviderEngine } from "./realProviderEngine";
 import { buildMockHomeNarrative } from "./homeNarrative";
 import { buildMockPersonaNarrative } from "./personaNarrative";
-import { recordProviderState, recordWarnings } from "./observability";
+import { recordChartMeta, recordProviderState, recordWarnings } from "./observability";
 import type { EngineMode, PairInput, SajuEngine } from "./types";
 import type { UserProfileInput } from "../../types/saju";
 
@@ -23,6 +23,10 @@ export async function calculateSajuWithEngine(input: UserProfileInput, mode?: En
   const result = await getEngine(mode).calculateSaju(input);
   recordProviderState("saju", result.providerState);
   recordWarnings("saju", result.warnings);
+  recordChartMeta({
+    ruleVersion: result.chart?.ruleVersion,
+    calculationSource: result.chart?.calculationSource,
+  });
   return result;
 }
 
