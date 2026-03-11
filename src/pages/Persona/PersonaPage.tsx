@@ -45,6 +45,12 @@ function localizePersonaText(value: string) {
     .replace(/Calm\s*\/\s*Intellectual/gi, "차분하고 지적인 인상");
 }
 
+function stateLabel(providerState?: string) {
+  if (providerState === "provider") return "PROVIDER";
+  if (providerState === "mock-fallback") return "MOCK-FALLBACK";
+  return "MOCK";
+}
+
 export default function PersonaPage() {
   const { message, showMessage } = useTransientMessage();
   const [narrative, setNarrative] = useState<PersonaNarrativeSnapshot | null>(null);
@@ -94,6 +100,20 @@ export default function PersonaPage() {
     };
   }, [narrative]);
 
+  const provenance = resolved.provenance ?? {
+    providerState: resolved.providerState ?? "mock",
+    chartSource: "mock",
+    ruleVersion: "persona-v1",
+    isFallback: true,
+  };
+
+  const provenanceLine = [
+    `state=${stateLabel(provenance.providerState)}`,
+    `source=${provenance.chartSource || "mock"}`,
+    `rule=${provenance.ruleVersion || "persona-v1"}`,
+    `fallback=${provenance.isFallback ? "Y" : "N"}`,
+  ].join(" · ");
+
   const handleShare = async () => {
     const result = await shareOrCopy({
       title: "내 운명의 이상형 결과",
@@ -129,6 +149,7 @@ export default function PersonaPage() {
 
         <p className="personaAppeal">{resolved.appealPoint}</p>
         <p className="personaAppeal">해석 기준 · {resolved.basisLabel}</p>
+        <p style={{ marginTop: 2, fontSize: 11, opacity: 0.62 }}>QA · {provenanceLine}</p>
 
         <div className="personaBottom">
           <button type="button" className="shareBtn posterCta" onClick={handleShare}>결과 공유하기</button>

@@ -31,6 +31,12 @@ const defaultTimeFlow = {
   evening: "관계 대화와 마무리 정리에 좋아요.",
 };
 
+function stateLabel(providerState?: string) {
+  if (providerState === "provider") return "PROVIDER";
+  if (providerState === "mock-fallback") return "MOCK-FALLBACK";
+  return "MOCK";
+}
+
 export default function HomePage({ me }: Props) {
   const { total: luckScore } = calculateDailyFortuneScores(me);
   const [narrative, setNarrative] = useState<HomeNarrativeSnapshot | null>(null);
@@ -73,6 +79,20 @@ export default function HomePage({ me }: Props) {
     evening: narrative?.timeFlow?.evening || defaultTimeFlow.evening,
   };
 
+  const provenance = narrative?.provenance ?? {
+    providerState: narrative?.providerState ?? "mock",
+    chartSource: "mock",
+    ruleVersion: "home-v1",
+    isFallback: true,
+  };
+
+  const provenanceLine = [
+    `state=${stateLabel(provenance.providerState)}`,
+    `source=${provenance.chartSource || "mock"}`,
+    `rule=${provenance.ruleVersion || "home-v1"}`,
+    `fallback=${provenance.isFallback ? "Y" : "N"}`,
+  ].join(" · ");
+
   return (
     <PageLayout title="" subtitle="">
       <section className="heroCard homeHeroVisual signatureCard refHeroCard compactHeroCard heroRefined heroLuxury heroImageCard">
@@ -112,6 +132,7 @@ export default function HomePage({ me }: Props) {
           <li>{summary[1]}</li>
           <li>{summary[2]}</li>
         </ul>
+        <p style={{ marginTop: 8, fontSize: 11, opacity: 0.62 }}>QA · {provenanceLine}</p>
         <Link to="/fortune" className="summaryFullCta">운세 더 보기</Link>
       </section>
 
