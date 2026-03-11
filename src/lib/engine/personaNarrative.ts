@@ -1,4 +1,4 @@
-import type { ProviderState } from "./types";
+import type { ProviderState, SajuResult } from "./types";
 import type { UserProfileInput } from "../../types/saju";
 import type { NarrativeProvenance } from "./homeNarrative";
 
@@ -36,7 +36,11 @@ export interface PersonaNarrativeSnapshot {
   basis: PersonaNarrativeBasis;
 }
 
-const PERSONA_RULE_VERSION = "persona-v1";
+const PERSONA_RULE_VERSION = "persona-v2";
+
+interface PersonaBasisContext {
+  saju?: SajuResult;
+}
 
 function seedFromProfile(input: UserProfileInput) {
   return `${input.birthDate}-${input.birthTime}-${input.gender}`
@@ -87,12 +91,51 @@ function buildBasisCodes(providerState: ProviderState, tone: PersonaNarrativeBas
   return ["MOCK_PERSONA_V1", toneCode, roleCode];
 }
 
-function buildPersonaBasis(seed: number, providerState: ProviderState): PersonaNarrativeBasis {
-  const dominantElement = elementBySeed(seed + 1);
-  const supportElement = elementBySeed(seed + 5);
-  const personaTone: PersonaNarrativeBasis["personaTone"] = seed % 2 === 0 ? "warm" : "calm";
-  const appealAxis: PersonaNarrativeBasis["appealAxis"] = seed % 3 === 0 ? "emotion-sync" : seed % 3 === 1 ? "rhythm-sync" : "trust-build";
-  const relationStyle: PersonaNarrativeBasis["relationStyle"] = seed % 4 <= 1 ? "strategist" : "mediator";
+function sortedElementsByScore(saju?: SajuResult) {
+  const fe = saju?.profile?.fiveElements;
+  if (!fe) return [] as Array<{ key: PersonaNarrativeBasis["dominantElement"]; value: number }>;
+
+  return (Object.entries(fe) as Array<[PersonaNarrativeBasis["dominantElement"], number]>)
+    .sort((a, b) => b[1] - a[1])
+    .map(([key, value]) => ({ key, value }));
+}
+
+function hasSignal(saju: SajuResult | undefined, token: string) {
+  return (saju?.chart?.signals ?? []).some((signal) => signal.includes(token));
+}
+
+function buildPersonaBasis(seed: number, providerState: ProviderState, context?: PersonaBasisContext): PersonaNarrativeBasis {
+  const ranked = sortedElementsByScore(context?.saju);
+  const dominantElement = ranked[0]?.key ?? elementBySeed(seed + 1);
+  const supportElement = ranked[1]?.key ?? elementBySeed(seed + 5);
+
+  const personaTone: PersonaNarrativeBasis["personaTone"] = hasSignal(context?.saju, "PERSONA_TONE_WARM") || hasSignal(context?.saju, "RELATION_TONE_SOFT")
+    ? "warm"
+    : hasSignal(context?.saju, "PERSONA_TONE_CALM")
+      ? "calm"
+      : seed % 2 === 0
+        ? "warm"
+        : "calm";
+
+  const appealAxis: PersonaNarrativeBasis["appealAxis"] = hasSignal(context?.saju, "EMOTION")
+    ? "emotion-sync"
+    : hasSignal(context?.saju, "RHYTHM") || hasSignal(context?.saju, "FLOW")
+      ? "rhythm-sync"
+      : hasSignal(context?.saju, "TRUST")
+        ? "trust-build"
+        : seed % 3 === 0
+          ? "emotion-sync"
+          : seed % 3 === 1
+            ? "rhythm-sync"
+            : "trust-build";
+
+  const relationStyle: PersonaNarrativeBasis["relationStyle"] = hasSignal(context?.saju, "STRATEGIST")
+    ? "strategist"
+    : hasSignal(context?.saju, "MEDIATOR")
+      ? "mediator"
+      : dominantElement === "metal" || dominantElement === "earth"
+        ? "strategist"
+        : "mediator";
 
   return {
     dominantElement,
@@ -104,11 +147,11 @@ function buildPersonaBasis(seed: number, providerState: ProviderState): PersonaN
   };
 }
 
-function buildProvenance(providerState: ProviderState, ruleVersion: string): NarrativeProvenance {
+function buildProvenance(providerState: ProviderState, ruleVersion: string, context?: PersonaBasisContext): NarrativeProvenance {
   return {
     providerState,
-    chartSource: chartSourceByState(providerState),
-    ruleVersion,
+    chartSource: context?.saju?.chart?.calculationSource || chartSourceByState(providerState),
+    ruleVersion: context?.saju?.chart?.ruleVersion || ruleVersion,
     isFallback: providerState !== "provider",
   };
 }
@@ -177,10 +220,11 @@ function appealPointFromBasis(basis: PersonaNarrativeBasis) {
   return "궁합 포인트 · 감정 표현 타이밍을 맞추면 신뢰가 빠르게 쌓여요.";
 }
 
-export function buildMockPersonaNarrative(input: UserProfileInput, providerState: ProviderState): PersonaNarrativeSnapshot {
+export function buildMockPersonaNarrative(input: UserProfileInput, providerState: ProviderState, context?: PersonaBasisContext): PersonaNarrativeSnapshot {
   const seed = seedFromProfile(input);
-  const basis = buildPersonaBasis(seed, providerState);
-  const ruleVersion = PERSONA_RULE_VERSION;
+  const basis = buildPersonaBasis(seed, providerState, context);
+  const provenance = buildProvenance(providerState, PERSONA_RULE_VERSION, context);
+  const ruleVersion = provenance.ruleVersion || PERSONA_RULE_VERSION;
 
   return {
     providerState,
@@ -194,7 +238,7 @@ export function buildMockPersonaNarrative(input: UserProfileInput, providerState
     basisCodes: basis.basisCodes,
     confidence: confidenceByState(providerState),
     ruleVersion,
-    provenance: buildProvenance(providerState, ruleVersion),
+    provenance,
     basis,
   };
 }

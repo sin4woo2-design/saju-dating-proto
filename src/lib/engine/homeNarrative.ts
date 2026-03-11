@@ -1,4 +1,4 @@
-import type { ProviderState } from "./types";
+import type { ProviderState, SajuResult } from "./types";
 import type { UserProfileInput } from "../../types/saju";
 
 export type NarrativeConfidence = "high" | "medium" | "low";
@@ -46,7 +46,11 @@ export interface HomeNarrativeSnapshot {
   basis: HomeNarrativeBasis;
 }
 
-const HOME_RULE_VERSION = "home-v1";
+const HOME_RULE_VERSION = "home-v2";
+
+interface HomeBasisContext {
+  saju?: SajuResult;
+}
 
 function seedFromProfile(input: UserProfileInput) {
   const today = new Date().toISOString().slice(0, 10);
@@ -112,12 +116,47 @@ function buildBasisCodes(providerState: ProviderState, relationTone: HomeNarrati
   return ["MOCK_NARRATIVE_V1", toneCode, flowCode];
 }
 
-function buildHomeBasis(seed: number, providerState: ProviderState): HomeNarrativeBasis {
-  const dominantElement = elementBySeed(seed + 1);
-  const supportElement = elementBySeed(seed + 3);
-  const flowBias: HomeNarrativeBasis["flowBias"] = seed % 3 === 0 ? "afternoon-peak" : "steady-day";
-  const relationTone: HomeNarrativeBasis["relationTone"] = seed % 2 === 0 ? "soft" : "clear";
-  const focusWindow: HomeNarrativeBasis["focusWindow"] = seed % 5 === 0 ? "morning-setup" : seed % 5 <= 2 ? "afternoon-focus" : "evening-wrap";
+function sortedElementsByScore(saju?: SajuResult) {
+  const fe = saju?.profile?.fiveElements;
+  if (!fe) return [] as Array<{ key: HomeNarrativeBasis["dominantElement"]; value: number }>;
+
+  return (Object.entries(fe) as Array<[HomeNarrativeBasis["dominantElement"], number]>)
+    .sort((a, b) => b[1] - a[1])
+    .map(([key, value]) => ({ key, value }));
+}
+
+function hasSignal(saju: SajuResult | undefined, token: string) {
+  return (saju?.chart?.signals ?? []).some((signal) => signal.includes(token));
+}
+
+function buildHomeBasis(seed: number, providerState: ProviderState, context?: HomeBasisContext): HomeNarrativeBasis {
+  const ranked = sortedElementsByScore(context?.saju);
+  const dominantElement = ranked[0]?.key ?? elementBySeed(seed + 1);
+  const supportElement = ranked[1]?.key ?? elementBySeed(seed + 3);
+
+  const flowBias: HomeNarrativeBasis["flowBias"] = hasSignal(context?.saju, "AFTERNOON") || hasSignal(context?.saju, "FLOW_PEAK")
+    ? "afternoon-peak"
+    : "steady-day";
+
+  const relationTone: HomeNarrativeBasis["relationTone"] = hasSignal(context?.saju, "RELATION_TONE_SOFT") || hasSignal(context?.saju, "COMM_SOFT")
+    ? "soft"
+    : hasSignal(context?.saju, "RELATION_TONE_CLEAR") || hasSignal(context?.saju, "COMM_CLEAR")
+      ? "clear"
+      : seed % 2 === 0
+        ? "soft"
+        : "clear";
+
+  const focusWindow: HomeNarrativeBasis["focusWindow"] = hasSignal(context?.saju, "MORNING")
+    ? "morning-setup"
+    : hasSignal(context?.saju, "EVENING")
+      ? "evening-wrap"
+      : flowBias === "afternoon-peak"
+        ? "afternoon-focus"
+        : seed % 5 === 0
+          ? "morning-setup"
+          : seed % 5 <= 2
+            ? "afternoon-focus"
+            : "evening-wrap";
 
   return {
     dominantElement,
@@ -129,11 +168,11 @@ function buildHomeBasis(seed: number, providerState: ProviderState): HomeNarrati
   };
 }
 
-function buildProvenance(providerState: ProviderState, ruleVersion: string): NarrativeProvenance {
+function buildProvenance(providerState: ProviderState, ruleVersion: string, context?: HomeBasisContext): NarrativeProvenance {
   return {
     providerState,
-    chartSource: chartSourceByState(providerState),
-    ruleVersion,
+    chartSource: context?.saju?.chart?.calculationSource || chartSourceByState(providerState),
+    ruleVersion: context?.saju?.chart?.ruleVersion || ruleVersion,
     isFallback: providerState !== "provider",
   };
 }
@@ -217,10 +256,11 @@ function buildTimeFlow(seed: number, basis: HomeNarrativeBasis): HomeTimeFlow {
   };
 }
 
-export function buildMockHomeNarrative(input: UserProfileInput, providerState: ProviderState): HomeNarrativeSnapshot {
+export function buildMockHomeNarrative(input: UserProfileInput, providerState: ProviderState, context?: HomeBasisContext): HomeNarrativeSnapshot {
   const seed = seedFromProfile(input);
-  const basis = buildHomeBasis(seed, providerState);
-  const ruleVersion = HOME_RULE_VERSION;
+  const basis = buildHomeBasis(seed, providerState, context);
+  const provenance = buildProvenance(providerState, HOME_RULE_VERSION, context);
+  const ruleVersion = provenance.ruleVersion || HOME_RULE_VERSION;
 
   const heroLead = trimSentence(heroLeadFromBasis(basis));
   const heroSupport = trimSentence(heroSupportFromBasis(basis));
@@ -237,7 +277,7 @@ export function buildMockHomeNarrative(input: UserProfileInput, providerState: P
     basisLabel: basisLabelByState(providerState),
     basisCodes: basis.basisCodes,
     ruleVersion,
-    provenance: buildProvenance(providerState, ruleVersion),
+    provenance,
     basis,
   };
 }

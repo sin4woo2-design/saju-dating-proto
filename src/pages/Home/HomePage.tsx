@@ -82,14 +82,14 @@ export default function HomePage({ me }: Props) {
   const provenance = narrative?.provenance ?? {
     providerState: narrative?.providerState ?? "mock",
     chartSource: "mock",
-    ruleVersion: "home-v1",
+    ruleVersion: "home-v2",
     isFallback: true,
   };
 
   const provenanceLine = [
     `state=${stateLabel(provenance.providerState)}`,
     `source=${provenance.chartSource || "mock"}`,
-    `rule=${provenance.ruleVersion || "home-v1"}`,
+    `rule=${provenance.ruleVersion || "home-v2"}`,
     `fallback=${provenance.isFallback ? "Y" : "N"}`,
   ].join(" · ");
 

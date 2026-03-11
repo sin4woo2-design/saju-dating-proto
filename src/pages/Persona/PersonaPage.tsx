@@ -21,11 +21,11 @@ const fallbackNarrative: PersonaNarrativeSnapshot = {
   basisLabel: "기본 mock 페르소나",
   basisCodes: ["MOCK_PERSONA_V1"],
   confidence: "low",
-  ruleVersion: "persona-v1",
+  ruleVersion: "persona-v2",
   provenance: {
     providerState: "mock",
     chartSource: "mock",
-    ruleVersion: "persona-v1",
+    ruleVersion: "persona-v2",
     isFallback: true,
   },
   basis: {
@@ -103,14 +103,14 @@ export default function PersonaPage() {
   const provenance = resolved.provenance ?? {
     providerState: resolved.providerState ?? "mock",
     chartSource: "mock",
-    ruleVersion: "persona-v1",
+    ruleVersion: "persona-v2",
     isFallback: true,
   };
 
   const provenanceLine = [
     `state=${stateLabel(provenance.providerState)}`,
     `source=${provenance.chartSource || "mock"}`,
-    `rule=${provenance.ruleVersion || "persona-v1"}`,
+    `rule=${provenance.ruleVersion || "persona-v2"}`,
     `fallback=${provenance.isFallback ? "Y" : "N"}`,
   ].join(" · ");
 

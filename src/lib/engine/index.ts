@@ -32,7 +32,8 @@ export async function calculateHomeNarrativeWithEngine(input: UserProfileInput, 
     return engine.calculateHomeNarrative(input);
   }
 
-  return buildMockHomeNarrative(input, engine.mode === "real-provider" ? "mock-fallback" : "mock");
+  const saju = await engine.calculateSaju(input);
+  return buildMockHomeNarrative(input, saju.providerState, { saju });
 }
 
 export async function calculatePersonaNarrativeWithEngine(input: UserProfileInput, mode?: EngineMode) {
@@ -41,7 +42,8 @@ export async function calculatePersonaNarrativeWithEngine(input: UserProfileInpu
     return engine.calculatePersonaNarrative(input);
   }
 
-  return buildMockPersonaNarrative(input, engine.mode === "real-provider" ? "mock-fallback" : "mock");
+  const saju = await engine.calculateSaju(input);
+  return buildMockPersonaNarrative(input, saju.providerState, { saju });
 }
 
 export type { EngineMode, PairInput, SajuEngine } from "./types";
