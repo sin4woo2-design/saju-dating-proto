@@ -23,6 +23,14 @@ export const compatSignalCatalog = {
     label: "일간 보완",
     desc: "서로의 부족한 부분을 메워주는 안정형 궁합 신호예요.",
   },
+  ELEMENT_CONTROLS_IMBALANCED: {
+    label: "오행 상극",
+    desc: "주도권/표현 방식 차이로 피로감이 누적될 수 있어요.",
+  },
+  DAYMASTER_CLASH: {
+    label: "일간 충돌",
+    desc: "해석 방식이 달라 같은 사건도 다르게 받아들일 수 있어요.",
+  },
   RELIABILITY_TIME_UNKNOWN_ME: {
     label: "내 시간 미상",
     desc: "내 출생시간이 없어 일부 신호 정확도가 낮아져요.",
@@ -30,6 +38,10 @@ export const compatSignalCatalog = {
   RELIABILITY_TIME_UNKNOWN_PARTNER: {
     label: "상대 시간 미상",
     desc: "상대 출생시간 정보 부족으로 세부 해석이 축약됐어요.",
+  },
+  RELIABILITY_PARTIAL_PILLARS: {
+    label: "부분 기둥",
+    desc: "일부 기둥 정보가 제한되어 핵심 흐름 중심으로 계산됐어요.",
   },
 } as const;
 

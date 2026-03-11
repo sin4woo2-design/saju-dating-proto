@@ -34,6 +34,12 @@ class CompatibilityServiceTest(unittest.TestCase):
         self.assertTrue(latency_ms > 0)
         self.assertIn("PROVIDER_PARTIAL_DATA", warnings)
 
+        raw_codes = {s.get("code") for s in raw_signals}
+        self.assertIn("RELIABILITY_PARTIAL_PILLARS", raw_codes)
+        self.assertTrue(
+            any(code in raw_codes for code in {"ELEMENT_GENERATES_MUTUAL", "ELEMENT_CONTROLS_IMBALANCED"})
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

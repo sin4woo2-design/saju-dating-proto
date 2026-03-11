@@ -46,6 +46,20 @@ RAW_SIGNAL_TABLE = {
         "weight": 2,
         "note": "관계 리듬 균형",
     },
+    "ELEMENT_CONTROLS_IMBALANCED": {
+        "code": "ELEMENT_CONTROLS_IMBALANCED",
+        "category": "element-dynamics",
+        "polarity": "negative",
+        "weight": -3,
+        "note": "오행 상극 불균형",
+    },
+    "DAYMASTER_CLASH": {
+        "code": "DAYMASTER_CLASH",
+        "category": "daymaster-dynamics",
+        "polarity": "negative",
+        "weight": -4,
+        "note": "일간 충돌",
+    },
 }
 
 
@@ -67,7 +81,10 @@ def to_raw_signals(signals: list[str], me: PersonInput, partner: PersonInput):
             continue
         raw.append(mapped)
 
+    missing_time = False
+
     if not me.birthTimeKnown:
+        missing_time = True
         raw.append(
             {
                 "code": "RELIABILITY_TIME_UNKNOWN_ME",
@@ -78,6 +95,7 @@ def to_raw_signals(signals: list[str], me: PersonInput, partner: PersonInput):
             }
         )
     if not partner.birthTimeKnown:
+        missing_time = True
         raw.append(
             {
                 "code": "RELIABILITY_TIME_UNKNOWN_PARTNER",
@@ -85,6 +103,17 @@ def to_raw_signals(signals: list[str], me: PersonInput, partner: PersonInput):
                 "polarity": "neutral",
                 "weight": -3,
                 "note": "상대 출생시간 미상",
+            }
+        )
+
+    if missing_time:
+        raw.append(
+            {
+                "code": "RELIABILITY_PARTIAL_PILLARS",
+                "category": "reliability",
+                "polarity": "neutral",
+                "weight": -4,
+                "note": "일부 기둥 정보 제한",
             }
         )
 

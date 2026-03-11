@@ -64,11 +64,17 @@ def calculate_compatibility_signals(me: PersonInput, partner: PersonInput) -> tu
     s2 = _seed(_person_key(partner))
     mix = _seed(f"{min(s1, s2)}:{max(s1, s2)}")
 
-    signals = [
-        "HAP_YEAR_BRANCH" if (s1 + s2) % 2 == 0 else "CHUNG_YEAR_BRANCH",
-        "CHUNG_DAY_STEM" if abs((s1 % 10) - (s2 % 10)) > 4 else "HAP_DAY_STEM",
-        "COMPLEMENT_FIVE_ELEMENTS" if mix % 3 == 0 else "BALANCED_RHYTHM",
-    ]
+    branch_signal = "HAP_YEAR_BRANCH" if (s1 + s2) % 2 == 0 else "CHUNG_YEAR_BRANCH"
+    stem_signal = "CHUNG_DAY_STEM" if abs((s1 % 10) - (s2 % 10)) > 4 else "HAP_DAY_STEM"
+
+    if mix % 4 <= 1:
+        element_signal = "COMPLEMENT_FIVE_ELEMENTS"
+    else:
+        element_signal = "ELEMENT_CONTROLS_IMBALANCED"
+
+    daymaster_signal = "DAYMASTER_CLASH" if mix % 5 == 0 else "BALANCED_RHYTHM"
+
+    signals = [branch_signal, stem_signal, element_signal, daymaster_signal]
 
     warnings: list[str] = []
     if (not me.birthTimeKnown) or (not partner.birthTimeKnown):
