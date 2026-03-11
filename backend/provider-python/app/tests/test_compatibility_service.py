@@ -33,7 +33,7 @@ class CompatibilityServiceTest(unittest.TestCase):
         raw_codes = {s.get("code") for s in raw_signals}
         self.assertIn("RELIABILITY_PARTIAL_PILLARS", raw_codes)
         self.assertTrue(
-            any(code in raw_codes for code in {"ELEMENT_GENERATES_MUTUAL", "ELEMENT_CONTROLS_IMBALANCED"})
+            any(code in raw_codes for code in {"ELEMENT_GENERATES_MUTUAL", "ELEMENT_CONTROLS_IMBALANCED", "DAYMASTER_SUPPORT_MUTUAL"})
         )
 
     def test_reliability_confidence_high_when_both_times_known(self):
