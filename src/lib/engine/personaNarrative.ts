@@ -1,5 +1,6 @@
 import type { ProviderState } from "./types";
 import type { UserProfileInput } from "../../types/saju";
+import type { NarrativeProvenance } from "./homeNarrative";
 
 export type PersonaNarrativeConfidence = "high" | "medium" | "low";
 
@@ -8,6 +9,15 @@ export interface PersonaTraits {
   personality: string;
   career: string;
   appearance: string;
+}
+
+export interface PersonaNarrativeBasis {
+  dominantElement: "wood" | "fire" | "earth" | "metal" | "water";
+  supportElement: "wood" | "fire" | "earth" | "metal" | "water";
+  personaTone: "warm" | "calm";
+  appealAxis: "emotion-sync" | "rhythm-sync" | "trust-build";
+  relationStyle: "strategist" | "mediator";
+  basisCodes: string[];
 }
 
 export interface PersonaNarrativeSnapshot {
@@ -21,7 +31,12 @@ export interface PersonaNarrativeSnapshot {
   basisLabel: string;
   basisCodes: string[];
   confidence: PersonaNarrativeConfidence;
+  ruleVersion: string;
+  provenance: NarrativeProvenance;
+  basis: PersonaNarrativeBasis;
 }
+
+const PERSONA_RULE_VERSION = "persona-v1";
 
 function seedFromProfile(input: UserProfileInput) {
   return `${input.birthDate}-${input.birthTime}-${input.gender}`
@@ -33,41 +48,28 @@ function pick<T>(seed: number, list: readonly T[]) {
   return list[seed % list.length];
 }
 
-const titles = ["온화한 기획형", "균형 조율형", "신뢰 공감형"] as const;
-
-const subtitles = [
-  "첫인상은 차분하고, 대화가 깊어질수록 매력이 선명해져요.",
-  "관계 속도를 무리하게 올리지 않아 안정감이 오래갑니다.",
-  "감정과 현실을 함께 보며 관계의 균형을 지키는 편이에요.",
-] as const;
-
-const ageRanges = ["27~33세", "29~35세", "30~36세"] as const;
-const personalities = ["따뜻하지만 기준이 분명한 성향", "차분하고 배려 깊은 성향", "현실 감각이 좋은 조율형 성향"] as const;
-const careers = ["기획·디자인·창작 분야", "서비스·운영·기획 분야", "연구·분석·전략 분야"] as const;
-const appearances = ["차분하고 지적인 분위기", "부드럽고 단정한 분위기", "깔끔하고 신뢰감 있는 분위기"] as const;
-
-const dominantElements = ["주기운 · 화(火)", "주기운 · 목(木)", "주기운 · 토(土)"] as const;
-const supportElements = ["보완기운 · 수(水)", "보완기운 · 금(金)", "보완기운 · 수(水)"] as const;
-
-const appealPoints = [
-  "궁합 포인트 · 말의 온도를 맞추면 매력이 더 자연스럽게 보여요.",
-  "궁합 포인트 · 약속 리듬이 맞으면 관계가 안정적으로 깊어져요.",
-  "궁합 포인트 · 감정 표현 타이밍을 맞추면 신뢰가 빠르게 쌓여요.",
-] as const;
-
 function trimSentence(value: string, cap = 34) {
+  if (!value) return "페르소나 근거를 준비 중이에요.";
   if (value.length <= cap) return value;
   const sliced = value.slice(0, cap).trim();
   return sliced.endsWith(".") ? sliced : `${sliced}.`;
 }
 
-function buildBasisCodes(seed: number, providerState: ProviderState) {
-  const toneCode = seed % 2 === 0 ? "PERSONA_TONE_WARM" : "PERSONA_TONE_CALM";
-  const roleCode = seed % 3 === 0 ? "PERSONA_ROLE_STRATEGIST" : "PERSONA_ROLE_MEDIATOR";
+function elementBySeed(seed: number): PersonaNarrativeBasis["dominantElement"] {
+  const elements: PersonaNarrativeBasis["dominantElement"][] = ["wood", "fire", "earth", "metal", "water"];
+  return pick(seed, elements);
+}
 
-  if (providerState === "provider") return ["PERSONA_PROFILE", "ELEMENT_BALANCE", toneCode, roleCode];
-  if (providerState === "mock-fallback") return ["PROVIDER_PARTIAL_DATA", "MOCK_PERSONA_FALLBACK", toneCode, roleCode];
-  return ["MOCK_PERSONA_V1", toneCode, roleCode];
+function confidenceByState(providerState: ProviderState): PersonaNarrativeConfidence {
+  if (providerState === "provider") return "high";
+  if (providerState === "mock-fallback") return "medium";
+  return "low";
+}
+
+function chartSourceByState(providerState: ProviderState) {
+  if (providerState === "provider") return "provider";
+  if (providerState === "mock-fallback") return "mock-fallback";
+  return "mock";
 }
 
 function basisLabelByState(providerState: ProviderState) {
@@ -76,29 +78,123 @@ function basisLabelByState(providerState: ProviderState) {
   return "해석 기준 · 기본 페르소나 규칙으로 생성했어요.";
 }
 
+function buildBasisCodes(providerState: ProviderState, tone: PersonaNarrativeBasis["personaTone"], relationStyle: PersonaNarrativeBasis["relationStyle"]) {
+  const toneCode = tone === "warm" ? "PERSONA_TONE_WARM" : "PERSONA_TONE_CALM";
+  const roleCode = relationStyle === "strategist" ? "PERSONA_ROLE_STRATEGIST" : "PERSONA_ROLE_MEDIATOR";
+
+  if (providerState === "provider") return ["PERSONA_PROFILE", "ELEMENT_BALANCE", toneCode, roleCode];
+  if (providerState === "mock-fallback") return ["PROVIDER_PARTIAL_DATA", "MOCK_PERSONA_FALLBACK", toneCode, roleCode];
+  return ["MOCK_PERSONA_V1", toneCode, roleCode];
+}
+
+function buildPersonaBasis(seed: number, providerState: ProviderState): PersonaNarrativeBasis {
+  const dominantElement = elementBySeed(seed + 1);
+  const supportElement = elementBySeed(seed + 5);
+  const personaTone: PersonaNarrativeBasis["personaTone"] = seed % 2 === 0 ? "warm" : "calm";
+  const appealAxis: PersonaNarrativeBasis["appealAxis"] = seed % 3 === 0 ? "emotion-sync" : seed % 3 === 1 ? "rhythm-sync" : "trust-build";
+  const relationStyle: PersonaNarrativeBasis["relationStyle"] = seed % 4 <= 1 ? "strategist" : "mediator";
+
+  return {
+    dominantElement,
+    supportElement,
+    personaTone,
+    appealAxis,
+    relationStyle,
+    basisCodes: buildBasisCodes(providerState, personaTone, relationStyle),
+  };
+}
+
+function buildProvenance(providerState: ProviderState, ruleVersion: string): NarrativeProvenance {
+  return {
+    providerState,
+    chartSource: chartSourceByState(providerState),
+    ruleVersion,
+    isFallback: providerState !== "provider",
+  };
+}
+
+function personaTitleFromBasis(basis: PersonaNarrativeBasis) {
+  if (basis.relationStyle === "strategist" && basis.personaTone === "warm") return "온화한 기획형";
+  if (basis.relationStyle === "strategist") return "균형 전략형";
+  if (basis.personaTone === "warm") return "신뢰 공감형";
+  return "차분 조율형";
+}
+
+function subtitleFromBasis(basis: PersonaNarrativeBasis) {
+  if (basis.appealAxis === "emotion-sync") return "첫인상은 차분하고, 대화가 깊어질수록 매력이 선명해져요.";
+  if (basis.appealAxis === "rhythm-sync") return "관계 속도를 무리하게 올리지 않아 안정감이 오래갑니다.";
+  return "감정과 현실을 함께 보며 관계의 균형을 지키는 편이에요.";
+}
+
+function dominantElementLabel(element: PersonaNarrativeBasis["dominantElement"]) {
+  const map = {
+    wood: "주기운 · 목(木)",
+    fire: "주기운 · 화(火)",
+    earth: "주기운 · 토(土)",
+    metal: "주기운 · 금(金)",
+    water: "주기운 · 수(水)",
+  } as const;
+  return map[element];
+}
+
+function supportElementLabel(element: PersonaNarrativeBasis["supportElement"]) {
+  const map = {
+    wood: "보완기운 · 목(木)",
+    fire: "보완기운 · 화(火)",
+    earth: "보완기운 · 토(土)",
+    metal: "보완기운 · 금(金)",
+    water: "보완기운 · 수(水)",
+  } as const;
+  return map[element];
+}
+
+function buildTraits(seed: number, basis: PersonaNarrativeBasis): PersonaTraits {
+  const ageRange = pick(seed + 3, ["27~33세", "29~35세", "30~36세"] as const);
+
+  const personalityPool = basis.personaTone === "warm"
+    ? ["따뜻하지만 기준이 분명한 성향", "배려 깊고 공감력이 높은 성향"]
+    : ["차분하고 관찰력이 좋은 성향", "현실 감각이 좋은 조율형 성향"];
+
+  const careerPool = basis.relationStyle === "strategist"
+    ? ["기획·디자인·창작 분야", "연구·분석·전략 분야"]
+    : ["서비스·운영·기획 분야", "코칭·상담·커뮤니케이션 분야"];
+
+  const appearancePool = basis.personaTone === "warm"
+    ? ["부드럽고 단정한 분위기", "온화하고 안정감 있는 분위기"]
+    : ["차분하고 지적인 분위기", "깔끔하고 신뢰감 있는 분위기"];
+
+  return {
+    ageRange,
+    personality: trimSentence(pick(seed + 5, personalityPool), 24),
+    career: trimSentence(pick(seed + 7, careerPool), 24),
+    appearance: trimSentence(pick(seed + 11, appearancePool), 22),
+  };
+}
+
+function appealPointFromBasis(basis: PersonaNarrativeBasis) {
+  if (basis.appealAxis === "emotion-sync") return "궁합 포인트 · 말의 온도를 맞추면 매력이 더 자연스럽게 보여요.";
+  if (basis.appealAxis === "rhythm-sync") return "궁합 포인트 · 약속 리듬이 맞으면 관계가 안정적으로 깊어져요.";
+  return "궁합 포인트 · 감정 표현 타이밍을 맞추면 신뢰가 빠르게 쌓여요.";
+}
+
 export function buildMockPersonaNarrative(input: UserProfileInput, providerState: ProviderState): PersonaNarrativeSnapshot {
   const seed = seedFromProfile(input);
-  const confidence: PersonaNarrativeConfidence = providerState === "provider" ? "high" : providerState === "mock-fallback" ? "medium" : "low";
-
-  const personaTitle = pick(seed, titles);
-  const rawSubtitle = pick(seed + 2, subtitles);
-  const personaSubtitle = rawSubtitle.includes(personaTitle) ? subtitles[0] : rawSubtitle;
+  const basis = buildPersonaBasis(seed, providerState);
+  const ruleVersion = PERSONA_RULE_VERSION;
 
   return {
     providerState,
-    personaTitle,
-    personaSubtitle: trimSentence(personaSubtitle, 38),
-    personaTraits: {
-      ageRange: pick(seed + 3, ageRanges),
-      personality: trimSentence(pick(seed + 5, personalities), 24),
-      career: trimSentence(pick(seed + 7, careers), 24),
-      appearance: trimSentence(pick(seed + 11, appearances), 22),
-    },
-    dominantElement: pick(seed + 13, dominantElements),
-    supportElement: pick(seed + 17, supportElements),
-    appealPoint: trimSentence(pick(seed + 19, appealPoints), 42),
+    personaTitle: personaTitleFromBasis(basis),
+    personaSubtitle: trimSentence(subtitleFromBasis(basis), 38),
+    personaTraits: buildTraits(seed, basis),
+    dominantElement: dominantElementLabel(basis.dominantElement),
+    supportElement: supportElementLabel(basis.supportElement),
+    appealPoint: trimSentence(appealPointFromBasis(basis), 42),
     basisLabel: basisLabelByState(providerState),
-    basisCodes: buildBasisCodes(seed, providerState),
-    confidence,
+    basisCodes: basis.basisCodes,
+    confidence: confidenceByState(providerState),
+    ruleVersion,
+    provenance: buildProvenance(providerState, ruleVersion),
+    basis,
   };
 }

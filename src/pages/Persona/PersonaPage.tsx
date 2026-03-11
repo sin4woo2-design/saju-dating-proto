@@ -21,6 +21,21 @@ const fallbackNarrative: PersonaNarrativeSnapshot = {
   basisLabel: "기본 mock 페르소나",
   basisCodes: ["MOCK_PERSONA_V1"],
   confidence: "low",
+  ruleVersion: "persona-v1",
+  provenance: {
+    providerState: "mock",
+    chartSource: "mock",
+    ruleVersion: "persona-v1",
+    isFallback: true,
+  },
+  basis: {
+    dominantElement: "fire",
+    supportElement: "water",
+    personaTone: "warm",
+    appealAxis: "emotion-sync",
+    relationStyle: "strategist",
+    basisCodes: ["MOCK_PERSONA_V1"],
+  },
 };
 
 function localizePersonaText(value: string) {
