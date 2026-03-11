@@ -2,6 +2,7 @@ import { mockEngine } from "./mockEngine";
 import { realProviderEngine } from "./realProviderEngine";
 import { buildMockHomeNarrative } from "./homeNarrative";
 import { buildMockPersonaNarrative } from "./personaNarrative";
+import { recordProviderState } from "./observability";
 import type { EngineMode, PairInput, SajuEngine } from "./types";
 import type { UserProfileInput } from "../../types/saju";
 
@@ -19,11 +20,15 @@ export function getEngine(mode?: EngineMode): SajuEngine {
 }
 
 export async function calculateSajuWithEngine(input: UserProfileInput, mode?: EngineMode) {
-  return getEngine(mode).calculateSaju(input);
+  const result = await getEngine(mode).calculateSaju(input);
+  recordProviderState("saju", result.providerState);
+  return result;
 }
 
 export async function calculateCompatibilityWithEngine(me: PairInput, partner: PairInput, mode?: EngineMode) {
-  return getEngine(mode).calculateCompatibility(me, partner);
+  const result = await getEngine(mode).calculateCompatibility(me, partner);
+  recordProviderState("compatibility", result.providerState);
+  return result;
 }
 
 export async function calculateHomeNarrativeWithEngine(input: UserProfileInput, mode?: EngineMode) {

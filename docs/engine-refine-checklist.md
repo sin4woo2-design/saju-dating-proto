@@ -11,9 +11,9 @@
 
 ## 1) Phase A — real chart path 안정화 (진행 시작)
 - [x] Front 엔진 기본 모드를 `real-provider`로 전환
-- [ ] 운영 env에서 `VITE_SAJU_PROVIDER_BASE_URL` 명시
-- [ ] `/saju/chart` 성공/실패 비율 로깅 기준 정의
-- [ ] fallback 경고 코드 집계(예: PROVIDER_TIMEOUT, PROVIDER_UNAVAILABLE)
+- [x] 운영 env에서 `VITE_SAJU_PROVIDER_BASE_URL` 명시 (`.env.example` 추가)
+- [x] `/saju/chart` 성공/실패 비율 로깅 기준 정의 (engine observability 경고 임계치 추가)
+- [x] fallback 경고 코드 집계(예: PROVIDER_TIMEOUT, PROVIDER_UNAVAILABLE) (release checklist에 반영)
 - [ ] chart 응답의 `ruleVersion`/`calculationSource`를 UI/로그에 노출
 
 ## 2) Phase B — compatibility 신호 체계 고정
@@ -30,8 +30,8 @@
 
 ## 4) Phase D — 품질/배포 가드
 - [x] 절기 경계/자시/시간미상 회귀셋 자동화 (contract draft에 provenance/score-rule 케이스 추가)
-- [ ] mock-fallback 비율 임계치 알림(예: >5%)
-- [ ] 릴리즈 체크리스트에 engine 품질 항목 추가
+- [x] mock-fallback 비율 임계치 알림(예: >5%)
+- [x] 릴리즈 체크리스트에 engine 품질 항목 추가 (`docs/engine-release-checklist.md`)
 
 ## 작업 원칙
 1. 사용자 체감 깨짐 방지: 실패 시 fallback 유지
