@@ -1,0 +1,42 @@
+export const compatSignalCatalog = {
+  BRANCH_HAP_YEAR: {
+    label: "연지 합",
+    desc: "기본 성향과 생활 감각이 잘 맞아 초반 친밀도가 빨라요.",
+  },
+  BRANCH_CHUNG_YEAR: {
+    label: "연지 충",
+    desc: "생활 리듬이 달라 사소한 습관에서 충돌이 날 수 있어요.",
+  },
+  STEM_HAP_DAY: {
+    label: "일간 합",
+    desc: "서로의 핵심 성향이 맞물려 감정 교류가 자연스러워요.",
+  },
+  STEM_CHUNG_DAY: {
+    label: "일간 충",
+    desc: "중요한 가치관에서 방향이 달라 논쟁이 커질 수 있어요.",
+  },
+  ELEMENT_GENERATES_MUTUAL: {
+    label: "오행 상생",
+    desc: "강점이 서로를 북돋우는 흐름이라 회복력이 좋은 편이에요.",
+  },
+  DAYMASTER_SUPPORT_MUTUAL: {
+    label: "일간 보완",
+    desc: "서로의 부족한 부분을 메워주는 안정형 궁합 신호예요.",
+  },
+  RELIABILITY_TIME_UNKNOWN_ME: {
+    label: "내 시간 미상",
+    desc: "내 출생시간이 없어 일부 신호 정확도가 낮아져요.",
+  },
+  RELIABILITY_TIME_UNKNOWN_PARTNER: {
+    label: "상대 시간 미상",
+    desc: "상대 출생시간 정보 부족으로 세부 해석이 축약됐어요.",
+  },
+} as const;
+
+export function getCompatSignalMeta(code: string) {
+  return compatSignalCatalog[code as keyof typeof compatSignalCatalog];
+}
+
+export function isKnownCompatSignal(code: string) {
+  return !!getCompatSignalMeta(code);
+}

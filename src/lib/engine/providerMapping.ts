@@ -4,6 +4,7 @@ import type {
   ProviderSajuResponse,
   ProviderWarningCode,
 } from "./provider-contract";
+import { isKnownCompatSignal } from "./compatSignalCatalog";
 
 const ELEMENT_KEYS = ["wood", "fire", "earth", "metal", "water"] as const;
 const DEFAULT_ELEMENT = 50;
@@ -73,6 +74,11 @@ export function mapProviderCompatibilityToScore(raw: ProviderCompatibilityRespon
   const rawSignals = raw.compatibility.rawSignals ?? [];
 
   if (rawSignals.length > 0) {
+    const unknownSignalFound = rawSignals.some((s) => !isKnownCompatSignal(s.code));
+    if (unknownSignalFound) {
+      warnings.add("COMPAT_UNKNOWN_SIGNAL");
+    }
+
     const derived = Math.max(40, Math.min(96, 70 + rawSignals.reduce((acc, s) => acc + (s.weight ?? 0), 0)));
 
     if (typeof providerScore === "number" && Math.abs(providerScore - derived) >= 6) {
