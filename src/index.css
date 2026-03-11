@@ -1184,33 +1184,37 @@ button:disabled {
 }
 
 .homeContinueCard {
-  border-color: #eef0f3;
-  background: #fcfdfd;
-  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.03);
+  border-color: #e7ebf1;
+  background: #fcfdff;
+  box-shadow: 0 3px 10px rgba(16, 24, 40, 0.04);
+  padding: 12px;
+  gap: 7px;
 }
 
 .promoContinueCard strong,
 .promoContinueCard p {
-  color: #545c69;
+  color: #535d6c;
 }
 
 .continueLabel {
   color: #8b93a1;
   font-size: 11px;
+  letter-spacing: 0.01em;
 }
 
 .microInfoBlock,
 .timeFlowBlock {
   display: grid;
-  gap: 8px;
-  padding: 10px 0 2px;
+  gap: 10px;
+  padding: 10px 2px 4px;
 }
 
 .microInfoBlock h5,
 .timeFlowBlock h5 {
   margin: 0;
   font-size: 16px;
-  color: #1f1f1d;
+  font-weight: 700;
+  color: #22252b;
 }
 
 .microInfoBlock ul {
@@ -1218,51 +1222,65 @@ button:disabled {
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 7px;
+  gap: 10px;
 }
 
 .microInfoBlock li {
   display: grid;
-  grid-template-columns: 86px 1fr;
-  gap: 10px;
+  grid-template-columns: 78px 1fr;
+  align-items: start;
+  gap: 12px;
+  padding: 4px 0;
   font-size: 12px;
-  color: #4b5563;
+  color: #4f5866;
+  line-height: 1.45;
 }
 
 .microInfoBlock li strong {
-  color: #6b5a42;
+  color: #5b6270;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.microInfoBlock li span {
+  color: #4d5562;
 }
 
 .timeFlowRow {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: 10px;
 }
 
 .timeFlowRow article {
-  border: 1px solid #eceff3;
-  border-radius: 10px;
-  padding: 8px;
+  border: 1px solid #e8edf3;
+  border-radius: 11px;
+  padding: 10px 9px;
+  min-height: 86px;
   background: #ffffff;
   display: grid;
-  gap: 3px;
+  align-content: start;
+  gap: 5px;
 }
 
 .timeFlowRow small {
-  color: #8b93a1;
+  color: #8a93a2;
   font-size: 10px;
+  font-weight: 600;
 }
 
 .timeFlowRow b {
-  font-size: 14px;
-  color: #2b2f36;
+  font-size: 13px;
+  color: #2c3138;
+  line-height: 1.2;
 }
 
 .timeFlowRow p {
   margin: 0;
   font-size: 11px;
   color: #5f6774;
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 .inyeonHero {
@@ -1522,30 +1540,31 @@ button:disabled {
 .continueLinks {
   display: grid;
   gap: 8px;
+  margin-top: 2px;
 }
 
 .continueLinks.row.inlineLinks {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
 }
 
 .continuePrimaryLink {
   text-decoration: none;
-  color: #39404a;
-  border: 1px solid #dbe0e7;
-  background: #f7f9fb;
+  color: #414a56;
+  border: 1px solid #dde3eb;
+  background: #f8fafc;
   border-radius: 9px;
   padding: 8px 10px;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   text-align: center;
 }
 
 .continuePrimaryLink.secondary {
-  color: #596272;
-  background: #fafbfd;
+  color: #616b79;
+  background: #fbfcfe;
 }
 
 .continueSecondaryLink {
