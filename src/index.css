@@ -289,14 +289,15 @@ button:disabled {
 
 .heroImageCard {
   position: relative;
-  padding: 10px;
-  border-color: #dfd3bd;
-  background: #f1ece1;
-  box-shadow: 0 12px 26px rgba(35, 30, 21, 0.1);
-  min-height: 350px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  min-height: 330px;
 }
 
-.heroImageCard::after {
+.heroImageCard::after,
+.heroImageCard.homeHeroVisual::after {
   display: none;
 }
 
