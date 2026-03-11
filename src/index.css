@@ -1204,14 +1204,20 @@ button:disabled {
 }
 
 .compactContinueCard {
-  gap: 6px;
-  padding: 11px 12px;
+  gap: 5px;
+  padding: 10px 12px;
+}
+
+.continueHint {
+  margin: 0;
+  font-size: 11px;
+  color: #7a8392;
 }
 
 .recentItem {
   margin: 0;
   font-size: 11px;
-  color: #6a7381;
+  color: #5f6876;
 }
 
 .microInfoBlock,
@@ -1219,6 +1225,20 @@ button:disabled {
   display: grid;
   gap: 10px;
   padding: 8px 2px 2px;
+}
+
+.emphasisFlowBlock {
+  border: 1px solid #e7ecf3;
+  border-radius: 12px;
+  background: #fbfcff;
+  padding: 12px;
+}
+
+.insightsListBlock {
+  border: 1px solid #e8edf3;
+  border-radius: 12px;
+  background: #fcfdff;
+  padding: 12px;
 }
 
 .microInfoBlock h5,
@@ -1234,37 +1254,41 @@ button:disabled {
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .insightsListBlock li {
   position: relative;
   display: grid;
-  gap: 4px;
-  padding: 6px 0 7px 12px;
-  border-bottom: 1px solid #edf1f5;
+  gap: 3px;
+  padding: 7px 0 8px 13px;
+  border-bottom: 1px solid #eef2f6;
+}
+
+.insightsListBlock li:last-child {
+  border-bottom: 0;
 }
 
 .insightsListBlock li::before {
   content: "•";
   position: absolute;
   left: 0;
-  top: 6px;
-  color: #9aa3af;
+  top: 7px;
+  color: #a2aab6;
 }
 
 .insightLabel {
-  color: #5e6674;
+  color: #566072;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.01em;
 }
 
-.insightsListBlock li p {
+.insightText {
   margin: 0;
   font-size: 12px;
-  line-height: 1.45;
-  color: #4e5561;
+  line-height: 1.42;
+  color: #4f5663;
 }
 
 .emphasisFlowBlock .timeFlowRow {
@@ -1274,11 +1298,11 @@ button:disabled {
 }
 
 .emphasisFlowBlock .timeFlowRow article {
-  border: 1px solid #e1e7ef;
+  border: 1px solid #dde5ef;
   border-radius: 12px;
-  padding: 11px 10px;
-  min-height: 96px;
-  background: linear-gradient(180deg, #ffffff, #f9fbfe);
+  padding: 12px 10px;
+  min-height: 102px;
+  background: #ffffff;
   display: grid;
   align-content: start;
   gap: 6px;
@@ -1576,12 +1600,12 @@ button:disabled {
 
 .continuePrimaryLink {
   text-decoration: none;
-  color: #4a5463;
-  border: 1px solid #e1e6ee;
-  background: #f9fbfd;
+  color: #505a69;
+  border: 1px solid #e3e8ef;
+  background: #fafbfd;
   border-radius: 8px;
-  padding: 7px 9px;
-  font-size: 11px;
+  padding: 6px 8px;
+  font-size: 10.5px;
   font-weight: 600;
   text-align: center;
 }

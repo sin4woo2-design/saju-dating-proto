@@ -123,9 +123,9 @@ export default function HomePage({ me }: Props) {
       <section className="microInfoBlock insightsListBlock">
         <h5>오늘의 포인트</h5>
         <ul>
-          <li><span className="insightLabel">대화운</span><p>{points.conversation}</p></li>
-          <li><span className="insightLabel">재물 포인트</span><p>{points.wealth}</p></li>
-          <li><span className="insightLabel">주의 포인트</span><p>{points.caution}</p></li>
+          <li><span className="insightLabel">대화운</span><p className="insightText">{points.conversation}</p></li>
+          <li><span className="insightLabel">재물 포인트</span><p className="insightText">{points.wealth}</p></li>
+          <li><span className="insightLabel">주의 포인트</span><p className="insightText">{points.caution}</p></li>
         </ul>
       </section>
 
@@ -141,6 +141,7 @@ export default function HomePage({ me }: Props) {
       <section className="hubCard utilityCard continueCard homeContinueCard promoContinueCard compactContinueCard">
         <small className="continueLabel">최근 본 항목</small>
         <strong>⏱️ 이어보기</strong>
+        <p className="continueHint">중단한 분석을 빠르게 이어가세요.</p>
         <p className="recentItem">최근 본 항목 · 페르소나 카드</p>
         <div className="continueLinks row inlineLinks smallActions">
           <Link to="/compatibility" className="continuePrimaryLink">궁합 보기</Link>
