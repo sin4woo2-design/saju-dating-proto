@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
 import { calculateHomeNarrativeWithEngine, type HomeNarrativeSnapshot } from "../../lib/engine";
 import type { UserProfileInput } from "../../types/saju";
+import heroCardImage from "../../assets/home/hero-card-v1.png";
 
 interface Props {
   me: UserProfileInput;
@@ -79,21 +80,17 @@ export default function HomePage({ me }: Props) {
 
   return (
     <PageLayout title="" subtitle="">
-      <section className="heroCard homeHeroVisual signatureCard refHeroCard compactHeroCard heroRefined heroLuxury heroReferenceCard">
-        <p className="heroScoreChip">{luckScore}점</p>
+      <section className="heroCard homeHeroVisual signatureCard refHeroCard compactHeroCard heroRefined heroLuxury heroImageCard">
+        <img src={heroCardImage} alt="오늘의 운세 카드 배경" className="heroCardArt" />
 
-        <div className="heroPaperFrame">
-          <div className="heroSunMark" aria-hidden>
-            <i />
-            <span />
-          </div>
+        <div className="heroImageOverlay">
+          <p className="heroScoreChip">{luckScore}점</p>
           <p className="heroPaperLabel">오늘의 운세</p>
           <h3>{me.name}님의 오늘 흐름</h3>
           <p className="heroDescLine">{heroLead}</p>
           <p className="heroConclusion">{heroSupport}</p>
+          <Link to="/mysaju" className="heroInlineCta heroGoldCta full">내 사주 상세 보기</Link>
         </div>
-
-        <Link to="/mysaju" className="heroInlineCta heroGoldCta full">내 사주 상세 보기</Link>
       </section>
 
       <section className="homeHubGrid homeTripletGrid">
