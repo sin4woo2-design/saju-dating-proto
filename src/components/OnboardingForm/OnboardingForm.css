@@ -41,6 +41,54 @@
   color: #111827;
 }
 
+.dateWheelWrap {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.dateWheelCol {
+  border: 1px solid #e1e6ef;
+  border-radius: 12px;
+  padding: 8px;
+  background: #fbfdff;
+  display: grid;
+  gap: 6px;
+}
+
+.dateWheelCol p {
+  margin: 0;
+  font-size: 11px;
+  color: #64748b;
+  text-align: center;
+}
+
+.dateWheelList {
+  max-height: 148px;
+  overflow-y: auto;
+  display: grid;
+  gap: 4px;
+  scroll-snap-type: y proximity;
+  padding-right: 2px;
+}
+
+.dateWheelList button {
+  min-height: 34px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #334155;
+  font-size: 14px;
+  scroll-snap-align: center;
+}
+
+.dateWheelList button.active {
+  border-color: #cfd5dd;
+  background: #eff3f8;
+  color: #1f2937;
+  font-weight: 600;
+}
+
 .hint {
   margin: 0;
   font-size: 12px;

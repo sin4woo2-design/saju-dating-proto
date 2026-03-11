@@ -24,20 +24,45 @@ const traditionalTimes = [
   { key: "hae", hanja: "亥時", ko: "해시", range: "21:00~22:59", value: "22:00" },
 ];
 
+const DEFAULT_BIRTH_DATE = "2000-06-15";
+
 function selectedTimeLabel(value: string) {
   const selected = traditionalTimes.find((t) => t.value === value);
   if (!selected) return value || "시간 미입력";
   return `${selected.hanja} · ${selected.ko} · ${selected.range}`;
 }
 
+function daysInMonth(year: number, month: number) {
+  return new Date(year, month, 0).getDate();
+}
+
+function toDateParts(value: string) {
+  const [y, m, d] = (value || DEFAULT_BIRTH_DATE).split("-").map((v) => Number(v));
+  return {
+    year: Number.isFinite(y) ? y : 2000,
+    month: Number.isFinite(m) ? m : 6,
+    day: Number.isFinite(d) ? d : 15,
+  };
+}
+
+function toBirthDate(year: number, month: number, day: number) {
+  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
+
 export default function OnboardingForm({ onSubmit }: Props) {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<UserProfileInput>({
     name: "",
-    birthDate: "",
+    birthDate: DEFAULT_BIRTH_DATE,
     birthTime: "",
     gender: "other",
   });
+
+  const birth = toDateParts(form.birthDate);
+  const years = useMemo(() => Array.from({ length: 56 }, (_, i) => 1970 + i).reverse(), []);
+  const months = useMemo(() => Array.from({ length: 12 }, (_, i) => i + 1), []);
+  const dayMax = daysInMonth(birth.year, birth.month);
+  const days = useMemo(() => Array.from({ length: dayMax }, (_, i) => i + 1), [dayMax]);
 
   const canNext = useMemo(() => {
     if (step === 0) return form.name.trim().length > 1;
@@ -49,6 +74,14 @@ export default function OnboardingForm({ onSubmit }: Props) {
   const goNext = () => {
     if (!canNext) return;
     setStep((s) => Math.min(3, s + 1));
+  };
+
+  const updateBirthDate = (next: Partial<{ year: number; month: number; day: number }>) => {
+    const year = next.year ?? birth.year;
+    const month = next.month ?? birth.month;
+    const maxDay = daysInMonth(year, month);
+    const day = Math.min(next.day ?? birth.day, maxDay);
+    setForm((prev) => ({ ...prev, birthDate: toBirthDate(year, month, day) }));
   };
 
   return (
@@ -74,12 +107,56 @@ export default function OnboardingForm({ onSubmit }: Props) {
 
       {step === 1 && (
         <>
-          <input
-            type="date"
-            value={form.birthDate}
-            onChange={(e) => setForm((prev) => ({ ...prev, birthDate: e.target.value }))}
-          />
-          <p className="hint">양력 기준으로 입력해 주세요.</p>
+          <div className="dateWheelWrap" aria-label="생년월일 선택">
+            <div className="dateWheelCol">
+              <p>연도</p>
+              <div className="dateWheelList">
+                {years.map((year) => (
+                  <button
+                    key={year}
+                    type="button"
+                    className={birth.year === year ? "active" : ""}
+                    onClick={() => updateBirthDate({ year })}
+                  >
+                    {year}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="dateWheelCol">
+              <p>월</p>
+              <div className="dateWheelList">
+                {months.map((month) => (
+                  <button
+                    key={month}
+                    type="button"
+                    className={birth.month === month ? "active" : ""}
+                    onClick={() => updateBirthDate({ month })}
+                  >
+                    {month}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="dateWheelCol">
+              <p>일</p>
+              <div className="dateWheelList">
+                {days.map((day) => (
+                  <button
+                    key={day}
+                    type="button"
+                    className={birth.day === day ? "active" : ""}
+                    onClick={() => updateBirthDate({ day })}
+                  >
+                    {day}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+          <p className="hint">스크롤하거나 눌러서 선택하세요. 기본값은 2000-06-15예요.</p>
         </>
       )}
 
