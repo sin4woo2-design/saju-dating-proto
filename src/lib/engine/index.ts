@@ -5,7 +5,7 @@ import { buildMockPersonaNarrative } from "./personaNarrative";
 import type { EngineMode, PairInput, SajuEngine } from "./types";
 import type { UserProfileInput } from "../../types/saju";
 
-const DEFAULT_MODE: EngineMode = "mock";
+const DEFAULT_MODE: EngineMode = "real-provider";
 
 function normalizeMode(value: string | undefined): EngineMode {
   if (value === "real-provider" || value === "real-stub") return "real-provider";
