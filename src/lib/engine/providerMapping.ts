@@ -8,6 +8,7 @@ import type {
 const ELEMENT_KEYS = ["wood", "fire", "earth", "metal", "water"] as const;
 const DEFAULT_ELEMENT = 50;
 const DEFAULT_COMPAT_SCORE = 72;
+const COMPAT_RULE_VERSION = "compat-v1-rawsignals";
 
 function clamp100(value: number) {
   return Math.max(0, Math.min(100, value));
@@ -65,27 +66,36 @@ export function mapProviderCompatibilityToScore(raw: ProviderCompatibilityRespon
   warnings?: string[];
   rawSignals?: ProviderCompatibilityResponse["compatibility"]["rawSignals"];
   reliability?: ProviderCompatibilityResponse["compatibility"]["reliability"];
+  scoreRuleVersion: string;
 } {
   const warnings = new Set<string>(mapProviderWarnings(raw.warnings) ?? []);
-  const score = raw.compatibility.score;
-
-  if (typeof score === "number") {
-    return {
-      score: clamp100(score),
-      warnings: warnings.size ? Array.from(warnings) : undefined,
-      rawSignals: raw.compatibility.rawSignals,
-      reliability: raw.compatibility.reliability,
-    };
-  }
-
+  const providerScore = raw.compatibility.score;
   const rawSignals = raw.compatibility.rawSignals ?? [];
+
   if (rawSignals.length > 0) {
-    const derived = rawSignals.reduce((acc, s) => acc + (s.weight ?? 0), 70);
+    const derived = Math.max(40, Math.min(96, 70 + rawSignals.reduce((acc, s) => acc + (s.weight ?? 0), 0)));
+
+    if (typeof providerScore === "number" && Math.abs(providerScore - derived) >= 6) {
+      warnings.add("COMPAT_SCORE_MISMATCH");
+    }
+
     return {
       score: clamp100(derived),
       warnings: warnings.size ? Array.from(warnings) : undefined,
       rawSignals: raw.compatibility.rawSignals,
       reliability: raw.compatibility.reliability,
+      scoreRuleVersion: COMPAT_RULE_VERSION,
+    };
+  }
+
+  if (typeof providerScore === "number") {
+    warnings.add("PROVIDER_PARTIAL_DATA");
+    return {
+      score: clamp100(providerScore),
+      warnings: warnings.size ? Array.from(warnings) : undefined,
+      rawSignals: raw.compatibility.rawSignals,
+      reliability: raw.compatibility.reliability,
+      scoreRuleVersion: "compat-provider-score-fallback",
     };
   }
 
@@ -95,5 +105,6 @@ export function mapProviderCompatibilityToScore(raw: ProviderCompatibilityRespon
     warnings: Array.from(warnings),
     rawSignals: raw.compatibility.rawSignals,
     reliability: raw.compatibility.reliability,
+    scoreRuleVersion: "compat-default-fallback",
   };
 }

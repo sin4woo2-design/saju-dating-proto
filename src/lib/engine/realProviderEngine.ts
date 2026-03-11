@@ -73,6 +73,7 @@ export const realProviderEngine: SajuEngine = {
         warnings: mapped.warnings,
         rawSignals: mapped.rawSignals,
         reliability: mapped.reliability,
+        scoreRuleVersion: mapped.scoreRuleVersion,
       };
     } catch (error) {
       return {

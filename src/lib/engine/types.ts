@@ -24,6 +24,7 @@ export interface CompatibilityResult {
     timeKnownPartner?: boolean;
     confidence?: "high" | "medium" | "low";
   };
+  scoreRuleVersion?: string;
 }
 
 export interface SajuChartSnapshot {
