@@ -1249,3 +1249,77 @@ button:disabled {
     font-size: 11px;
   }
 }
+
+/* hotfix: restore home hero image card layout */
+.heroImageCard {
+  position: relative;
+  padding: 10px;
+  border-color: #e0d4bf;
+  background: #f0ebe0;
+  box-shadow: 0 12px 26px rgba(35, 30, 21, 0.12);
+  min-height: 360px;
+}
+
+.heroCardArt {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 14px;
+  border: 1px solid rgba(182, 147, 88, 0.38);
+  display: block;
+}
+
+.heroImageOverlay {
+  position: absolute;
+  inset: 22px 24px 22px;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.heroImageCard h3 {
+  margin: 2px 0 0;
+  font-size: 32px;
+  line-height: 1.12;
+  color: #2c2923;
+}
+
+.heroImageCard .heroDescLine {
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.42;
+  color: #35322d;
+  max-width: 84%;
+}
+
+.heroImageCard .heroConclusion {
+  margin-top: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #5d5549;
+  max-width: 86%;
+}
+
+.heroGoldCta {
+  min-width: 158px;
+  text-align: center;
+  text-decoration: none;
+  color: #fff9ef;
+  background: linear-gradient(140deg, #7f602f, #b79053);
+  border: 1px solid #9d7740;
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 6px 14px rgba(147, 107, 50, 0.24);
+}
+
+.heroImageCard .heroGoldCta.full {
+  width: auto;
+  min-width: 240px;
+  margin-top: 10px;
+  padding: 9px 18px;
+}
