@@ -1,25 +1,13 @@
 import PageLayout from "../../components/layout/PageLayout";
+import { calculateDailyFortuneScores } from "../../lib/dailyFortune";
 import type { UserProfileInput } from "../../types/saju";
 
 interface Props {
   me: UserProfileInput;
 }
 
-function makeFortune(me: UserProfileInput) {
-  const seed = `${me.birthDate}-${me.birthTime}-${new Date().toISOString().slice(0, 10)}`
-    .split("")
-    .reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-
-  const total = 62 + (seed % 34);
-  const love = 55 + (seed % 40);
-  const work = 50 + ((seed * 3) % 42);
-  const health = 58 + ((seed * 5) % 36);
-
-  return { total, love: Math.min(98, love), work: Math.min(98, work), health: Math.min(98, health) };
-}
-
 export default function FortunePage({ me }: Props) {
-  const score = makeFortune(me);
+  const score = calculateDailyFortuneScores(me);
 
   return (
     <PageLayout title="오늘 운세" subtitle="매일 확인하기 좋은 가벼운 운세 피드예요.">

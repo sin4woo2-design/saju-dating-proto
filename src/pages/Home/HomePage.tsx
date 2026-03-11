@@ -2,16 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
 import { calculateHomeNarrativeWithEngine, type HomeNarrativeSnapshot } from "../../lib/engine";
+import { calculateDailyFortuneScores } from "../../lib/dailyFortune";
 import type { UserProfileInput } from "../../types/saju";
 import heroCardImage from "../../assets/home/hero-card-v2.png";
 
 interface Props {
   me: UserProfileInput;
-}
-
-function dailySeed(me: UserProfileInput) {
-  const today = new Date().toISOString().slice(0, 10);
-  return `${me.birthDate}-${me.birthTime}-${today}`.split("").reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
 }
 
 const defaultHeroLead = "오늘은 대화의 시작 톤이 흐름을 만듭니다.";
@@ -36,8 +32,7 @@ const defaultTimeFlow = {
 };
 
 export default function HomePage({ me }: Props) {
-  const seed = dailySeed(me);
-  const luckScore = 60 + (seed % 36);
+  const { total: luckScore } = calculateDailyFortuneScores(me);
   const [narrative, setNarrative] = useState<HomeNarrativeSnapshot | null>(null);
 
   useEffect(() => {
