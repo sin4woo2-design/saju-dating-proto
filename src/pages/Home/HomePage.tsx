@@ -79,23 +79,19 @@ export default function HomePage({ me }: Props) {
 
   return (
     <PageLayout title="" subtitle="">
-      <section className="heroCard homeHeroVisual signatureCard refHeroCard compactHeroCard heroRefined heroLuxury">
-        <div className="heroAura" aria-hidden />
-        <div className="heroWave" />
-        <div className="heroOrbit" aria-hidden />
+      <section className="heroCard homeHeroVisual signatureCard refHeroCard compactHeroCard heroRefined heroLuxury heroReferenceCard">
+        <p className="heroScoreChip">{luckScore}점</p>
 
-        <div className="refHeroHead">
-          <div className="heroTitleWrap">
-            <p className="heroMicroLabel plain">오늘의 운세</p>
-            <h3>{me.name}님의 오늘 흐름</h3>
+        <div className="heroPaperFrame">
+          <div className="heroSunMark" aria-hidden>
+            <i />
+            <span />
           </div>
-          <div className="heroScoreOrb compact luxe">
-            <strong>{luckScore}점</strong>
-          </div>
+          <p className="heroPaperLabel">오늘의 운세</p>
+          <h3>{me.name}님의 오늘 흐름</h3>
+          <p className="heroDescLine">{heroLead}</p>
+          <p className="heroConclusion">{heroSupport}</p>
         </div>
-
-        <p className="heroDescLine">{heroLead}</p>
-        <p className="heroConclusion">{heroSupport}</p>
 
         <Link to="/mysaju" className="heroInlineCta heroGoldCta full">내 사주 상세 보기</Link>
       </section>
