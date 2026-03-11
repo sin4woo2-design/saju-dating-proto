@@ -120,16 +120,16 @@ export default function HomePage({ me }: Props) {
         <Link to="/fortune" className="summaryFullCta">운세 더 보기</Link>
       </section>
 
-      <section className="microInfoBlock">
+      <section className="microInfoBlock insightsListBlock">
         <h5>오늘의 포인트</h5>
         <ul>
-          <li><strong>대화운</strong><span>{points.conversation}</span></li>
-          <li><strong>재물 포인트</strong><span>{points.wealth}</span></li>
-          <li><strong>주의 포인트</strong><span>{points.caution}</span></li>
+          <li><span className="insightLabel">대화운</span><p>{points.conversation}</p></li>
+          <li><span className="insightLabel">재물 포인트</span><p>{points.wealth}</p></li>
+          <li><span className="insightLabel">주의 포인트</span><p>{points.caution}</p></li>
         </ul>
       </section>
 
-      <section className="timeFlowBlock">
+      <section className="timeFlowBlock emphasisFlowBlock">
         <h5>시간대별 흐름</h5>
         <div className="timeFlowRow">
           <article><small>오전</small><b>정리</b><p>{timeFlow.morning}</p></article>
@@ -138,11 +138,11 @@ export default function HomePage({ me }: Props) {
         </div>
       </section>
 
-      <section className="hubCard utilityCard continueCard homeContinueCard promoContinueCard">
+      <section className="hubCard utilityCard continueCard homeContinueCard promoContinueCard compactContinueCard">
         <small className="continueLabel">최근 본 항목</small>
         <strong>⏱️ 이어보기</strong>
-        <p>보던 흐름으로 바로 돌아가세요.</p>
-        <div className="continueLinks row inlineLinks">
+        <p className="recentItem">최근 본 항목 · 페르소나 카드</p>
+        <div className="continueLinks row inlineLinks smallActions">
           <Link to="/compatibility" className="continuePrimaryLink">궁합 보기</Link>
           <Link to="/persona" className="continuePrimaryLink secondary">페르소나 보기</Link>
         </div>

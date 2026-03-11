@@ -1202,6 +1202,17 @@ button:disabled {
   letter-spacing: 0.01em;
 }
 
+.compactContinueCard {
+  gap: 6px;
+  padding: 11px 12px;
+}
+
+.recentItem {
+  margin: 0;
+  font-size: 11px;
+  color: #6a7381;
+}
+
 .microInfoBlock,
 .timeFlowBlock {
   display: grid;
@@ -1225,62 +1236,70 @@ button:disabled {
   gap: 10px;
 }
 
-.microInfoBlock li {
+.insightsListBlock li {
+  position: relative;
   display: grid;
-  grid-template-columns: 78px 1fr;
-  align-items: start;
-  gap: 12px;
-  padding: 4px 0;
-  font-size: 12px;
-  color: #4f5866;
-  line-height: 1.45;
+  gap: 4px;
+  padding: 6px 0 6px 12px;
+  border-bottom: 1px solid #edf1f5;
 }
 
-.microInfoBlock li strong {
-  color: #5b6270;
+.insightsListBlock li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  color: #9aa3af;
+}
+
+.insightLabel {
+  color: #5e6674;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.01em;
 }
 
-.microInfoBlock li span {
-  color: #4d5562;
+.insightsListBlock li p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #4e5561;
 }
 
-.timeFlowRow {
+.emphasisFlowBlock .timeFlowRow {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
 
-.timeFlowRow article {
-  border: 1px solid #e8edf3;
-  border-radius: 11px;
-  padding: 10px 9px;
-  min-height: 86px;
-  background: #ffffff;
+.emphasisFlowBlock .timeFlowRow article {
+  border: 1px solid #dee5ee;
+  border-radius: 12px;
+  padding: 12px 10px;
+  min-height: 98px;
+  background: linear-gradient(180deg, #ffffff, #f9fbfe);
   display: grid;
   align-content: start;
-  gap: 5px;
+  gap: 6px;
 }
 
-.timeFlowRow small {
-  color: #8a93a2;
+.emphasisFlowBlock .timeFlowRow small {
+  color: #7f8897;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.timeFlowRow b {
-  font-size: 13px;
-  color: #2c3138;
+.emphasisFlowBlock .timeFlowRow b {
+  font-size: 14px;
+  color: #262c34;
   line-height: 1.2;
 }
 
-.timeFlowRow p {
+.emphasisFlowBlock .timeFlowRow p {
   margin: 0;
   font-size: 11px;
   color: #5f6774;
-  line-height: 1.4;
+  line-height: 1.42;
 }
 
 .inyeonHero {
@@ -1550,14 +1569,18 @@ button:disabled {
   align-items: center;
 }
 
+.continueLinks.row.inlineLinks.smallActions {
+  gap: 6px;
+}
+
 .continuePrimaryLink {
   text-decoration: none;
-  color: #414a56;
-  border: 1px solid #dde3eb;
-  background: #f8fafc;
-  border-radius: 9px;
-  padding: 8px 10px;
-  font-size: 11.5px;
+  color: #4a5463;
+  border: 1px solid #e1e6ee;
+  background: #f9fbfd;
+  border-radius: 8px;
+  padding: 7px 9px;
+  font-size: 11px;
   font-weight: 600;
   text-align: center;
 }
