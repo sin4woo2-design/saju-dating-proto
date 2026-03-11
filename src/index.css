@@ -290,25 +290,29 @@ button:disabled {
 .heroImageCard {
   position: relative;
   padding: 10px;
-  border-color: #e0d4bf;
-  background: #f0ebe0;
-  box-shadow: 0 12px 26px rgba(35, 30, 21, 0.12);
-  min-height: 360px;
+  border-color: #dfd3bd;
+  background: #f1ece1;
+  box-shadow: 0 12px 26px rgba(35, 30, 21, 0.1);
+  min-height: 420px;
+}
+
+.heroImageCard::after {
+  display: none;
 }
 
 .heroCardArt {
   width: 100%;
-  height: 340px;
+  height: 400px;
   object-fit: cover;
-  object-position: center;
+  object-position: center top;
   border-radius: 14px;
-  border: 1px solid rgba(182, 147, 88, 0.38);
+  border: 1px solid rgba(182, 147, 88, 0.34);
   display: block;
 }
 
 .heroImageOverlay {
   position: absolute;
-  inset: 22px 24px 22px;
+  inset: 20px 22px 20px;
   display: grid;
   align-content: start;
   justify-items: center;
@@ -316,52 +320,46 @@ button:disabled {
   gap: 8px;
 }
 
-.heroScoreChip {
-  margin: 0 0 2px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #7f6232;
-  background: rgba(248, 235, 208, 0.9);
-  border: 1px solid #cfae73;
-  border-radius: 999px;
-  padding: 4px 10px;
-}
-
-.heroPaperLabel {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 700;
-  color: #3b342a;
+.heroTopLine {
+  margin: 0 0 4px;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  background: linear-gradient(180deg, #d8bd7c 0%, #b58b3e 55%, #8e6a2d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .heroImageCard h3 {
-  margin: 2px 0 0;
-  font-size: 32px;
-  line-height: 1.12;
-  color: #2c2923;
+  margin: 4px 0 0;
+  font-size: 38px;
+  line-height: 1.1;
+  color: #23211d;
 }
 
 .heroImageCard .heroDescLine {
-  margin-top: 6px;
+  margin-top: 10px;
   font-size: 14px;
   line-height: 1.42;
-  color: #35322d;
-  max-width: 84%;
+  color: #34312c;
+  max-width: 86%;
 }
 
 .heroImageCard .heroConclusion {
   margin-top: 0;
   font-size: 13px;
   line-height: 1.4;
-  color: #5d5549;
+  color: #5a5347;
   max-width: 86%;
 }
 
 .heroImageCard .heroGoldCta.full {
   width: auto;
-  min-width: 240px;
-  margin-top: 10px;
-  padding: 9px 18px;
+  min-width: 250px;
+  margin-top: 12px;
+  padding: 10px 18px;
 }
 
 .heroAura {

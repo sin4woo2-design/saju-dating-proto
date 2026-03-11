@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
 import { calculateHomeNarrativeWithEngine, type HomeNarrativeSnapshot } from "../../lib/engine";
 import type { UserProfileInput } from "../../types/saju";
-import heroCardImage from "../../assets/home/hero-card-v1.png";
+import heroCardImage from "../../assets/home/hero-card-v2.png";
 
 interface Props {
   me: UserProfileInput;
@@ -84,8 +84,7 @@ export default function HomePage({ me }: Props) {
         <img src={heroCardImage} alt="오늘의 운세 카드 배경" className="heroCardArt" />
 
         <div className="heroImageOverlay">
-          <p className="heroScoreChip">{luckScore}점</p>
-          <p className="heroPaperLabel">오늘의 운세</p>
+          <p className="heroTopLine">오늘의 운세 {luckScore}점</p>
           <h3>{me.name}님의 오늘 흐름</h3>
           <p className="heroDescLine">{heroLead}</p>
           <p className="heroConclusion">{heroSupport}</p>
