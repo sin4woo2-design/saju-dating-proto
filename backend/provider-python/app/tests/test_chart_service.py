@@ -31,6 +31,24 @@ class ChartServiceSmokeTest(unittest.TestCase):
         self.assertTrue(len(signals) >= 2)
         self.assertIsInstance(warnings, list)
 
+    def test_lunar_chart_timezone_fallback_flag(self):
+        p = self.person.model_copy(update={"timezone": "Mars/Phobos"})
+        _, _, signals, warnings = calculate_chart_with_lunar(p)
+        self.assertIn("TZ_FALLBACK_APPLIED", signals)
+        self.assertIn("PROVIDER_PARTIAL_DATA", warnings)
+
+    def test_lunar_chart_time_boundary_flag(self):
+        p = self.person.model_copy(update={"birthTime": "23:30", "birthTimeKnown": True})
+        _, _, signals, warnings = calculate_chart_with_lunar(p)
+        self.assertIn("DAY_BOUNDARY_LATE_HOUR", signals)
+        self.assertIn("PROVIDER_PARTIAL_DATA", warnings)
+
+    def test_lunar_chart_time_unknown_default_flag(self):
+        p = self.person.model_copy(update={"birthTime": "", "birthTimeKnown": False})
+        _, _, signals, warnings = calculate_chart_with_lunar(p)
+        self.assertIn("BIRTH_TIME_DEFAULTED", signals)
+        self.assertIn("PROVIDER_PARTIAL_DATA", warnings)
+
 
 if __name__ == "__main__":
     unittest.main()

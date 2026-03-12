@@ -7,6 +7,22 @@ export const compatSignalCatalog = {
     label: "연지 충",
     desc: "생활 리듬이 달라 사소한 습관에서 충돌이 날 수 있어요.",
   },
+  BRANCH_HYEONG_YEAR: {
+    label: "연지 형",
+    desc: "관계 긴장 포인트가 누적되기 쉬워 조율이 필요해요.",
+  },
+  BRANCH_PA_YEAR: {
+    label: "연지 파",
+    desc: "작은 생활 습관 차이가 반복되면 피로가 쌓일 수 있어요.",
+  },
+  BRANCH_HAE_YEAR: {
+    label: "연지 해",
+    desc: "오해가 생기기 쉬운 구간이라 확인 대화가 중요해요.",
+  },
+  BRANCH_BALANCED: {
+    label: "연지 중립",
+    desc: "큰 충돌 없이 기본 밸런스가 유지되는 구간이에요.",
+  },
   STEM_HAP_DAY: {
     label: "일간 합",
     desc: "서로의 핵심 성향이 맞물려 감정 교류가 자연스러워요.",

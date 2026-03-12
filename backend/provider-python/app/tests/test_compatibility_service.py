@@ -35,6 +35,9 @@ class CompatibilityServiceTest(unittest.TestCase):
         self.assertTrue(
             any(code in raw_codes for code in {"ELEMENT_GENERATES_MUTUAL", "ELEMENT_CONTROLS_IMBALANCED", "DAYMASTER_SUPPORT_MUTUAL"})
         )
+        self.assertTrue(
+            any(code in raw_codes for code in {"BRANCH_HAP_YEAR", "BRANCH_CHUNG_YEAR", "BRANCH_HYEONG_YEAR", "BRANCH_PA_YEAR", "BRANCH_HAE_YEAR", "BRANCH_BALANCED"})
+        )
 
     def test_reliability_confidence_high_when_both_times_known(self):
         me = self._person(known=True, gender="male")
