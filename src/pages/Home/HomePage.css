@@ -1,0 +1,458 @@
+/* ============================================================
+   HomePage — Premium Redesign Styles
+   ============================================================ */
+
+/* ── Hero Section ── */
+.homeHero {
+  background: linear-gradient(165deg, var(--color-surface-warm) 0%, #FBF3E4 55%, var(--color-surface-warm) 100%);
+  border: 1.5px solid var(--color-border-gold);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6) var(--space-5);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.homeHero::before {
+  content: "";
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  right: -80px;
+  top: -100px;
+  background: radial-gradient(circle, rgba(201, 160, 60, 0.2), transparent 68%);
+  pointer-events: none;
+}
+
+.homeHero::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  left: -60px;
+  bottom: -60px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  pointer-events: none;
+}
+
+.homeHeroInner {
+  position: relative;
+  z-index: var(--z-base);
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: var(--space-3);
+}
+
+.homeHeroGreeting {
+  margin: 0;
+  font-size: var(--text-h2);
+  font-weight: var(--weight-extrabold);
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+/* ── Score Gauge ── */
+.scoreGauge {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  margin: var(--space-2) 0;
+}
+
+.scoreGaugeRing {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.gaugeTrack {
+  fill: none;
+  stroke: rgba(212, 175, 55, 0.12);
+  stroke-width: 6;
+}
+
+.gaugeFill {
+  fill: none;
+  stroke: url(#goldGrad);
+  stroke: var(--color-gold-400);
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.2s var(--ease-out);
+}
+
+.scoreGaugeValue {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  line-height: 1;
+}
+
+.scoreGaugeValue strong {
+  font-size: 36px;
+  font-weight: var(--weight-extrabold);
+  color: var(--color-gold-800);
+  display: block;
+}
+
+.scoreGaugeValue span {
+  font-size: var(--text-caption);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.homeHeroLead {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  line-height: var(--leading-snug);
+  max-width: 280px;
+}
+
+.homeHeroSupport {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: var(--leading-normal);
+  max-width: 260px;
+}
+
+.homeHeroCta {
+  display: inline-block;
+  margin-top: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background: var(--gradient-gold-cta);
+  color: var(--color-gold-50);
+  border: 1px solid var(--color-gold-600);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  box-shadow: var(--shadow-gold);
+  transition: transform var(--duration-fast) var(--ease-spring),
+              box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.homeHeroCta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(147, 107, 50, 0.32);
+}
+
+.homeHeroCta:active {
+  transform: translateY(0);
+}
+
+/* ── Quick Stats ── */
+.homeQuickStats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+.qStatCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-2);
+  display: grid;
+  justify-items: center;
+  gap: var(--space-1);
+  text-align: center;
+  transition: transform var(--duration-fast) var(--ease-spring),
+              box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.qStatCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.qStatIcon {
+  font-size: 20px;
+  color: var(--color-gold-500);
+  line-height: 1;
+}
+
+.qStatLabel {
+  font-size: var(--text-micro);
+  color: var(--color-text-muted);
+  font-weight: var(--weight-medium);
+}
+
+.qStatValue {
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+}
+
+/* ── Summary Card ── */
+.homeSummaryCard {
+  background: linear-gradient(180deg, var(--color-surface-warm), #FBF6EC);
+  border: 1px solid var(--color-border-warm);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: grid;
+  gap: var(--space-3);
+  box-shadow: var(--shadow-sm);
+}
+
+.homeSummaryCard h4 {
+  margin: 0;
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+}
+
+.homeSummaryList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.homeSummaryList li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+}
+
+.summaryCheck {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-pill);
+  background: var(--color-gold-100);
+  color: var(--color-gold-700);
+  display: grid;
+  place-content: center;
+  font-size: 10px;
+  font-weight: var(--weight-bold);
+  margin-top: 1px;
+}
+
+.homeSummaryCta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.homeSummaryCta:hover {
+  border-color: var(--color-gold-300);
+  color: var(--color-gold-700);
+}
+
+.ctaArrow {
+  transition: transform var(--duration-fast) var(--ease-spring);
+}
+
+.homeSummaryCta:hover .ctaArrow {
+  transform: translateX(3px);
+}
+
+/* ── Points Section ── */
+.homePoints {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: grid;
+  gap: var(--space-3);
+}
+
+.homePoints h5 {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+}
+
+.homePointsList {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.homePointItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.homePointItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.pointDot {
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  margin-top: 5px;
+}
+
+.pointDot.conversation { background: var(--color-water); }
+.pointDot.wealth       { background: var(--color-earth); }
+.pointDot.caution      { background: var(--color-fire); }
+
+.homePointItem strong {
+  display: block;
+  font-size: var(--text-label);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-secondary);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.homePointItem p {
+  margin: 0;
+  font-size: var(--text-caption);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+}
+
+/* ── Time Flow ── */
+.homeTimeFlow {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.homeTimeFlow h5 {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+}
+
+.homeTimeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+.timeCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  min-height: 110px;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--duration-fast) var(--ease-spring),
+              box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.timeCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+}
+
+.timeCard.morning::before  { background: var(--gradient-gold-subtle); background: var(--color-gold-300); }
+.timeCard.afternoon::before { background: var(--color-gold-400); }
+.timeCard.evening::before  { background: var(--color-gold-600); }
+
+.timeCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.timeCard small {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.timeCard b {
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  font-weight: var(--weight-bold);
+}
+
+.timeCard p {
+  margin: 0;
+  font-size: var(--text-label);
+  color: var(--color-text-muted);
+  line-height: var(--leading-normal);
+}
+
+/* ── Continue Section ── */
+.homeContinue {
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  display: grid;
+  gap: var(--space-2);
+}
+
+.homeContinue .continueLabel {
+  font-size: var(--text-label);
+  color: var(--color-text-hint);
+  font-weight: var(--weight-medium);
+}
+
+.homeContinueActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.continueBtn {
+  text-decoration: none;
+  text-align: center;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.continueBtn:hover {
+  border-color: var(--color-gold-300);
+  color: var(--color-gold-700);
+}
+
+.continueBtn.secondary {
+  background: var(--color-surface-alt);
+}
+
+/* ── Responsive ── */
+@media (max-width: 380px) {
+  .homeQuickStats,
+  .homeTimeGrid {
+    grid-template-columns: 1fr;
+  }
+}

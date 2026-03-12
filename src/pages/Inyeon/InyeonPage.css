@@ -1,0 +1,162 @@
+/* ============================================================
+   InyeonPage — Premium CSS
+   ============================================================ */
+
+/* ── Hero Section ── */
+.inyeonHero {
+  background: linear-gradient(135deg, var(--color-surface-warm) 0%, #FAFAF4 100%);
+  border: 1px solid var(--color-border-gold);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  display: grid;
+  gap: var(--space-2);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.inyeonHeroHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.inyeonSparkle {
+  font-size: 18px;
+  line-height: 1;
+  animation: gentleBob 3s ease-in-out infinite;
+}
+
+.inyeonHeroTitle {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
+  color: var(--color-gold-800);
+}
+
+.inyeonHeroDesc {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Main Action Card ── */
+.inyeonMainCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6) var(--space-5);
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: var(--space-4);
+  box-shadow: var(--shadow-md);
+  margin-top: var(--space-4);
+}
+
+.inyeonMainIcon {
+  font-size: 40px;
+  line-height: 1;
+  padding: var(--space-3);
+  background: var(--color-surface-alt);
+  border-radius: var(--radius-full);
+}
+
+.inyeonMainContent h3 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-h3);
+  font-weight: var(--weight-extrabold);
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.inyeonMainContent p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: var(--leading-relaxed);
+  max-width: 280px;
+}
+
+.inyeonMainCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 240px;
+  height: 48px;
+  background: var(--gradient-gold-cta);
+  color: var(--color-surface);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
+  text-decoration: none;
+  box-shadow: var(--shadow-gold);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.inyeonMainCta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.35);
+  filter: brightness(1.05);
+}
+
+.inyeonMainCta:active {
+  transform: translateY(0);
+}
+
+/* ── Upcoming Features ── */
+.inyeonUpcomingSection {
+  margin-top: var(--space-6);
+  display: grid;
+  gap: var(--space-3);
+}
+
+.upcomingDivider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-border), transparent);
+  margin-bottom: var(--space-4);
+}
+
+.upcomingCard {
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  opacity: 0.8;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.upcomingCard:hover {
+  opacity: 1;
+}
+
+.upcomingHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.upcomingHead strong {
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+}
+
+.upcomingBadge {
+  font-size: 11px;
+  font-weight: var(--weight-bold);
+  background: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.upcomingCard p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+}

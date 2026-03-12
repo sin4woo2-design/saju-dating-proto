@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import ResultCard from "../../components/ResultCard/ResultCard";
 import PageLayout from "../../components/layout/PageLayout";
 import { genderLabels } from "../../constants/labels";
 import { useTransientMessage } from "../../hooks/useTransientMessage";
@@ -9,6 +8,7 @@ import { shareOrCopy } from "../../lib/share";
 import type { Gender, UserProfileInput } from "../../types/saju";
 import type { CompatibilityRawSignal } from "../../lib/engine/provider-contract";
 import { getCompatSignalMeta } from "../../lib/engine/compatSignalCatalog";
+import "./CompatibilityPage.css";
 
 interface Props {
   me: UserProfileInput;
@@ -21,33 +21,17 @@ function warningLabel(code: string) {
   return code;
 }
 
-function statusText(providerState: "mock" | "provider" | "mock-fallback", warnings: string[]) {
-  if (providerState === "mock") {
-    return {
-      badge: "mock 모드",
-      detail: "현재는 데모 계산으로 궁합을 보여주고 있어요.",
-      tone: "fallback",
-    } as const;
-  }
-  if (providerState === "mock-fallback") {
-    return {
-      badge: "fallback 사용",
-      detail: "실계산 연결이 불안정해 백업 규칙으로 안내 중이에요.",
-      tone: "fallback",
-    } as const;
-  }
-  if (warnings.some((w) => w.includes("PARTIAL"))) {
-    return {
-      badge: "일부 보정됨",
-      detail: "출생정보 일부가 없어 해석 정확도는 조금 낮아질 수 있어요.",
-      tone: "warn",
-    } as const;
-  }
-  return {
-    badge: "실계산 사용",
-    detail: "실제 궁합 신호를 반영한 결과예요.",
-    tone: "ok",
-  } as const;
+function statusTone(providerState: string, warnings: string[]) {
+  if (providerState === "mock" || providerState === "mock-fallback") return "fallback";
+  if (warnings.some((w) => w.includes("PARTIAL"))) return "warn";
+  return "ok";
+}
+
+function statusBadgeText(providerState: string, warnings: string[]) {
+  if (providerState === "mock") return "mock 모드";
+  if (providerState === "mock-fallback") return "fallback 사용";
+  if (warnings.some((w) => w.includes("PARTIAL"))) return "일부 보정됨";
+  return "실계산 사용";
 }
 
 function confidenceBadge(conf?: "high" | "medium" | "low") {
@@ -102,18 +86,11 @@ export default function CompatibilityPage({ me }: Props) {
   };
 
   const summary = score !== null ? generateCompatibilitySummary(score) : null;
-  const state = statusText(providerState, warnings);
   const layers = score !== null ? buildCompatibilityNarratives(score) : null;
   const confidenceInfo = confidenceBadge(confidence);
 
-  const evidenceSignals = rawSignals
-    .filter((s) => s.category !== "reliability")
-    .slice(0, 6);
-
-  const reliabilitySignals = rawSignals
-    .filter((s) => s.category === "reliability")
-    .slice(0, 3);
-
+  const evidenceSignals = rawSignals.filter((s) => s.category !== "reliability").slice(0, 6);
+  const reliabilitySignals = rawSignals.filter((s) => s.category === "reliability").slice(0, 3);
   const selectedSignalDescription = selectedSignal ? signalDescription(selectedSignal) : null;
 
   const handleShare = async () => {
@@ -122,106 +99,165 @@ export default function CompatibilityPage({ me }: Props) {
       title: "우리 궁합 점수",
       text: `사주 궁합 ${score}점\n강점: ${summary.strengths.join(", ")}`,
     });
-
-    showMessage(result === "shared" ? "공유 완료!" : "복사 완료! 원하는 곳에 붙여넣어 공유해보세요.");
+    showMessage(result === "shared" ? "공유 완료!" : "복사 완료!");
   };
 
+  const tone = statusTone(providerState, warnings);
+  const badgeText = statusBadgeText(providerState, warnings);
+
   return (
-    <PageLayout title="궁합 보기" subtitle="핵심 점수 먼저 보고, 아래에서 근거 신호를 눌러 자세히 보세요.">
-      <section className="formCard">
-        <label className="fieldLabel">
-          상대 생년월일
-          <input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
-        </label>
+    <PageLayout title="궁합 보기" subtitle="코어 시그널을 통해 두 사람의 연결성을 확인해요.">
+      
+      {/* ── INIT STATE OR INPUT CARD ── */}
+      <section className="compatInputCard anim-fade-in">
+        <div className="inputRowGroup">
+          <label className="fieldLabel">상대 생년월일</label>
+          <input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} className="compatInput" />
+        </div>
 
-        <label className="fieldLabel">
-          상대 출생시간
-          <input type="time" value={birthTime} onChange={(e) => setBirthTime(e.target.value)} />
-        </label>
+        <div className="inputRowGroup">
+          <label className="fieldLabel">상대 출생시간</label>
+          <input type="time" value={birthTime} onChange={(e) => setBirthTime(e.target.value)} className="compatInput" />
+        </div>
 
-        <label className="fieldLabel">
-          상대 성별
-          <select value={gender} onChange={(e) => setGender(e.target.value as Gender)}>
+        <div className="inputRowGroup">
+          <label className="fieldLabel">상대 성별</label>
+          <select value={gender} onChange={(e) => setGender(e.target.value as Gender)} className="compatSelect">
             <option value="male">{genderLabels.male}</option>
             <option value="female">{genderLabels.female}</option>
             <option value="other">{genderLabels.other}</option>
           </select>
-        </label>
+        </div>
 
-        <button type="button" className="shareBtn" disabled={!isValid || isCalculating} onClick={onCalculate}>
-          {isCalculating ? "궁합 읽는 중..." : "궁합 계산하기"}
+        <button type="button" className="compatSubmitBtn" disabled={!isValid || isCalculating} onClick={onCalculate}>
+          {isCalculating ? "명리학 서버로 요청 중..." : (score !== null ? "다시 계산하기" : "궁합 계산하기")}
         </button>
       </section>
 
+      {/* ── RESULT VIEW ── */}
       {summary && layers && (
-        <>
-          <section className="heroCard">
-            <div className="providerStatusRow">
-              <span className={`sourceBadge ${state.tone === "ok" ? "ok" : state.tone === "warn" ? "warn" : "fallback"}`}>
-                {state.badge}
-              </span>
-              <span className={`sourceBadge ${confidenceInfo.tone}`}>{confidenceInfo.label}</span>
-              {warnings.slice(0, 2).map((w) => (
-                <span key={w} className="warnBadge">{warningLabel(w)}</span>
-              ))}
+        <div className="compatResultView anim-slide-up">
+          
+          {/* ── MAIN SCORE HERO ── */}
+          <section className="compatHero">
+            <div className="compatHeroHeader">
+               <span className={`statusBadge ${tone}`}>{badgeText}</span>
+               <span className={`statusBadge ${confidenceInfo.tone}`}>{confidenceInfo.label}</span>
+               {warnings.slice(0, 2).map((w) => (
+                 <span key={w} className="statusBadge warn">{warningLabel(w)}</span>
+               ))}
             </div>
-            <div className="scoreHero">
-              <div className="scoreBadge">
-                <strong>{score}</strong>
-                <span>/ 100</span>
-              </div>
-              <div>
-                <h3>전체 궁합 점수</h3>
-                <p className="statusHint">{state.detail}</p>
-                <p className="statusHint">{confidenceInfo.guide}</p>
-              </div>
+            
+            <div className="compatScoreCircle">
+              <strong className="compatScore">{score}</strong>
+              <span className="compatScoreMax">/ 100</span>
+            </div>
+
+            <div className="compatHeroFooter">
+              <h3>전체 궁합 점수</h3>
+              <p>{confidenceInfo.guide}</p>
             </div>
           </section>
 
-          <section className="signalPanel">
+          {/* ── SIGNALS PANEL ── */}
+          <section className="compatSignalCard">
             <h3 className="sectionTitle">핵심 근거 신호</h3>
-            <div className="signalChips">
+            <div className="signalChipsGrid">
               {evidenceSignals.length ? evidenceSignals.map((s) => (
                 <button
                   key={`${s.code}-${s.category}`}
                   type="button"
-                  className={`signalChip ${selectedSignal === s.code ? "active" : ""}`}
+                  className={`compatSignalChip ${selectedSignal === s.code ? "active" : ""}`}
                   onClick={() => setSelectedSignal((prev) => prev === s.code ? null : s.code)}
                 >
                   {signalLabel(s.code)}
                 </button>
-              )) : <span className="subtitle">근거 신호 준비 중이거나 fallback 결과예요.</span>}
+              )) : <span className="emptySignalText">근거 신호를 불러오지 못했거나 fallback 결과예요.</span>}
             </div>
-            {selectedSignalDescription ? <p className="signalDesc">{selectedSignalDescription}</p> : null}
+            
+            {selectedSignalDescription && (
+              <div className="signalDescArea anim-scale-in">
+                <p>{selectedSignalDescription}</p>
+              </div>
+            )}
+            
             {reliabilitySignals.length ? (
-              <p className="statusHint">참고 신호: {reliabilitySignals.map((s) => signalLabel(s.code)).join(" · ")}</p>
+              <p className="signalReferenceHint">참고: {reliabilitySignals.map((s) => signalLabel(s.code)).join(" · ")}</p>
             ) : null}
           </section>
 
-          <ResultCard title="대화 궁합" tone="highlight" rows={[`대화 궁합 ${layers.talk}점`, "질문-확인-합의 순서를 쓰면 장점이 더 선명해져요."]} />
-          <ResultCard title="감정 궁합" rows={[`감정 궁합 ${layers.emotion}점`, "감정 표현 온도 차이를 미리 맞추면 오해가 줄어요."]} />
-          <ResultCard title="생활 궁합" rows={[`생활 궁합 ${layers.lifestyle}점`, "연락 리듬과 일정 합의를 먼저 잡아두면 안정감이 커져요."]} />
+          {/* ── CATEGORY SCORES ── */}
+          <section className="compatCategoryRows">
+            <article className="compatCategoryRow">
+              <div className="catHead">
+                <strong>대화 궁합</strong>
+                <span className="catScore">{layers.talk}점</span>
+              </div>
+              <p>질문-확인-합의 순서를 쓰면 장점이 더 선명해져요.</p>
+            </article>
+            <article className="compatCategoryRow">
+              <div className="catHead">
+                <strong>감정 궁합</strong>
+                <span className="catScore">{layers.emotion}점</span>
+              </div>
+              <p>감정 표현 온도 차이를 미리 맞추면 오해가 줄어요.</p>
+            </article>
+            <article className="compatCategoryRow">
+              <div className="catHead">
+                <strong>생활 궁합</strong>
+                <span className="catScore">{layers.lifestyle}점</span>
+              </div>
+              <p>연락 리듬과 일정 합의를 먼저 잡아두면 안정감이 커져요.</p>
+            </article>
+          </section>
 
-          <details className="foldSection" open>
-            <summary>갈등 포인트</summary>
-            <ResultCard title="주의 포인트" rows={layers.conflict} />
-          </details>
+          {/* ── ACCORDION DETAILS ── */}
+          <div className="compatDetailsGroup">
+            <details className="foldSection" open>
+              <summary>갈등 포인트</summary>
+              <div className="foldContent">
+                <ul className="detailList">
+                  {layers.conflict.map((text, idx) => (
+                    <li key={idx}>{text}</li>
+                  ))}
+                </ul>
+              </div>
+            </details>
 
-          <details className="foldSection" open>
-            <summary>관계 팁</summary>
-            <ResultCard title="관계 팁" rows={layers.tips} />
-          </details>
+            <details className="foldSection" open>
+              <summary>관계 팁</summary>
+              <div className="foldContent">
+                <ul className="detailList">
+                  {layers.tips.map((text, idx) => (
+                    <li key={idx}>{text}</li>
+                  ))}
+                </ul>
+              </div>
+            </details>
 
-          <details className="foldSection">
-            <summary>강점 & 한 줄 요약</summary>
-            <ResultCard title="강점 포인트" tone="highlight" rows={summary.strengths.map((v) => `✅ ${v}`)} />
-            <ResultCard title="관계 주의 한마디" rows={summary.cautions.map((v) => `⚠️ ${v}`)} />
-          </details>
+            <details className="foldSection">
+              <summary>강점 & 관계 주의</summary>
+              <div className="foldContent">
+                <ul className="detailList">
+                  {summary.strengths.map((text, idx) => (
+                    <li key={`str-${idx}`}>✅ {text}</li>
+                  ))}
+                  {summary.cautions.map((text, idx) => (
+                    <li key={`cau-${idx}`}>⚠️ {text}</li>
+                  ))}
+                </ul>
+              </div>
+            </details>
+          </div>
 
-          <button type="button" className="ghostBtn" onClick={handleShare}>결과 공유</button>
-          {message ? <p className="toastText">{message}</p> : null}
-        </>
+          <button type="button" className="compatShareBtn" onClick={handleShare}>
+            결과 공유하기
+          </button>
+          
+        </div>
       )}
+      
+      {message && <p className="toastMsg anim-slide-up">{message}</p>}
     </PageLayout>
   );
 }

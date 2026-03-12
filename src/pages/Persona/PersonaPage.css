@@ -1,0 +1,227 @@
+/* ============================================================
+   PersonaPage — Premium CSS
+   ============================================================ */
+
+.personaLayout {
+  display: grid;
+  gap: var(--space-6);
+  padding-top: var(--space-2);
+}
+
+/* ── Poster Wrapper & Glow Effects ── */
+.personaPosterWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+  perspective: 1000px;
+}
+
+.personaGlowBg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.4) 0%, rgba(212, 175, 55, 0) 70%);
+  filter: blur(40px);
+  z-index: 0;
+  opacity: 0.6;
+  animation: pulseGlow 4s infinite alternate;
+}
+
+/* ── The Card Itself ── */
+.personaPosterCard {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(145deg, #FFFCF9 0%, #FDFBF7 40%, #FAF5F0 100%);
+  border-radius: var(--radius-xl);
+  padding: 8px; /* Space for the inner gold border */
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08), 
+              0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  transition: transform 0.4s var(--ease-spring);
+}
+
+.personaPosterCard:hover {
+  transform: translateY(-4px) scale(1.01) rotateX(2deg);
+}
+
+.posterInnerBorder {
+  border: 1px solid var(--color-gold-300);
+  border-radius: calc(var(--radius-xl) - 4px);
+  padding: var(--space-6) var(--space-4) var(--space-5);
+  display: grid;
+  gap: var(--space-5);
+  background: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='rays' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='50' cy='50' r='50' fill='none' stroke='rgba(212,175,55,0.03)' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23rays)'/%3E%3C/svg%3E");
+}
+
+/* ── Header ── */
+.posterHeader {
+  text-align: center;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.posterOverline {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-gold-600);
+  font-weight: var(--weight-bold);
+}
+
+.posterTitle {
+  margin: 0;
+  font-family: 'Times New Roman', serif; /* Or a premium web font if added */
+  font-size: 28px;
+  font-weight: var(--weight-extrabold);
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.posterSubtitle {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+  padding: 0 var(--space-2);
+}
+
+/* ── Traits List ── */
+.posterTraits {
+  display: grid;
+  gap: var(--space-3);
+  background: rgba(255, 255, 255, 0.6);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.traitRow {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.traitRow strong {
+  color: var(--color-gold-800);
+  font-weight: var(--weight-bold);
+  position: relative;
+  padding-left: 12px;
+}
+
+.traitRow strong::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 4px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-gold-400);
+}
+
+.traitRow span {
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-medium);
+}
+
+/* ── Element Badges ── */
+.posterElements {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.posterElements .badge {
+  font-size: var(--text-caption);
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  font-weight: var(--weight-semibold);
+  border: 1px solid transparent;
+}
+
+.posterElements .badge.fire {
+  background: color-mix(in srgb, var(--color-fire) 10%, transparent);
+  color: var(--color-fire);
+  border-color: color-mix(in srgb, var(--color-fire) 20%, transparent);
+}
+
+.posterElements .badge.water {
+  background: color-mix(in srgb, var(--color-water) 10%, transparent);
+  color: var(--color-water);
+  border-color: color-mix(in srgb, var(--color-water) 20%, transparent);
+}
+
+/* ── Footer ── */
+.posterFooter {
+  text-align: center;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.footerDivider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold-200), transparent);
+  margin: 0 var(--space-4);
+}
+
+.appealPoint {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  line-height: var(--leading-relaxed);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.appealPoint strong {
+  color: var(--color-gold-700);
+  font-size: var(--text-caption);
+}
+
+.posterMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 10px;
+  color: var(--color-text-muted);
+  opacity: 0.8;
+}
+
+.qaLine {
+  font-family: monospace;
+  opacity: 0.5;
+}
+
+/* ── Share CTA ── */
+.personaShareBtn {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 320px;
+  background: var(--gradient-gold-cta);
+  color: var(--color-surface);
+  border: none;
+  padding: 16px;
+  border-radius: var(--radius-xl);
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
+  box-shadow: var(--shadow-gold);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.personaShareBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+  filter: brightness(1.05);
+}
+
+.personaShareBtn:active {
+  transform: translateY(0);
+}

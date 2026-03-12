@@ -4,7 +4,7 @@ import PageLayout from "../../components/layout/PageLayout";
 import { calculateHomeNarrativeWithEngine, type HomeNarrativeSnapshot } from "../../lib/engine";
 import { calculateDailyFortuneScores } from "../../lib/dailyFortune";
 import type { UserProfileInput } from "../../types/saju";
-import heroCardImage from "../../assets/home/hero-card-v2.png";
+import "./HomePage.css";
 
 interface Props {
   me: UserProfileInput;
@@ -31,10 +31,30 @@ const defaultTimeFlow = {
   evening: "관계 대화와 마무리 정리에 좋아요.",
 };
 
-function stateLabel(providerState?: string) {
-  if (providerState === "provider") return "PROVIDER";
-  if (providerState === "mock-fallback") return "MOCK-FALLBACK";
-  return "MOCK";
+/* ── Circular Score Gauge ── */
+function ScoreGauge({ score }: { score: number }) {
+  const r = 54;
+  const circ = 2 * Math.PI * r;
+  const pct = Math.min(100, Math.max(0, score));
+  const offset = circ - (pct / 100) * circ;
+
+  return (
+    <div className="scoreGauge anim-scale-in">
+      <svg viewBox="0 0 128 128" className="scoreGaugeRing">
+        <circle cx="64" cy="64" r={r} className="gaugeTrack" />
+        <circle
+          cx="64" cy="64" r={r}
+          className="gaugeFill"
+          strokeDasharray={circ}
+          strokeDashoffset={offset}
+        />
+      </svg>
+      <div className="scoreGaugeValue">
+        <strong className="anim-fade-in">{score}</strong>
+        <span>점</span>
+      </div>
+    </div>
+  );
 }
 
 export default function HomePage({ me }: Props) {
@@ -79,89 +99,124 @@ export default function HomePage({ me }: Props) {
     evening: narrative?.timeFlow?.evening || defaultTimeFlow.evening,
   };
 
-  const provenance = narrative?.provenance ?? {
-    providerState: narrative?.providerState ?? "mock",
-    chartSource: "mock",
-    ruleVersion: "home-v2",
-    isFallback: true,
-  };
-
-  const provenanceLine = [
-    `state=${stateLabel(provenance.providerState)}`,
-    `source=${provenance.chartSource || "mock"}`,
-    `rule=${provenance.ruleVersion || "home-v2"}`,
-    `fallback=${provenance.isFallback ? "Y" : "N"}`,
-  ].join(" · ");
+  if (!narrative) {
+    return (
+      <PageLayout title="" subtitle="">
+        <div className="homeHero skeleton" style={{ minHeight: "280px", marginBottom: "var(--space-4)" }} />
+        <div className="homeQuickStats">
+          <div className="skeleton qStatCard" style={{ height: "80px" }} />
+          <div className="skeleton qStatCard" style={{ height: "80px" }} />
+          <div className="skeleton qStatCard" style={{ height: "80px" }} />
+        </div>
+        <div className="skeleton homeSummaryCard" style={{ height: "160px", marginTop: "var(--space-4)" }} />
+      </PageLayout>
+    );
+  }
 
   return (
     <PageLayout title="" subtitle="">
-      <section className="heroCard homeHeroVisual signatureCard refHeroCard compactHeroCard heroRefined heroLuxury heroImageCard">
-        <img src={heroCardImage} alt="오늘의 운세 카드 배경" className="heroCardArt" />
-
-        <div className="heroImageOverlay">
-          <p className="heroTopLine">오늘의 운세 {luckScore}점</p>
-          <h3>{me.name}님의 오늘 흐름</h3>
-          <p className="heroDescLine">{heroLead}</p>
-          <p className="heroConclusion">{heroSupport}</p>
-          <Link to="/mysaju" className="heroInlineCta heroGoldCta full">내 사주 상세 보기</Link>
+      {/* ── HERO ── */}
+      <section className="homeHero anim-slide-up">
+        <div className="homeHeroInner">
+          <p className="homeHeroGreeting">{me.name}님의 오늘</p>
+          <ScoreGauge score={luckScore} />
+          <p className="homeHeroLead">{heroLead}</p>
+          <p className="homeHeroSupport">{heroSupport}</p>
+          <Link to="/mysaju" className="homeHeroCta">
+            내 사주 상세 보기
+          </Link>
         </div>
       </section>
 
-      <section className="homeHubGrid homeTripletGrid">
-        <article className="metricCard premiumMetricCard">
-          <strong>◷</strong>
-          <p className="metricLabel">집중 시간</p>
-          <b>2-4 PM</b>
+      {/* ── QUICK STATS ── */}
+      <section className="homeQuickStats anim-fade-in anim-delay-1">
+        <article className="qStatCard">
+          <span className="qStatIcon">◷</span>
+          <span className="qStatLabel">집중 시간</span>
+          <strong className="qStatValue">2-4 PM</strong>
         </article>
-        <article className="metricCard premiumMetricCard">
-          <strong>◔</strong>
-          <p className="metricLabel">관계 온도</p>
-          <b>75°C</b>
+        <article className="qStatCard">
+          <span className="qStatIcon">◔</span>
+          <span className="qStatLabel">관계 온도</span>
+          <strong className="qStatValue">75°C</strong>
         </article>
-        <article className="metricCard premiumMetricCard">
-          <strong>⌘</strong>
-          <p className="metricLabel">키워드</p>
-          <b>화합</b>
+        <article className="qStatCard">
+          <span className="qStatIcon">⌘</span>
+          <span className="qStatLabel">키워드</span>
+          <strong className="qStatValue">화합</strong>
         </article>
       </section>
 
-      <section className="dailySummarySection premiumSummarySection summaryCardBlock">
+      {/* ── TODAY'S FORTUNE SUMMARY ── */}
+      <section className="homeSummaryCard anim-fade-in anim-delay-2">
         <h4>오늘의 운세 요약</h4>
-        <ul className="dailySummaryList">
-          <li>{summary[0]}</li>
-          <li>{summary[1]}</li>
-          <li>{summary[2]}</li>
+        <ul className="homeSummaryList">
+          <li><span className="summaryCheck">✓</span>{summary[0]}</li>
+          <li><span className="summaryCheck">✓</span>{summary[1]}</li>
+          <li><span className="summaryCheck">✓</span>{summary[2]}</li>
         </ul>
-        <p style={{ marginTop: 8, fontSize: 11, opacity: 0.62 }}>QA · {provenanceLine}</p>
-        <Link to="/fortune" className="summaryFullCta">운세 더 보기</Link>
+        <Link to="/fortune" className="homeSummaryCta">
+          운세 더 보기
+          <span className="ctaArrow">→</span>
+        </Link>
       </section>
 
-      <section className="microInfoBlock insightsListBlock">
+      {/* ── TODAY'S POINTS ── */}
+      <section className="homePoints anim-fade-in anim-delay-3">
         <h5>오늘의 포인트</h5>
-        <ul>
-          <li><span className="insightLabel">대화운</span><p className="insightText">{points.conversation}</p></li>
-          <li><span className="insightLabel">재물 포인트</span><p className="insightText">{points.wealth}</p></li>
-          <li><span className="insightLabel">주의 포인트</span><p className="insightText">{points.caution}</p></li>
-        </ul>
-      </section>
-
-      <section className="timeFlowBlock emphasisFlowBlock">
-        <h5>시간대별 흐름</h5>
-        <div className="timeFlowRow">
-          <article><small>오전</small><b>정리</b><p>{timeFlow.morning}</p></article>
-          <article><small>오후</small><b>집중</b><p>{timeFlow.afternoon}</p></article>
-          <article><small>저녁</small><b>조율</b><p>{timeFlow.evening}</p></article>
+        <div className="homePointsList">
+          <div className="homePointItem">
+            <span className="pointDot conversation" />
+            <div>
+              <strong>대화운</strong>
+              <p>{points.conversation}</p>
+            </div>
+          </div>
+          <div className="homePointItem">
+            <span className="pointDot wealth" />
+            <div>
+              <strong>재물 포인트</strong>
+              <p>{points.wealth}</p>
+            </div>
+          </div>
+          <div className="homePointItem">
+            <span className="pointDot caution" />
+            <div>
+              <strong>주의 포인트</strong>
+              <p>{points.caution}</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="hubCard utilityCard continueCard homeContinueCard promoContinueCard compactContinueCard">
-        <small className="continueLabel">최근 본 항목</small>
-        <strong>⏱️ 이어보기</strong>
-        <p className="continueHint">중단한 분석을 빠르게 이어가세요.</p>
-        <p className="recentItem">최근 본 항목 · 페르소나 카드</p>
-        <div className="continueLinks row inlineLinks smallActions">
-          <Link to="/compatibility" className="continuePrimaryLink">궁합 보기</Link>
-          <Link to="/persona" className="continuePrimaryLink secondary">페르소나 보기</Link>
+      {/* ── TIME FLOW ── */}
+      <section className="homeTimeFlow anim-fade-in anim-delay-4">
+        <h5>시간대별 흐름</h5>
+        <div className="homeTimeGrid">
+          <article className="timeCard morning">
+            <small>오전</small>
+            <b>정리</b>
+            <p>{timeFlow.morning}</p>
+          </article>
+          <article className="timeCard afternoon">
+            <small>오후</small>
+            <b>집중</b>
+            <p>{timeFlow.afternoon}</p>
+          </article>
+          <article className="timeCard evening">
+            <small>저녁</small>
+            <b>조율</b>
+            <p>{timeFlow.evening}</p>
+          </article>
+        </div>
+      </section>
+
+      {/* ── CONTINUE ── */}
+      <section className="homeContinue anim-fade-in anim-delay-5">
+        <small className="continueLabel">이어보기</small>
+        <div className="homeContinueActions">
+          <Link to="/compatibility" className="continueBtn">궁합 보기</Link>
+          <Link to="/persona" className="continueBtn secondary">페르소나 보기</Link>
         </div>
       </section>
     </PageLayout>

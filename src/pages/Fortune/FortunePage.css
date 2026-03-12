@@ -1,0 +1,197 @@
+/* ============================================================
+   FortunePage — Premium CSS
+   ============================================================ */
+
+/* ── Hero Section ── */
+.fortuneHero {
+  background: var(--gradient-gold-cta);
+  border: 1px solid var(--color-gold-600);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6) var(--space-5);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-gold);
+  color: var(--color-gold-50);
+  text-align: center;
+}
+
+.fortuneHero::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.fortuneHeroInner {
+  position: relative;
+  z-index: var(--z-base);
+  display: grid;
+  gap: var(--space-3);
+  justify-items: center;
+}
+
+.fortuneHeroLabel {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  color: var(--color-gold-100);
+  text-transform: uppercase;
+}
+
+.fortuneScoreWrap {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.fortuneScore {
+  font-size: 56px;
+  font-weight: var(--weight-extrabold);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.fortuneUnit {
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
+  color: var(--color-gold-100);
+}
+
+.fortuneHeroDesc {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-normal);
+  max-width: 260px;
+  color: var(--color-gold-50);
+  opacity: 0.95;
+}
+
+/* ── Detail Scores Grid ── */
+.fortuneDetailsGrid {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.ftDetailCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: grid;
+  gap: var(--space-3);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--duration-fast) var(--ease-spring),
+              box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.ftDetailCard::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 4px 0 0 4px;
+}
+
+.ftDetailCard.love::before { background: var(--color-fire); }
+.ftDetailCard.work::before { background: var(--color-water); }
+.ftDetailCard.health::before { background: var(--color-wood); }
+
+.ftDetailCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.ftCardHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ftIcon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.ftCardHead strong {
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+  flex: 1;
+}
+
+.ftScore {
+  font-size: var(--text-h3);
+  font-weight: var(--weight-extrabold);
+  color: var(--color-gold-700);
+}
+
+.ftDetailCard p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+}
+
+/* ── Action List ── */
+.fortuneActionCard {
+  background: linear-gradient(180deg, var(--color-surface-warm), #FBFAF4);
+  border: 1px solid var(--color-border-warm);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  gap: var(--space-4);
+}
+
+.actionHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.actionIcon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.actionHeader strong {
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+}
+
+.actionList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.actionList li {
+  position: relative;
+  padding-left: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+  font-weight: var(--weight-medium);
+}
+
+.actionList li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-gold-400);
+}

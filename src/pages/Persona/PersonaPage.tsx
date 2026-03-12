@@ -4,6 +4,7 @@ import { mockPersona } from "../../data/mockProfiles";
 import { useTransientMessage } from "../../hooks/useTransientMessage";
 import { calculatePersonaNarrativeWithEngine, type PersonaNarrativeSnapshot } from "../../lib/engine";
 import { shareOrCopy } from "../../lib/share";
+import "./PersonaPage.css";
 
 const fallbackNarrative: PersonaNarrativeSnapshot = {
   providerState: "mock",
@@ -17,7 +18,7 @@ const fallbackNarrative: PersonaNarrativeSnapshot = {
   },
   dominantElement: "강한 기운 · 화(火)",
   supportElement: "보완 기운 · 수(水)",
-  appealPoint: "궁합 포인트 · 대화의 온도를 맞추면 매력이 더 강하게 드러나요.",
+  appealPoint: "대화의 온도를 맞추면 매력이 더 강하게 드러나요.",
   basisLabel: "기본 mock 페르소나",
   basisCodes: ["MOCK_PERSONA_V1"],
   confidence: "low",
@@ -94,7 +95,7 @@ export default function PersonaPage() {
       },
       dominantElement: narrative.dominantElement || fallbackNarrative.dominantElement,
       supportElement: narrative.supportElement || fallbackNarrative.supportElement,
-      appealPoint: narrative.appealPoint || fallbackNarrative.appealPoint,
+      appealPoint: (narrative.appealPoint || fallbackNarrative.appealPoint).replace("궁합 포인트 · ", ""),
       basisLabel: narrative.basisLabel || fallbackNarrative.basisLabel,
       basisCodes: narrative.basisCodes?.length ? narrative.basisCodes : fallbackNarrative.basisCodes,
     };
@@ -108,15 +109,14 @@ export default function PersonaPage() {
   };
 
   const provenanceLine = [
-    `state=${stateLabel(provenance.providerState)}`,
-    `source=${provenance.chartSource || "mock"}`,
-    `rule=${provenance.ruleVersion || "persona-v2"}`,
-    `fallback=${provenance.isFallback ? "Y" : "N"}`,
+    `${stateLabel(provenance.providerState)}`,
+    `${provenance.chartSource || "mock"}`,
+    `v:${provenance.ruleVersion || "v2"}`,
   ].join(" · ");
 
   const handleShare = async () => {
     const result = await shareOrCopy({
-      title: "내 운명의 이상형 결과",
+      title: "사주 라운지 · 운명의 이상형",
       text: `${resolved.personaTitle}\n성격: ${localizePersonaText(resolved.personaTraits.personality)}\n직업군: ${localizePersonaText(resolved.personaTraits.career)}`,
     });
 
@@ -124,38 +124,69 @@ export default function PersonaPage() {
   };
 
   return (
-    <PageLayout title="운명의 이상형 페르소나" subtitle="캡처하고 공유하기 좋은 포스터 카드예요.">
-      <article className="personaCard posterCard signatureCard">
-        <div className="posterGlow" />
-        <div className="posterGlow secondary" />
-        <div className="posterRing" aria-hidden />
+    <PageLayout title="운명의 이상형 페르소나" subtitle="캡처해서 공유하기 좋은 포스터 카드예요.">
+      <div className="personaLayout anim-slide-up">
+        
+        {/* ── Outer glowing wrapper ── */}
+        <div className="personaPosterWrapper">
+          <div className="personaGlowBg" />
+          
+          <article className="personaPosterCard">
+            <div className="posterInnerBorder">
+              
+              <div className="posterHeader">
+                <span className="posterOverline">Saju Lounge Persona</span>
+                <h3 className="posterTitle">{resolved.personaTitle}</h3>
+                <p className="posterSubtitle">{resolved.personaSubtitle}</p>
+              </div>
 
-        <div className="personaTop">
-          <h3>{resolved.personaTitle}</h3>
-          <p className="personaSubcopy">{resolved.personaSubtitle}</p>
+              <div className="posterTraits">
+                <div className="traitRow">
+                  <strong>연령대</strong>
+                  <span>{resolved.personaTraits.ageRange}</span>
+                </div>
+                <div className="traitRow">
+                  <strong>성격</strong>
+                  <span>{localizePersonaText(resolved.personaTraits.personality)}</span>
+                </div>
+                <div className="traitRow">
+                  <strong>직업군</strong>
+                  <span>{localizePersonaText(resolved.personaTraits.career)}</span>
+                </div>
+                <div className="traitRow">
+                  <strong>인상</strong>
+                  <span>{localizePersonaText(resolved.personaTraits.appearance)}</span>
+                </div>
+              </div>
+
+              <div className="posterElements">
+                <span className="badge fire">{resolved.dominantElement}</span>
+                <span className="badge water">{resolved.supportElement}</span>
+              </div>
+
+              <div className="posterFooter">
+                <div className="footerDivider" />
+                <p className="appealPoint">
+                  <strong>궁합 포인트</strong>
+                  {resolved.appealPoint}
+                </p>
+                <div className="posterMeta">
+                  <span>해석 기준: {resolved.basisLabel}</span>
+                  <span className="qaLine">QA: {provenanceLine}</span>
+                </div>
+              </div>
+
+            </div>
+          </article>
         </div>
 
-        <ul className="personaFacts">
-          <li><strong>연령대</strong> <span>{resolved.personaTraits.ageRange}</span></li>
-          <li><strong>성격</strong> <span>{localizePersonaText(resolved.personaTraits.personality)}</span></li>
-          <li><strong>직업군</strong> <span>{localizePersonaText(resolved.personaTraits.career)}</span></li>
-          <li><strong>인상</strong> <span>{localizePersonaText(resolved.personaTraits.appearance)}</span></li>
-        </ul>
+        <button type="button" className="personaShareBtn anim-fade-in anim-delay-2" onClick={handleShare}>
+          결과 공유하기
+        </button>
 
-        <div className="personaSignals">
-          <span>{resolved.dominantElement}</span>
-          <span>{resolved.supportElement}</span>
-        </div>
-
-        <p className="personaAppeal">{resolved.appealPoint}</p>
-        <p className="personaAppeal">해석 기준 · {resolved.basisLabel}</p>
-        <p style={{ marginTop: 2, fontSize: 11, opacity: 0.62 }}>QA · {provenanceLine}</p>
-
-        <div className="personaBottom">
-          <button type="button" className="shareBtn posterCta" onClick={handleShare}>결과 공유하기</button>
-        </div>
-      </article>
-      {message ? <p className="toastText">{message}</p> : null}
+      </div>
+      
+      {message && <p className="toastMsg anim-slide-up">{message}</p>}
     </PageLayout>
   );
 }

@@ -9,7 +9,7 @@ interface Props {
 
 export default function PageLayout({ title, subtitle, action, children }: Props) {
   return (
-    <div className="pageWrap">
+    <div className="pageWrap anim-fade-in">
       <div className="sectionHead">
         <div>
           <h2>{title}</h2>
