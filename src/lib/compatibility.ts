@@ -1,4 +1,6 @@
 import { calculateCompatibilityWithEngine } from "./engine";
+import { getCompatSignalMeta } from "./engine/compatSignalCatalog";
+import type { CompatibilityRawSignal } from "./engine/provider-contract";
 import type { Gender } from "../types/saju";
 
 interface PairInput {
@@ -16,7 +18,30 @@ export async function calculateCompatibility(me: PairInput, partner: PairInput):
   return result.score;
 }
 
-export function generateCompatibilitySummary(score: number): { strengths: string[]; cautions: string[] } {
+export function generateCompatibilitySummary(
+  score: number,
+  rawSignals: CompatibilityRawSignal[] = [],
+): { strengths: string[]; cautions: string[] } {
+  const positiveSignals = rawSignals.filter((s) => s.category !== "reliability" && s.polarity === "positive");
+  const negativeSignals = rawSignals.filter((s) => s.category !== "reliability" && s.polarity === "negative");
+
+  const signalStrengths = positiveSignals.slice(0, 2).map((s) => {
+    const meta = getCompatSignalMeta(s.code);
+    return meta ? `${meta.label} · ${meta.desc}` : `${s.code} 신호가 긍정적으로 작동하고 있어요.`;
+  });
+
+  const signalCautions = negativeSignals.slice(0, 2).map((s) => {
+    const meta = getCompatSignalMeta(s.code);
+    return meta ? `${meta.label} · ${meta.desc}` : `${s.code} 신호로 조율이 필요해요.`;
+  });
+
+  if (signalStrengths.length || signalCautions.length) {
+    return {
+      strengths: signalStrengths.length ? signalStrengths : ["핵심 신호상 큰 충돌 없이 기본 균형을 유지하고 있어요."],
+      cautions: signalCautions.length ? signalCautions : ["부정 신호는 약한 편이지만, 생활 리듬 합의는 미리 맞춰두면 좋아요."],
+    };
+  }
+
   if (score >= 88) {
     return {
       strengths: [
