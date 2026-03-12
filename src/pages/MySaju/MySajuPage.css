@@ -358,7 +358,7 @@
 /* ── Toast ── */
 .toastMsg {
   position: fixed;
-  bottom: 80px;
+  bottom: calc(var(--bottom-nav-reserved) + var(--space-2));
   left: 50%;
   transform: translateX(-50%);
   background: rgba(30, 30, 30, 0.9);

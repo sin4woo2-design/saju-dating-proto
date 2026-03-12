@@ -45,7 +45,7 @@ button:disabled {
   max-width: var(--max-width-app);
   margin: 0 auto;
   min-height: 100dvh;
-  padding: var(--space-4) var(--space-4) calc(var(--space-5) + var(--safe-bottom));
+  padding: var(--space-4) var(--space-4) var(--bottom-nav-reserved);
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
@@ -55,6 +55,7 @@ main {
   flex: 1;
   display: flex;
   flex-direction: column;
+  scroll-padding-bottom: calc(var(--bottom-nav-reserved) + var(--space-2));
 }
 
 .topBar {
@@ -1816,11 +1817,12 @@ main {
 
 .bottomNav {
   position: fixed;
-  bottom: calc(var(--space-4) + var(--safe-bottom));
+  bottom: calc(var(--bottom-nav-gap) + var(--safe-bottom));
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% - (var(--space-4) * 2));
   max-width: calc(var(--max-width-app) - (var(--space-4) * 2));
+  min-height: var(--bottom-nav-h);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;

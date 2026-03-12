@@ -138,10 +138,14 @@
   --z-overlay:  30;
   --z-modal:    40;
   --z-toast:    50;
+  --z-fixed:    60;
 
   /* ──────────────── LAYOUT ──────────────── */
   --max-width-app: 520px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --bottom-nav-h: 58px;
+  --bottom-nav-gap: var(--space-4);
+  --bottom-nav-reserved: calc(var(--bottom-nav-h) + var(--bottom-nav-gap) + var(--safe-bottom));
 }
 
 /* ============================================================
