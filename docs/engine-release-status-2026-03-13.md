@@ -4,29 +4,22 @@
 - ✅ `SKIP_PROVIDER_HEALTH=1 npm run smoke:postdeploy`
   - build check passed
   - smoke script completed
-- ⚠️ `npm run smoke:postdeploy` (provider health 포함) failed
-  - reason: `http://localhost:8081/health` connection failed (provider not running)
-- ⚠️ backend unit test run blocked
-  - `python3 -m pytest -q backend/provider-python/app/tests/test_compatibility_service.py`
-  - reason: `No module named pytest`
+- ✅ `npm run smoke:postdeploy` (provider health 포함) passed
+  - `/health` ok: `http://localhost:8081/health`
+- ✅ backend unit tests passed
+  - `PYTHONPATH=backend/provider-python python3 -m pytest -q backend/provider-python/app/tests/test_compatibility_service.py backend/provider-python/app/tests/test_chart_service.py`
+  - result: `8 passed`
+
+## Fixes applied during verification
+1. `backend/provider-python/app/config.py`
+   - dataclass mutable default(list) 에러 수정
+   - `cors_allow_origins`를 `field(default_factory=...)`로 변경
+2. Python test/runtime dependency 보강
+   - host python에 `pytest`/provider deps 설치 후 검증 진행
 
 ## Remaining to fully close "real engine attach" work
-1. Bring up provider runtime and pass `/health`
-2. Re-run full smoke with provider health enabled
-3. Install backend test deps and run compatibility/chart tests
-4. Verify release checklist metrics in runtime logs
+1. Verify release checklist metrics in runtime logs
    - provider success ratio
    - non-provider ratio
    - warning code aggregation
-
-## Suggested next commands
-```bash
-# provider 실행 (예시)
-cd backend/provider-python
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --host 0.0.0.0 --port 8081
-
-# in repo root
-npm run smoke:postdeploy
-```
+2. 운영 배포 환경에서도 동일 스모크 재검증
