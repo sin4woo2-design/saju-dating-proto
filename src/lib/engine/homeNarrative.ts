@@ -78,7 +78,7 @@ function pick<T>(seed: number, list: readonly T[]): T {
   return list[seed % list.length];
 }
 
-function trimSentence(value: string, cap = 31) {
+function trimSentence(value: string, cap = 84) {
   if (!value) return "흐름 데이터를 정리 중이에요.";
   if (value.length <= cap) return value;
   const sliced = value.slice(0, cap).trim();
@@ -308,9 +308,9 @@ function buildTodayPoints(seed: number, basis: HomeNarrativeBasis): HomeTodayPoi
       ];
 
   return {
-    conversation: trimSentence(pick(seed + 7, conversationPool), 34),
-    wealth: trimSentence(pick(seed + 11, wealthPool[basis.dominantElement]), 34),
-    caution: trimSentence(pick(seed + 13, cautionPool), 34),
+    conversation: trimSentence(pick(seed + 7, conversationPool), 84),
+    wealth: trimSentence(pick(seed + 11, wealthPool[basis.dominantElement]), 84),
+    caution: trimSentence(pick(seed + 13, cautionPool), 84),
   };
 }
 

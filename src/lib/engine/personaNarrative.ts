@@ -68,7 +68,7 @@ function pick<T>(seed: number, list: readonly T[]) {
   return list[seed % list.length];
 }
 
-function trimSentence(value: string, cap = 34) {
+function trimSentence(value: string, cap = 84) {
   if (!value) return "페르소나 근거를 준비 중이에요.";
   if (value.length <= cap) return value;
   const sliced = value.slice(0, cap).trim();
@@ -274,9 +274,9 @@ function buildTraits(seed: number, basis: PersonaNarrativeBasis): PersonaTraits 
 
   return {
     ageRange: pick(seed + 31, ageRangePool),
-    personality: trimSentence(pick(seed + 37, personalityPool), 24),
-    career: trimSentence(pick(seed + 41, careerPool), 24),
-    appearance: trimSentence(pick(seed + 43, appearancePool), 22),
+    personality: trimSentence(pick(seed + 37, personalityPool), 84),
+    career: trimSentence(pick(seed + 41, careerPool), 84),
+    appearance: trimSentence(pick(seed + 43, appearancePool), 84),
   };
 }
 
@@ -311,11 +311,11 @@ export function buildMockPersonaNarrative(input: UserProfileInput, providerState
   return {
     providerState,
     personaTitle: personaTitleFromBasis(seed, basis),
-    personaSubtitle: trimSentence(subtitleFromBasis(seed, basis), 38),
+    personaSubtitle: trimSentence(subtitleFromBasis(seed, basis), 84),
     personaTraits: buildTraits(seed, basis),
     dominantElement: dominantElementLabel(basis.dominantElement),
     supportElement: supportElementLabel(basis.supportElement),
-    appealPoint: trimSentence(appealPointFromBasis(seed, basis), 42),
+    appealPoint: trimSentence(appealPointFromBasis(seed, basis), 84),
     basisLabel: basisLabelByState(providerState),
     basisCodes: basis.basisCodes,
     confidence: confidenceByState(providerState),
