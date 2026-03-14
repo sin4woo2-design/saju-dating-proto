@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
 import { calculateHomeNarrativeWithEngine, type HomeNarrativeSnapshot } from "../../lib/engine";
+import type { HomeNarrativeBasis } from "../../lib/engine/homeNarrative";
 import { calculateDailyFortuneScores } from "../../lib/dailyFortune";
 import type { UserProfileInput } from "../../types/saju";
 import "./HomePage.css";
@@ -30,6 +31,37 @@ const defaultTimeFlow = {
   afternoon: "핵심 업무와 중요한 대화에 집중하세요.",
   evening: "관계 대화와 마무리 정리에 좋아요.",
 };
+
+function resolveFocusWindowLabel(basis?: HomeNarrativeBasis) {
+  if (!basis) return "2-4 PM";
+  if (basis.focusWindow === "morning-setup") return "9-11 AM";
+  if (basis.focusWindow === "afternoon-focus") return "2-4 PM";
+  return "8-10 PM";
+}
+
+function resolveRelationTemperature(basis?: HomeNarrativeBasis) {
+  if (!basis) return "75°C";
+
+  if (basis.relationTone === "soft" && basis.flowBias === "steady-day") return "68°C";
+  if (basis.relationTone === "soft" && basis.flowBias === "afternoon-peak") return "72°C";
+  if (basis.relationTone === "clear" && basis.flowBias === "steady-day") return "78°C";
+  return "84°C";
+}
+
+function resolveKeyword(basis?: HomeNarrativeBasis) {
+  if (!basis) return "화합";
+
+  const byElement: Record<HomeNarrativeBasis["dominantElement"], string> = {
+    wood: "성장",
+    fire: "표현",
+    earth: "안정",
+    metal: "정리",
+    water: "공감",
+  };
+
+  const toneSuffix = basis.relationTone === "soft" ? "밸런스" : "결단";
+  return `${byElement[basis.dominantElement]}·${toneSuffix}`;
+}
 
 /* ── Circular Score Gauge ── */
 function ScoreGauge({ score }: { score: number }) {
@@ -99,6 +131,10 @@ export default function HomePage({ me }: Props) {
     evening: narrative?.timeFlow?.evening || defaultTimeFlow.evening,
   };
 
+  const focusWindowLabel = resolveFocusWindowLabel(narrative?.basis);
+  const relationTemperature = resolveRelationTemperature(narrative?.basis);
+  const todayKeyword = resolveKeyword(narrative?.basis);
+
   if (!narrative) {
     return (
       <PageLayout title="" subtitle="">
@@ -133,17 +169,17 @@ export default function HomePage({ me }: Props) {
         <article className="qStatCard">
           <span className="qStatIcon">◷</span>
           <span className="qStatLabel">집중 시간</span>
-          <strong className="qStatValue">2-4 PM</strong>
+          <strong className="qStatValue">{focusWindowLabel}</strong>
         </article>
         <article className="qStatCard">
           <span className="qStatIcon">◔</span>
           <span className="qStatLabel">관계 온도</span>
-          <strong className="qStatValue">75°C</strong>
+          <strong className="qStatValue">{relationTemperature}</strong>
         </article>
         <article className="qStatCard">
           <span className="qStatIcon">⌘</span>
           <span className="qStatLabel">키워드</span>
-          <strong className="qStatValue">화합</strong>
+          <strong className="qStatValue">{todayKeyword}</strong>
         </article>
       </section>
 

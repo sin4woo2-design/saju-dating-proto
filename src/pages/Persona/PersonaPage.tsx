@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import PageLayout from "../../components/layout/PageLayout";
 import { mockPersona } from "../../data/mockProfiles";
 import { useTransientMessage } from "../../hooks/useTransientMessage";
+import { usePersistedProfile } from "../../hooks/usePersistedProfile";
 import { calculatePersonaNarrativeWithEngine, type PersonaNarrativeSnapshot } from "../../lib/engine";
 import { shareOrCopy } from "../../lib/share";
 import "./PersonaPage.css";
@@ -54,19 +55,27 @@ function stateLabel(providerState?: string) {
 
 export default function PersonaPage() {
   const { message, showMessage } = useTransientMessage();
+  const { profile } = usePersistedProfile();
   const [narrative, setNarrative] = useState<PersonaNarrativeSnapshot | null>(null);
 
   useEffect(() => {
-    const fallbackInput = {
-      name: "사용자",
-      birthDate: "1990-01-01",
-      birthTime: "12:00",
-      gender: "male" as const,
-    };
+    const input = profile
+      ? {
+          name: profile.name,
+          birthDate: profile.birthDate,
+          birthTime: profile.birthTime,
+          gender: profile.gender,
+        }
+      : {
+          name: "사용자",
+          birthDate: "1990-01-01",
+          birthTime: "12:00",
+          gender: "male" as const,
+        };
 
     let alive = true;
 
-    calculatePersonaNarrativeWithEngine(fallbackInput)
+    calculatePersonaNarrativeWithEngine(input)
       .then((result) => {
         if (alive) setNarrative(result);
       })
@@ -77,7 +86,7 @@ export default function PersonaPage() {
     return () => {
       alive = false;
     };
-  }, []);
+  }, [profile?.name, profile?.birthDate, profile?.birthTime, profile?.gender]);
 
   const resolved = useMemo(() => {
     if (!narrative) return fallbackNarrative;
