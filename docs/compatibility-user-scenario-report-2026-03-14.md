@@ -1,6 +1,6 @@
 # Compatibility User Scenario Report
 
-generated: 2026-03-14 03:55 UTC
+generated: 2026-03-14 07:04 UTC
 
 실사용 관점에서 대표 입력 케이스를 빠르게 검증한 결과입니다.
 

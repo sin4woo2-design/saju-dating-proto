@@ -1,12 +1,6 @@
-{
-  "generatedAt": "2026-03-14 03:55 UTC",
-  "rows": [
-    {
-      "scenario": "real-01-balanced-known",
-      "score": 77,
-      "confidence": "high",
-      "subScores": {
-        "branch": -6,
+written: /home/sin4woo2/saju-dating-proto/docs/compatibility-user-scenario-report-2026-03-14.md
+written: /home/sin4woo2/saju-dating-proto/docs/compatibility-user-scenario-report-2026-03-14.json
+
         "stem": 0,
         "elements": 3,
         "dayMaster": 1,

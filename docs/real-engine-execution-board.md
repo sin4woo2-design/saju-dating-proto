@@ -24,8 +24,10 @@
 ## 트랙 B — 궁합 authoritative score 고정 (E2)
 - [x] provider v2 응답 구조 존재
   - `totalScore/subScores/basis/confidence/provenance`
-- [ ] 프론트 어댑터가 `compatibility.totalScore`를 1순위 사용하도록 강제 점검
-- [ ] fallback 시에만 legacy(v1) 파생 사용하도록 가드
+- [x] 프론트 어댑터가 `compatibility.totalScore`를 1순위 사용하도록 강제 점검
+  - 확인: `src/lib/engine/providerMapping.ts` (`mapProviderCompatibilityToScore`)
+- [x] fallback 시에만 legacy(v1) 파생 사용하도록 가드
+  - `totalScore` 부재 시에만 rawSignals 파생 또는 provider score fallback
 - [ ] score drift 모니터링 항목 정의(v2 vs legacy)
 
 완료 기준
@@ -42,6 +44,7 @@
 - 배포 시 체크리스트로 자동 참조 가능
 
 ## 오늘 즉시 액션
-1. 프론트의 compatibility 점수 우선순위 코드 확인
-2. 운영 env 값 확인 요청/적용
-3. 운영 샘플 20회 기준 지표 스냅샷 채집
+1. [x] 프론트의 compatibility 점수 우선순위 코드 확인
+2. [ ] 운영 env 값 확인 요청/적용
+3. [x] 샘플 20회 기준 지표 스냅샷 채집 (로컬)
+   - 결과: `docs/real-engine-metrics-snapshot-2026-03-14.md`
