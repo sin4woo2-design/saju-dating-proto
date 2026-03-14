@@ -118,22 +118,22 @@ export function buildCompatibilityNarratives(input: CompatibilityNarrativeInput)
 
   const conflict = [
     evidence.stemDelta < 0
-      ? "대화에서 기준 충돌이 생길 수 있어요. 결론 전에 합의 조건을 먼저 맞추세요."
-      : "합의 속도는 좋은 편이에요. 빠른 결론 전에 감정 확인을 한 번 더 하세요.",
+      ? "대화 기준이 어긋날 수 있어요. 결론 전에 합의 조건을 먼저 맞추세요."
+      : "합의 속도는 좋은 편이에요. 결론 직전에 감정 확인을 한 번 넣으세요.",
     evidence.reliabilityDelta <= -4
-      ? "시간 정보가 일부 제한되어 큰 흐름 중심으로 해석하세요."
+      ? "시간 정보가 제한되어 큰 흐름 중심 해석이 안전해요."
       : evidence.elementDelta < 0
         ? "생활 리듬이 엇갈릴 수 있어요. 연락 주기와 일정 규칙을 먼저 정하세요."
-        : "생활 합은 무난해요. 역할 분담을 선명히 하면 안정감이 올라가요.",
+        : "생활 합은 무난해요. 역할 분담을 선명히 하면 마찰이 줄어요.",
   ];
 
   const tips = [
     evidence.dayMasterDelta < 0
-      ? "감정이 올라올 때는 사실-해석-요청 순서로 짧게 말하세요."
-      : "좋았던 대화 패턴을 반복하면 관계 품질이 빠르게 올라가요.",
+      ? "감정이 오를 때는 사실-해석-요청 순서로 짧게 말하세요."
+      : "잘 맞았던 대화 패턴을 반복하면 관계 품질이 안정돼요.",
     evidence.confidence === "low"
-      ? "중요 결정은 시간을 두고 확인 질문을 한 번 더 넣어주세요."
-      : "주 1회 리듬 점검 대화를 하면 작은 오해가 크게 줄어요.",
+      ? "중요 결정은 하루 텀을 두고 한 번 더 확인하세요."
+      : "주 1회 리듬 점검 대화를 하면 작은 오해를 줄일 수 있어요.",
   ];
 
   return { talk, emotion, lifestyle, explain, conflict, tips, evidence };
