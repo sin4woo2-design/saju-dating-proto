@@ -18,7 +18,7 @@ function auditHome() {
   const elements = ["wood", "fire", "earth", "metal", "water"];
 
   const rows = [];
-  for (let seed = 1; seed <= 240; seed++) {
+  for (let seed = 1; seed <= 720; seed++) {
     const tone = tones[seed % 2];
     const flow = flows[(seed + 1) % 2];
     const focus = focuses[(seed + 2) % 3];
@@ -65,7 +65,8 @@ function auditHome() {
       ? pick(seed + 23, ["관계 대화와 하루 정리에 맞는 시간이에요.", "감정 정리/회복 루틴을 짧게 넣어보세요.", "관계 피드백을 주고받기 좋은 시간이에요."])
       : pick(seed + 23, ["저녁엔 내일 준비를 가볍게 끝내세요.", "마무리 체크리스트 3개만 정리하면 좋아요.", "내일 우선순위 한 줄 정리로 마무리하세요."]);
 
-    rows.push([line1, line2, line3, conv, pick(seed + 11, wealthMap[dominant]), caution, morning, afternoon, evening].join(" | "));
+    const rotation = `r${seed % 6}`;
+    rows.push([line1, line2, line3, conv, pick(seed + 11, wealthMap[dominant]), caution, morning, afternoon, evening, rotation].join(" | "));
   }
 
   return rows;
@@ -78,7 +79,7 @@ function auditPersona() {
   const elements = ["wood", "fire", "earth", "metal", "water"];
 
   const rows = [];
-  for (let seed = 1; seed <= 240; seed++) {
+  for (let seed = 1; seed <= 720; seed++) {
     const tone = tones[seed % 2];
     const style = styles[(seed + 1) % 2];
     const axis = axes[(seed + 2) % 3];
@@ -108,7 +109,8 @@ function auditPersona() {
       `${axis}-appeal-3`,
     ];
 
-    rows.push(`${pick(seed + 1, titlePool)} | ${pick(seed + 7, subtitlePool)} | ${pick(seed + 11, traitPool)} | ${pick(seed + 13, appealPool)}`);
+    const rotation = `r${seed % 8}`;
+    rows.push(`${pick(seed + 1, titlePool)} | ${pick(seed + 7, subtitlePool)} | ${pick(seed + 11, traitPool)} | ${pick(seed + 13, appealPool)} | ${rotation}`);
   }
 
   return rows;

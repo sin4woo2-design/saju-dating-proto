@@ -1,10 +1,10 @@
 # Copy Diversity Audit Report
 
-Generated: 2026-03-14T16:18:17.120Z
+Generated: 2026-03-14T16:20:40.715Z
 
 ## Summary
-- home: total 240, unique 30, duplicate-rate 87.5%
-- persona: total 240, unique 40, duplicate-rate 83.3%
+- home: total 720, unique 30, duplicate-rate 95.8%
+- persona: total 720, unique 120, duplicate-rate 83.3%
 - compatibility: total 3915, unique 3915, duplicate-rate 0.0%
 
 ## Gate (advisory)
