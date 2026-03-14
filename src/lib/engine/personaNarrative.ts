@@ -157,9 +157,25 @@ function buildProvenance(providerState: ProviderState, ruleVersion: string, cont
 }
 
 function personaTitleFromBasis(basis: PersonaNarrativeBasis) {
-  if (basis.relationStyle === "strategist" && basis.personaTone === "warm") return "온화한 기획형";
-  if (basis.relationStyle === "strategist") return "균형 전략형";
-  if (basis.personaTone === "warm") return "신뢰 공감형";
+  if (basis.relationStyle === "strategist" && basis.personaTone === "warm") {
+    return basis.appealAxis === "emotion-sync" ? "온화한 리더형" : "온화한 기획형";
+  }
+
+  if (basis.relationStyle === "strategist") {
+    if (basis.dominantElement === "metal") return "정밀 전략형";
+    if (basis.dominantElement === "earth") return "안정 설계형";
+    return "균형 전략형";
+  }
+
+  if (basis.personaTone === "warm") {
+    if (basis.appealAxis === "rhythm-sync") return "리듬 공감형";
+    if (basis.appealAxis === "trust-build") return "신뢰 공감형";
+    return "감정 공명형";
+  }
+
+  if (basis.appealAxis === "emotion-sync") return "차분 공명형";
+  if (basis.appealAxis === "trust-build") return "신중 신뢰형";
+  if (basis.dominantElement === "water") return "깊은 교감형";
   return "차분 조율형";
 }
 
