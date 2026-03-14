@@ -161,25 +161,25 @@ function buildProvenance(providerState: ProviderState, ruleVersion: string, cont
 
 function personaTitleFromBasis(seed: number, basis: PersonaNarrativeBasis) {
   if (basis.relationStyle === "strategist" && basis.personaTone === "warm") {
-    return pick(seed + 53, basis.appealAxis === "emotion-sync" ? ["온화한 리더형", "감성 기획형"] : ["온화한 기획형", "균형 리드형"]);
+    return pick(seed + 53, basis.appealAxis === "emotion-sync" ? ["온화한 리더형", "감성 기획형", "공감 리드형"] : ["온화한 기획형", "균형 리드형", "신뢰 운영형"]);
   }
 
   if (basis.relationStyle === "strategist") {
-    if (basis.dominantElement === "metal") return pick(seed + 59, ["정밀 전략형", "기준 설계형"]);
-    if (basis.dominantElement === "earth") return pick(seed + 61, ["안정 설계형", "현실 조율형"]);
-    return pick(seed + 67, ["균형 전략형", "이성 기획형"]);
+    if (basis.dominantElement === "metal") return pick(seed + 59, ["정밀 전략형", "기준 설계형", "규칙 최적화형"]);
+    if (basis.dominantElement === "earth") return pick(seed + 61, ["안정 설계형", "현실 조율형", "지속 운영형"]);
+    return pick(seed + 67, ["균형 전략형", "이성 기획형", "구조화 리더형"]);
   }
 
   if (basis.personaTone === "warm") {
-    if (basis.appealAxis === "rhythm-sync") return pick(seed + 71, ["리듬 공감형", "생활 호흡형"]);
-    if (basis.appealAxis === "trust-build") return pick(seed + 73, ["신뢰 공감형", "따뜻한 안정형"]);
-    return pick(seed + 79, ["감정 공명형", "표현 공감형"]);
+    if (basis.appealAxis === "rhythm-sync") return pick(seed + 71, ["리듬 공감형", "생활 호흡형", "템포 조율형"]);
+    if (basis.appealAxis === "trust-build") return pick(seed + 73, ["신뢰 공감형", "따뜻한 안정형", "관계 축적형"]);
+    return pick(seed + 79, ["감정 공명형", "표현 공감형", "정서 교감형"]);
   }
 
-  if (basis.appealAxis === "emotion-sync") return pick(seed + 83, ["차분 공명형", "섬세 교감형"]);
-  if (basis.appealAxis === "trust-build") return pick(seed + 89, ["신중 신뢰형", "균형 신뢰형"]);
-  if (basis.dominantElement === "water") return pick(seed + 97, ["깊은 교감형", "정서 탐색형"]);
-  return pick(seed + 101, ["차분 조율형", "안정 조율형"]);
+  if (basis.appealAxis === "emotion-sync") return pick(seed + 83, ["차분 공명형", "섬세 교감형", "잔잔 공감형"]);
+  if (basis.appealAxis === "trust-build") return pick(seed + 89, ["신중 신뢰형", "균형 신뢰형", "관계 안정형"]);
+  if (basis.dominantElement === "water") return pick(seed + 97, ["깊은 교감형", "정서 탐색형", "내면 연결형"]);
+  return pick(seed + 101, ["차분 조율형", "안정 조율형", "침착 균형형"]);
 }
 
 function subtitleFromBasis(seed: number, basis: PersonaNarrativeBasis) {
