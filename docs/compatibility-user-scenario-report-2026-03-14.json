@@ -1,0 +1,227 @@
+{
+  "generatedAt": "2026-03-14 03:55 UTC",
+  "rows": [
+    {
+      "scenario": "real-01-balanced-known",
+      "score": 77,
+      "confidence": "high",
+      "subScores": {
+        "branch": -6,
+        "stem": 0,
+        "elements": 3,
+        "dayMaster": 1,
+        "reliability": 0
+      },
+      "warnings": [],
+      "ruleVersion": "compat-v2-basis"
+    },
+    {
+      "scenario": "real-02-partial-time",
+      "score": 69,
+      "confidence": "low",
+      "subScores": {
+        "branch": -4,
+        "stem": -2,
+        "elements": 1,
+        "dayMaster": 1,
+        "reliability": -7
+      },
+      "warnings": [
+        "PROVIDER_PARTIAL_DATA"
+      ],
+      "ruleVersion": "compat-v2-basis"
+    },
+    {
+      "scenario": "real-03-both-unknown",
+      "score": 65,
+      "confidence": "low",
+      "subScores": {
+        "branch": 2,
+        "stem": 0,
+        "elements": 1,
+        "dayMaster": 3,
+        "reliability": -10
+      },
+      "warnings": [
+        "PROVIDER_PARTIAL_DATA"
+      ],
+      "ruleVersion": "compat-v2-basis"
+    },
+    {
+      "scenario": "real-04-midnight-edge",
+      "score": 77,
+      "confidence": "high",
+      "subScores": {
+        "branch": -1,
+        "stem": 0,
+        "elements": 3,
+        "dayMaster": 1,
+        "reliability": 0
+      },
+      "warnings": [],
+      "ruleVersion": "compat-v2-basis"
+    },
+    {
+      "scenario": "real-05-utc-case",
+      "score": 70,
+      "confidence": "low",
+      "subScores": {
+        "branch": -2,
+        "stem": 2,
+        "elements": 3,
+        "dayMaster": 1,
+        "reliability": -7
+      },
+      "warnings": [
+        "PROVIDER_PARTIAL_DATA"
+      ],
+      "ruleVersion": "compat-v2-basis"
+    },
+    {
+      "scenario": "real-06-known-known-2",
+      "score": 86,
+      "confidence": "high",
+      "subScores": {
+        "branch": -1,
+        "stem": 4,
+        "elements": 1,
+        "dayMaster": 3,
+        "reliability": 0
+      },
+      "warnings": [],
+      "ruleVersion": "compat-v2-basis"
+    },
+    {
+      "scenario": "real-07-known-unknown-2",
+      "score": 70,
+      "confidence": "low",
+      "subScores": {
+        "branch": -2,
+        "stem": 0,
+        "elements": 3,
+        "dayMaster": 1,
+        "reliability": -7
+      },
+      "warnings": [
+        "PROVIDER_PARTIAL_DATA"
+      ],
+      "ruleVersion": "compat-v2-basis"
+    },
+    {
+      "scenario": "real-08-known-known-utc",
+      "score": 79,
+      "confidence": "high",
+      "subScores": {
+        "branch": 2,
+        "stem": 4,
+        "elements": -2,
+        "dayMaster": 3,
+        "reliability": 0
+      },
+      "warnings": [],
+      "ruleVersion": "compat-v2-basis"
+    },
+    {
+      "scenario": "real-09-other-gender",
+      "score": 77,
+      "confidence": "high",
+      "subScores": {
+        "branch": -2,
+        "stem": -2,
+        "elements": 3,
+        "dayMaster": 1,
+        "reliability": 0
+      },
+      "warnings": [],
+      "ruleVersion": "compat-v2-basis"
+    },
+    {
+      "scenario": "real-10-midnight-edge-2",
+      "score": 71,
+      "confidence": "high",
+      "subScores": {
+        "branch": -1,
+        "stem": 0,
+        "elements": -2,
+        "dayMaster": 1,
+        "reliability": 0
+      },
+      "warnings": [],
+      "ruleVersion": "compat-v2-basis"
+    },
+    {
+      "scenario": "real-11-season-edge-1",
+      "score": 76,
+      "confidence": "high",
+      "subScores": {
+        "branch": 0,
+        "stem": 0,
+        "elements": 1,
+        "dayMaster": 1,
+        "reliability": 0
+      },
+      "warnings": [],
+      "ruleVersion": "compat-v2-basis"
+    },
+    {
+      "scenario": "real-12-season-edge-2",
+      "score": 72,
+      "confidence": "high",
+      "subScores": {
+        "branch": -1,
+        "stem": 0,
+        "elements": -2,
+        "dayMaster": 3,
+        "reliability": 0
+      },
+      "warnings": [],
+      "ruleVersion": "compat-v2-basis"
+    },
+    {
+      "scenario": "real-13-unknown-known-utc",
+      "score": 69,
+      "confidence": "low",
+      "subScores": {
+        "branch": -1,
+        "stem": 2,
+        "elements": 1,
+        "dayMaster": 3,
+        "reliability": -7
+      },
+      "warnings": [
+        "PROVIDER_PARTIAL_DATA"
+      ],
+      "ruleVersion": "compat-v2-basis"
+    },
+    {
+      "scenario": "real-14-symmetric-known",
+      "score": 77,
+      "confidence": "high",
+      "subScores": {
+        "branch": -3,
+        "stem": 0,
+        "elements": 3,
+        "dayMaster": 3,
+        "reliability": 0
+      },
+      "warnings": [],
+      "ruleVersion": "compat-v2-basis"
+    },
+    {
+      "scenario": "real-15-symmetric-unknown",
+      "score": 64,
+      "confidence": "low",
+      "subScores": {
+        "branch": -5,
+        "stem": 2,
+        "elements": 3,
+        "dayMaster": 3,
+        "reliability": -10
+      },
+      "warnings": [
+        "PROVIDER_PARTIAL_DATA"
+      ],
+      "ruleVersion": "compat-v2-basis"
+    }
+  ]
+}
