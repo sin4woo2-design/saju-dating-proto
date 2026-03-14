@@ -17,9 +17,19 @@
 2. Python test/runtime dependency 보강
    - host python에 `pytest`/provider deps 설치 후 검증 진행
 
+## Additional verification (2026-03-14)
+- ✅ provider health: `GET /health` ok
+- ✅ smoke 재실행: `npm run smoke:postdeploy` passed
+- ✅ 샘플 호출 기반 메트릭 스냅샷(로컬 provider)
+  - chart 20회
+    - `calculationSource`: `mock` 20
+    - `ruleVersion`: `v1-current` 20
+    - warnings: `PROVIDER_PARTIAL_DATA` 10
+  - compatibility 20회
+    - score range: 57~71
+    - warnings: `PROVIDER_PARTIAL_DATA` 16
+
 ## Remaining to fully close "real engine attach" work
-1. Verify release checklist metrics in runtime logs
-   - provider success ratio
-   - non-provider ratio
-   - warning code aggregation
-2. 운영 배포 환경에서도 동일 스모크 재검증
+1. 운영 환경에서 `CHART_ENGINE_MODE=lunar-prep` + `CHART_RULE_VERSION=v2-month-branch-boost` 적용 확인
+2. 프론트 런타임 지표(non-provider ratio, warning aggregation) 실서비스 트래픽 기준 확인
+3. 운영 배포 환경에서도 동일 스모크 재검증
