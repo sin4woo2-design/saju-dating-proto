@@ -158,6 +158,13 @@
   line-height: var(--leading-normal);
 }
 
+.compatQaLine {
+  margin-top: var(--space-1) !important;
+  font-size: var(--text-micro) !important;
+  color: var(--color-text-muted) !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
 /* ── Signals Panel ── */
 .compatSignalCard {
   background: var(--color-surface);
@@ -230,6 +237,12 @@
 .compatCategoryRows {
   display: grid;
   gap: var(--space-3);
+}
+
+.compatSubscoreHint {
+  margin: 0;
+  font-size: var(--text-micro);
+  color: var(--color-text-muted);
 }
 
 .compatCategoryRow {

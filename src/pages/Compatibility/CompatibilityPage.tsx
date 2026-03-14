@@ -6,7 +6,7 @@ import { calculateCompatibilityResult, generateCompatibilitySummary } from "../.
 import { buildCompatibilityNarratives } from "../../lib/resultNarratives";
 import { shareOrCopy } from "../../lib/share";
 import type { Gender, UserProfileInput } from "../../types/saju";
-import type { CompatibilityRawSignal } from "../../lib/engine/provider-contract";
+import type { CompatibilityRawSignal, CompatibilitySubScoresV1, ProviderCompatibilityProvenance } from "../../lib/engine/provider-contract";
 import { getCompatSignalMeta } from "../../lib/engine/compatSignalCatalog";
 import "./CompatibilityPage.css";
 
@@ -83,6 +83,8 @@ export default function CompatibilityPage({ me }: Props) {
   const [warnings, setWarnings] = useState<string[]>([]);
   const [rawSignals, setRawSignals] = useState<CompatibilityRawSignal[]>([]);
   const [confidence, setConfidence] = useState<"high" | "medium" | "low">("low");
+  const [subScores, setSubScores] = useState<CompatibilitySubScoresV1 | null>(null);
+  const [provenance, setProvenance] = useState<ProviderCompatibilityProvenance | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
   const [selectedSignal, setSelectedSignal] = useState<string | null>(null);
   const { message, showMessage } = useTransientMessage();
@@ -98,11 +100,14 @@ export default function CompatibilityPage({ me }: Props) {
         { birthDate: me.birthDate, birthTime: me.birthTime, gender: me.gender },
         { birthDate, birthTime, gender },
       );
-      setScore(result.score);
+      const resolvedScore = result.totalScore ?? result.score;
+      setScore(resolvedScore);
       setProviderState(result.providerState);
       setWarnings(result.warnings ?? []);
       setRawSignals(result.rawSignals ?? []);
-      setConfidence(result.reliability?.confidence ?? "low");
+      setSubScores(result.subScores ?? null);
+      setProvenance(result.provenance ?? null);
+      setConfidence(result.confidence?.level ?? result.reliability?.confidence ?? "low");
       setSelectedSignal(null);
     } catch {
       showMessage("궁합 계산에 실패했어요. 잠시 후 다시 시도해 주세요.");
@@ -183,6 +188,11 @@ export default function CompatibilityPage({ me }: Props) {
             <div className="compatHeroFooter">
               <h3>전체 궁합 점수</h3>
               <p>{confidenceInfo.guide}</p>
+              {provenance ? (
+                <p className="compatQaLine">
+                  source: {provenance.calculationSource} · rule: {provenance.ruleVersion}
+                </p>
+              ) : null}
             </div>
           </section>
 
@@ -215,6 +225,11 @@ export default function CompatibilityPage({ me }: Props) {
 
           {/* ── CATEGORY SCORES ── */}
           <section className="compatCategoryRows">
+            {subScores ? (
+              <p className="compatSubscoreHint">
+                basis Δ · branch {subScores.branch} / stem {subScores.stem} / elements {subScores.elements} / dayMaster {subScores.dayMaster} / reliability {subScores.reliability}
+              </p>
+            ) : null}
             <article className="compatCategoryRow">
               <div className="catHead">
                 <strong>대화 궁합</strong>

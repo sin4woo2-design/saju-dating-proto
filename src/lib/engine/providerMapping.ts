@@ -75,10 +75,33 @@ export function mapProviderCompatibilityToScore(raw: ProviderCompatibilityRespon
   scoreRuleVersion: string;
 } {
   const warnings = new Set<string>(mapProviderWarnings(raw.warnings) ?? []);
-  const providerScore = raw.compatibility.totalScore ?? raw.compatibility.score;
   const rawSignals = raw.compatibility.rawSignals ?? [];
   const scoreRuleVersionFromProvenance = raw.compatibility.provenance?.ruleVersion;
 
+  // v2-first: totalScore/provenance가 있으면 provider 점수를 authoritative로 우선 사용
+  if (typeof raw.compatibility.totalScore === "number") {
+    if (rawSignals.length > 0) {
+      const unknownSignalFound = rawSignals.some((s) => !isKnownCompatSignal(s.code));
+      if (unknownSignalFound) {
+        warnings.add("COMPAT_UNKNOWN_SIGNAL");
+      }
+    }
+
+    return {
+      score: clamp100(raw.compatibility.totalScore),
+      totalScore: raw.compatibility.totalScore,
+      subScores: raw.compatibility.subScores,
+      basis: raw.compatibility.basis,
+      confidence: raw.compatibility.confidence,
+      provenance: raw.compatibility.provenance,
+      warnings: warnings.size ? Array.from(warnings) : undefined,
+      rawSignals: raw.compatibility.rawSignals,
+      reliability: raw.compatibility.reliability,
+      scoreRuleVersion: scoreRuleVersionFromProvenance ?? "compat-v2-basis",
+    };
+  }
+
+  // v1 fallback: rawSignals 기반 파생
   if (rawSignals.length > 0) {
     const unknownSignalFound = rawSignals.some((s) => !isKnownCompatSignal(s.code));
     if (unknownSignalFound) {
@@ -87,7 +110,7 @@ export function mapProviderCompatibilityToScore(raw: ProviderCompatibilityRespon
 
     const derived = Math.max(40, Math.min(96, 70 + rawSignals.reduce((acc, s) => acc + (s.weight ?? 0), 0)));
 
-    if (typeof providerScore === "number" && Math.abs(providerScore - derived) >= 6) {
+    if (typeof raw.compatibility.score === "number" && Math.abs(raw.compatibility.score - derived) >= 6) {
       warnings.add("COMPAT_SCORE_MISMATCH");
     }
 
@@ -105,10 +128,11 @@ export function mapProviderCompatibilityToScore(raw: ProviderCompatibilityRespon
     };
   }
 
-  if (typeof providerScore === "number") {
+  // v1 fallback: provider score만 있을 때
+  if (typeof raw.compatibility.score === "number") {
     warnings.add("PROVIDER_PARTIAL_DATA");
     return {
-      score: clamp100(providerScore),
+      score: clamp100(raw.compatibility.score),
       totalScore: raw.compatibility.totalScore,
       subScores: raw.compatibility.subScores,
       basis: raw.compatibility.basis,
