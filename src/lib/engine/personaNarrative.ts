@@ -1,6 +1,7 @@
 import type { ProviderState, SajuResult } from "./types";
 import type { UserProfileInput } from "../../types/saju";
 import type { NarrativeProvenance } from "./homeNarrative";
+import { pickWithRecencyGuard } from "./variationMemory";
 
 export type PersonaNarrativeConfidence = "high" | "medium" | "low";
 
@@ -173,26 +174,29 @@ function buildProvenance(providerState: ProviderState, ruleVersion: string, cont
 }
 
 function personaTitleFromBasis(seed: number, basis: PersonaNarrativeBasis) {
+  const bucket = `${basis.personaTone}:${basis.relationStyle}:${basis.appealAxis}:${basis.dominantElement}`;
+
   if (basis.relationStyle === "strategist" && basis.personaTone === "warm") {
-    return pick(seed + 53, basis.appealAxis === "emotion-sync" ? ["온화한 리더형", "감성 기획형", "공감 리드형"] : ["온화한 기획형", "균형 리드형", "신뢰 운영형"]);
+    const options = basis.appealAxis === "emotion-sync" ? ["온화한 리더형", "감성 기획형", "공감 리드형"] : ["온화한 기획형", "균형 리드형", "신뢰 운영형"];
+    return pickWithRecencyGuard(options, seed + 53, (v) => String(v), "persona-title", bucket);
   }
 
   if (basis.relationStyle === "strategist") {
-    if (basis.dominantElement === "metal") return pick(seed + 59, ["정밀 전략형", "기준 설계형", "규칙 최적화형"]);
-    if (basis.dominantElement === "earth") return pick(seed + 61, ["안정 설계형", "현실 조율형", "지속 운영형"]);
-    return pick(seed + 67, ["균형 전략형", "이성 기획형", "구조화 리더형"]);
+    if (basis.dominantElement === "metal") return pickWithRecencyGuard(["정밀 전략형", "기준 설계형", "규칙 최적화형"], seed + 59, (v) => String(v), "persona-title", bucket);
+    if (basis.dominantElement === "earth") return pickWithRecencyGuard(["안정 설계형", "현실 조율형", "지속 운영형"], seed + 61, (v) => String(v), "persona-title", bucket);
+    return pickWithRecencyGuard(["균형 전략형", "이성 기획형", "구조화 리더형"], seed + 67, (v) => String(v), "persona-title", bucket);
   }
 
   if (basis.personaTone === "warm") {
-    if (basis.appealAxis === "rhythm-sync") return pick(seed + 71, ["리듬 공감형", "생활 호흡형", "템포 조율형"]);
-    if (basis.appealAxis === "trust-build") return pick(seed + 73, ["신뢰 공감형", "따뜻한 안정형", "관계 축적형"]);
-    return pick(seed + 79, ["감정 공명형", "표현 공감형", "정서 교감형"]);
+    if (basis.appealAxis === "rhythm-sync") return pickWithRecencyGuard(["리듬 공감형", "생활 호흡형", "템포 조율형"], seed + 71, (v) => String(v), "persona-title", bucket);
+    if (basis.appealAxis === "trust-build") return pickWithRecencyGuard(["신뢰 공감형", "따뜻한 안정형", "관계 축적형"], seed + 73, (v) => String(v), "persona-title", bucket);
+    return pickWithRecencyGuard(["감정 공명형", "표현 공감형", "정서 교감형"], seed + 79, (v) => String(v), "persona-title", bucket);
   }
 
-  if (basis.appealAxis === "emotion-sync") return pick(seed + 83, ["차분 공명형", "섬세 교감형", "잔잔 공감형"]);
-  if (basis.appealAxis === "trust-build") return pick(seed + 89, ["신중 신뢰형", "균형 신뢰형", "관계 안정형"]);
-  if (basis.dominantElement === "water") return pick(seed + 97, ["깊은 교감형", "정서 탐색형", "내면 연결형"]);
-  return pick(seed + 101, ["차분 조율형", "안정 조율형", "침착 균형형"]);
+  if (basis.appealAxis === "emotion-sync") return pickWithRecencyGuard(["차분 공명형", "섬세 교감형", "잔잔 공감형"], seed + 83, (v) => String(v), "persona-title", bucket);
+  if (basis.appealAxis === "trust-build") return pickWithRecencyGuard(["신중 신뢰형", "균형 신뢰형", "관계 안정형"], seed + 89, (v) => String(v), "persona-title", bucket);
+  if (basis.dominantElement === "water") return pickWithRecencyGuard(["깊은 교감형", "정서 탐색형", "내면 연결형"], seed + 97, (v) => String(v), "persona-title", bucket);
+  return pickWithRecencyGuard(["차분 조율형", "안정 조율형", "침착 균형형"], seed + 101, (v) => String(v), "persona-title", bucket);
 }
 
 function subtitleFromBasis(seed: number, basis: PersonaNarrativeBasis) {
@@ -222,7 +226,10 @@ function subtitleFromBasis(seed: number, basis: PersonaNarrativeBasis) {
     water: ["깊은 공감 대화에서 매력이 가장 크게 보여요.", "상대 감정을 읽는 정교함이 돋보여요.", "수 기운 덕분에 정서 해석력이 뛰어나요."],
   };
 
-  return `${pick(seed + 29, poolByAxis[basis.appealAxis])} ${pick(seed + 31, elementNudge[basis.dominantElement])}`;
+  const bucket = `${basis.personaTone}:${basis.appealAxis}:${basis.dominantElement}`;
+  const axisLine = pickWithRecencyGuard(poolByAxis[basis.appealAxis], seed + 29, (v) => String(v), "persona-subtitle-axis", bucket);
+  const elementLine = pickWithRecencyGuard(elementNudge[basis.dominantElement], seed + 31, (v) => String(v), "persona-subtitle-element", bucket);
+  return `${axisLine} ${elementLine}`;
 }
 
 function dominantElementLabel(element: PersonaNarrativeBasis["dominantElement"]) {

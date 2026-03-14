@@ -1,5 +1,6 @@
 import type { ProviderState, SajuResult } from "./types";
 import type { UserProfileInput } from "../../types/saju";
+import { pickWithRecencyGuard } from "./variationMemory";
 
 export type NarrativeConfidence = "high" | "medium" | "low";
 
@@ -268,10 +269,23 @@ function buildSummary(seed: number, basis: HomeNarrativeBasis): [string, string,
     water: ["관찰과 공감이 필요한 작업에서 강점이 살아나요.", "깊이 있는 대화가 성과로 연결되기 좋아요.", "수 기운이 강해 맥락 읽기와 해석이 좋아져요.", "정서 흐름을 읽는 능력이 오늘 특히 선명해요."],
   };
 
-  const line1 = uniqueLine(pick(seed + 1, pool.line1), usedSummary, pool.line1[0]);
-  const line2 = uniqueLine(pick(seed + 3, dominantLineMap[basis.dominantElement]), usedSummary, pool.line2[0]);
+  const bucket = `${basis.relationTone}:${basis.flowBias}:${basis.focusWindow}:${basis.dominantElement}`;
+  const line1 = uniqueLine(
+    pickWithRecencyGuard(pool.line1, seed + 1, (v) => String(v), "home-summary-line1", bucket),
+    usedSummary,
+    pool.line1[0],
+  );
+  const line2 = uniqueLine(
+    pickWithRecencyGuard(dominantLineMap[basis.dominantElement], seed + 3, (v) => String(v), "home-summary-line2", bucket),
+    usedSummary,
+    pool.line2[0],
+  );
   const line3Candidates = basis.flowBias === "afternoon-peak" ? [pool.line3[0], ...(pool.line3[1] ? [pool.line3[1]] : [])] : [pool.line3[1] ?? pool.line3[0], pool.line3[0]];
-  const line3 = uniqueLine(pick(seed + 5, line3Candidates), usedSummary, pool.line3[0]);
+  const line3 = uniqueLine(
+    pickWithRecencyGuard(line3Candidates, seed + 5, (v) => String(v), "home-summary-line3", bucket),
+    usedSummary,
+    pool.line3[0],
+  );
 
   return [trimSentence(line1), trimSentence(line2), trimSentence(line3)];
 }
@@ -307,10 +321,11 @@ function buildTodayPoints(seed: number, basis: HomeNarrativeBasis): HomeTodayPoi
         "일정 충돌을 먼저 지우면 스트레스가 줄어요.",
       ];
 
+  const bucket = `${basis.relationTone}:${basis.supportElement}:${basis.dominantElement}`;
   return {
-    conversation: trimSentence(pick(seed + 7, conversationPool), 84),
-    wealth: trimSentence(pick(seed + 11, wealthPool[basis.dominantElement]), 84),
-    caution: trimSentence(pick(seed + 13, cautionPool), 84),
+    conversation: trimSentence(pickWithRecencyGuard(conversationPool, seed + 7, (v) => String(v), "home-point-conversation", bucket), 84),
+    wealth: trimSentence(pickWithRecencyGuard(wealthPool[basis.dominantElement], seed + 11, (v) => String(v), "home-point-wealth", bucket), 84),
+    caution: trimSentence(pickWithRecencyGuard(cautionPool, seed + 13, (v) => String(v), "home-point-caution", bucket), 84),
   };
 }
 
