@@ -11,9 +11,10 @@
   - provider health: `http://localhost:8081` OK
 
 ## 트랙 A — 운영 설정 잠금 (E1)
-- [ ] 운영 env에 아래 값 고정 확인
+- [~] 운영 env에 아래 값 고정 확인
   - `CHART_ENGINE_MODE=lunar-prep`
   - `CHART_RULE_VERSION=v2-month-branch-boost`
+  - 로컬 강제환경 검증: chart source `provider-lunar-python` 20/20 확인
 - [ ] 운영 스모크 재실행
 - [ ] 운영 로그에서 `calculationSource`, `ruleVersion` 분포 확인
 
