@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { BrowserRouter, NavLink, Navigate, Route, Routes } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import { BrowserRouter, NavLink, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import OnboardingPage from "./pages/Onboarding/OnboardingPage";
 import HomePage from "./pages/Home/HomePage";
 import MySajuPage from "./pages/MySaju/MySajuPage";
@@ -8,6 +8,16 @@ import FortunePage from "./pages/Fortune/FortunePage";
 import PersonaPage from "./pages/Persona/PersonaPage";
 import InyeonPage from "./pages/Inyeon/InyeonPage";
 import { usePersistedProfile } from "./hooks/usePersistedProfile";
+
+function ScrollToTopOnRouteChange() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [pathname]);
+
+  return null;
+}
 
 export default function App() {
   const { profile: me, setProfile: setMe } = usePersistedProfile();
@@ -19,6 +29,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTopOnRouteChange />
       <div className="appShell">
         <header className="topBar">
           <h1><span className="brandMark">✦</span> 사주 라운지</h1>
