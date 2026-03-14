@@ -21,7 +21,7 @@ class CompatibilityServiceTest(unittest.TestCase):
         me = self._person(known=True, gender="male")
         partner = self._person(known=False, gender="female", birth_time="12:00")
 
-        score, signals, raw_signals, reliability, latency_ms, warnings = get_compatibility(me, partner)
+        score, signals, raw_signals, reliability, latency_ms, warnings, v2 = get_compatibility(me, partner)
 
         self.assertTrue(len(signals) >= 1)
         self.assertTrue(len(raw_signals) >= len(signals))
@@ -29,6 +29,10 @@ class CompatibilityServiceTest(unittest.TestCase):
         self.assertIn("confidence", reliability)
         self.assertTrue(latency_ms > 0)
         self.assertIn("PROVIDER_PARTIAL_DATA", warnings)
+        self.assertEqual(v2.get("totalScore"), score)
+        self.assertEqual(v2.get("provenance", {}).get("basisSchemaVersion"), "compat-basis-v1")
+        self.assertEqual(v2.get("provenance", {}).get("ruleVersion"), "compat-v2-basis")
+        self.assertIn("subScores", v2)
 
         raw_codes = {s.get("code") for s in raw_signals}
         self.assertIn("RELIABILITY_PARTIAL_PILLARS", raw_codes)
@@ -43,9 +47,10 @@ class CompatibilityServiceTest(unittest.TestCase):
         me = self._person(known=True, gender="male")
         partner = self._person(known=True, gender="female", birth_time="12:00")
 
-        _, _, raw_signals, reliability, _, warnings = get_compatibility(me, partner)
+        _, _, raw_signals, reliability, _, warnings, v2 = get_compatibility(me, partner)
 
         self.assertEqual(reliability.get("confidence"), "high")
+        self.assertEqual(v2.get("confidence", {}).get("level"), "high")
         self.assertFalse(any(s.get("category") == "reliability" for s in raw_signals))
         self.assertFalse("PROVIDER_PARTIAL_DATA" in warnings)
 
@@ -53,10 +58,11 @@ class CompatibilityServiceTest(unittest.TestCase):
         me = self._person(known=False, gender="male")
         partner = self._person(known=False, gender="female", birth_time="12:00")
 
-        _, _, raw_signals, reliability, _, warnings = get_compatibility(me, partner)
+        _, _, raw_signals, reliability, _, warnings, v2 = get_compatibility(me, partner)
 
         reliability_codes = {s.get("code") for s in raw_signals if s.get("category") == "reliability"}
         self.assertEqual(reliability.get("confidence"), "low")
+        self.assertEqual(v2.get("confidence", {}).get("level"), "low")
         self.assertIn("RELIABILITY_TIME_UNKNOWN_ME", reliability_codes)
         self.assertIn("RELIABILITY_TIME_UNKNOWN_PARTNER", reliability_codes)
         self.assertIn("RELIABILITY_PARTIAL_PILLARS", reliability_codes)

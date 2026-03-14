@@ -159,6 +159,132 @@ def derive_reliability(raw_signals: list[dict]):
     return confidence
 
 
+def _sum_weights(raw_signals: list[dict], category: str) -> int:
+    return sum(int(s.get("weight", 0)) for s in raw_signals if s.get("category") == category)
+
+
+def _signal_to_branch_relation(signal: dict) -> dict | None:
+    code = signal.get("code")
+    mapping = {
+        "BRANCH_HAP_YEAR": "hap",
+        "BRANCH_CHUNG_YEAR": "chung",
+        "BRANCH_HYEONG_YEAR": "hyeong",
+        "BRANCH_PA_YEAR": "pa",
+        "BRANCH_HAE_YEAR": "hae",
+        "BRANCH_BALANCED": "neutral",
+    }
+    if code not in mapping:
+        return None
+    return {
+        "scope": "year",
+        "type": mapping[code],
+        "weight": int(signal.get("weight", 0)),
+        "code": code,
+    }
+
+
+def _signal_to_stem_relation(signal: dict) -> dict | None:
+    code = signal.get("code")
+    mapping = {
+        "STEM_HAP_DAY": "hap",
+        "STEM_CHUNG_DAY": "chung",
+    }
+    if code not in mapping:
+        return None
+    return {
+        "scope": "day",
+        "type": mapping[code],
+        "weight": int(signal.get("weight", 0)),
+        "code": code,
+    }
+
+
+def _signal_to_element_dynamics(signal: dict) -> dict | None:
+    code = signal.get("code")
+    mapping = {
+        "ELEMENT_GENERATES_MUTUAL": "generates",
+        "ELEMENT_CONTROLS_IMBALANCED": "controls",
+    }
+    if code not in mapping:
+        return None
+    return {
+        "type": mapping[code],
+        "weight": int(signal.get("weight", 0)),
+        "code": code,
+    }
+
+
+def _signal_to_daymaster_dynamics(signal: dict) -> dict | None:
+    code = signal.get("code")
+    mapping = {
+        "DAYMASTER_SUPPORT_MUTUAL": "support",
+        "DAYMASTER_CLASH": "clash",
+    }
+    if code not in mapping:
+        return None
+    return {
+        "type": mapping[code],
+        "weight": int(signal.get("weight", 0)),
+        "code": code,
+    }
+
+
+def _build_basis(me: PersonInput, partner: PersonInput, me_chart: dict, partner_chart: dict, raw_signals: list[dict], confidence: str):
+    reliability_penalties = [
+        {
+            "code": s.get("code"),
+            "weight": int(s.get("weight", 0)),
+            "reason": s.get("note") or "reliability penalty",
+        }
+        for s in raw_signals
+        if s.get("category") == "reliability"
+    ]
+
+    return {
+        "schemaVersion": "compat-basis-v1",
+        "participants": {
+            "me": {
+                "pillars": me_chart.get("pillars"),
+                "dayMaster": (me_chart.get("pillars", {}).get("day") or "")[:1] or None,
+                "fiveElements": me_chart.get("five"),
+                "birthTimeKnown": me.birthTimeKnown,
+            },
+            "partner": {
+                "pillars": partner_chart.get("pillars"),
+                "dayMaster": (partner_chart.get("pillars", {}).get("day") or "")[:1] or None,
+                "fiveElements": partner_chart.get("five"),
+                "birthTimeKnown": partner.birthTimeKnown,
+            },
+        },
+        "relations": {
+            "branchRelations": [x for x in (_signal_to_branch_relation(s) for s in raw_signals) if x],
+            "stemRelations": [x for x in (_signal_to_stem_relation(s) for s in raw_signals) if x],
+            "elementDynamics": [x for x in (_signal_to_element_dynamics(s) for s in raw_signals) if x],
+            "dayMasterDynamics": [x for x in (_signal_to_daymaster_dynamics(s) for s in raw_signals) if x],
+        },
+        "reliability": {
+            "penalties": reliability_penalties,
+            "confidence": confidence,
+        },
+    }
+
+
+def _build_confidence_reasons(raw_signals: list[dict], confidence: str) -> list[str]:
+    reasons: list[str] = []
+    for s in raw_signals:
+        code = s.get("code")
+        if code == "RELIABILITY_TIME_UNKNOWN_ME":
+            reasons.append("me-birth-time-unknown")
+        elif code == "RELIABILITY_TIME_UNKNOWN_PARTNER":
+            reasons.append("partner-birth-time-unknown")
+        elif code == "RELIABILITY_PARTIAL_PILLARS":
+            reasons.append("partial-pillars")
+
+    if not reasons and confidence == "high":
+        reasons.append("full-time-known")
+    return reasons
+
+
 def get_compatibility(me: PersonInput, partner: PersonInput):
     me_chart = get_chart(me)
     partner_chart = get_chart(partner)
@@ -167,15 +293,43 @@ def get_compatibility(me: PersonInput, partner: PersonInput):
     raw_signals = to_raw_signals(signals, me, partner)
     score = derive_score_from_raw_signals(raw_signals)
 
+    confidence_level = derive_reliability(raw_signals)
     reliability = {
         "timeKnownMe": me.birthTimeKnown,
         "timeKnownPartner": partner.birthTimeKnown,
-        "confidence": derive_reliability(raw_signals),
+        "confidence": confidence_level,
     }
 
     warnings = list(set((me_chart.get("warnings") or []) + (partner_chart.get("warnings") or [])))
-    if reliability["confidence"] != "high" and "PROVIDER_PARTIAL_DATA" not in warnings:
+    if confidence_level != "high" and "PROVIDER_PARTIAL_DATA" not in warnings:
         warnings.append("PROVIDER_PARTIAL_DATA")
 
+    basis = _build_basis(me, partner, me_chart, partner_chart, raw_signals, confidence_level)
+    sub_scores = {
+        "branch": _sum_weights(raw_signals, "relation-branch"),
+        "stem": _sum_weights(raw_signals, "relation-stem"),
+        "elements": _sum_weights(raw_signals, "element-dynamics"),
+        "dayMaster": _sum_weights(raw_signals, "daymaster-dynamics"),
+        "reliability": _sum_weights(raw_signals, "reliability"),
+    }
+
+    chart_rule_version = me_chart.get("rule_version") if me_chart.get("rule_version") == partner_chart.get("rule_version") else None
+
+    v2 = {
+        "totalScore": score,
+        "subScores": sub_scores,
+        "basis": basis,
+        "confidence": {
+            "level": confidence_level,
+            "reasons": _build_confidence_reasons(raw_signals, confidence_level),
+        },
+        "provenance": {
+            "ruleVersion": "compat-v2-basis",
+            "calculationSource": "provider-compatibility-service",
+            "basisSchemaVersion": "compat-basis-v1",
+            "chartRuleVersion": chart_rule_version,
+        },
+    }
+
     latency_ms = int(me_chart.get("latency_ms", 40)) + int(partner_chart.get("latency_ms", 40))
-    return score, signals, raw_signals, reliability, latency_ms, warnings
+    return score, signals, raw_signals, reliability, latency_ms, warnings, v2

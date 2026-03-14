@@ -8,6 +8,8 @@ WarningCode = Literal[
     "PROVIDER_UNAVAILABLE",
     "PROVIDER_BAD_RESPONSE",
     "PROVIDER_PARTIAL_DATA",
+    "COMPAT_RULE_DEGRADED",
+    "COMPAT_BASIS_INCOMPLETE",
 ]
 
 ErrorCode = Literal[
@@ -92,7 +94,93 @@ class CompatibilityReliability(BaseModel):
     confidence: Optional[Literal["high", "medium", "low"]] = None
 
 
+class CompatibilitySubScores(BaseModel):
+    branch: int
+    stem: int
+    elements: int
+    dayMaster: int
+    reliability: int
+
+
+class CompatibilityBasisParticipant(BaseModel):
+    pillars: Optional[Pillars] = None
+    dayMaster: Optional[str] = None
+    fiveElements: Optional[dict[str, int]] = None
+    birthTimeKnown: Optional[bool] = None
+
+
+class CompatibilityBranchRelation(BaseModel):
+    scope: Literal["year", "month", "day", "hour", "cross"]
+    type: Literal["hap", "chung", "hyeong", "pa", "hae", "neutral"]
+    weight: int
+    code: str
+
+
+class CompatibilityStemRelation(BaseModel):
+    scope: Literal["year", "month", "day", "hour", "cross"]
+    type: Literal["hap", "chung", "clash", "neutral"]
+    weight: int
+    code: str
+
+
+class CompatibilityElementDynamics(BaseModel):
+    type: Literal["generates", "controls", "overweight", "lacking", "balanced"]
+    weight: int
+    code: str
+
+
+class CompatibilityDayMasterDynamics(BaseModel):
+    type: Literal["support", "clash", "neutral"]
+    weight: int
+    code: str
+
+
+class CompatibilityReliabilityPenalty(BaseModel):
+    code: str
+    weight: int
+    reason: str
+
+
+class CompatibilityBasisRelations(BaseModel):
+    branchRelations: list[CompatibilityBranchRelation] = Field(default_factory=list)
+    stemRelations: list[CompatibilityStemRelation] = Field(default_factory=list)
+    elementDynamics: list[CompatibilityElementDynamics] = Field(default_factory=list)
+    dayMasterDynamics: list[CompatibilityDayMasterDynamics] = Field(default_factory=list)
+
+
+class CompatibilityBasisReliability(BaseModel):
+    penalties: list[CompatibilityReliabilityPenalty] = Field(default_factory=list)
+    confidence: Literal["high", "medium", "low"]
+
+
+class CompatibilityBasis(BaseModel):
+    schemaVersion: Literal["compat-basis-v1"]
+    participants: dict[Literal["me", "partner"], CompatibilityBasisParticipant]
+    relations: CompatibilityBasisRelations
+    reliability: CompatibilityBasisReliability
+
+
+class CompatibilityConfidence(BaseModel):
+    level: Literal["high", "medium", "low"]
+    reasons: list[str] = Field(default_factory=list)
+
+
+class CompatibilityProvenance(BaseModel):
+    ruleVersion: str
+    calculationSource: str
+    basisSchemaVersion: Literal["compat-basis-v1"]
+    chartRuleVersion: Optional[str] = None
+
+
 class CompatibilityBody(BaseModel):
+    # v2
+    totalScore: Optional[int] = None
+    subScores: Optional[CompatibilitySubScores] = None
+    basis: Optional[CompatibilityBasis] = None
+    confidence: Optional[CompatibilityConfidence] = None
+    provenance: Optional[CompatibilityProvenance] = None
+
+    # v1 (legacy)
     score: Optional[int] = None
     signals: Optional[list[str]] = None
     rawSignals: Optional[list[CompatibilityRawSignal]] = None
