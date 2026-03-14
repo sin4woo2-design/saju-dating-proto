@@ -15,6 +15,12 @@ const metricStore: Record<EngineMetricKind, { total: number; nonProvider: number
 const warningCounts: Record<string, number> = {};
 const chartMetaCounts: Record<string, number> = {};
 
+export interface EngineObserveSnapshot {
+  providerState: Record<EngineMetricKind, { total: number; nonProvider: number; nonProviderRatio: number }>;
+  warningCounts: Record<string, number>;
+  chartMetaCounts: Record<string, number>;
+}
+
 export function recordProviderState(kind: EngineMetricKind, providerState: ProviderState) {
   const bucket = metricStore[kind];
   bucket.total += 1;
@@ -47,4 +53,35 @@ export function recordChartMeta(meta?: ChartMetaSample) {
   if (chartMetaCounts[key] === 1 || chartMetaCounts[key] % 20 === 0) {
     console.info(`[engine-observe] chart meta ${key} seen ${chartMetaCounts[key]} times`);
   }
+}
+
+export function getEngineObserveSnapshot(): EngineObserveSnapshot {
+  const providerState = {
+    saju: {
+      total: metricStore.saju.total,
+      nonProvider: metricStore.saju.nonProvider,
+      nonProviderRatio: metricStore.saju.total ? metricStore.saju.nonProvider / metricStore.saju.total : 0,
+    },
+    compatibility: {
+      total: metricStore.compatibility.total,
+      nonProvider: metricStore.compatibility.nonProvider,
+      nonProviderRatio: metricStore.compatibility.total ? metricStore.compatibility.nonProvider / metricStore.compatibility.total : 0,
+    },
+  } satisfies EngineObserveSnapshot["providerState"];
+
+  return {
+    providerState,
+    warningCounts: { ...warningCounts },
+    chartMetaCounts: { ...chartMetaCounts },
+  };
+}
+
+export function resetEngineObserveSnapshot() {
+  metricStore.saju.total = 0;
+  metricStore.saju.nonProvider = 0;
+  metricStore.compatibility.total = 0;
+  metricStore.compatibility.nonProvider = 0;
+
+  Object.keys(warningCounts).forEach((k) => delete warningCounts[k]);
+  Object.keys(chartMetaCounts).forEach((k) => delete chartMetaCounts[k]);
 }

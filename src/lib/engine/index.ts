@@ -2,7 +2,7 @@ import { mockEngine } from "./mockEngine";
 import { realProviderEngine } from "./realProviderEngine";
 import { buildMockHomeNarrative } from "./homeNarrative";
 import { buildMockPersonaNarrative } from "./personaNarrative";
-import { recordChartMeta, recordProviderState, recordWarnings } from "./observability";
+import { getEngineObserveSnapshot, recordChartMeta, recordProviderState, recordWarnings, resetEngineObserveSnapshot } from "./observability";
 import type { EngineMode, PairInput, SajuEngine } from "./types";
 import type { UserProfileInput } from "../../types/saju";
 
@@ -56,6 +56,8 @@ export async function calculatePersonaNarrativeWithEngine(input: UserProfileInpu
   const saju = await engine.calculateSaju(input);
   return buildMockPersonaNarrative(input, saju.providerState, { saju });
 }
+
+export { getEngineObserveSnapshot, resetEngineObserveSnapshot };
 
 export type { EngineMode, PairInput, SajuEngine } from "./types";
 export type { HomeNarrativeSnapshot, HomeTodayPoints, HomeTimeFlow, NarrativeConfidence } from "./homeNarrative";
