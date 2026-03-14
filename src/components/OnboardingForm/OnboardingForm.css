@@ -26,6 +26,13 @@
   font-weight: var(--weight-medium);
 }
 
+.stepQuestion {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-h3);
+  line-height: var(--leading-snug);
+  color: var(--color-text);
+}
+
 .progressTrack {
   height: 6px;
   border-radius: var(--radius-pill);
@@ -284,6 +291,22 @@
 }
 
 /* ── Actions ── */
+.actionsWrap {
+  position: sticky;
+  bottom: calc(var(--bottom-nav-reserved) - var(--space-2));
+  background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.95) 30%, rgba(255,255,255,1) 100%);
+  padding-top: var(--space-3);
+  margin-top: var(--space-2);
+  display: grid;
+  gap: var(--space-2);
+}
+
+.actionHint {
+  margin: 0;
+  font-size: var(--text-label);
+  color: var(--color-text-muted);
+}
+
 .actions {
   display: grid;
   grid-template-columns: 1fr 1fr;

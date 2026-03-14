@@ -8,6 +8,12 @@ interface Props {
 }
 
 const stepTitles = ["이름", "생년월일", "출생시간", "성별"];
+const stepQuestions = [
+  "프로필에 표시할 이름을 입력해 주세요",
+  "생년월일을 선택해 주세요",
+  "출생 시간대를 선택해 주세요",
+  "성별을 선택해 주세요",
+];
 
 const traditionalTimes = [
   { key: "ja", hanja: "子時", ko: "자시", range: "23:00~00:59", value: "00:00" },
@@ -88,7 +94,8 @@ export default function OnboardingForm({ onSubmit }: Props) {
     <section className="onboarding">
       <div className="stepWrap">
         <p className="step">{step + 1} / 4 · {stepTitles[step]}</p>
-        <div className="progressTrack"><i style={{ width: `${((step + 1) / 4) * 100}%` }} /></div>
+        <div className="progressTrack" role="progressbar" aria-valuenow={step + 1} aria-valuemin={1} aria-valuemax={4}><i style={{ width: `${((step + 1) / 4) * 100}%` }} /></div>
+        <h3 className="stepQuestion">{stepQuestions[step]}</h3>
       </div>
 
       {step === 0 && (
@@ -211,17 +218,20 @@ export default function OnboardingForm({ onSubmit }: Props) {
         </small>
       </div>
 
-      <div className="actions">
-        <button type="button" disabled={step === 0} onClick={() => setStep((s) => s - 1)}>
-          이전
-        </button>
-        {step < 3 ? (
-          <button type="button" disabled={!canNext} onClick={goNext}>
-            다음
+      <div className="actionsWrap">
+        <p className="actionHint">입력은 로컬에만 저장되며 언제든 다시 수정할 수 있어요.</p>
+        <div className="actions">
+          <button type="button" disabled={step === 0} onClick={() => setStep((s) => s - 1)}>
+            이전
           </button>
-        ) : (
-          <button type="button" className="primary" onClick={() => onSubmit(form)}>완료</button>
-        )}
+          {step < 3 ? (
+            <button type="button" disabled={!canNext} onClick={goNext}>
+              다음
+            </button>
+          ) : (
+            <button type="button" className="primary" onClick={() => onSubmit(form)}>완료하고 시작하기</button>
+          )}
+        </div>
       </div>
     </section>
   );

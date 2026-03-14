@@ -44,6 +44,13 @@ function signalLabel(code: string) {
   return getCompatSignalMeta(code)?.label ?? code;
 }
 
+function scoreGrade(score: number) {
+  if (score >= 85) return "A";
+  if (score >= 70) return "B";
+  if (score >= 55) return "C";
+  return "D";
+}
+
 function signalDescription(code: string) {
   return getCompatSignalMeta(code)?.desc ?? "해당 신호는 관계 상호작용 패턴을 보여주는 보조 지표예요.";
 }
@@ -128,6 +135,13 @@ export default function CompatibilityPage({ me }: Props) {
   const evidenceSignals = rawSignals.filter((s) => s.category !== "reliability").slice(0, 6);
   const reliabilitySignals = rawSignals.filter((s) => s.category === "reliability").slice(0, 3);
   const selectedSignalDescription = selectedSignal ? signalDescription(selectedSignal) : null;
+  const grade = score !== null ? scoreGrade(score) : null;
+
+  const resetPartnerForm = () => {
+    setBirthDate("");
+    setBirthTime("");
+    setGender("other");
+  };
 
   const handleShare = async () => {
     if (score === null || !summary) return;
@@ -146,6 +160,11 @@ export default function CompatibilityPage({ me }: Props) {
       
       {/* ── INIT STATE OR INPUT CARD ── */}
       <section className="compatInputCard anim-fade-in">
+        <div className="compatInputHead">
+          <h3>상대 정보 입력</h3>
+          <p>입력은 1분이면 끝나요. 날짜·시간을 알수록 결과 신뢰도가 높아져요.</p>
+        </div>
+
         <div className="inputRowGroup">
           <label className="fieldLabel">상대 생년월일</label>
           <input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} className="compatInput" />
@@ -165,9 +184,14 @@ export default function CompatibilityPage({ me }: Props) {
           </select>
         </div>
 
-        <button type="button" className="compatSubmitBtn" disabled={!isValid || isCalculating} onClick={onCalculate}>
-          {isCalculating ? "명리학 서버로 요청 중..." : (score !== null ? "다시 계산하기" : "궁합 계산하기")}
-        </button>
+        <div className="compatInputActions">
+          <button type="button" className="compatSubmitBtn" disabled={!isValid || isCalculating} onClick={onCalculate}>
+            {isCalculating ? "궁합 리포트 생성 중..." : (score !== null ? "새로 계산하기" : "궁합 계산하기")}
+          </button>
+          <button type="button" className="compatResetBtn" onClick={resetPartnerForm}>
+            입력 초기화
+          </button>
+        </div>
       </section>
 
       {/* ── RESULT VIEW ── */}
@@ -191,6 +215,7 @@ export default function CompatibilityPage({ me }: Props) {
 
             <div className="compatHeroFooter">
               <h3>전체 궁합 점수</h3>
+              <p className="compatGradeLine">등급 {grade} · 핵심 연결성 요약</p>
               <p>{layers.explain[0] ?? confidenceInfo.guide}</p>
               {provenance ? (
                 <p className="compatQaLine">
@@ -255,6 +280,15 @@ export default function CompatibilityPage({ me }: Props) {
               </div>
               <p>{guides.lifestyleGuide}</p>
             </article>
+          </section>
+
+          <section className="compatActionCard">
+            <h3 className="sectionTitle">관계 개선 액션 3가지</h3>
+            <ul className="compatActionList">
+              {layers.tips.slice(0, 3).map((tip, idx) => (
+                <li key={`action-${idx}`}>{tip}</li>
+              ))}
+            </ul>
           </section>
 
           {/* ── ACCORDION DETAILS ── */}
