@@ -1,4 +1,5 @@
 import type { FiveElementsBalance } from "../types/saju";
+import type { CompatibilityBasisV1, CompatibilityConfidenceLevel, CompatibilityRawSignal, CompatibilitySubScoresV1 } from "./engine/provider-contract";
 
 const personalityPool: Record<string, string[]> = {
   wood: ["아이디어를 빠르게 실행에 옮기는 추진형 기질이 강해요.", "관계에서도 성장 방향이 보이면 몰입도가 크게 올라가요."],
@@ -54,25 +55,86 @@ export function buildSajuNarratives(balance: FiveElementsBalance) {
   };
 }
 
-export function buildCompatibilityNarratives(score: number) {
-  const talk = Math.max(45, Math.min(98, score + (score > 85 ? 2 : 5)));
-  const emotion = Math.max(40, Math.min(98, score - 2));
-  const lifestyle = Math.max(42, Math.min(98, score + (score > 82 ? -3 : 3)));
+interface CompatibilityNarrativeInput {
+  score: number;
+  rawSignals?: CompatibilityRawSignal[];
+  subScores?: CompatibilitySubScoresV1;
+  basis?: CompatibilityBasisV1;
+  confidence?: { level?: CompatibilityConfidenceLevel; reasons?: string[] };
+}
+
+interface CompatibilityEvidenceSummary {
+  hasBasis: boolean;
+  hasRawSignals: boolean;
+  confidence: CompatibilityConfidenceLevel;
+  branchDelta: number;
+  stemDelta: number;
+  elementDelta: number;
+  dayMasterDelta: number;
+  reliabilityDelta: number;
+}
+
+function clampRange(value: number, min = 40, max = 98) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function summarizeEvidence(input: CompatibilityNarrativeInput): CompatibilityEvidenceSummary {
+  const sub = input.subScores;
+  const raw = input.rawSignals ?? [];
+  const basis = input.basis;
+
+  const categorySum = (category: CompatibilityRawSignal["category"]) =>
+    raw.filter((s) => s.category === category).reduce((acc, s) => acc + (s.weight ?? 0), 0);
+
+  return {
+    hasBasis: !!basis,
+    hasRawSignals: raw.length > 0,
+    confidence: input.confidence?.level ?? basis?.reliability?.confidence ?? "low",
+    branchDelta: sub?.branch ?? categorySum("relation-branch"),
+    stemDelta: sub?.stem ?? categorySum("relation-stem"),
+    elementDelta: sub?.elements ?? categorySum("element-dynamics"),
+    dayMasterDelta: sub?.dayMaster ?? categorySum("daymaster-dynamics"),
+    reliabilityDelta: sub?.reliability ?? categorySum("reliability"),
+  };
+}
+
+export function buildCompatibilityNarratives(input: CompatibilityNarrativeInput) {
+  const evidence = summarizeEvidence(input);
+
+  const talk = clampRange(input.score + evidence.stemDelta + Math.round(evidence.branchDelta * 0.5));
+  const emotion = clampRange(input.score + evidence.dayMasterDelta + Math.round(evidence.reliabilityDelta * 0.4));
+  const lifestyle = clampRange(input.score + evidence.elementDelta + evidence.branchDelta + Math.round(evidence.reliabilityDelta * 0.3));
+
+  const sourceLine = evidence.hasBasis
+    ? `basis 기반으로 해석했어요. (신뢰도 ${evidence.confidence})`
+    : evidence.hasRawSignals
+      ? "신호 기반 해석을 우선 반영했어요."
+      : "신호가 제한적이라 점수 기반 기본 해석을 사용했어요.";
 
   const explain = [
-    `전체 점수 ${score}점을 대화/감정/생활 3축으로 분해해 하위 지표를 만들었어요.`,
+    sourceLine,
     `대화 ${talk} · 감정 ${emotion} · 생활 ${lifestyle}`,
   ];
 
   const conflict = [
-    talk < 72 ? "대화 속도와 결론 시점이 달라 답답함이 생길 수 있어요." : "합의가 빠른 편이라 감정 체크를 생략하지 않는 게 중요해요.",
-    lifestyle < 74 ? "생활 루틴/연락 빈도 기준을 먼저 정해야 충돌이 줄어요." : "역할 분담을 명확히 하면 안정감이 더 커져요.",
+    evidence.stemDelta < 0
+      ? "대화에서 기준 충돌이 생길 수 있어요. 결론 전에 합의 조건을 먼저 맞추세요."
+      : "합의 속도는 좋은 편이에요. 빠른 결론 전에 감정 확인을 한 번 더 하세요.",
+    evidence.reliabilityDelta <= -4
+      ? "시간 정보가 일부 제한되어 큰 흐름 중심으로 해석하세요."
+      : evidence.elementDelta < 0
+        ? "생활 리듬이 엇갈릴 수 있어요. 연락 주기와 일정 규칙을 먼저 정하세요."
+        : "생활 합은 무난해요. 역할 분담을 선명히 하면 안정감이 올라가요.",
   ];
 
   const tips = [
-    emotion < 70 ? "감정 확인 질문(지금 어떤 기분이야?)을 정기적으로 써보세요." : "좋았던 대화 패턴을 템플릿처럼 반복하면 관계 질이 올라가요.",
-    "갈등 상황에서는 사실-해석-요청 순서로 말하면 회복 속도가 빨라져요.",
+    evidence.dayMasterDelta < 0
+      ? "감정이 올라올 때는 사실-해석-요청 순서로 짧게 말하세요."
+      : "좋았던 대화 패턴을 반복하면 관계 품질이 빠르게 올라가요.",
+    evidence.confidence === "low"
+      ? "중요 결정은 시간을 두고 확인 질문을 한 번 더 넣어주세요."
+      : "주 1회 리듬 점검 대화를 하면 작은 오해가 크게 줄어요.",
   ];
 
-  return { talk, emotion, lifestyle, explain, conflict, tips };
+  return { talk, emotion, lifestyle, explain, conflict, tips, evidence };
 }

@@ -6,7 +6,7 @@ import { calculateCompatibilityResult, generateCompatibilitySummary } from "../.
 import { buildCompatibilityNarratives } from "../../lib/resultNarratives";
 import { shareOrCopy } from "../../lib/share";
 import type { Gender, UserProfileInput } from "../../types/saju";
-import type { CompatibilityRawSignal, CompatibilitySubScoresV1, ProviderCompatibilityProvenance } from "../../lib/engine/provider-contract";
+import type { CompatibilityBasisV1, CompatibilityRawSignal, CompatibilitySubScoresV1, ProviderCompatibilityProvenance } from "../../lib/engine/provider-contract";
 import { getCompatSignalMeta } from "../../lib/engine/compatSignalCatalog";
 import "./CompatibilityPage.css";
 
@@ -84,6 +84,7 @@ export default function CompatibilityPage({ me }: Props) {
   const [rawSignals, setRawSignals] = useState<CompatibilityRawSignal[]>([]);
   const [confidence, setConfidence] = useState<"high" | "medium" | "low">("low");
   const [subScores, setSubScores] = useState<CompatibilitySubScoresV1 | null>(null);
+  const [basis, setBasis] = useState<CompatibilityBasisV1 | null>(null);
   const [provenance, setProvenance] = useState<ProviderCompatibilityProvenance | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
   const [selectedSignal, setSelectedSignal] = useState<string | null>(null);
@@ -106,6 +107,7 @@ export default function CompatibilityPage({ me }: Props) {
       setWarnings(result.warnings ?? []);
       setRawSignals(result.rawSignals ?? []);
       setSubScores(result.subScores ?? null);
+      setBasis(result.basis ?? null);
       setProvenance(result.provenance ?? null);
       setConfidence(result.confidence?.level ?? result.reliability?.confidence ?? "low");
       setSelectedSignal(null);
@@ -117,7 +119,9 @@ export default function CompatibilityPage({ me }: Props) {
   };
 
   const summary = score !== null ? generateCompatibilitySummary(score, rawSignals) : null;
-  const layers = score !== null ? buildCompatibilityNarratives(score) : null;
+  const layers = score !== null
+    ? buildCompatibilityNarratives({ score, rawSignals, subScores: subScores ?? undefined, basis: basis ?? undefined, confidence: { level: confidence } })
+    : null;
   const confidenceInfo = confidenceBadge(confidence);
   const guides = layeredGuides(rawSignals);
 
@@ -187,7 +191,7 @@ export default function CompatibilityPage({ me }: Props) {
 
             <div className="compatHeroFooter">
               <h3>전체 궁합 점수</h3>
-              <p>{confidenceInfo.guide}</p>
+              <p>{layers.explain[0] ?? confidenceInfo.guide}</p>
               {provenance ? (
                 <p className="compatQaLine">
                   source: {provenance.calculationSource} · rule: {provenance.ruleVersion}
