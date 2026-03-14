@@ -1,0 +1,147 @@
+{
+  "generatedAt": "2026-03-14T23:50:11.885Z",
+  "home": {
+    "exact": {
+      "total": 1080,
+      "unique": 1080,
+      "duplicateRate": 0
+    },
+    "near": {
+      "comparedPairs": 28680,
+      "nearPairs": 840,
+      "nearDuplicateRate": 2.9,
+      "threshold": 0.82
+    },
+    "split": {
+      "provider": {
+        "exact": {
+          "total": 360,
+          "unique": 360,
+          "duplicateRate": 0
+        },
+        "near": {
+          "comparedPairs": 28680,
+          "nearPairs": 840,
+          "nearDuplicateRate": 2.9,
+          "threshold": 0.82
+        },
+        "determinismRate": 100,
+        "impact": {
+          "baselineUnique": 3,
+          "nonceOnlyUnique": 39,
+          "basisOnlyUnique": 30
+        }
+      },
+      "mock-fallback": {
+        "exact": {
+          "total": 360,
+          "unique": 360,
+          "duplicateRate": 0
+        },
+        "near": {
+          "comparedPairs": 28680,
+          "nearPairs": 840,
+          "nearDuplicateRate": 2.9,
+          "threshold": 0.82
+        },
+        "determinismRate": 100,
+        "impact": {
+          "baselineUnique": 3,
+          "nonceOnlyUnique": 39,
+          "basisOnlyUnique": 30
+        }
+      },
+      "mock": {
+        "exact": {
+          "total": 360,
+          "unique": 360,
+          "duplicateRate": 0
+        },
+        "near": {
+          "comparedPairs": 28680,
+          "nearPairs": 840,
+          "nearDuplicateRate": 2.9,
+          "threshold": 0.82
+        },
+        "determinismRate": 100,
+        "impact": {
+          "baselineUnique": 3,
+          "nonceOnlyUnique": 39,
+          "basisOnlyUnique": 30
+        }
+      }
+    }
+  },
+  "persona": {
+    "exact": {
+      "total": 1080,
+      "unique": 1080,
+      "duplicateRate": 0
+    },
+    "near": {
+      "comparedPairs": 28680,
+      "nearPairs": 0,
+      "nearDuplicateRate": 0,
+      "threshold": 0.82
+    },
+    "split": {
+      "provider": {
+        "exact": {
+          "total": 360,
+          "unique": 360,
+          "duplicateRate": 0
+        },
+        "near": {
+          "comparedPairs": 28680,
+          "nearPairs": 0,
+          "nearDuplicateRate": 0,
+          "threshold": 0.82
+        },
+        "determinismRate": 100,
+        "impact": {
+          "baselineUnique": 12,
+          "nonceOnlyUnique": 204,
+          "basisOnlyUnique": 60
+        }
+      },
+      "mock-fallback": {
+        "exact": {
+          "total": 360,
+          "unique": 360,
+          "duplicateRate": 0
+        },
+        "near": {
+          "comparedPairs": 28680,
+          "nearPairs": 0,
+          "nearDuplicateRate": 0,
+          "threshold": 0.82
+        },
+        "determinismRate": 100,
+        "impact": {
+          "baselineUnique": 12,
+          "nonceOnlyUnique": 204,
+          "basisOnlyUnique": 60
+        }
+      },
+      "mock": {
+        "exact": {
+          "total": 360,
+          "unique": 360,
+          "duplicateRate": 0
+        },
+        "near": {
+          "comparedPairs": 28680,
+          "nearPairs": 0,
+          "nearDuplicateRate": 0,
+          "threshold": 0.82
+        },
+        "determinismRate": 100,
+        "impact": {
+          "baselineUnique": 12,
+          "nonceOnlyUnique": 204,
+          "basisOnlyUnique": 60
+        }
+      }
+    }
+  }
+}
