@@ -270,19 +270,30 @@ function buildSummary(seed: number, basis: HomeNarrativeBasis): [string, string,
   };
 
   const bucket = `${basis.relationTone}:${basis.flowBias}:${basis.focusWindow}:${basis.dominantElement}`;
+  const nuancePool = {
+    intro: ["템포를 낮추면 기회가 보여요.", "한 문장 정리가 오늘의 성과를 만듭니다.", "우선순위를 짧게 고정하면 흐름이 살아나요."],
+    bridge: ["대화의 온도 조절이 핵심이에요.", "질문형 접근이 반응을 좋게 만들어요.", "결론 전에 확인 한 번이 안전해요."],
+    close: ["저녁 전에 정리하면 피로가 줄어요.", "작은 마감이 큰 안정감으로 이어져요.", "하루 끝 체크가 내일 리듬을 살려줘요."],
+  } as const;
+
+  const line1Base = pickWithRecencyGuard(pool.line1, seed + 1, (v) => String(v), "home-summary-line1", bucket);
   const line1 = uniqueLine(
-    pickWithRecencyGuard(pool.line1, seed + 1, (v) => String(v), "home-summary-line1", bucket),
+    `${line1Base} ${pickWithRecencyGuard(nuancePool.intro, seed + 2, (v) => String(v), "home-summary-intro", bucket)}`,
     usedSummary,
     pool.line1[0],
   );
+
+  const line2Base = pickWithRecencyGuard(dominantLineMap[basis.dominantElement], seed + 3, (v) => String(v), "home-summary-line2", bucket);
   const line2 = uniqueLine(
-    pickWithRecencyGuard(dominantLineMap[basis.dominantElement], seed + 3, (v) => String(v), "home-summary-line2", bucket),
+    `${line2Base} ${pickWithRecencyGuard(nuancePool.bridge, seed + 4, (v) => String(v), "home-summary-bridge", bucket)}`,
     usedSummary,
     pool.line2[0],
   );
+
   const line3Candidates = basis.flowBias === "afternoon-peak" ? [pool.line3[0], ...(pool.line3[1] ? [pool.line3[1]] : [])] : [pool.line3[1] ?? pool.line3[0], pool.line3[0]];
+  const line3Base = pickWithRecencyGuard(line3Candidates, seed + 5, (v) => String(v), "home-summary-line3", bucket);
   const line3 = uniqueLine(
-    pickWithRecencyGuard(line3Candidates, seed + 5, (v) => String(v), "home-summary-line3", bucket),
+    `${line3Base} ${pickWithRecencyGuard(nuancePool.close, seed + 6, (v) => String(v), "home-summary-close", bucket)}`,
     usedSummary,
     pool.line3[0],
   );

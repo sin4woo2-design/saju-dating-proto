@@ -227,9 +227,15 @@ function subtitleFromBasis(seed: number, basis: PersonaNarrativeBasis) {
   };
 
   const bucket = `${basis.personaTone}:${basis.appealAxis}:${basis.dominantElement}`;
+  const nuancePool: Record<PersonaNarrativeBasis["relationStyle"], string[]> = {
+    strategist: ["관계를 구조적으로 설계하는 능력이 강해요.", "기준을 정하면 안정감이 빠르게 올라가요.", "현실 감각이 관계 품질을 높여줘요."],
+    mediator: ["상대 감정을 부드럽게 연결하는 강점이 있어요.", "대화 완충 능력이 갈등을 줄여줘요.", "관계 온도 조절이 자연스러운 편이에요."],
+  };
+
   const axisLine = pickWithRecencyGuard(poolByAxis[basis.appealAxis], seed + 29, (v) => String(v), "persona-subtitle-axis", bucket);
   const elementLine = pickWithRecencyGuard(elementNudge[basis.dominantElement], seed + 31, (v) => String(v), "persona-subtitle-element", bucket);
-  return `${axisLine} ${elementLine}`;
+  const nuanceLine = pickWithRecencyGuard(nuancePool[basis.relationStyle], seed + 33, (v) => String(v), "persona-subtitle-nuance", bucket);
+  return `${axisLine} ${elementLine} ${nuanceLine}`;
 }
 
 function dominantElementLabel(element: PersonaNarrativeBasis["dominantElement"]) {
