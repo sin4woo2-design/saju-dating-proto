@@ -163,70 +163,103 @@ def _sum_weights(raw_signals: list[dict], category: str) -> int:
     return sum(int(s.get("weight", 0)) for s in raw_signals if s.get("category") == category)
 
 
-def _signal_to_branch_relation(signal: dict) -> dict | None:
-    code = signal.get("code")
+def _branch_relation_type(branch_a: str | None, branch_b: str | None) -> tuple[str, int]:
+    if not branch_a or not branch_b:
+        return "neutral", 0
+
+    pair = frozenset((branch_a, branch_b))
+    if pair in BRANCH_HAP_PAIRS:
+        return "hap", 3
+    if pair in BRANCH_CHUNG_PAIRS:
+        return "chung", -3
+    if pair in BRANCH_HYEONG_PAIRS:
+        return "hyeong", -2
+    if pair in BRANCH_PA_PAIRS:
+        return "pa", -2
+    if pair in BRANCH_HAE_PAIRS:
+        return "hae", -1
+
+    for tri in BRANCH_HYEONG_TRIPLES:
+        if branch_a in tri and branch_b in tri:
+            return "hyeong", -2
+
+    return "neutral", 0
+
+
+def _stem_relation_type(stem_a: str | None, stem_b: str | None) -> tuple[str, int]:
+    if not stem_a or not stem_b:
+        return "neutral", 0
+
+    pair = frozenset((stem_a, stem_b))
+    if pair in STEM_HAP_PAIRS:
+        return "hap", 2
+    if pair in STEM_CHUNG_PAIRS:
+        return "chung", -2
+    return "neutral", 0
+
+
+def _build_branch_relations(me_chart: dict, partner_chart: dict) -> list[dict]:
+    scopes = ["year", "month", "day", "hour"]
+    rows: list[dict] = []
+    for scope in scopes:
+        _, b1 = _extract_stem_branch(me_chart.get("pillars", {}).get(scope))
+        _, b2 = _extract_stem_branch(partner_chart.get("pillars", {}).get(scope))
+        rel_type, weight = _branch_relation_type(b1, b2)
+        rows.append({"scope": scope, "type": rel_type, "weight": weight, "code": f"BRANCH_{rel_type.upper()}_{scope.upper()}"})
+
+    # cross scope: me day vs partner month
+    _, cross_a = _extract_stem_branch(me_chart.get("pillars", {}).get("day"))
+    _, cross_b = _extract_stem_branch(partner_chart.get("pillars", {}).get("month"))
+    rel_type, weight = _branch_relation_type(cross_a, cross_b)
+    rows.append({"scope": "cross", "type": rel_type, "weight": weight, "code": f"BRANCH_{rel_type.upper()}_CROSS"})
+    return rows
+
+
+def _build_stem_relations(me_chart: dict, partner_chart: dict) -> list[dict]:
+    scopes = ["year", "month", "day", "hour"]
+    rows: list[dict] = []
+    for scope in scopes:
+        s1, _ = _extract_stem_branch(me_chart.get("pillars", {}).get(scope))
+        s2, _ = _extract_stem_branch(partner_chart.get("pillars", {}).get(scope))
+        rel_type, weight = _stem_relation_type(s1, s2)
+        rows.append({"scope": scope, "type": rel_type, "weight": weight, "code": f"STEM_{rel_type.upper()}_{scope.upper()}"})
+
+    # cross scope: me month vs partner day
+    cross_a, _ = _extract_stem_branch(me_chart.get("pillars", {}).get("month"))
+    cross_b, _ = _extract_stem_branch(partner_chart.get("pillars", {}).get("day"))
+    rel_type, weight = _stem_relation_type(cross_a, cross_b)
+    rows.append({"scope": "cross", "type": rel_type, "weight": weight, "code": f"STEM_{rel_type.upper()}_CROSS"})
+    return rows
+
+
+def _build_element_dynamics(me_chart: dict, partner_chart: dict) -> list[dict]:
+    me_top, me_second = _top_two_elements(me_chart.get("five", {}))
+    partner_top, partner_second = _top_two_elements(partner_chart.get("five", {}))
+
+    rows: list[dict] = []
+    if (me_top, partner_top) in ELEMENT_GENERATES or (partner_top, me_top) in ELEMENT_GENERATES:
+        rows.append({"type": "generates", "weight": 3, "code": "ELEMENT_GENERATES_TOP"})
+    elif me_top == partner_top:
+        rows.append({"type": "overweight", "weight": -2, "code": "ELEMENT_OVERWEIGHT_TOP"})
+    else:
+        rows.append({"type": "balanced", "weight": 1, "code": "ELEMENT_BALANCED_TOP"})
+
+    if (me_second, partner_second) in ELEMENT_GENERATES or (partner_second, me_second) in ELEMENT_GENERATES:
+        rows.append({"type": "generates", "weight": 2, "code": "ELEMENT_GENERATES_SECOND"})
+
+    return rows
+
+
+def _build_daymaster_dynamics(me_chart: dict, partner_chart: dict) -> list[dict]:
+    me_day_stem, _ = _extract_stem_branch(me_chart.get("pillars", {}).get("day"))
+    partner_day_stem, _ = _extract_stem_branch(partner_chart.get("pillars", {}).get("day"))
+    daymaster = _daymaster_signal(me_day_stem, partner_day_stem)
     mapping = {
-        "BRANCH_HAP_YEAR": "hap",
-        "BRANCH_CHUNG_YEAR": "chung",
-        "BRANCH_HYEONG_YEAR": "hyeong",
-        "BRANCH_PA_YEAR": "pa",
-        "BRANCH_HAE_YEAR": "hae",
-        "BRANCH_BALANCED": "neutral",
+        "DAYMASTER_SUPPORT": {"type": "support", "weight": 3, "code": "DAYMASTER_SUPPORT_MUTUAL"},
+        "DAYMASTER_CLASH": {"type": "clash", "weight": -3, "code": "DAYMASTER_CLASH"},
+        "BALANCED_RHYTHM": {"type": "neutral", "weight": 1, "code": "DAYMASTER_BALANCED"},
     }
-    if code not in mapping:
-        return None
-    return {
-        "scope": "year",
-        "type": mapping[code],
-        "weight": int(signal.get("weight", 0)),
-        "code": code,
-    }
-
-
-def _signal_to_stem_relation(signal: dict) -> dict | None:
-    code = signal.get("code")
-    mapping = {
-        "STEM_HAP_DAY": "hap",
-        "STEM_CHUNG_DAY": "chung",
-    }
-    if code not in mapping:
-        return None
-    return {
-        "scope": "day",
-        "type": mapping[code],
-        "weight": int(signal.get("weight", 0)),
-        "code": code,
-    }
-
-
-def _signal_to_element_dynamics(signal: dict) -> dict | None:
-    code = signal.get("code")
-    mapping = {
-        "ELEMENT_GENERATES_MUTUAL": "generates",
-        "ELEMENT_CONTROLS_IMBALANCED": "controls",
-    }
-    if code not in mapping:
-        return None
-    return {
-        "type": mapping[code],
-        "weight": int(signal.get("weight", 0)),
-        "code": code,
-    }
-
-
-def _signal_to_daymaster_dynamics(signal: dict) -> dict | None:
-    code = signal.get("code")
-    mapping = {
-        "DAYMASTER_SUPPORT_MUTUAL": "support",
-        "DAYMASTER_CLASH": "clash",
-    }
-    if code not in mapping:
-        return None
-    return {
-        "type": mapping[code],
-        "weight": int(signal.get("weight", 0)),
-        "code": code,
-    }
+    return [mapping.get(daymaster, mapping["BALANCED_RHYTHM"])]
 
 
 def _build_basis(me: PersonInput, partner: PersonInput, me_chart: dict, partner_chart: dict, raw_signals: list[dict], confidence: str):
@@ -239,6 +272,11 @@ def _build_basis(me: PersonInput, partner: PersonInput, me_chart: dict, partner_
         for s in raw_signals
         if s.get("category") == "reliability"
     ]
+
+    branch_relations = _build_branch_relations(me_chart, partner_chart)
+    stem_relations = _build_stem_relations(me_chart, partner_chart)
+    element_dynamics = _build_element_dynamics(me_chart, partner_chart)
+    daymaster_dynamics = _build_daymaster_dynamics(me_chart, partner_chart)
 
     return {
         "schemaVersion": "compat-basis-v1",
@@ -257,10 +295,10 @@ def _build_basis(me: PersonInput, partner: PersonInput, me_chart: dict, partner_
             },
         },
         "relations": {
-            "branchRelations": [x for x in (_signal_to_branch_relation(s) for s in raw_signals) if x],
-            "stemRelations": [x for x in (_signal_to_stem_relation(s) for s in raw_signals) if x],
-            "elementDynamics": [x for x in (_signal_to_element_dynamics(s) for s in raw_signals) if x],
-            "dayMasterDynamics": [x for x in (_signal_to_daymaster_dynamics(s) for s in raw_signals) if x],
+            "branchRelations": branch_relations,
+            "stemRelations": stem_relations,
+            "elementDynamics": element_dynamics,
+            "dayMasterDynamics": daymaster_dynamics,
         },
         "reliability": {
             "penalties": reliability_penalties,
@@ -269,7 +307,7 @@ def _build_basis(me: PersonInput, partner: PersonInput, me_chart: dict, partner_
     }
 
 
-def _build_confidence_reasons(raw_signals: list[dict], confidence: str) -> list[str]:
+def _build_confidence_reasons(raw_signals: list[dict], confidence: str, basis: dict | None = None) -> list[str]:
     reasons: list[str] = []
     for s in raw_signals:
         code = s.get("code")
@@ -279,6 +317,14 @@ def _build_confidence_reasons(raw_signals: list[dict], confidence: str) -> list[
             reasons.append("partner-birth-time-unknown")
         elif code == "RELIABILITY_PARTIAL_PILLARS":
             reasons.append("partial-pillars")
+
+    if basis:
+        branch = basis.get("relations", {}).get("branchRelations", [])
+        stem = basis.get("relations", {}).get("stemRelations", [])
+        if branch and all(r.get("type") == "neutral" for r in branch):
+            reasons.append("branch-mostly-neutral")
+        if stem and any(r.get("type") in {"chung", "clash"} for r in stem):
+            reasons.append("stem-tension-detected")
 
     if not reasons and confidence == "high":
         reasons.append("full-time-known")
@@ -306,11 +352,11 @@ def get_compatibility(me: PersonInput, partner: PersonInput):
 
     basis = _build_basis(me, partner, me_chart, partner_chart, raw_signals, confidence_level)
     sub_scores = {
-        "branch": _sum_weights(raw_signals, "relation-branch"),
-        "stem": _sum_weights(raw_signals, "relation-stem"),
-        "elements": _sum_weights(raw_signals, "element-dynamics"),
-        "dayMaster": _sum_weights(raw_signals, "daymaster-dynamics"),
-        "reliability": _sum_weights(raw_signals, "reliability"),
+        "branch": sum(int(x.get("weight", 0)) for x in basis.get("relations", {}).get("branchRelations", [])),
+        "stem": sum(int(x.get("weight", 0)) for x in basis.get("relations", {}).get("stemRelations", [])),
+        "elements": sum(int(x.get("weight", 0)) for x in basis.get("relations", {}).get("elementDynamics", [])),
+        "dayMaster": sum(int(x.get("weight", 0)) for x in basis.get("relations", {}).get("dayMasterDynamics", [])),
+        "reliability": sum(int(x.get("weight", 0)) for x in basis.get("reliability", {}).get("penalties", [])),
     }
 
     chart_rule_version = me_chart.get("rule_version") if me_chart.get("rule_version") == partner_chart.get("rule_version") else None
@@ -321,7 +367,7 @@ def get_compatibility(me: PersonInput, partner: PersonInput):
         "basis": basis,
         "confidence": {
             "level": confidence_level,
-            "reasons": _build_confidence_reasons(raw_signals, confidence_level),
+            "reasons": _build_confidence_reasons(raw_signals, confidence_level, basis),
         },
         "provenance": {
             "ruleVersion": "compat-v2-basis",
