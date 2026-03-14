@@ -205,55 +205,73 @@ function summaryLinePoolByTone(tone: HomeNarrativeBasis["relationTone"]) {
   } as const;
 }
 
-function buildSummary(basis: HomeNarrativeBasis): [string, string, string] {
+function buildSummary(seed: number, basis: HomeNarrativeBasis): [string, string, string] {
   const pool = summaryLinePoolByTone(basis.relationTone);
   const usedSummary = new Set<string>();
 
-  const line1 = uniqueLine(pool.line1[0], usedSummary, pool.line1[0]);
-  const line2 = uniqueLine(pool.line2[0], usedSummary, pool.line2[0]);
-  const line3Base = basis.flowBias === "afternoon-peak" ? pool.line3[0] : pool.line3[1] ?? pool.line3[0];
-  const line3 = uniqueLine(line3Base, usedSummary, pool.line3[0]);
+  const line1 = uniqueLine(pick(seed + 1, pool.line1), usedSummary, pool.line1[0]);
+  const line2 = uniqueLine(pick(seed + 3, pool.line2), usedSummary, pool.line2[0]);
+  const line3Candidates = basis.flowBias === "afternoon-peak" ? [pool.line3[0], ...(pool.line3[1] ? [pool.line3[1]] : [])] : [pool.line3[1] ?? pool.line3[0], pool.line3[0]];
+  const line3 = uniqueLine(pick(seed + 5, line3Candidates), usedSummary, pool.line3[0]);
 
   return [trimSentence(line1), trimSentence(line2), trimSentence(line3)];
 }
 
-function buildTodayPoints(basis: HomeNarrativeBasis): HomeTodayPoints {
-  const conversation = basis.relationTone === "soft"
-    ? "질문을 먼저 두면 대화가 부드러워져요."
-    : "핵심을 한 문장으로 먼저 꺼내세요.";
+function buildTodayPoints(seed: number, basis: HomeNarrativeBasis): HomeTodayPoints {
+  const conversationPool = basis.relationTone === "soft"
+    ? [
+        "질문을 먼저 두면 대화가 부드러워져요.",
+        "공감 한 문장을 먼저 두면 반응이 열려요.",
+        "결론보다 맥락을 먼저 확인하면 갈등이 줄어요.",
+      ]
+    : [
+        "핵심을 한 문장으로 먼저 꺼내세요.",
+        "요청-근거-기한 순서로 말하면 오해가 줄어요.",
+        "결정 포인트를 먼저 합의하면 대화가 빨라져요.",
+      ];
 
-  const wealth = basis.dominantElement === "earth"
-    ? "고정 지출만 점검해도 흐름이 안정돼요."
-    : "작은 결제는 낮 시간에 묶어 처리하세요.";
+  const wealthPool: Record<HomeNarrativeBasis["dominantElement"], string[]> = {
+    wood: ["학습/도구 지출은 효율부터 비교해보세요.", "확장성 있는 지출만 남기면 흐름이 좋아져요."],
+    fire: ["충동 결제는 오후 이후 한 번 더 확인하세요.", "작은 소비는 예산 한도를 먼저 정해두세요."],
+    earth: ["고정 지출만 점검해도 흐름이 안정돼요.", "생활비 카테고리 재정렬만 해도 누수가 줄어요."],
+    metal: ["정기결제 정리로 이번 주 현금흐름이 개선돼요.", "우선순위 낮은 결제는 오늘 정리해두세요."],
+    water: ["정보성 소비는 메모 후 하루 뒤 결제하세요.", "감정성 지출은 시간 간격을 두면 정확해져요."],
+  };
 
-  const caution = basis.supportElement === "water"
-    ? "감정 반응은 한 템포 늦추는 편이 좋아요."
-    : "약속 시간 겹침만 먼저 막아두세요.";
+  const cautionPool = basis.supportElement === "water"
+    ? [
+        "감정 반응은 한 템포 늦추는 편이 좋아요.",
+        "늦은 시간 감정 대화는 길어지기 쉬워요.",
+      ]
+    : [
+        "약속 시간 겹침만 먼저 막아두세요.",
+        "일정 충돌을 먼저 지우면 스트레스가 줄어요.",
+      ];
 
   return {
-    conversation: trimSentence(conversation, 34),
-    wealth: trimSentence(wealth, 34),
-    caution: trimSentence(caution, 34),
+    conversation: trimSentence(pick(seed + 7, conversationPool), 34),
+    wealth: trimSentence(pick(seed + 11, wealthPool[basis.dominantElement]), 34),
+    caution: trimSentence(pick(seed + 13, cautionPool), 34),
   };
 }
 
-function buildTimeFlow(basis: HomeNarrativeBasis): HomeTimeFlow {
-  const morning = basis.focusWindow === "morning-setup"
-    ? "루틴 정리와 일정 확인에 집중하세요."
-    : "오전엔 준비 속도를 올리는 게 좋아요.";
+function buildTimeFlow(seed: number, basis: HomeNarrativeBasis): HomeTimeFlow {
+  const morningPool = basis.focusWindow === "morning-setup"
+    ? ["루틴 정리와 일정 확인에 집중하세요.", "오전은 계획 확정/우선순위 정리에 최적이에요."]
+    : ["오전엔 준비 속도를 올리는 게 좋아요.", "작은 할 일을 먼저 끝내면 오후가 가벼워져요."];
 
-  const afternoon = basis.flowBias === "afternoon-peak"
-    ? "핵심 업무와 결정은 오후에 배치하세요."
-    : "중요 대화는 이 시간대가 가장 안정돼요.";
+  const afternoonPool = basis.flowBias === "afternoon-peak"
+    ? ["핵심 업무와 결정은 오후에 배치하세요.", "중요한 미팅은 오후 블록에 넣는 게 좋아요."]
+    : ["중요 대화는 이 시간대가 가장 안정돼요.", "리뷰/피드백 성격 작업에 적합한 흐름이에요."];
 
-  const evening = basis.focusWindow === "evening-wrap"
-    ? "관계 대화와 하루 정리에 맞는 시간이에요."
-    : "저녁엔 내일 준비를 가볍게 끝내세요.";
+  const eveningPool = basis.focusWindow === "evening-wrap"
+    ? ["관계 대화와 하루 정리에 맞는 시간이에요.", "감정 정리/회복 루틴을 짧게 넣어보세요."]
+    : ["저녁엔 내일 준비를 가볍게 끝내세요.", "마무리 체크리스트 3개만 정리하면 좋아요."];
 
   return {
-    morning: trimSentence(morning),
-    afternoon: trimSentence(afternoon),
-    evening: trimSentence(evening),
+    morning: trimSentence(pick(seed + 17, morningPool)),
+    afternoon: trimSentence(pick(seed + 19, afternoonPool)),
+    evening: trimSentence(pick(seed + 23, eveningPool)),
   };
 }
 
@@ -265,15 +283,15 @@ export function buildMockHomeNarrative(input: UserProfileInput, providerState: P
 
   const heroLead = trimSentence(heroLeadFromBasis(basis));
   const heroSupport = trimSentence(heroSupportFromBasis(basis));
-  const todaySummary = buildSummary(basis);
+  const todaySummary = buildSummary(seed, basis);
 
   return {
     providerState,
     heroLead,
     heroSupport,
     todaySummary,
-    todayPoints: buildTodayPoints(basis),
-    timeFlow: buildTimeFlow(basis),
+    todayPoints: buildTodayPoints(seed, basis),
+    timeFlow: buildTimeFlow(seed, basis),
     confidence: confidenceByState(providerState),
     basisLabel: basisLabelByState(providerState),
     basisCodes: basis.basisCodes,
