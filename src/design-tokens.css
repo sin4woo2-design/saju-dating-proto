@@ -144,8 +144,8 @@
   --max-width-app: 520px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --bottom-nav-h: 62px;
-  --bottom-nav-gap: 0px;
-  --bottom-nav-reserved: calc(var(--bottom-nav-h) + var(--safe-bottom));
+  --bottom-nav-gap: var(--space-3);
+  --bottom-nav-reserved: calc(var(--bottom-nav-h) + var(--bottom-nav-gap) + var(--safe-bottom));
 }
 
 /* ============================================================
