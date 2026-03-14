@@ -1,0 +1,74 @@
+[
+  {
+    "id": "golden-01-high-known-known",
+    "me": {"birthDate": "1991-10-21", "birthTime": "08:30", "birthTimeKnown": true, "gender": "male", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "partner": {"birthDate": "1993-02-11", "birthTime": "09:20", "birthTimeKnown": true, "gender": "female", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "expected": {"confidence": "high", "partialWarning": false}
+  },
+  {
+    "id": "golden-02-known-unknown",
+    "me": {"birthDate": "1991-10-21", "birthTime": "08:30", "birthTimeKnown": true, "gender": "male", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "partner": {"birthDate": "1993-02-11", "birthTime": "12:00", "birthTimeKnown": false, "gender": "female", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "expected": {"confidence": "low", "partialWarning": true}
+  },
+  {
+    "id": "golden-03-unknown-known",
+    "me": {"birthDate": "1988-07-05", "birthTime": "12:00", "birthTimeKnown": false, "gender": "male", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "partner": {"birthDate": "1995-12-19", "birthTime": "05:40", "birthTimeKnown": true, "gender": "female", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "expected": {"confidence": "low", "partialWarning": true}
+  },
+  {
+    "id": "golden-04-unknown-unknown",
+    "me": {"birthDate": "1988-07-05", "birthTime": "12:00", "birthTimeKnown": false, "gender": "male", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "partner": {"birthDate": "1995-12-19", "birthTime": "12:00", "birthTimeKnown": false, "gender": "female", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "expected": {"confidence": "low", "partialWarning": true}
+  },
+  {
+    "id": "golden-05-midnight-boundary-a",
+    "me": {"birthDate": "1990-01-01", "birthTime": "23:30", "birthTimeKnown": true, "gender": "male", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "partner": {"birthDate": "1990-01-02", "birthTime": "00:30", "birthTimeKnown": true, "gender": "female", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "expected": {"confidence": "high", "partialWarning": false}
+  },
+  {
+    "id": "golden-06-midnight-boundary-b",
+    "me": {"birthDate": "1990-01-01", "birthTime": "00:30", "birthTimeKnown": true, "gender": "male", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "partner": {"birthDate": "1990-01-02", "birthTime": "23:30", "birthTimeKnown": true, "gender": "female", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "expected": {"confidence": "high", "partialWarning": false}
+  },
+  {
+    "id": "golden-07-season-boundary-a",
+    "me": {"birthDate": "1994-02-03", "birthTime": "11:10", "birthTimeKnown": true, "gender": "male", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "partner": {"birthDate": "1994-02-04", "birthTime": "11:10", "birthTimeKnown": true, "gender": "female", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "expected": {"confidence": "high", "partialWarning": false}
+  },
+  {
+    "id": "golden-08-season-boundary-b",
+    "me": {"birthDate": "1994-02-04", "birthTime": "11:10", "birthTimeKnown": true, "gender": "male", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "partner": {"birthDate": "1994-02-05", "birthTime": "11:10", "birthTimeKnown": true, "gender": "female", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "expected": {"confidence": "high", "partialWarning": false}
+  },
+  {
+    "id": "golden-09-utc-known-known",
+    "me": {"birthDate": "1991-10-21", "birthTime": "08:30", "birthTimeKnown": true, "gender": "male", "calendarType": "solar", "timezone": "UTC"},
+    "partner": {"birthDate": "1993-02-11", "birthTime": "09:20", "birthTimeKnown": true, "gender": "female", "calendarType": "solar", "timezone": "UTC"},
+    "expected": {"confidence": "high", "partialWarning": false}
+  },
+  {
+    "id": "golden-10-mixed-gender-other",
+    "me": {"birthDate": "1992-06-15", "birthTime": "14:10", "birthTimeKnown": true, "gender": "other", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "partner": {"birthDate": "1989-11-03", "birthTime": "21:40", "birthTimeKnown": true, "gender": "female", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "expected": {"confidence": "high", "partialWarning": false}
+  },
+  {
+    "id": "golden-11-known-unknown-utc",
+    "me": {"birthDate": "1987-03-21", "birthTime": "07:25", "birthTimeKnown": true, "gender": "male", "calendarType": "solar", "timezone": "UTC"},
+    "partner": {"birthDate": "1996-09-14", "birthTime": "12:00", "birthTimeKnown": false, "gender": "female", "calendarType": "solar", "timezone": "UTC"},
+    "expected": {"confidence": "low", "partialWarning": true}
+  },
+  {
+    "id": "golden-12-symmetric-stability",
+    "me": {"birthDate": "1999-09-09", "birthTime": "09:09", "birthTimeKnown": true, "gender": "male", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "partner": {"birthDate": "1999-09-09", "birthTime": "09:09", "birthTimeKnown": true, "gender": "female", "calendarType": "solar", "timezone": "Asia/Seoul"},
+    "expected": {"confidence": "high", "partialWarning": false}
+  }
+]
