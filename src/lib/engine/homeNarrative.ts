@@ -53,8 +53,10 @@ interface HomeBasisContext {
 }
 
 function seedFromProfile(input: UserProfileInput) {
-  const today = new Date().toISOString().slice(0, 10);
-  return `${input.birthDate}-${input.birthTime}-${input.gender}-${today}`
+  const now = new Date();
+  const today = now.toISOString().slice(0, 10);
+  const hourBucket = Math.floor(now.getUTCHours() / 3); // 0~7
+  return `${input.birthDate}-${input.birthTime}-${input.gender}-${today}-h${hourBucket}`
     .split("")
     .reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
 }
@@ -233,8 +235,16 @@ function buildSummary(seed: number, basis: HomeNarrativeBasis): [string, string,
   const pool = summaryLinePoolByTone(basis.relationTone);
   const usedSummary = new Set<string>();
 
+  const dominantLineMap: Record<HomeNarrativeBasis["dominantElement"], string[]> = {
+    wood: ["새 시도는 작은 단위로 시작할수록 성과가 좋아요.", "학습/성장형 과제가 오늘 잘 맞아요."],
+    fire: ["표현력이 올라가는 날이라 발표/대화에 강점이 있어요.", "첫인상 임팩트가 좋은 날이에요."],
+    earth: ["안정 루틴을 고정하면 하루 전체가 편해져요.", "정리/관리형 작업의 완성도가 높아요."],
+    metal: ["우선순위 재정렬이 성과를 크게 올려줘요.", "기준을 정하면 실행 속도가 빨라져요."],
+    water: ["관찰과 공감이 필요한 작업에서 강점이 살아나요.", "깊이 있는 대화가 성과로 연결되기 좋아요."],
+  };
+
   const line1 = uniqueLine(pick(seed + 1, pool.line1), usedSummary, pool.line1[0]);
-  const line2 = uniqueLine(pick(seed + 3, pool.line2), usedSummary, pool.line2[0]);
+  const line2 = uniqueLine(pick(seed + 3, dominantLineMap[basis.dominantElement]), usedSummary, pool.line2[0]);
   const line3Candidates = basis.flowBias === "afternoon-peak" ? [pool.line3[0], ...(pool.line3[1] ? [pool.line3[1]] : [])] : [pool.line3[1] ?? pool.line3[0], pool.line3[0]];
   const line3 = uniqueLine(pick(seed + 5, line3Candidates), usedSummary, pool.line3[0]);
 

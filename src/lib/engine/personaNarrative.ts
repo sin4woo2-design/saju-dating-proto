@@ -43,7 +43,10 @@ interface PersonaBasisContext {
 }
 
 function seedFromProfile(input: UserProfileInput) {
-  return `${input.birthDate}-${input.birthTime}-${input.gender}`
+  const now = new Date();
+  const today = now.toISOString().slice(0, 10);
+  const hourBucket = Math.floor(now.getUTCHours() / 3);
+  return `${input.birthDate}-${input.birthTime}-${input.gender}-${today}-h${hourBucket}`
     .split("")
     .reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
 }
@@ -198,7 +201,15 @@ function subtitleFromBasis(seed: number, basis: PersonaNarrativeBasis) {
     ],
   };
 
-  return pick(seed + 29, poolByAxis[basis.appealAxis]);
+  const elementNudge: Record<PersonaNarrativeBasis["dominantElement"], string[]> = {
+    wood: ["성장형 관계에서 매력이 더 빠르게 드러나요.", "함께 배우는 환경에서 존재감이 커져요."],
+    fire: ["표현력이 살아나는 순간에 호감 전환이 빨라요.", "대화 온도를 올리는 장점이 분명해요."],
+    earth: ["안정감을 주는 태도가 장기 관계 강점이에요.", "신뢰를 쌓는 속도가 꾸준한 타입이에요."],
+    metal: ["기준을 정리해주는 능력이 관계 품질을 올려요.", "약속/원칙을 지키는 면이 큰 신뢰를 줘요."],
+    water: ["깊은 공감 대화에서 매력이 가장 크게 보여요.", "상대 감정을 읽는 정교함이 돋보여요."],
+  };
+
+  return `${pick(seed + 29, poolByAxis[basis.appealAxis])} ${pick(seed + 31, elementNudge[basis.dominantElement])}`;
 }
 
 function dominantElementLabel(element: PersonaNarrativeBasis["dominantElement"]) {
