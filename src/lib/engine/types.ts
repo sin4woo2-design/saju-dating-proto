@@ -1,5 +1,5 @@
 import type { SajuProfile, UserProfileInput, Gender } from "../../types/saju";
-import type { CompatibilityRawSignal } from "./provider-contract";
+import type { CompatibilityConfidenceLevel, CompatibilityRawSignal, CompatibilitySubScoresV1, ProviderCompatibilityProvenance, CompatibilityBasisV1 } from "./provider-contract";
 import type { HomeNarrativeSnapshot } from "./homeNarrative";
 import type { PersonaNarrativeSnapshot } from "./personaNarrative";
 
@@ -22,8 +22,17 @@ export interface CompatibilityResult {
   reliability?: {
     timeKnownMe?: boolean;
     timeKnownPartner?: boolean;
-    confidence?: "high" | "medium" | "low";
+    confidence?: CompatibilityConfidenceLevel;
   };
+  // v2 bridge shape (optional until provider full migration)
+  totalScore?: number;
+  subScores?: CompatibilitySubScoresV1;
+  basis?: CompatibilityBasisV1;
+  confidence?: {
+    level?: CompatibilityConfidenceLevel;
+    reasons?: string[];
+  };
+  provenance?: ProviderCompatibilityProvenance;
   scoreRuleVersion?: string;
 }
 

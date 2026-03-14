@@ -64,14 +64,20 @@ export function mapProviderSajuResponseToProfile(raw: ProviderSajuResponse): {
 
 export function mapProviderCompatibilityToScore(raw: ProviderCompatibilityResponse): {
   score: number;
+  totalScore?: number;
+  subScores?: ProviderCompatibilityResponse["compatibility"]["subScores"];
+  basis?: ProviderCompatibilityResponse["compatibility"]["basis"];
+  confidence?: ProviderCompatibilityResponse["compatibility"]["confidence"];
+  provenance?: ProviderCompatibilityResponse["compatibility"]["provenance"];
   warnings?: string[];
   rawSignals?: ProviderCompatibilityResponse["compatibility"]["rawSignals"];
   reliability?: ProviderCompatibilityResponse["compatibility"]["reliability"];
   scoreRuleVersion: string;
 } {
   const warnings = new Set<string>(mapProviderWarnings(raw.warnings) ?? []);
-  const providerScore = raw.compatibility.score;
+  const providerScore = raw.compatibility.totalScore ?? raw.compatibility.score;
   const rawSignals = raw.compatibility.rawSignals ?? [];
+  const scoreRuleVersionFromProvenance = raw.compatibility.provenance?.ruleVersion;
 
   if (rawSignals.length > 0) {
     const unknownSignalFound = rawSignals.some((s) => !isKnownCompatSignal(s.code));
@@ -87,10 +93,15 @@ export function mapProviderCompatibilityToScore(raw: ProviderCompatibilityRespon
 
     return {
       score: clamp100(derived),
+      totalScore: raw.compatibility.totalScore,
+      subScores: raw.compatibility.subScores,
+      basis: raw.compatibility.basis,
+      confidence: raw.compatibility.confidence,
+      provenance: raw.compatibility.provenance,
       warnings: warnings.size ? Array.from(warnings) : undefined,
       rawSignals: raw.compatibility.rawSignals,
       reliability: raw.compatibility.reliability,
-      scoreRuleVersion: COMPAT_RULE_VERSION,
+      scoreRuleVersion: scoreRuleVersionFromProvenance ?? COMPAT_RULE_VERSION,
     };
   }
 
@@ -98,19 +109,29 @@ export function mapProviderCompatibilityToScore(raw: ProviderCompatibilityRespon
     warnings.add("PROVIDER_PARTIAL_DATA");
     return {
       score: clamp100(providerScore),
+      totalScore: raw.compatibility.totalScore,
+      subScores: raw.compatibility.subScores,
+      basis: raw.compatibility.basis,
+      confidence: raw.compatibility.confidence,
+      provenance: raw.compatibility.provenance,
       warnings: warnings.size ? Array.from(warnings) : undefined,
       rawSignals: raw.compatibility.rawSignals,
       reliability: raw.compatibility.reliability,
-      scoreRuleVersion: "compat-provider-score-fallback",
+      scoreRuleVersion: scoreRuleVersionFromProvenance ?? "compat-provider-score-fallback",
     };
   }
 
   warnings.add("PROVIDER_PARTIAL_DATA");
   return {
     score: DEFAULT_COMPAT_SCORE,
+    totalScore: raw.compatibility.totalScore,
+    subScores: raw.compatibility.subScores,
+    basis: raw.compatibility.basis,
+    confidence: raw.compatibility.confidence,
+    provenance: raw.compatibility.provenance,
     warnings: Array.from(warnings),
     rawSignals: raw.compatibility.rawSignals,
     reliability: raw.compatibility.reliability,
-    scoreRuleVersion: "compat-default-fallback",
+    scoreRuleVersion: scoreRuleVersionFromProvenance ?? "compat-default-fallback",
   };
 }
