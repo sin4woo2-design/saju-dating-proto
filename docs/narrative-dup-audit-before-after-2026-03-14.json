@@ -1,0 +1,40 @@
+{
+  "before": {
+    "generatedAt": "2026-03-14T23:27:43.680Z",
+    "home": {
+      "all": { "total": 1080, "unique": 90, "duplicateRate": 91.7 },
+      "split": {
+        "provider": { "total": 360, "unique": 30, "duplicateRate": 91.7 },
+        "mock-fallback": { "total": 360, "unique": 30, "duplicateRate": 91.7 },
+        "mock": { "total": 360, "unique": 30, "duplicateRate": 91.7 }
+      }
+    },
+    "persona": {
+      "all": { "total": 1080, "unique": 360, "duplicateRate": 66.7 },
+      "split": {
+        "provider": { "total": 360, "unique": 120, "duplicateRate": 66.7 },
+        "mock-fallback": { "total": 360, "unique": 120, "duplicateRate": 66.7 },
+        "mock": { "total": 360, "unique": 120, "duplicateRate": 66.7 }
+      }
+    }
+  },
+  "after": {
+    "generatedAt": "2026-03-14T23:28:18.366Z",
+    "home": {
+      "all": { "total": 1080, "unique": 1080, "duplicateRate": 0.0 },
+      "split": {
+        "provider": { "total": 360, "unique": 360, "duplicateRate": 0.0 },
+        "mock-fallback": { "total": 360, "unique": 360, "duplicateRate": 0.0 },
+        "mock": { "total": 360, "unique": 360, "duplicateRate": 0.0 }
+      }
+    },
+    "persona": {
+      "all": { "total": 1080, "unique": 1080, "duplicateRate": 0.0 },
+      "split": {
+        "provider": { "total": 360, "unique": 360, "duplicateRate": 0.0 },
+        "mock-fallback": { "total": 360, "unique": 360, "duplicateRate": 0.0 },
+        "mock": { "total": 360, "unique": 360, "duplicateRate": 0.0 }
+      }
+    }
+  }
+}

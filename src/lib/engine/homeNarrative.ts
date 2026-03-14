@@ -60,7 +60,7 @@ function getRotationNonce(input: UserProfileInput) {
   const key = `home-narrative-rotation:${input.birthDate}:${input.birthTime}:${input.gender}:${today}`;
 
   const current = Number(window.localStorage.getItem(key) || "0");
-  const next = (current + 1) % 6;
+  const next = (current + 1) % 13;
   window.localStorage.setItem(key, String(next));
   return next;
 }
