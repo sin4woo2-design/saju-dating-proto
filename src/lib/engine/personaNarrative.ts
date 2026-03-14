@@ -42,11 +42,24 @@ interface PersonaBasisContext {
   saju?: SajuResult;
 }
 
+function getRotationNonce(input: UserProfileInput) {
+  if (typeof window === "undefined") return 0;
+
+  const today = new Date().toISOString().slice(0, 10);
+  const key = `persona-narrative-rotation:${input.birthDate}:${input.birthTime}:${input.gender}:${today}`;
+
+  const current = Number(window.localStorage.getItem(key) || "0");
+  const next = (current + 1) % 8;
+  window.localStorage.setItem(key, String(next));
+  return next;
+}
+
 function seedFromProfile(input: UserProfileInput) {
   const now = new Date();
   const today = now.toISOString().slice(0, 10);
   const hourBucket = Math.floor(now.getUTCHours() / 3);
-  return `${input.birthDate}-${input.birthTime}-${input.gender}-${today}-h${hourBucket}`
+  const rotation = getRotationNonce(input);
+  return `${input.birthDate}-${input.birthTime}-${input.gender}-${today}-h${hourBucket}-r${rotation}`
     .split("")
     .reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
 }
