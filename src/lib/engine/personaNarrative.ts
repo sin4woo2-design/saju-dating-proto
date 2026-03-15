@@ -1,7 +1,6 @@
 import type { ProviderState, SajuResult } from "./types";
 import type { UserProfileInput } from "../../types/saju";
 import type { NarrativeProvenance } from "./homeNarrative";
-import { pickWithRecencyGuard } from "./variationMemory";
 
 export type PersonaNarrativeConfidence = "high" | "medium" | "low";
 
@@ -43,23 +42,8 @@ interface PersonaBasisContext {
   saju?: SajuResult;
 }
 
-function getRotationNonce(input: UserProfileInput) {
-  if (typeof window === "undefined") return 0;
-
-  const today = new Date().toISOString().slice(0, 10);
-  const key = `persona-narrative-rotation:${input.birthDate}:${input.birthTime}:${input.gender}:${today}`;
-
-  const current = Number(window.localStorage.getItem(key) || "0");
-  const next = (current + 1) % 17;
-  window.localStorage.setItem(key, String(next));
-  return next;
-}
-
 function seedFromProfile(input: UserProfileInput) {
-  const now = new Date();
-  const today = now.toISOString().slice(0, 10);
-  const hourBucket = Math.floor(now.getUTCHours() / 3);
-  return `${input.birthDate}-${input.birthTime}-${input.gender}-${today}-h${hourBucket}`
+  return `${input.birthDate}-${input.birthTime}-${input.gender}`
     .split("")
     .reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
 }
@@ -172,33 +156,35 @@ function buildProvenance(providerState: ProviderState, ruleVersion: string, cont
   };
 }
 
-function personaTitleFromBasis(seed: number, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence, rotation: number) {
-  const bucket = `${basis.personaTone}:${basis.relationStyle}:${basis.appealAxis}:${basis.dominantElement}:${basis.supportElement}:${confidence}`;
+function personaTitleFromBasis(seed: number, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence) {
+  const basisSeed = `${basis.personaTone}:${basis.relationStyle}:${basis.appealAxis}:${basis.dominantElement}:${basis.supportElement}:${confidence}`
+    .split("")
+    .reduce((sum, ch) => sum + ch.charCodeAt(0), seed);
 
   if (basis.relationStyle === "strategist" && basis.personaTone === "warm") {
     const options = basis.appealAxis === "emotion-sync" ? ["온화한 리더형", "감성 기획형", "공감 리드형"] : ["온화한 기획형", "균형 리드형", "신뢰 운영형"];
-    return pickWithRecencyGuard(options, seed + 53 + rotation, (v) => String(v), "persona-title", bucket);
+    return pick(basisSeed + 53, options);
   }
 
   if (basis.relationStyle === "strategist") {
-    if (basis.dominantElement === "metal") return pickWithRecencyGuard(["정밀 전략형", "기준 설계형", "규칙 최적화형"], seed + 59 + rotation, (v) => String(v), "persona-title", bucket);
-    if (basis.dominantElement === "earth") return pickWithRecencyGuard(["안정 설계형", "현실 조율형", "지속 운영형"], seed + 61 + rotation, (v) => String(v), "persona-title", bucket);
-    return pickWithRecencyGuard(["균형 전략형", "이성 기획형", "구조화 리더형"], seed + 67 + rotation, (v) => String(v), "persona-title", bucket);
+    if (basis.dominantElement === "metal") return pick(basisSeed + 59, ["정밀 전략형", "기준 설계형", "규칙 최적화형"]);
+    if (basis.dominantElement === "earth") return pick(basisSeed + 61, ["안정 설계형", "현실 조율형", "지속 운영형"]);
+    return pick(basisSeed + 67, ["균형 전략형", "이성 기획형", "구조화 리더형"]);
   }
 
   if (basis.personaTone === "warm") {
-    if (basis.appealAxis === "rhythm-sync") return pickWithRecencyGuard(["리듬 공감형", "생활 호흡형", "템포 조율형"], seed + 71 + rotation, (v) => String(v), "persona-title", bucket);
-    if (basis.appealAxis === "trust-build") return pickWithRecencyGuard(["신뢰 공감형", "따뜻한 안정형", "관계 축적형"], seed + 73 + rotation, (v) => String(v), "persona-title", bucket);
-    return pickWithRecencyGuard(["감정 공명형", "표현 공감형", "정서 교감형"], seed + 79 + rotation, (v) => String(v), "persona-title", bucket);
+    if (basis.appealAxis === "rhythm-sync") return pick(basisSeed + 71, ["리듬 공감형", "생활 호흡형", "템포 조율형"]);
+    if (basis.appealAxis === "trust-build") return pick(basisSeed + 73, ["신뢰 공감형", "따뜻한 안정형", "관계 축적형"]);
+    return pick(basisSeed + 79, ["감정 공명형", "표현 공감형", "정서 교감형"]);
   }
 
-  if (basis.appealAxis === "emotion-sync") return pickWithRecencyGuard(["차분 공명형", "섬세 교감형", "잔잔 공감형"], seed + 83 + rotation, (v) => String(v), "persona-title", bucket);
-  if (basis.appealAxis === "trust-build") return pickWithRecencyGuard(["신중 신뢰형", "균형 신뢰형", "관계 안정형"], seed + 89 + rotation, (v) => String(v), "persona-title", bucket);
-  if (basis.dominantElement === "water") return pickWithRecencyGuard(["깊은 교감형", "정서 탐색형", "내면 연결형"], seed + 97 + rotation, (v) => String(v), "persona-title", bucket);
-  return pickWithRecencyGuard(["차분 조율형", "안정 조율형", "침착 균형형"], seed + 101 + rotation, (v) => String(v), "persona-title", bucket);
+  if (basis.appealAxis === "emotion-sync") return pick(basisSeed + 83, ["차분 공명형", "섬세 교감형", "잔잔 공감형"]);
+  if (basis.appealAxis === "trust-build") return pick(basisSeed + 89, ["신중 신뢰형", "균형 신뢰형", "관계 안정형"]);
+  if (basis.dominantElement === "water") return pick(basisSeed + 97, ["깊은 교감형", "정서 탐색형", "내면 연결형"]);
+  return pick(basisSeed + 101, ["차분 조율형", "안정 조율형", "침착 균형형"]);
 }
 
-function subtitleFromBasis(seed: number, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence, rotation: number) {
+function subtitleFromBasis(seed: number, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence) {
   const poolByAxis: Record<PersonaNarrativeBasis["appealAxis"], string[]> = {
     "emotion-sync": [
       "첫인상은 차분하고, 대화가 깊어질수록 매력이 선명해져요.",
@@ -225,15 +211,18 @@ function subtitleFromBasis(seed: number, basis: PersonaNarrativeBasis, confidenc
     water: ["깊은 공감 대화에서 매력이 가장 크게 보여요.", "상대 감정을 읽는 정교함이 돋보여요.", "수 기운 덕분에 정서 해석력이 뛰어나요."],
   };
 
-  const bucket = `${basis.personaTone}:${basis.appealAxis}:${basis.dominantElement}:${basis.supportElement}:${confidence}`;
   const nuancePool: Record<PersonaNarrativeBasis["relationStyle"], string[]> = {
     strategist: ["관계를 구조적으로 설계하는 능력이 강해요.", "기준을 정하면 안정감이 빠르게 올라가요.", "현실 감각이 관계 품질을 높여줘요."],
     mediator: ["상대 감정을 부드럽게 연결하는 강점이 있어요.", "대화 완충 능력이 갈등을 줄여줘요.", "관계 온도 조절이 자연스러운 편이에요."],
   };
 
-  const axisLine = pickWithRecencyGuard(poolByAxis[basis.appealAxis], seed + 29 + rotation, (v) => String(v), "persona-subtitle-axis", bucket);
-  const elementLine = pickWithRecencyGuard(elementNudge[basis.dominantElement], seed + 31 + rotation, (v) => String(v), "persona-subtitle-element", bucket);
-  const nuanceLine = pickWithRecencyGuard(nuancePool[basis.relationStyle], seed + 33 + rotation, (v) => String(v), "persona-subtitle-nuance", bucket);
+  const basisSeed = `${basis.personaTone}:${basis.appealAxis}:${basis.dominantElement}:${basis.supportElement}:${basis.relationStyle}:${confidence}`
+    .split("")
+    .reduce((sum, ch) => sum + ch.charCodeAt(0), seed);
+
+  const axisLine = pick(basisSeed + 29, poolByAxis[basis.appealAxis]);
+  const elementLine = pick(basisSeed + 31, elementNudge[basis.dominantElement]);
+  const nuanceLine = pick(basisSeed + 33, nuancePool[basis.relationStyle]);
   return `${axisLine} ${elementLine} ${nuanceLine}`;
 }
 
@@ -259,7 +248,7 @@ function supportElementLabel(element: PersonaNarrativeBasis["supportElement"]) {
   return map[element];
 }
 
-function buildTraits(seed: number, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence, rotation: number): PersonaTraits {
+function buildTraits(seed: number, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence): PersonaTraits {
   const ageRangePool = basis.personaTone === "warm"
     ? ["26~32세", "27~33세", "28~34세"]
     : ["29~35세", "30~36세", "28~35세"];
@@ -290,15 +279,19 @@ function buildTraits(seed: number, basis: PersonaNarrativeBasis, confidence: Per
       ? ["(핵심 흐름 위주 해석)", "(일부 보정 포함)"]
       : ["(보수적 해석 권장)", "(참고용 흐름 중심)"];
 
+  const basisSeed = `${basis.personaTone}:${basis.relationStyle}:${basis.appealAxis}:${basis.dominantElement}:${basis.supportElement}:${confidence}`
+    .split("")
+    .reduce((sum, ch) => sum + ch.charCodeAt(0), seed);
+
   return {
-    ageRange: pick(seed + 31 + rotation, ageRangePool),
-    personality: trimSentence(`${pick(seed + 37 + rotation, personalityPool)} ${pick(seed + 44 + rotation, confidenceTail)}`, 84),
-    career: trimSentence(pick(seed + 41 + rotation, careerPool), 84),
-    appearance: trimSentence(pick(seed + 43 + rotation, appearancePool), 84),
+    ageRange: pick(basisSeed + 31, ageRangePool),
+    personality: trimSentence(`${pick(basisSeed + 37, personalityPool)} ${pick(basisSeed + 44, confidenceTail)}`, 84),
+    career: trimSentence(pick(basisSeed + 41, careerPool), 84),
+    appearance: trimSentence(pick(basisSeed + 43, appearancePool), 84),
   };
 }
 
-function appealPointFromBasis(seed: number, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence, rotation: number) {
+function appealPointFromBasis(seed: number, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence) {
   const poolByAxis: Record<PersonaNarrativeBasis["appealAxis"], string[]> = {
     "emotion-sync": [
       "궁합 포인트 · 말의 온도를 맞추면 매력이 더 자연스럽게 보여요.",
@@ -323,7 +316,11 @@ function appealPointFromBasis(seed: number, basis: PersonaNarrativeBasis, confid
       ? ["상황에 따라 강도가 달라질 수 있어요."]
       : ["큰 흐름 가이드로 참고해 주세요."];
 
-  return `${pick(seed + 47 + rotation, poolByAxis[basis.appealAxis])} ${pick(seed + 49 + rotation, confidenceNudge)}`;
+  const basisSeed = `${basis.personaTone}:${basis.relationStyle}:${basis.appealAxis}:${basis.dominantElement}:${basis.supportElement}:${confidence}`
+    .split("")
+    .reduce((sum, ch) => sum + ch.charCodeAt(0), seed);
+
+  return `${pick(basisSeed + 47, poolByAxis[basis.appealAxis])} ${pick(basisSeed + 49, confidenceNudge)}`;
 }
 
 export function buildMockPersonaNarrative(input: UserProfileInput, providerState: ProviderState, context?: PersonaBasisContext): PersonaNarrativeSnapshot {
@@ -332,16 +329,15 @@ export function buildMockPersonaNarrative(input: UserProfileInput, providerState
   const provenance = buildProvenance(providerState, PERSONA_RULE_VERSION, context);
   const ruleVersion = provenance.ruleVersion || PERSONA_RULE_VERSION;
   const confidence = confidenceByState(providerState);
-  const rotation = getRotationNonce(input);
 
   return {
     providerState,
-    personaTitle: personaTitleFromBasis(seed, basis, confidence, rotation),
-    personaSubtitle: trimSentence(subtitleFromBasis(seed, basis, confidence, rotation), 84),
-    personaTraits: buildTraits(seed, basis, confidence, rotation),
+    personaTitle: personaTitleFromBasis(seed, basis, confidence),
+    personaSubtitle: trimSentence(subtitleFromBasis(seed, basis, confidence), 84),
+    personaTraits: buildTraits(seed, basis, confidence),
     dominantElement: dominantElementLabel(basis.dominantElement),
     supportElement: supportElementLabel(basis.supportElement),
-    appealPoint: trimSentence(appealPointFromBasis(seed, basis, confidence, rotation), 84),
+    appealPoint: trimSentence(appealPointFromBasis(seed, basis, confidence), 84),
     basisLabel: basisLabelByState(providerState),
     basisCodes: basis.basisCodes,
     confidence,

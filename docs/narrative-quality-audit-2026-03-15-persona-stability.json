@@ -1,0 +1,147 @@
+{
+  "generatedAt": "2026-03-15T00:43:45.425Z",
+  "home": {
+    "exact": {
+      "total": 1080,
+      "unique": 270,
+      "duplicateRate": 75
+    },
+    "near": {
+      "comparedPairs": 28680,
+      "nearPairs": 217,
+      "nearDuplicateRate": 0.8,
+      "threshold": 0.97
+    },
+    "split": {
+      "provider": {
+        "exact": {
+          "total": 360,
+          "unique": 90,
+          "duplicateRate": 75
+        },
+        "near": {
+          "comparedPairs": 28680,
+          "nearPairs": 217,
+          "nearDuplicateRate": 0.8,
+          "threshold": 0.97
+        },
+        "determinismRate": 100,
+        "impact": {
+          "baselineUnique": 3,
+          "nonceOnlyUnique": 9,
+          "basisOnlyUnique": 30
+        }
+      },
+      "mock-fallback": {
+        "exact": {
+          "total": 360,
+          "unique": 90,
+          "duplicateRate": 75
+        },
+        "near": {
+          "comparedPairs": 28680,
+          "nearPairs": 217,
+          "nearDuplicateRate": 0.8,
+          "threshold": 0.97
+        },
+        "determinismRate": 100,
+        "impact": {
+          "baselineUnique": 3,
+          "nonceOnlyUnique": 9,
+          "basisOnlyUnique": 30
+        }
+      },
+      "mock": {
+        "exact": {
+          "total": 360,
+          "unique": 90,
+          "duplicateRate": 75
+        },
+        "near": {
+          "comparedPairs": 28680,
+          "nearPairs": 217,
+          "nearDuplicateRate": 0.8,
+          "threshold": 0.97
+        },
+        "determinismRate": 100,
+        "impact": {
+          "baselineUnique": 3,
+          "nonceOnlyUnique": 9,
+          "basisOnlyUnique": 30
+        }
+      }
+    }
+  },
+  "persona": {
+    "exact": {
+      "total": 1080,
+      "unique": 180,
+      "duplicateRate": 83.3
+    },
+    "near": {
+      "comparedPairs": 28680,
+      "nearPairs": 360,
+      "nearDuplicateRate": 1.3,
+      "threshold": 0.97
+    },
+    "split": {
+      "provider": {
+        "exact": {
+          "total": 360,
+          "unique": 60,
+          "duplicateRate": 83.3
+        },
+        "near": {
+          "comparedPairs": 28680,
+          "nearPairs": 360,
+          "nearDuplicateRate": 1.3,
+          "threshold": 0.97
+        },
+        "determinismRate": 100,
+        "impact": {
+          "baselineUnique": 12,
+          "nonceOnlyUnique": 12,
+          "basisOnlyUnique": 60
+        }
+      },
+      "mock-fallback": {
+        "exact": {
+          "total": 360,
+          "unique": 60,
+          "duplicateRate": 83.3
+        },
+        "near": {
+          "comparedPairs": 28680,
+          "nearPairs": 360,
+          "nearDuplicateRate": 1.3,
+          "threshold": 0.97
+        },
+        "determinismRate": 100,
+        "impact": {
+          "baselineUnique": 12,
+          "nonceOnlyUnique": 12,
+          "basisOnlyUnique": 60
+        }
+      },
+      "mock": {
+        "exact": {
+          "total": 360,
+          "unique": 60,
+          "duplicateRate": 83.3
+        },
+        "near": {
+          "comparedPairs": 28680,
+          "nearPairs": 360,
+          "nearDuplicateRate": 1.3,
+          "threshold": 0.97
+        },
+        "determinismRate": 100,
+        "impact": {
+          "baselineUnique": 12,
+          "nonceOnlyUnique": 12,
+          "basisOnlyUnique": 60
+        }
+      }
+    }
+  }
+}

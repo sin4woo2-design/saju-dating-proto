@@ -103,11 +103,9 @@ function personaRow({ seed, state, basisMode = "vary", rotationMode = "vary" }) 
   const traits = [pick(seed + 13, [`age-${tone}-1`, `age-${tone}-2`, `age-${tone}-3`]), pick(seed + 15, [`person-${style}-1`, `person-${style}-2`, `person-${style}-3`]), pick(seed + 17, [`career-${dominant}-1`, `career-${dominant}-2`, `career-${dominant}-3`]), pick(seed + 19, [`look-${axis}-1`, `look-${axis}-2`, `look-${axis}-3`])].join("|");
 
   const stateLine = state === "provider" ? "실신호 반영" : state === "mock-fallback" ? "부분 보정" : "기본 해석";
-  const rot = rotationMode === "fixed" ? 0 : seed % 17;
-  const rotationTail = pick(rot, ["", " (톤 변주)", " (어휘 변주)"]);
-
+  // Persona는 identity consistency 우선: rotation 영향 제거
   const basisKey = `basis:${tone}-${style}-${axis}-${dominant}`;
-  return `${title}|${subtitle}${rotationTail}|${traits}|${stateLine}|${basisKey}`;
+  return `${title}|${subtitle}|${traits}|${stateLine}|${basisKey}`;
 }
 
 function sampleRows(domain, state, opts = {}, n = 360) {
