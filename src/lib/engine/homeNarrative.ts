@@ -69,8 +69,7 @@ function seedFromProfile(input: UserProfileInput) {
   const now = new Date();
   const today = now.toISOString().slice(0, 10);
   const hourBucket = Math.floor(now.getUTCHours() / 3); // 0~7
-  const rotation = getRotationNonce(input);
-  return `${input.birthDate}-${input.birthTime}-${input.gender}-${today}-h${hourBucket}-r${rotation}`
+  return `${input.birthDate}-${input.birthTime}-${input.gender}-${today}-h${hourBucket}`
     .split("")
     .reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
 }
@@ -257,7 +256,7 @@ function summaryLinePoolByTone(tone: HomeNarrativeBasis["relationTone"]) {
   } as const;
 }
 
-function buildSummary(seed: number, basis: HomeNarrativeBasis): [string, string, string] {
+function buildSummary(seed: number, basis: HomeNarrativeBasis, confidence: NarrativeConfidence, rotation: number): [string, string, string] {
   const pool = summaryLinePoolByTone(basis.relationTone);
   const usedSummary = new Set<string>();
 
@@ -269,7 +268,7 @@ function buildSummary(seed: number, basis: HomeNarrativeBasis): [string, string,
     water: ["관찰과 공감이 필요한 작업에서 강점이 살아나요.", "깊이 있는 대화가 성과로 연결되기 좋아요.", "수 기운이 강해 맥락 읽기와 해석이 좋아져요.", "정서 흐름을 읽는 능력이 오늘 특히 선명해요."],
   };
 
-  const bucket = `${basis.relationTone}:${basis.flowBias}:${basis.focusWindow}:${basis.dominantElement}`;
+  const bucket = `${basis.relationTone}:${basis.flowBias}:${basis.focusWindow}:${basis.dominantElement}:${basis.supportElement}:${confidence}`;
   const nuancePool = {
     intro: ["템포를 낮추면 기회가 보여요.", "한 문장 정리가 오늘의 성과를 만듭니다.", "우선순위를 짧게 고정하면 흐름이 살아나요."],
     bridge: ["대화의 온도 조절이 핵심이에요.", "질문형 접근이 반응을 좋게 만들어요.", "결론 전에 확인 한 번이 안전해요."],
@@ -278,14 +277,14 @@ function buildSummary(seed: number, basis: HomeNarrativeBasis): [string, string,
 
   const line1Base = pickWithRecencyGuard(pool.line1, seed + 1, (v) => String(v), "home-summary-line1", bucket);
   const line1 = uniqueLine(
-    `${line1Base} ${pickWithRecencyGuard(nuancePool.intro, seed + 2, (v) => String(v), "home-summary-intro", bucket)}`,
+    `${line1Base} ${pickWithRecencyGuard(nuancePool.intro, seed + 2 + rotation, (v) => String(v), "home-summary-intro", bucket)}`,
     usedSummary,
     pool.line1[0],
   );
 
   const line2Base = pickWithRecencyGuard(dominantLineMap[basis.dominantElement], seed + 3, (v) => String(v), "home-summary-line2", bucket);
   const line2 = uniqueLine(
-    `${line2Base} ${pickWithRecencyGuard(nuancePool.bridge, seed + 4, (v) => String(v), "home-summary-bridge", bucket)}`,
+    `${line2Base} ${pickWithRecencyGuard(nuancePool.bridge, seed + 4 + rotation, (v) => String(v), "home-summary-bridge", bucket)}`,
     usedSummary,
     pool.line2[0],
   );
@@ -293,7 +292,7 @@ function buildSummary(seed: number, basis: HomeNarrativeBasis): [string, string,
   const line3Candidates = basis.flowBias === "afternoon-peak" ? [pool.line3[0], ...(pool.line3[1] ? [pool.line3[1]] : [])] : [pool.line3[1] ?? pool.line3[0], pool.line3[0]];
   const line3Base = pickWithRecencyGuard(line3Candidates, seed + 5, (v) => String(v), "home-summary-line3", bucket);
   const line3 = uniqueLine(
-    `${line3Base} ${pickWithRecencyGuard(nuancePool.close, seed + 6, (v) => String(v), "home-summary-close", bucket)}`,
+    `${line3Base} ${pickWithRecencyGuard(nuancePool.close, seed + 6 + rotation, (v) => String(v), "home-summary-close", bucket)}`,
     usedSummary,
     pool.line3[0],
   );
@@ -301,7 +300,7 @@ function buildSummary(seed: number, basis: HomeNarrativeBasis): [string, string,
   return [trimSentence(line1), trimSentence(line2), trimSentence(line3)];
 }
 
-function buildTodayPoints(seed: number, basis: HomeNarrativeBasis): HomeTodayPoints {
+function buildTodayPoints(seed: number, basis: HomeNarrativeBasis, confidence: NarrativeConfidence, rotation: number): HomeTodayPoints {
   const conversationPool = basis.relationTone === "soft"
     ? [
         "질문을 먼저 두면 대화가 부드러워져요.",
@@ -332,15 +331,15 @@ function buildTodayPoints(seed: number, basis: HomeNarrativeBasis): HomeTodayPoi
         "일정 충돌을 먼저 지우면 스트레스가 줄어요.",
       ];
 
-  const bucket = `${basis.relationTone}:${basis.supportElement}:${basis.dominantElement}`;
+  const bucket = `${basis.relationTone}:${basis.supportElement}:${basis.dominantElement}:${confidence}`;
   return {
-    conversation: trimSentence(pickWithRecencyGuard(conversationPool, seed + 7, (v) => String(v), "home-point-conversation", bucket), 84),
-    wealth: trimSentence(pickWithRecencyGuard(wealthPool[basis.dominantElement], seed + 11, (v) => String(v), "home-point-wealth", bucket), 84),
-    caution: trimSentence(pickWithRecencyGuard(cautionPool, seed + 13, (v) => String(v), "home-point-caution", bucket), 84),
+    conversation: trimSentence(pickWithRecencyGuard(conversationPool, seed + 7 + rotation, (v) => String(v), "home-point-conversation", bucket), 84),
+    wealth: trimSentence(pickWithRecencyGuard(wealthPool[basis.dominantElement], seed + 11 + rotation, (v) => String(v), "home-point-wealth", bucket), 84),
+    caution: trimSentence(pickWithRecencyGuard(cautionPool, seed + 13 + rotation, (v) => String(v), "home-point-caution", bucket), 84),
   };
 }
 
-function buildTimeFlow(seed: number, basis: HomeNarrativeBasis): HomeTimeFlow {
+function buildTimeFlow(seed: number, basis: HomeNarrativeBasis, confidence: NarrativeConfidence, rotation: number): HomeTimeFlow {
   const morningPool = basis.focusWindow === "morning-setup"
     ? ["루틴 정리와 일정 확인에 집중하세요.", "오전은 계획 확정/우선순위 정리에 최적이에요."]
     : ["오전엔 준비 속도를 올리는 게 좋아요.", "작은 할 일을 먼저 끝내면 오후가 가벼워져요."];
@@ -353,10 +352,16 @@ function buildTimeFlow(seed: number, basis: HomeNarrativeBasis): HomeTimeFlow {
     ? ["관계 대화와 하루 정리에 맞는 시간이에요.", "감정 정리/회복 루틴을 짧게 넣어보세요."]
     : ["저녁엔 내일 준비를 가볍게 끝내세요.", "마무리 체크리스트 3개만 정리하면 좋아요."];
 
+  const confidenceTail = confidence === "high"
+    ? ["근거 신호가 충분해 실행 우선순위에 바로 적용해도 좋아요."]
+    : confidence === "medium"
+      ? ["핵심 흐름은 유효하지만 중요한 결정은 한 번 더 확인하세요."]
+      : ["보정 구간이라 큰 결정은 보수적으로 접근하세요."];
+
   return {
-    morning: trimSentence(pick(seed + 17, morningPool)),
-    afternoon: trimSentence(pick(seed + 19, afternoonPool)),
-    evening: trimSentence(pick(seed + 23, eveningPool)),
+    morning: trimSentence(`${pick(seed + 17, morningPool)} ${pick(seed + 18 + rotation, confidenceTail)}`),
+    afternoon: trimSentence(`${pick(seed + 19, afternoonPool)} ${pick(seed + 20 + rotation, confidenceTail)}`),
+    evening: trimSentence(`${pick(seed + 23, eveningPool)} ${pick(seed + 24 + rotation, confidenceTail)}`),
   };
 }
 
@@ -366,18 +371,20 @@ export function buildMockHomeNarrative(input: UserProfileInput, providerState: P
   const provenance = buildProvenance(providerState, HOME_RULE_VERSION, context);
   const ruleVersion = provenance.ruleVersion || HOME_RULE_VERSION;
 
+  const confidence = confidenceByState(providerState);
+  const rotation = getRotationNonce(input);
   const heroLead = trimSentence(heroLeadFromBasis(basis));
   const heroSupport = trimSentence(heroSupportFromBasis(basis));
-  const todaySummary = buildSummary(seed, basis);
+  const todaySummary = buildSummary(seed, basis, confidence, rotation);
 
   return {
     providerState,
     heroLead,
     heroSupport,
     todaySummary,
-    todayPoints: buildTodayPoints(seed, basis),
-    timeFlow: buildTimeFlow(seed, basis),
-    confidence: confidenceByState(providerState),
+    todayPoints: buildTodayPoints(seed, basis, confidence, rotation),
+    timeFlow: buildTimeFlow(seed, basis, confidence, rotation),
+    confidence,
     basisLabel: basisLabelByState(providerState),
     basisCodes: basis.basisCodes,
     ruleVersion,

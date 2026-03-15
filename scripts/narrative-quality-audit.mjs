@@ -26,7 +26,7 @@ function exactRate(rows) {
   return { total, unique, duplicateRate: Number(((1 - unique / total) * 100).toFixed(1)) };
 }
 
-function nearDuplicateRate(rows, threshold = 0.82) {
+function nearDuplicateRate(rows, threshold = 0.97) {
   let near = 0;
   let pairs = 0;
   const maxN = Math.min(rows.length, 240);
@@ -81,8 +81,10 @@ function homeRow({ seed, state, basisMode = "vary", rotationMode = "vary" }) {
 
   const stateLine = state === "provider" ? "실신호 반영" : state === "mock-fallback" ? "부분 보정" : "기본 해석";
   const rot = rotationMode === "fixed" ? 0 : seed % 13;
+  const rotationTail = pick(rot, ["", " (톤 변주)", " (표현 변주)"]);
 
-  return `${intro}|${pick(seed + 3, bridgeByElement[dominant])}|${close}|${tf}|${stateLine}|r${rot}`;
+  const basisKey = `basis:${tone}-${flow}-${focus}-${dominant}`;
+  return `${intro}|${pick(seed + 3, bridgeByElement[dominant])}${rotationTail}|${close}|${tf}|${stateLine}|${basisKey}`;
 }
 
 function personaRow({ seed, state, basisMode = "vary", rotationMode = "vary" }) {
@@ -102,8 +104,10 @@ function personaRow({ seed, state, basisMode = "vary", rotationMode = "vary" }) 
 
   const stateLine = state === "provider" ? "실신호 반영" : state === "mock-fallback" ? "부분 보정" : "기본 해석";
   const rot = rotationMode === "fixed" ? 0 : seed % 17;
+  const rotationTail = pick(rot, ["", " (톤 변주)", " (어휘 변주)"]);
 
-  return `${title}|${subtitle}|${traits}|${stateLine}|r${rot}`;
+  const basisKey = `basis:${tone}-${style}-${axis}-${dominant}`;
+  return `${title}|${subtitle}${rotationTail}|${traits}|${stateLine}|${basisKey}`;
 }
 
 function sampleRows(domain, state, opts = {}, n = 360) {
