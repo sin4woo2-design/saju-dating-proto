@@ -1,6 +1,7 @@
 import type { ProviderState, SajuResult } from "./types";
 import type { UserProfileInput } from "../../types/saju";
 import type { NarrativeProvenance } from "./homeNarrative";
+import { classifyPersonaType, type PersonaTypeResult } from "./personaClassifier";
 
 export type PersonaNarrativeConfidence = "high" | "medium" | "low";
 
@@ -34,6 +35,7 @@ export interface PersonaNarrativeSnapshot {
   ruleVersion: string;
   provenance: NarrativeProvenance;
   basis: PersonaNarrativeBasis;
+  personaType?: PersonaTypeResult;
 }
 
 const PERSONA_RULE_VERSION = "persona-v2";
@@ -329,20 +331,23 @@ export function buildMockPersonaNarrative(input: UserProfileInput, providerState
   const provenance = buildProvenance(providerState, PERSONA_RULE_VERSION, context);
   const ruleVersion = provenance.ruleVersion || PERSONA_RULE_VERSION;
   const confidence = confidenceByState(providerState);
+  const personaType = classifyPersonaType(basis, confidence);
 
   return {
     providerState,
-    personaTitle: personaTitleFromBasis(seed, basis, confidence),
-    personaSubtitle: trimSentence(subtitleFromBasis(seed, basis, confidence), 84),
+    // 연결 포인트: 타입 체계를 우선 사용하고, 기존 룰 기반 생성은 보조 유지
+    personaTitle: personaType.title || personaTitleFromBasis(seed, basis, confidence),
+    personaSubtitle: trimSentence(personaType.subtitle || subtitleFromBasis(seed, basis, confidence), 84),
     personaTraits: buildTraits(seed, basis, confidence),
     dominantElement: dominantElementLabel(basis.dominantElement),
     supportElement: supportElementLabel(basis.supportElement),
-    appealPoint: trimSentence(appealPointFromBasis(seed, basis, confidence), 84),
+    appealPoint: trimSentence(personaType.summary || appealPointFromBasis(seed, basis, confidence), 84),
     basisLabel: basisLabelByState(providerState),
     basisCodes: basis.basisCodes,
     confidence,
     ruleVersion,
     provenance,
     basis,
+    personaType,
   };
 }
