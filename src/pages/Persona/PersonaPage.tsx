@@ -57,6 +57,7 @@ export default function PersonaPage() {
   const { message, showMessage } = useTransientMessage();
   const { profile } = usePersistedProfile();
   const [narrative, setNarrative] = useState<PersonaNarrativeSnapshot | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const input = profile
@@ -74,6 +75,7 @@ export default function PersonaPage() {
         };
 
     let alive = true;
+    setIsLoading(true);
 
     calculatePersonaNarrativeWithEngine(input)
       .then((result) => {
@@ -81,6 +83,9 @@ export default function PersonaPage() {
       })
       .catch(() => {
         if (alive) setNarrative(null);
+      })
+      .finally(() => {
+        if (alive) setIsLoading(false);
       });
 
     return () => {
@@ -135,64 +140,77 @@ export default function PersonaPage() {
   return (
     <PageLayout title="운명의 이상형 페르소나" subtitle="캡처해서 공유하기 좋은 포스터 카드예요.">
       <div className="personaLayout anim-slide-up">
-        
-        {/* ── Outer glowing wrapper ── */}
-        <div className="personaPosterWrapper">
-          <div className="personaGlowBg" />
-          
-          <article className="personaPosterCard">
-            <div className="posterInnerBorder">
-              
-              <div className="posterHeader">
+        {isLoading ? (
+          <div className="personaPosterWrapper">
+            <div className="personaGlowBg" />
+            <article className="personaPosterCard">
+              <div className="posterInnerBorder" style={{ textAlign: "center", padding: "3rem 1.25rem" }}>
                 <span className="posterOverline">Saju Lounge Persona</span>
-                <h3 className="posterTitle">{resolved.personaTitle}</h3>
-                <p className="posterSubtitle">{resolved.personaSubtitle}</p>
+                <h3 className="posterTitle" style={{ marginTop: "0.5rem" }}>페르소나 분석 중…</h3>
+                <p className="posterSubtitle">실데이터를 불러오는 중이에요. 잠시만 기다려 주세요.</p>
               </div>
+            </article>
+          </div>
+        ) : (
+          <>
+            {/* ── Outer glowing wrapper ── */}
+            <div className="personaPosterWrapper">
+              <div className="personaGlowBg" />
 
-              <div className="posterTraits">
-                <div className="traitRow">
-                  <strong>연령대</strong>
-                  <span>{resolved.personaTraits.ageRange}</span>
-                </div>
-                <div className="traitRow">
-                  <strong>성격</strong>
-                  <span>{localizePersonaText(resolved.personaTraits.personality)}</span>
-                </div>
-                <div className="traitRow">
-                  <strong>직업군</strong>
-                  <span>{localizePersonaText(resolved.personaTraits.career)}</span>
-                </div>
-                <div className="traitRow">
-                  <strong>인상</strong>
-                  <span>{localizePersonaText(resolved.personaTraits.appearance)}</span>
-                </div>
-              </div>
+              <article className="personaPosterCard">
+                <div className="posterInnerBorder">
 
-              <div className="posterElements">
-                <span className="badge fire">{resolved.dominantElement}</span>
-                <span className="badge water">{resolved.supportElement}</span>
-              </div>
+                  <div className="posterHeader">
+                    <span className="posterOverline">Saju Lounge Persona</span>
+                    <h3 className="posterTitle">{resolved.personaTitle}</h3>
+                    <p className="posterSubtitle">{resolved.personaSubtitle}</p>
+                  </div>
 
-              <div className="posterFooter">
-                <div className="footerDivider" />
-                <p className="appealPoint">
-                  <strong>궁합 포인트</strong>
-                  {resolved.appealPoint}
-                </p>
-                <div className="posterMeta">
-                  <span>해석 기준: {resolved.basisLabel}</span>
-                  <span className="qaLine">QA: {provenanceLine}</span>
+                  <div className="posterTraits">
+                    <div className="traitRow">
+                      <strong>연령대</strong>
+                      <span>{resolved.personaTraits.ageRange}</span>
+                    </div>
+                    <div className="traitRow">
+                      <strong>성격</strong>
+                      <span>{localizePersonaText(resolved.personaTraits.personality)}</span>
+                    </div>
+                    <div className="traitRow">
+                      <strong>직업군</strong>
+                      <span>{localizePersonaText(resolved.personaTraits.career)}</span>
+                    </div>
+                    <div className="traitRow">
+                      <strong>인상</strong>
+                      <span>{localizePersonaText(resolved.personaTraits.appearance)}</span>
+                    </div>
+                  </div>
+
+                  <div className="posterElements">
+                    <span className="badge fire">{resolved.dominantElement}</span>
+                    <span className="badge water">{resolved.supportElement}</span>
+                  </div>
+
+                  <div className="posterFooter">
+                    <div className="footerDivider" />
+                    <p className="appealPoint">
+                      <strong>궁합 포인트</strong>
+                      {resolved.appealPoint}
+                    </p>
+                    <div className="posterMeta">
+                      <span>해석 기준: {resolved.basisLabel}</span>
+                      <span className="qaLine">QA: {provenanceLine}</span>
+                    </div>
+                  </div>
+
                 </div>
-              </div>
-
+              </article>
             </div>
-          </article>
-        </div>
 
-        <button type="button" className="personaShareBtn anim-fade-in anim-delay-2" onClick={handleShare}>
-          결과 공유하기
-        </button>
-
+            <button type="button" className="personaShareBtn anim-fade-in anim-delay-2" onClick={handleShare}>
+              결과 공유하기
+            </button>
+          </>
+        )}
       </div>
       
       {message && <p className="toastMsg anim-slide-up">{message}</p>}
