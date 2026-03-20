@@ -355,6 +355,56 @@
   gap: var(--space-3);
 }
 
+.insightGrid,
+.strengthGrid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.insightCard,
+.strengthCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: grid;
+  gap: var(--space-2);
+  box-shadow: var(--shadow-sm);
+}
+
+.insightCard small,
+.strengthCard small {
+  font-size: var(--text-micro);
+  color: var(--color-text-muted);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.02em;
+}
+
+.insightCard strong,
+.strengthCard strong {
+  font-size: var(--text-body);
+  color: var(--color-text);
+}
+
+.insightCard span {
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-gold-50);
+  color: var(--color-gold-800);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-semibold);
+}
+
+.insightCard p,
+.strengthCard p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
 /* ── Toast ── */
 .toastMsg {
   position: fixed;

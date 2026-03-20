@@ -3,6 +3,7 @@ import type { FiveElementsBalance, SajuProfile, UserProfileInput } from "../../t
 import { buildMockHomeNarrative } from "./homeNarrative";
 import { buildMockPersonaNarrative } from "./personaNarrative";
 import type { PairInput, SajuEngine } from "./types";
+import { buildProfileCopy, deriveSajuAnalysis } from "../sajuAnalysis";
 
 function seeded(input: UserProfileInput) {
   return `${input.name}-${input.birthDate}-${input.birthTime}-${input.gender}`
@@ -80,11 +81,15 @@ export function generateIdealTraits(balance: FiveElementsBalance): string[] {
 }
 
 export function buildProfileFromFiveElements(fiveElements: FiveElementsBalance): SajuProfile {
+  const analysis = deriveSajuAnalysis(fiveElements);
+  const copy = buildProfileCopy(fiveElements, analysis);
+
   return {
     fiveElements,
-    personalitySummary: generatePersonalitySummary(fiveElements),
-    loveStyle: generateLoveStyle(fiveElements),
-    idealTraits: generateIdealTraits(fiveElements),
+    personalitySummary: copy.personalitySummary,
+    loveStyle: copy.loveStyle,
+    idealTraits: copy.idealTraits,
+    analysis,
   };
 }
 

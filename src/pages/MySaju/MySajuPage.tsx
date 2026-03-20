@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import ResultCard from "../../components/ResultCard/ResultCard";
 import PageLayout from "../../components/layout/PageLayout";
-import { elementLabels } from "../../constants/labels";
 import { useTransientMessage } from "../../hooks/useTransientMessage";
 import { calculateSajuResult } from "../../lib/sajuEngine";
-import { buildSajuNarratives } from "../../lib/resultNarratives";
 import { shareOrCopy } from "../../lib/share";
-import type { SajuProfile, UserProfileInput } from "../../types/saju";
+import { describeBranch, describeStem, elementLabel, getSeasonLabel, getStrengthLabel, getTenGodLabel } from "../../lib/sajuAnalysis";
+import type { ElementKey, SajuAnalysis, SajuProfile, UserProfileInput } from "../../types/saju";
 import type { SajuChartSnapshot } from "../../lib/engine/types";
 import "./MySajuPage.css";
 
@@ -34,19 +33,25 @@ function statusBadgeText(providerState: string, warnings: string[]) {
   return "실계산 사용";
 }
 
-function elementColorKey(key: string) {
-  const map: Record<string, string> = {
+function elementColorKey(key: ElementKey) {
+  const map: Record<ElementKey, string> = {
     wood: "var(--color-wood)",
     fire: "var(--color-fire)",
     earth: "var(--color-earth)",
     metal: "var(--color-metal)",
     water: "var(--color-water)",
   };
-  return map[key] ?? "var(--color-gold-400)";
+  return map[key];
 }
 
-function todayLine(strong: string, weak: string) {
-  return `${elementLabels[strong]}로 힘을 내고, ${elementLabels[weak]}는 천천히 보완하는 하루가 좋아요.`;
+function joinElementLabels(elements: ElementKey[]) {
+  return elements.map((element) => elementLabel(element)).join("·");
+}
+
+function todayLine(analysis: SajuAnalysis) {
+  const usefulLabel = joinElementLabels(analysis.usefulElements);
+  const weakLabel = elementLabel(analysis.weakestElement);
+  return `${analysis.dayMasterLabel} 기준으로는 ${usefulLabel} 기운을 활용하고, 약한 ${weakLabel} 축을 생활 리듬에서 보완하는 하루가 좋아요.`;
 }
 
 function splitPillar(value?: string) {
@@ -58,22 +63,58 @@ function splitPillar(value?: string) {
   return { stem: trimmed, branch: "-", raw: trimmed };
 }
 
-const stemGuide: Record<string, string> = { /* same content */
-  갑: "곧고 시작 에너지가 강한 기운이에요.", 을: "유연하고 섬세하게 적응하는 기운이에요.",
-  병: "밝고 표현력이 강한 태양형 기운이에요.", 정: "따뜻하고 감정 밀도가 높은 기운이에요.",
-  무: "중심을 잡고 버티는 안정형 기운이에요.", 기: "배려와 조율에 강한 현실형 기운이에요.",
-  경: "판단이 빠르고 기준이 분명한 기운이에요.", 신: "정교함·디테일에 강한 기운이에요.",
-  임: "흐름을 크게 보고 확장하는 기운이에요.", 계: "깊이 있게 관찰하고 축적하는 기운이에요.",
-};
+function pillarHintText(type: "stem" | "branch", value: string) {
+  if (value === "-" || !value.trim()) {
+    return type === "stem" ? "천간 정보가 아직 없어요." : "지지 정보가 아직 없어요.";
+  }
 
-const branchGuide: Record<string, string> = { /* same content */
-  자: "감정 흐름이 빠르고 반응성이 높은 편이에요.", 축: "천천히 단단해지는 성향이 강해요.",
-  인: "새로운 시도를 밀어붙이는 힘이 있어요.", 묘: "관계 감수성과 조화 감각이 좋은 편이에요.",
-  진: "현실 감각과 확장 욕구가 함께 있는 타입이에요.", 사: "열정과 몰입이 빠르게 올라오는 편이에요.",
-  오: "표현력과 존재감이 강하게 드러나요.", 미: "배려와 생활 안정감을 중요하게 보는 편이에요.",
-  신: "판단과 실행의 속도가 빠른 편이에요.", 유: "기준을 정리하고 완성도를 높이는 타입이에요.",
-  술: "책임감과 현실적인 판단이 강한 편이에요.", 해: "공감력과 직관이 깊게 작동하는 편이에요.",
-};
+  return type === "stem" ? describeStem(value) : describeBranch(value);
+}
+
+function buildDetailSections(profile: SajuProfile, analysis: SajuAnalysis) {
+  const usefulLabel = joinElementLabels(analysis.usefulElements);
+  const supportLabel = joinElementLabels(analysis.supportElements);
+  const cautionLabel = joinElementLabels(analysis.cautionElements);
+  const weakLabel = elementLabel(analysis.weakestElement);
+  const monthLine = analysis.monthBranchLabel
+    ? `${analysis.monthBranchLabel} 월지가 계절의 중심축으로 작동합니다.`
+    : `${getSeasonLabel(analysis.season)} 흐름을 기준 계절감으로 해석하고 있어요.`;
+  const tenGodFocus = analysis.tenGods.find((item) => item.pillar === "month" && item.code)
+    ?? analysis.tenGods.find((item) => item.pillar !== "day" && item.code);
+
+  return {
+    summaryRows: [
+      `일간: ${analysis.dayMasterLabel}`,
+      `강약: ${getStrengthLabel(analysis.strengthLevel)}`,
+      `보완 기운: ${usefulLabel}`,
+    ],
+    personality: [
+      profile.personalitySummary,
+      monthLine,
+      `강한 오행은 ${elementLabel(analysis.dominantElement)}, 가장 약한 오행은 ${weakLabel}입니다.`,
+    ],
+    loveStyle: [
+      profile.loveStyle,
+      tenGodFocus?.code
+        ? `${getTenGodLabel(tenGodFocus.code)} 포인트가 두드러져 역할 기대치를 말로 맞출수록 관계가 편안합니다.`
+        : `${supportLabel} 기운이 보강되는 관계일수록 안정감이 커집니다.`,
+      analysis.strengthLevel === "strong"
+        ? "호감이 생길수록 속도를 조금 늦추고 질문을 먼저 두면 관계 피로가 줄어듭니다."
+        : analysis.strengthLevel === "weak"
+          ? "천천히 가까워져도 꾸준히 이어 가는 리듬이 잘 맞습니다."
+          : "감정 공감과 현실 조율을 함께 챙기는 대화가 잘 맞습니다.",
+    ],
+    idealPartner: [
+      ...profile.idealTraits,
+      `${usefulLabel} 기운처럼 지금 명식의 균형을 맞춰 줄 수 있는 사람이 특히 잘 맞습니다.`,
+    ],
+    cautionPatterns: [
+      analysis.strengthReason,
+      `주의 기운은 ${cautionLabel}입니다. 이 축이 과해지면 관계 판단이 급해질 수 있어요.`,
+      `${weakLabel} 기운이 약한 날에는 휴식, 정리, 속도 조절을 먼저 챙기는 편이 좋습니다.`,
+    ],
+  };
+}
 
 
 
@@ -104,21 +145,25 @@ export default function MySajuPage({ me }: Props) {
 
   const sortedElements = useMemo(() => {
     if (!profile) return [];
-    return Object.entries(profile.fiveElements).sort((a, b) => b[1] - a[1]);
+    return (Object.entries(profile.fiveElements) as Array<[ElementKey, number]>).sort((a, b) => b[1] - a[1]);
   }, [profile]);
 
   const topSummary = useMemo(() => {
-    if (!sortedElements.length) return null;
+    if (!profile?.analysis || !sortedElements.length) return null;
+
+    const analysis = profile.analysis;
     return {
+      analysis,
       strongKey: sortedElements[0][0],
       weakKey: sortedElements[sortedElements.length - 1][0],
-      strong: `${elementLabels[sortedElements[0][0]]} 강세`,
-      weak: `${elementLabels[sortedElements[sortedElements.length - 1][0]]} 보완 필요`,
+      strong: `${elementLabel(sortedElements[0][0])} 강세`,
+      weak: `${elementLabel(sortedElements[sortedElements.length - 1][0])} 보완 필요`,
+      headline: `${analysis.dayMasterLabel} · ${getStrengthLabel(analysis.strengthLevel)}`,
     };
-  }, [sortedElements]);
+  }, [profile, sortedElements]);
 
-  const narratives = useMemo(
-    () => (profile ? buildSajuNarratives(profile.fiveElements) : null),
+  const detailSections = useMemo(
+    () => (profile?.analysis ? buildDetailSections(profile, profile.analysis) : null),
     [profile]
   );
 
@@ -132,16 +177,21 @@ export default function MySajuPage({ me }: Props) {
     [chart]
   );
 
+  const visibleTenGods = useMemo(
+    () => profile?.analysis?.tenGods.filter((item) => item.pillar !== "day" && item.code) ?? [],
+    [profile]
+  );
+
   const handleShare = async () => {
     if (!profile || !topSummary) return;
     const result = await shareOrCopy({
       title: `${me.name}님의 사주 요약`,
-      text: `핵심: ${topSummary.strong}, ${topSummary.weak}\n${profile.personalitySummary}`,
+      text: `${topSummary.headline}\n핵심 오행: ${topSummary.strong}, ${topSummary.weak}\n${profile.personalitySummary}`,
     });
     showMessage(result === "shared" ? "공유 완료!" : "복사 완료!");
   };
 
-  if (!profile || !topSummary || !narratives) {
+  if (!profile || !topSummary || !detailSections) {
     return (
       <PageLayout title={`${me.name}님의 사주 리포트`}>
         <div className="sajuHero skeleton" style={{ minHeight: "180px", marginBottom: "var(--space-4)" }} />
@@ -169,12 +219,13 @@ export default function MySajuPage({ me }: Props) {
             <span key={w} className="statusBadge warn">{warningLabel(w)}</span>
           ))}
         </div>
-        <h3 className="sajuHeroTitle">{topSummary.strong}</h3>
+        <h3 className="sajuHeroTitle">{topSummary.headline}</h3>
         <div className="sajuHeroChips">
-          <span className="sajuChip">나를 잘 설명하는 기운 · {elementLabels[topSummary.strongKey]}</span>
-          <span className="sajuChip">관계 주의 포인트 · {elementLabels[topSummary.weakKey]}</span>
+          <span className="sajuChip">주도 오행 · {elementLabel(topSummary.analysis.dominantElement)}</span>
+          <span className="sajuChip">보완 오행 · {elementLabel(topSummary.analysis.weakestElement)}</span>
+          <span className="sajuChip">활용 기운 · {joinElementLabels(topSummary.analysis.usefulElements)}</span>
         </div>
-        <p className="sajuHeroToday">오늘의 한 줄 · {todayLine(topSummary.strongKey, topSummary.weakKey)}</p>
+        <p className="sajuHeroToday">오늘의 한 줄 · {todayLine(topSummary.analysis)}</p>
       </section>
 
       {/* ── SAJU TABS ── */}
@@ -202,14 +253,14 @@ export default function MySajuPage({ me }: Props) {
                       <button
                         type="button"
                         className={activePillarHint?.key === stemKey ? "active" : ""}
-                        onClick={() => setActivePillarHint((prev) => prev?.key === stemKey ? null : { key: stemKey, text: `천간 ${row.value.stem} · ${stemGuide[row.value.stem] || ""}` })}
+                        onClick={() => setActivePillarHint((prev) => prev?.key === stemKey ? null : { key: stemKey, text: `천간 ${row.value.stem} · ${pillarHintText("stem", row.value.stem)}` })}
                       >
                         {row.value.stem}
                       </button>
                       <button
                         type="button"
                         className={activePillarHint?.key === branchKey ? "active" : ""}
-                        onClick={() => setActivePillarHint((prev) => prev?.key === branchKey ? null : { key: branchKey, text: `지지 ${row.value.branch} · ${branchGuide[row.value.branch] || ""}` })}
+                        onClick={() => setActivePillarHint((prev) => prev?.key === branchKey ? null : { key: branchKey, text: `지지 ${row.value.branch} · ${pillarHintText("branch", row.value.branch)}` })}
                       >
                         {row.value.branch}
                       </button>
@@ -224,12 +275,41 @@ export default function MySajuPage({ me }: Props) {
 
         {activeTab === "ten-god" && (
           <div className="tabContent">
-            <p className="tabHint">오행은 실데이터 반영 중, 십성은 준비 중입니다.</p>
+            {visibleTenGods.length ? (
+              <div className="insightGrid">
+                {visibleTenGods.map((item) => (
+                  <article key={`${item.pillar}-${item.stem}`} className="insightCard">
+                    <small>{item.pillar === "year" ? "연간" : item.pillar === "month" ? "월간" : "시간"}</small>
+                    <strong>{item.stem}</strong>
+                    <span>{item.code ? getTenGodLabel(item.code) : "해석 대기"}</span>
+                    <p>{item.summary}</p>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <p className="tabHint">십성은 아직 추정 근거가 부족해 표시할 항목이 없어요.</p>
+            )}
           </div>
         )}
         {activeTab === "strength" && (
           <div className="tabContent">
-            <p className="tabHint">신강/신약 판정 기능은 현재 고도화 준비 중입니다.</p>
+            <div className="strengthGrid">
+              <article className="strengthCard">
+                <small>강약 판정</small>
+                <strong>{getStrengthLabel(topSummary.analysis.strengthLevel)}</strong>
+                <p>{topSummary.analysis.strengthReason}</p>
+              </article>
+              <article className="strengthCard">
+                <small>계절감</small>
+                <strong>{topSummary.analysis.monthBranchLabel ?? getSeasonLabel(topSummary.analysis.season)}</strong>
+                <p>{getSeasonLabel(topSummary.analysis.season)} 흐름을 기준으로 일간의 힘을 읽었어요.</p>
+              </article>
+              <article className="strengthCard">
+                <small>활용 기운</small>
+                <strong>{joinElementLabels(topSummary.analysis.usefulElements)}</strong>
+                <p>지금 명식에서는 이 기운을 쓰는 생활 리듬과 관계 패턴이 균형 회복에 도움 됩니다.</p>
+              </article>
+            </div>
           </div>
         )}
       </section>
@@ -238,11 +318,7 @@ export default function MySajuPage({ me }: Props) {
       <ResultCard
         title="핵심 요약"
         tone="highlight"
-        rows={[
-          `강세: ${topSummary.strong}`,
-          `보완: ${topSummary.weak}`,
-          "관계 몰입도는 높고, 감정 리듬 조율이 핵심이에요.",
-        ]}
+        rows={detailSections.summaryRows}
       />
 
       {/* ── 5 ELEMENTS CHART ── */}
@@ -267,17 +343,17 @@ export default function MySajuPage({ me }: Props) {
               }}
             >
               <div className="donutInner">
-                <strong>{elementLabels[topSummary.strongKey]}</strong>
+                <strong>{elementLabel(topSummary.strongKey as ElementKey)}</strong>
                 <small>가장 강함</small>
               </div>
             </div>
           </div>
 
           <div className="elementBars">
-            {Object.entries(profile.fiveElements).map(([key, value]) => (
+            {(Object.entries(profile.fiveElements) as Array<[ElementKey, number]>).map(([key, value]) => (
               <div key={key} className="elementBarRow">
                 <span className="elementLabel" style={{ color: elementColorKey(key) }}>
-                  {elementLabels[key] ?? key}
+                  {elementLabel(key)}
                 </span>
                 <div className="barTrack">
                   <div className="barFill" style={{ width: `${Math.max(2, value)}%`, backgroundColor: elementColorKey(key) }} />
@@ -295,7 +371,7 @@ export default function MySajuPage({ me }: Props) {
           <summary>나의 기질</summary>
           <div className="foldContent">
             <ul className="detailList">
-              {[profile.personalitySummary, ...narratives.personality].map((text, idx) => (
+              {detailSections.personality.map((text, idx) => (
                 <li key={idx}>{text}</li>
               ))}
             </ul>
@@ -306,7 +382,7 @@ export default function MySajuPage({ me }: Props) {
           <summary>연애 스타일</summary>
           <div className="foldContent">
             <ul className="detailList">
-              {[profile.loveStyle, ...narratives.loveStyle].map((text, idx) => (
+              {detailSections.loveStyle.map((text, idx) => (
                 <li key={idx}>{text}</li>
               ))}
             </ul>
@@ -317,7 +393,7 @@ export default function MySajuPage({ me }: Props) {
           <summary>잘 맞는 상대</summary>
           <div className="foldContent">
             <ul className="detailList">
-              {[...profile.idealTraits, ...narratives.idealPartner].map((text, idx) => (
+              {detailSections.idealPartner.map((text, idx) => (
                 <li key={idx}>{text}</li>
               ))}
             </ul>
@@ -328,7 +404,7 @@ export default function MySajuPage({ me }: Props) {
           <summary>주의할 관계 패턴</summary>
           <div className="foldContent">
             <ul className="detailList">
-              {narratives.cautionPatterns.map((text, idx) => (
+              {detailSections.cautionPatterns.map((text, idx) => (
                 <li key={idx}>{text}</li>
               ))}
             </ul>

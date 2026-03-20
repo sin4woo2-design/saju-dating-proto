@@ -1,9 +1,10 @@
 import type { PairInput, SajuEngine } from "./types";
-import { mockEngine, buildProfileFromFiveElements } from "./mockEngine";
+import { mockEngine } from "./mockEngine";
 import { createHttpProviderAdapter } from "./providerAdapter";
 import { mapProviderCompatibilityToScore, mapProviderSajuResponseToProfile } from "./providerMapping";
 import type { UserProfileInput } from "../../types/saju";
 import type { CalendarType, ProviderPersonInput } from "./provider-contract";
+import { buildProfileCopy, deriveSajuAnalysis } from "../sajuAnalysis";
 
 const adapter = createHttpProviderAdapter();
 
@@ -38,11 +39,19 @@ export const realProviderEngine: SajuEngine = {
       });
 
       const mapped = mapProviderSajuResponseToProfile(raw);
+      const analysis = deriveSajuAnalysis(mapped.fiveElements, mapped.chart.pillars);
+      const copy = buildProfileCopy(mapped.fiveElements, analysis);
 
       return {
         source: "real-provider",
         providerState: "provider",
-        profile: buildProfileFromFiveElements(mapped.fiveElements),
+        profile: {
+          fiveElements: mapped.fiveElements,
+          personalitySummary: copy.personalitySummary,
+          loveStyle: copy.loveStyle,
+          idealTraits: copy.idealTraits,
+          analysis,
+        },
         warnings: mapped.warnings,
         chart: mapped.chart,
       };

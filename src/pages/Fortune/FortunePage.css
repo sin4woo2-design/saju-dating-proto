@@ -70,6 +70,15 @@
   opacity: 0.95;
 }
 
+.fortuneHeroSub {
+  margin: 0;
+  max-width: 280px;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--color-gold-100);
+  opacity: 0.9;
+}
+
 /* ── Detail Scores Grid ── */
 .fortuneDetailsGrid {
   display: grid;
@@ -194,4 +203,13 @@
   height: 6px;
   border-radius: var(--radius-pill);
   background: var(--color-gold-400);
+}
+
+.fortuneCaution {
+  margin: 0;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border-warm);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
 }

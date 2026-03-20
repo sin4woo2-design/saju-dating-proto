@@ -2,8 +2,8 @@ import { useMemo, useState } from "react";
 import PageLayout from "../../components/layout/PageLayout";
 import { genderLabels } from "../../constants/labels";
 import { useTransientMessage } from "../../hooks/useTransientMessage";
-import { calculateCompatibilityResult, generateCompatibilitySummary } from "../../lib/compatibility";
-import { buildCompatibilityNarratives } from "../../lib/resultNarratives";
+import { calculateCompatibilityResult } from "../../lib/compatibility";
+import { buildCompatibilityViewModel } from "../../lib/compatibilityInsights";
 import { shareOrCopy } from "../../lib/share";
 import type { Gender, UserProfileInput } from "../../types/saju";
 import type { CompatibilityBasisV1, CompatibilityRawSignal, CompatibilitySubScoresV1, ProviderCompatibilityProvenance } from "../../lib/engine/provider-contract";
@@ -55,32 +55,6 @@ function signalDescription(code: string) {
   return getCompatSignalMeta(code)?.desc ?? "해당 신호는 관계 상호작용 패턴을 보여주는 보조 지표예요.";
 }
 
-function hasSignal(rawSignals: CompatibilityRawSignal[], code: string) {
-  return rawSignals.some((s) => s.code === code);
-}
-
-function layeredGuides(rawSignals: CompatibilityRawSignal[]) {
-  const talkGuide = hasSignal(rawSignals, "STEM_HAP_DAY")
-    ? "일간 합 신호가 있어 중요한 대화에서 합의 속도가 빠른 편이에요."
-    : hasSignal(rawSignals, "STEM_CHUNG_DAY")
-      ? "일간 충 신호가 있어 결론 전에 서로의 기준을 먼저 확인하는 게 좋아요."
-      : "질문-확인-합의 순서를 쓰면 장점이 더 선명해져요.";
-
-  const emotionGuide = hasSignal(rawSignals, "DAYMASTER_SUPPORT_MUTUAL")
-    ? "일간 보완 신호가 있어 감정 회복 루틴을 만들면 안정감이 크게 올라가요."
-    : hasSignal(rawSignals, "DAYMASTER_CLASH")
-      ? "일간 충돌 신호가 있어 같은 사건의 해석 차이를 먼저 인정하는 대화가 필요해요."
-      : "감정 표현 온도 차이를 미리 맞추면 오해가 줄어요.";
-
-  const lifestyleGuide = hasSignal(rawSignals, "BRANCH_HAP_YEAR")
-    ? "연지 합 흐름이라 생활 리듬이 맞을수록 관계가 빠르게 안정돼요."
-    : hasSignal(rawSignals, "BRANCH_CHUNG_YEAR") || hasSignal(rawSignals, "BRANCH_HYEONG_YEAR") || hasSignal(rawSignals, "BRANCH_PA_YEAR") || hasSignal(rawSignals, "BRANCH_HAE_YEAR")
-      ? "연지 긴장 신호가 있어 연락 리듬·생활 규칙을 먼저 합의하면 충돌이 줄어요."
-      : "연락 리듬과 일정 합의를 먼저 잡아두면 안정감이 커져요.";
-
-  return { talkGuide, emotionGuide, lifestyleGuide };
-}
-
 export default function CompatibilityPage({ me }: Props) {
   const [birthDate, setBirthDate] = useState("");
   const [birthTime, setBirthTime] = useState("");
@@ -125,12 +99,18 @@ export default function CompatibilityPage({ me }: Props) {
     }
   };
 
-  const summary = score !== null ? generateCompatibilitySummary(score, rawSignals) : null;
-  const layers = score !== null
-    ? buildCompatibilityNarratives({ score, rawSignals, subScores: subScores ?? undefined, basis: basis ?? undefined, confidence: { level: confidence } })
+  const viewModel = score !== null
+    ? buildCompatibilityViewModel({
+        score,
+        rawSignals,
+        subScores: subScores ?? undefined,
+        basis: basis ?? undefined,
+        confidence,
+        warnings,
+        provenance,
+      })
     : null;
   const confidenceInfo = confidenceBadge(confidence);
-  const guides = layeredGuides(rawSignals);
 
   const evidenceSignals = rawSignals.filter((s) => s.category !== "reliability").slice(0, 6);
   const reliabilitySignals = rawSignals.filter((s) => s.category === "reliability").slice(0, 3);
@@ -144,10 +124,10 @@ export default function CompatibilityPage({ me }: Props) {
   };
 
   const handleShare = async () => {
-    if (score === null || !summary) return;
+    if (score === null || !viewModel) return;
     const result = await shareOrCopy({
       title: "우리 궁합 점수",
-      text: `사주 궁합 ${score}점\n강점: ${summary.strengths.join(", ")}`,
+      text: `사주 궁합 ${score}점\n요약: ${viewModel.overview}\n강점: ${viewModel.strengths.join(", ")}`,
     });
     showMessage(result === "shared" ? "공유 완료!" : "복사 완료!");
   };
@@ -195,7 +175,7 @@ export default function CompatibilityPage({ me }: Props) {
       </section>
 
       {/* ── RESULT VIEW ── */}
-      {summary && layers && (
+      {viewModel && (
         <div className="compatResultView anim-slide-up">
           
           {/* ── MAIN SCORE HERO ── */}
@@ -215,8 +195,8 @@ export default function CompatibilityPage({ me }: Props) {
 
             <div className="compatHeroFooter">
               <h3>전체 궁합 점수</h3>
-              <p className="compatGradeLine">등급 {grade} · 핵심 연결성 요약</p>
-              <p>{layers.explain[0] ?? confidenceInfo.guide}</p>
+              <p className="compatGradeLine">등급 {grade} · {viewModel.gradeLine}</p>
+              <p>{viewModel.overview}</p>
               {provenance ? (
                 <p className="compatQaLine">
                   source: {provenance.calculationSource} · rule: {provenance.ruleVersion}
@@ -262,30 +242,39 @@ export default function CompatibilityPage({ me }: Props) {
             <article className="compatCategoryRow">
               <div className="catHead">
                 <strong>대화 궁합</strong>
-                <span className="catScore">{layers.talk}점</span>
+                <span className="catScore">{viewModel.talk}점</span>
               </div>
-              <p>{guides.talkGuide}</p>
+              <p>{viewModel.basisHighlights[0]?.body ?? "중요한 대화는 확인 질문을 먼저 두면 장점이 더 잘 살아나요."}</p>
             </article>
             <article className="compatCategoryRow">
               <div className="catHead">
                 <strong>감정 궁합</strong>
-                <span className="catScore">{layers.emotion}점</span>
+                <span className="catScore">{viewModel.emotion}점</span>
               </div>
-              <p>{guides.emotionGuide}</p>
+              <p>{viewModel.basisHighlights[1]?.body ?? "감정 반응 속도와 해석 차이를 천천히 맞추면 훨씬 편안해져요."}</p>
             </article>
             <article className="compatCategoryRow">
               <div className="catHead">
                 <strong>생활 궁합</strong>
-                <span className="catScore">{layers.lifestyle}점</span>
+                <span className="catScore">{viewModel.lifestyle}점</span>
               </div>
-              <p>{guides.lifestyleGuide}</p>
+              <p>{viewModel.basisHighlights[2]?.body ?? "연락 주기와 만남 빈도처럼 생활 규칙을 먼저 맞추면 안정감이 커져요."}</p>
             </article>
           </section>
 
+          <section className="compatBasisGrid">
+            {viewModel.basisHighlights.map((item, index) => (
+              <article key={`${item.title}-${index}`} className={`compatBasisCard ${item.tone}`}>
+                <strong>{item.title}</strong>
+                <p>{item.body}</p>
+              </article>
+            ))}
+          </section>
+
           <section className="compatActionCard">
-            <h3 className="sectionTitle">관계 개선 액션 3가지</h3>
+            <h3 className="sectionTitle">관계 운영 가이드</h3>
             <ul className="compatActionList">
-              {layers.tips.slice(0, 3).map((tip, idx) => (
+              {viewModel.tips.map((tip, idx) => (
                 <li key={`action-${idx}`}>{tip}</li>
               ))}
             </ul>
@@ -297,7 +286,7 @@ export default function CompatibilityPage({ me }: Props) {
               <summary>갈등 포인트</summary>
               <div className="foldContent">
                 <ul className="detailList">
-                  {layers.conflict.map((text, idx) => (
+                  {viewModel.cautions.map((text, idx) => (
                     <li key={idx}>{text}</li>
                   ))}
                 </ul>
@@ -305,10 +294,10 @@ export default function CompatibilityPage({ me }: Props) {
             </details>
 
             <details className="foldSection" open>
-              <summary>관계 팁</summary>
+              <summary>강점 포인트</summary>
               <div className="foldContent">
                 <ul className="detailList">
-                  {layers.tips.map((text, idx) => (
+                  {viewModel.strengths.map((text, idx) => (
                     <li key={idx}>{text}</li>
                   ))}
                 </ul>
@@ -316,14 +305,12 @@ export default function CompatibilityPage({ me }: Props) {
             </details>
 
             <details className="foldSection">
-              <summary>강점 & 관계 주의</summary>
+              <summary>신뢰도 메모</summary>
               <div className="foldContent">
                 <ul className="detailList">
-                  {summary.strengths.map((text, idx) => (
-                    <li key={`str-${idx}`}>✅ {text}</li>
-                  ))}
-                  {summary.cautions.map((text, idx) => (
-                    <li key={`cau-${idx}`}>⚠️ {text}</li>
+                  <li>{confidenceInfo.guide}</li>
+                  {viewModel.reliabilityNotes.map((text, idx) => (
+                    <li key={`rel-${idx}`}>{text}</li>
                   ))}
                 </ul>
               </div>

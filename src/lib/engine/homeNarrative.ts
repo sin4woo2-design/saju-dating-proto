@@ -1,5 +1,6 @@
 import type { ProviderState, SajuResult } from "./types";
-import type { UserProfileInput } from "../../types/saju";
+import type { SajuAnalysis, UserProfileInput } from "../../types/saju";
+import { elementLabel, getStrengthLabel } from "../sajuAnalysis";
 import { pickWithRecencyGuard } from "./variationMemory";
 
 export type NarrativeConfidence = "high" | "medium" | "low";
@@ -47,7 +48,7 @@ export interface HomeNarrativeSnapshot {
   basis: HomeNarrativeBasis;
 }
 
-const HOME_RULE_VERSION = "home-v2";
+const HOME_RULE_VERSION = "home-v3";
 
 interface HomeBasisContext {
   saju?: SajuResult;
@@ -146,17 +147,24 @@ function hasSignal(saju: SajuResult | undefined, token: string) {
 
 function buildHomeBasis(seed: number, providerState: ProviderState, context?: HomeBasisContext): HomeNarrativeBasis {
   const ranked = sortedElementsByScore(context?.saju);
-  const dominantElement = ranked[0]?.key ?? elementBySeed(seed + 1);
-  const supportElement = ranked[1]?.key ?? elementBySeed(seed + 3);
+  const analysis = context?.saju?.profile.analysis;
+  const dominantElement = analysis?.dominantElement ?? ranked[0]?.key ?? elementBySeed(seed + 1);
+  const supportElement = analysis?.usefulElements[0] ?? ranked[1]?.key ?? elementBySeed(seed + 3);
 
   const flowBias: HomeNarrativeBasis["flowBias"] = hasSignal(context?.saju, "AFTERNOON") || hasSignal(context?.saju, "FLOW_PEAK")
     ? "afternoon-peak"
-    : "steady-day";
+    : analysis?.strengthLevel === "strong" || analysis?.dominantElement === "fire"
+      ? "afternoon-peak"
+      : "steady-day";
 
   const relationTone: HomeNarrativeBasis["relationTone"] = hasSignal(context?.saju, "RELATION_TONE_SOFT") || hasSignal(context?.saju, "COMM_SOFT")
     ? "soft"
     : hasSignal(context?.saju, "RELATION_TONE_CLEAR") || hasSignal(context?.saju, "COMM_CLEAR")
       ? "clear"
+      : analysis?.strengthLevel === "weak" || analysis?.dayMasterElement === "water"
+        ? "soft"
+        : analysis?.strengthLevel === "strong" || analysis?.dayMasterElement === "metal"
+          ? "clear"
       : seed % 2 === 0
         ? "soft"
         : "clear";
@@ -167,6 +175,10 @@ function buildHomeBasis(seed: number, providerState: ProviderState, context?: Ho
       ? "evening-wrap"
       : flowBias === "afternoon-peak"
         ? "afternoon-focus"
+        : analysis?.usefulElements.includes("wood")
+          ? "morning-setup"
+          : analysis?.usefulElements.includes("water")
+            ? "evening-wrap"
         : seed % 5 === 0
           ? "morning-setup"
           : seed % 5 <= 2
@@ -189,6 +201,84 @@ function buildProvenance(providerState: ProviderState, ruleVersion: string, cont
     chartSource: context?.saju?.chart?.calculationSource || chartSourceByState(providerState),
     ruleVersion: context?.saju?.chart?.ruleVersion || ruleVersion,
     isFallback: providerState !== "provider",
+  };
+}
+
+function buildAnalysisHeroLead(analysis: SajuAnalysis, basis: HomeNarrativeBasis) {
+  if (basis.relationTone === "soft") {
+    return `${analysis.dayMasterLabel} 일간은 오늘 대화의 온도를 먼저 맞출수록 흐름이 부드러워져요.`;
+  }
+  if (basis.flowBias === "afternoon-peak") {
+    return `${analysis.dayMasterLabel} 일간은 오늘 핵심 결정과 중요한 대화를 오후 블록에 둘수록 안정적이에요.`;
+  }
+  return `${analysis.dayMasterLabel} 일간은 오늘 말의 순서와 일정 리듬을 정리할수록 관계 피로가 줄어들어요.`;
+}
+
+function buildAnalysisHeroSupport(analysis: SajuAnalysis, basis: HomeNarrativeBasis) {
+  const usefulLabel = analysis.usefulElements.map((element) => elementLabel(element)).join("·");
+  const weakestLabel = elementLabel(analysis.weakestElement);
+
+  if (basis.focusWindow === "morning-setup") {
+    return `${usefulLabel} 기운을 닮은 방식으로 오전에 우선순위만 먼저 잡아도 하루 리듬이 훨씬 편해져요.`;
+  }
+  if (basis.focusWindow === "evening-wrap") {
+    return `${weakestLabel} 축이 무너지지 않게 저녁에는 정리와 회복 루틴을 짧게 넣어 두세요.`;
+  }
+  return `${getStrengthLabel(analysis.strengthLevel)} 흐름이라 오후 집중 구간에 핵심 안건을 모을수록 체감 효율이 좋아져요.`;
+}
+
+function buildAnalysisSummary(analysis: SajuAnalysis, basis: HomeNarrativeBasis): [string, string, string] {
+  const usefulLabel = analysis.usefulElements.map((element) => elementLabel(element)).join("·");
+  const cautionLabel = analysis.cautionElements.map((element) => elementLabel(element)).join("·");
+  const weakestLabel = elementLabel(analysis.weakestElement);
+
+  return [
+    trimSentence(`${analysis.dayMasterLabel} 일간은 오늘 ${usefulLabel} 기운을 닮은 태도, 즉 ${basis.relationTone === "soft" ? "부드러운 시작과 확인 질문" : "분명한 우선순위와 간결한 제안"}에서 힘이 실려요.`),
+    trimSentence(`${getStrengthLabel(analysis.strengthLevel)} 흐름이라 ${basis.focusWindow === "afternoon-focus" ? "오후 핵심 블록에 힘을 모을수록" : basis.focusWindow === "morning-setup" ? "오전 준비를 먼저 끝낼수록" : "저녁 전에 정리 루틴을 잡을수록"} 체감 안정감이 커져요.`),
+    trimSentence(`${cautionLabel} 기운이 과해지면 흐름이 거칠어질 수 있으니, ${weakestLabel} 축을 보완하는 휴식과 정리 루틴을 먼저 챙겨 주세요.`),
+  ];
+}
+
+function buildAnalysisPoints(analysis: SajuAnalysis, basis: HomeNarrativeBasis): HomeTodayPoints {
+  const usefulLabel = analysis.usefulElements.map((element) => elementLabel(element)).join("·");
+  const cautionLabel = analysis.cautionElements.map((element) => elementLabel(element)).join("·");
+  const weakestLabel = elementLabel(analysis.weakestElement);
+
+  return {
+    conversation: trimSentence(
+      basis.relationTone === "soft"
+        ? `${usefulLabel} 기운처럼 질문을 먼저 두고 감정 확인 한 문장을 섞으면 대화가 훨씬 매끄러워져요.`
+        : `${usefulLabel} 기운처럼 핵심을 짧게 정리한 뒤 근거를 붙이면 설득력이 크게 올라가요.`,
+    ),
+    wealth: trimSentence(
+      analysis.strengthLevel === "strong"
+        ? `지출과 일정 모두 한 번에 넓게 벌리기보다 우선순위를 좁혀 정리하는 편이 유리해요.`
+        : `생활 리듬을 안정시키는 소비와 반복 지출 정리에 집중하면 오늘 흐름이 편안해져요.`,
+    ),
+    caution: trimSentence(`${cautionLabel} 기운이 과하면 판단이 급해지거나 반응이 흔들릴 수 있어요. 특히 ${weakestLabel} 축이 무너지지 않게 휴식 간격을 먼저 확보해 주세요.`),
+  };
+}
+
+function buildAnalysisTimeFlow(analysis: SajuAnalysis, basis: HomeNarrativeBasis): HomeTimeFlow {
+  const usefulLabel = analysis.usefulElements.map((element) => elementLabel(element)).join("·");
+  const weakestLabel = elementLabel(analysis.weakestElement);
+
+  return {
+    morning: trimSentence(
+      basis.focusWindow === "morning-setup"
+        ? `${usefulLabel} 기운을 닮은 방식으로 오전엔 우선순위와 일정부터 정리하세요.`
+        : `오전엔 작은 할 일부터 가볍게 끝내며 리듬을 세팅하는 편이 좋아요.`,
+    ),
+    afternoon: trimSentence(
+      basis.flowBias === "afternoon-peak"
+        ? `${analysis.dayMasterLabel} 일간은 오후에 결정력과 추진력이 붙기 쉬워 핵심 대화와 중요한 작업을 이때 모으는 편이 좋아요.`
+        : `오후엔 피드백, 조율, 점검처럼 흐름을 다듬는 작업이 더 잘 맞아요.`,
+    ),
+    evening: trimSentence(
+      basis.focusWindow === "evening-wrap"
+        ? `${weakestLabel} 축 회복을 위해 저녁엔 감정 정리와 회복 루틴을 짧게 넣어 주세요.`
+        : `저녁엔 내일 준비를 가볍게 끝내며 관계 온도를 정리하는 편이 안정적이에요.`,
+    ),
   };
 }
 
@@ -373,17 +463,18 @@ export function buildMockHomeNarrative(input: UserProfileInput, providerState: P
 
   const confidence = confidenceByState(providerState);
   const rotation = getRotationNonce(input);
-  const heroLead = trimSentence(heroLeadFromBasis(basis));
-  const heroSupport = trimSentence(heroSupportFromBasis(basis));
-  const todaySummary = buildSummary(seed, basis, confidence, rotation);
+  const analysis = context?.saju?.profile.analysis;
+  const heroLead = trimSentence(analysis ? buildAnalysisHeroLead(analysis, basis) : heroLeadFromBasis(basis));
+  const heroSupport = trimSentence(analysis ? buildAnalysisHeroSupport(analysis, basis) : heroSupportFromBasis(basis));
+  const todaySummary = analysis ? buildAnalysisSummary(analysis, basis) : buildSummary(seed, basis, confidence, rotation);
 
   return {
     providerState,
     heroLead,
     heroSupport,
     todaySummary,
-    todayPoints: buildTodayPoints(seed, basis, confidence, rotation),
-    timeFlow: buildTimeFlow(seed, basis, confidence, rotation),
+    todayPoints: analysis ? buildAnalysisPoints(analysis, basis) : buildTodayPoints(seed, basis, confidence, rotation),
+    timeFlow: analysis ? buildAnalysisTimeFlow(analysis, basis) : buildTimeFlow(seed, basis, confidence, rotation),
     confidence,
     basisLabel: basisLabelByState(providerState),
     basisCodes: basis.basisCodes,

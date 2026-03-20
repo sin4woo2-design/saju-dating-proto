@@ -1,20 +1,21 @@
 import type { ProviderState, SajuResult } from "./types";
-import type { UserProfileInput } from "../../types/saju";
+import type { ElementKey, SajuAnalysis, UserProfileInput } from "../../types/saju";
 import type { NarrativeProvenance } from "./homeNarrative";
 import { classifyPersonaType, type PersonaTypeResult } from "./personaClassifier";
+import { elementLabel, getStrengthLabel } from "../sajuAnalysis";
 
 export type PersonaNarrativeConfidence = "high" | "medium" | "low";
 
 export interface PersonaTraits {
-  ageRange: string;
-  personality: string;
-  career: string;
-  appearance: string;
+  relationTempo: string;
+  attractionStyle: string;
+  stableRhythm: string;
+  cautionPoint: string;
 }
 
 export interface PersonaNarrativeBasis {
-  dominantElement: "wood" | "fire" | "earth" | "metal" | "water";
-  supportElement: "wood" | "fire" | "earth" | "metal" | "water";
+  dominantElement: ElementKey;
+  supportElement: ElementKey;
   personaTone: "warm" | "calm";
   appealAxis: "emotion-sync" | "rhythm-sync" | "trust-build";
   relationStyle: "strategist" | "mediator";
@@ -38,7 +39,7 @@ export interface PersonaNarrativeSnapshot {
   personaType?: PersonaTypeResult;
 }
 
-const PERSONA_RULE_VERSION = "persona-v2";
+const PERSONA_RULE_VERSION = "persona-v3";
 
 interface PersonaBasisContext {
   saju?: SajuResult;
@@ -55,7 +56,7 @@ function pick<T>(seed: number, list: readonly T[]) {
 }
 
 function trimSentence(value: string, cap = 84) {
-  if (!value) return "페르소나 근거를 준비 중이에요.";
+  if (!value) return "분석 중인 명식이라 한 호흡 쉬어가며 읽어 주세요.";
   if (value.length <= cap) return value;
   const sliced = value.slice(0, cap).trim();
   return sliced.endsWith(".") ? sliced : `${sliced}.`;
@@ -79,9 +80,9 @@ function chartSourceByState(providerState: ProviderState) {
 }
 
 function basisLabelByState(providerState: ProviderState) {
-  if (providerState === "provider") return "해석 기준 · 실시간 사주 신호를 반영했어요.";
-  if (providerState === "mock-fallback") return "해석 기준 · 일부 데이터는 기본 규칙으로 보완했어요.";
-  return "해석 기준 · 기본 페르소나 규칙으로 생성했어요.";
+  if (providerState === "provider") return "실제 명식 신호 기준";
+  if (providerState === "mock-fallback") return "부분 fallback 해석";
+  return "기본 mock 해석";
 }
 
 function buildBasisCodes(providerState: ProviderState, tone: PersonaNarrativeBasis["personaTone"], relationStyle: PersonaNarrativeBasis["relationStyle"]) {
@@ -108,13 +109,18 @@ function hasSignal(saju: SajuResult | undefined, token: string) {
 
 function buildPersonaBasis(seed: number, providerState: ProviderState, context?: PersonaBasisContext): PersonaNarrativeBasis {
   const ranked = sortedElementsByScore(context?.saju);
-  const dominantElement = ranked[0]?.key ?? elementBySeed(seed + 1);
-  const supportElement = ranked[1]?.key ?? elementBySeed(seed + 5);
+  const analysis = context?.saju?.profile.analysis;
+  const dominantElement = analysis?.dominantElement ?? ranked[0]?.key ?? elementBySeed(seed + 1);
+  const supportElement = analysis?.usefulElements[0] ?? ranked[1]?.key ?? elementBySeed(seed + 5);
 
   const personaTone: PersonaNarrativeBasis["personaTone"] = hasSignal(context?.saju, "PERSONA_TONE_WARM") || hasSignal(context?.saju, "RELATION_TONE_SOFT")
     ? "warm"
     : hasSignal(context?.saju, "PERSONA_TONE_CALM")
       ? "calm"
+      : analysis?.strengthLevel === "weak" || analysis?.dayMasterElement === "water"
+        ? "warm"
+        : analysis?.strengthLevel === "strong" || analysis?.dayMasterElement === "metal"
+          ? "calm"
       : seed % 2 === 0
         ? "warm"
         : "calm";
@@ -125,6 +131,12 @@ function buildPersonaBasis(seed: number, providerState: ProviderState, context?:
       ? "rhythm-sync"
       : hasSignal(context?.saju, "TRUST")
         ? "trust-build"
+        : analysis?.usefulElements.includes("water")
+          ? "emotion-sync"
+          : analysis?.usefulElements.includes("wood") || analysis?.usefulElements.includes("fire")
+            ? "rhythm-sync"
+            : analysis?.usefulElements.includes("earth") || analysis?.usefulElements.includes("metal")
+              ? "trust-build"
         : seed % 3 === 0
           ? "emotion-sync"
           : seed % 3 === 1
@@ -135,6 +147,10 @@ function buildPersonaBasis(seed: number, providerState: ProviderState, context?:
     ? "strategist"
     : hasSignal(context?.saju, "MEDIATOR")
       ? "mediator"
+      : analysis?.strengthLevel === "strong"
+        ? "strategist"
+        : analysis?.strengthLevel === "weak"
+          ? "mediator"
       : dominantElement === "metal" || dominantElement === "earth"
         ? "strategist"
         : "mediator";
@@ -229,100 +245,138 @@ function subtitleFromBasis(seed: number, basis: PersonaNarrativeBasis, confidenc
 }
 
 function dominantElementLabel(element: PersonaNarrativeBasis["dominantElement"]) {
-  const map = {
-    wood: "주기운 · 목(木)",
-    fire: "주기운 · 화(火)",
-    earth: "주기운 · 토(土)",
-    metal: "주기운 · 금(金)",
-    water: "주기운 · 수(水)",
-  } as const;
-  return map[element];
+  return `주 기운 · ${elementLabel(element)}`;
 }
 
 function supportElementLabel(element: PersonaNarrativeBasis["supportElement"]) {
-  const map = {
-    wood: "보완기운 · 목(木)",
-    fire: "보완기운 · 화(火)",
-    earth: "보완기운 · 토(土)",
-    metal: "보완기운 · 금(金)",
-    water: "보완기운 · 수(水)",
-  } as const;
-  return map[element];
+  return `보완 기운 · ${elementLabel(element)}`;
 }
 
-function buildTraits(seed: number, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence): PersonaTraits {
-  const ageRangePool = basis.personaTone === "warm"
-    ? ["26~32세", "27~33세", "28~34세"]
-    : ["29~35세", "30~36세", "28~35세"];
+function roleWord(basis: PersonaNarrativeBasis) {
+  if (basis.relationStyle === "strategist" && basis.personaTone === "warm") return "온기 리드형";
+  if (basis.relationStyle === "strategist") return "구조 리드형";
+  if (basis.personaTone === "warm") return "공감 조율형";
+  return "안정 조율형";
+}
 
-  const personalityPool = basis.personaTone === "warm"
-    ? [
-        "따뜻하지만 기준이 분명한 성향",
-        "배려가 자연스럽고 감정 리듬을 잘 맞추는 성향",
-        "표현은 부드럽지만 판단은 선명한 성향",
-      ]
-    : [
-        "차분하고 관찰력이 좋은 성향",
-        "감정보다 맥락을 먼저 읽는 신중한 성향",
-        "침착하게 상황을 정리하는 안정형 성향",
-      ];
+function axisWord(axis: PersonaNarrativeBasis["appealAxis"]) {
+  if (axis === "emotion-sync") return "감정 공명";
+  if (axis === "rhythm-sync") return "리듬 합";
+  return "신뢰 축";
+}
 
-  const careerPool = basis.relationStyle === "strategist"
-    ? ["연구·분석·전략 분야", "기획·데이터·운영 전략 분야", "재무·정책·컨설팅 분야"]
-    : ["서비스·운영·기획 분야", "브랜드·콘텐츠·커뮤니케이션 분야", "교육·케어·매니징 분야"];
+function analysisTitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis) {
+  return `${analysis.dayMasterLabel} ${roleWord(basis)}`;
+}
 
-  const appearancePool = basis.personaTone === "warm"
-    ? ["부드럽고 단정한 분위기", "온화하고 편안한 인상", "밝고 친근한 첫인상"]
-    : ["차분하고 지적인 분위기", "정돈되고 신뢰감 있는 인상", "조용하지만 집중감 있는 인상"];
-
+function analysisSubtitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence) {
+  const usefulLabel = analysis.usefulElements.map((element) => elementLabel(element)).join("·");
   const confidenceTail = confidence === "high"
-    ? ["(근거 신호가 충분한 편)", "(해석 안정성이 높은 편)"]
+    ? "지금 명식 흐름과의 연결감도 높은 편이에요."
     : confidence === "medium"
-      ? ["(핵심 흐름 위주 해석)", "(일부 보정 포함)"]
-      : ["(보수적 해석 권장)", "(참고용 흐름 중심)"];
+      ? "일부는 fallback이지만 해석 축은 유지되고 있어요."
+      : "지금은 방향성 위주로 참고해 주세요.";
 
-  const basisSeed = `${basis.personaTone}:${basis.relationStyle}:${basis.appealAxis}:${basis.dominantElement}:${basis.supportElement}:${confidence}`
-    .split("")
-    .reduce((sum, ch) => sum + ch.charCodeAt(0), seed);
+  return trimSentence(
+    `${getStrengthLabel(analysis.strengthLevel)} 쪽의 ${analysis.dayMasterLabel} 일간이라 ${usefulLabel} 기운을 닮은 관계에서 매력이 더 또렷해져요. ${axisWord(basis.appealAxis)}이 살아나는 환경에서 존재감이 커집니다. ${confidenceTail}`,
+  );
+}
+
+function buildTraits(seed: number, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence, analysis?: SajuAnalysis): PersonaTraits {
+  const confidenceTail = confidence === "high"
+    ? "지금 구조에선 바로 체감되기 쉬운 축이에요."
+    : confidence === "medium"
+      ? "상황에 따라 강도는 조금 달라질 수 있어요."
+      : "가볍게 방향성 정도로 받아들이면 좋아요.";
+
+  if (analysis) {
+    const usefulLabel = analysis.usefulElements.map((element) => elementLabel(element)).join("·");
+    const supportLabel = analysis.supportElements.map((element) => elementLabel(element)).join("·");
+    const cautionLabel = analysis.cautionElements.map((element) => elementLabel(element)).join("·");
+    const weakestLabel = elementLabel(analysis.weakestElement);
+
+    return {
+      relationTempo: trimSentence(
+        analysis.strengthLevel === "strong"
+          ? "처음 분위기를 잡는 속도는 빠르지만, 관계 깊이는 한 박자 쉬며 맞출 때 훨씬 안정적이에요."
+          : analysis.strengthLevel === "weak"
+            ? "빠른 진전보다 마음을 확인하며 천천히 가까워질 때 편안함이 커져요."
+            : "리듬이 맞으면 자연스럽게 가까워지고, 억지로 당기지 않을수록 호흡이 좋아져요.",
+      ),
+      attractionStyle: trimSentence(
+        `${usefulLabel} 기운을 닮은 태도, 즉 ${basis.personaTone === "warm" ? "부드럽지만 흐름을 읽는 말투" : "정리된 말과 안정적인 반응"}가 가장 큰 매력 포인트예요. ${confidenceTail}`,
+      ),
+      stableRhythm: trimSentence(
+        `${supportLabel} 기운이 살아나는 환경, 곧 ${basis.relationStyle === "strategist" ? "예측 가능한 약속과 일정" : "감정 확인이 가능한 대화"}에서 관계 만족도가 높아져요.`,
+      ),
+      cautionPoint: trimSentence(
+        `${cautionLabel} 기운이 과해지면 ${analysis.strengthLevel === "strong" ? "주도권을 너무 빨리 쥐려는 인상" : "상대 반응에 흔들리는 흐름"}으로 보일 수 있어요. 특히 ${weakestLabel} 축이 무너지지 않게 생활 리듬을 먼저 챙겨 주세요.`,
+      ),
+    };
+  }
+
+  const fallbackTempo = basis.personaTone === "warm"
+    ? ["천천히 온도를 맞추며 가까워지는 편이에요.", "초반엔 부드럽게, 익숙해질수록 존재감이 커져요."]
+    : ["서두르기보다 기준을 확인하며 가까워지는 편이에요.", "리듬과 안정감을 먼저 확인할 때 매력이 살아나요."];
+
+  const fallbackAppeal = basis.appealAxis === "emotion-sync"
+    ? ["상대 마음의 결을 읽는 반응이 매력으로 이어져요.", "감정을 섬세하게 읽어 주는 태도가 강점이에요."]
+    : basis.appealAxis === "rhythm-sync"
+      ? ["생활 템포가 맞을수록 존재감이 또렷해져요.", "호흡이 맞는 관계에서 매력이 크게 살아나요."]
+      : ["신뢰를 차곡차곡 쌓는 방식이 가장 큰 무기예요.", "작은 약속을 지키는 태도가 오래 기억돼요."];
+
+  const fallbackRhythm = basis.relationStyle === "strategist"
+    ? ["예측 가능한 일정과 계획이 있을 때 마음이 편해져요.", "기준이 정리된 환경에서 관계 만족도가 높아져요."]
+    : ["감정 확인이 오가는 대화가 이어질 때 안정감이 생겨요.", "관계의 속도를 함께 조율할 수 있을 때 편안해져요."];
+
+  const fallbackCaution = basis.personaTone === "warm"
+    ? ["상대 기분에 너무 맞추다 보면 내 리듬을 놓칠 수 있어요.", "분위기를 살피느라 하고 싶은 말을 미루지 않는 게 좋아요."]
+    : ["기준을 너무 앞세우면 차갑게 보일 수 있어요.", "정리된 말이 장점이지만 단정적으로 들리지 않게 톤을 풀어 주세요."];
 
   return {
-    ageRange: pick(basisSeed + 31, ageRangePool),
-    personality: trimSentence(`${pick(basisSeed + 37, personalityPool)} ${pick(basisSeed + 44, confidenceTail)}`, 84),
-    career: trimSentence(pick(basisSeed + 41, careerPool), 84),
-    appearance: trimSentence(pick(basisSeed + 43, appearancePool), 84),
+    relationTempo: trimSentence(pick(seed + 31, fallbackTempo)),
+    attractionStyle: trimSentence(`${pick(seed + 37, fallbackAppeal)} ${confidenceTail}`),
+    stableRhythm: trimSentence(pick(seed + 41, fallbackRhythm)),
+    cautionPoint: trimSentence(pick(seed + 43, fallbackCaution)),
   };
+}
+
+function analysisAppealPoint(analysis: SajuAnalysis, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence) {
+  const usefulLabel = analysis.usefulElements.map((element) => elementLabel(element)).join("·");
+  const tail = confidence === "high"
+    ? "현재 입력 기준에서 가장 신뢰도가 높은 매력 축이에요."
+    : confidence === "medium"
+      ? "일부 보정이 있어도 흐름상 이 축이 가장 선명해요."
+      : "지금은 가볍게 관계 방향을 보는 힌트로 읽어 주세요.";
+
+  return trimSentence(
+    `${analysis.dayMasterLabel} 일간은 ${usefulLabel} 기운을 닮은 사람 앞에서 표정과 반응이 훨씬 자연스러워져요. ${basis.appealAxis === "emotion-sync" ? "감정의 결을 읽어 주는 순간" : basis.appealAxis === "rhythm-sync" ? "생활 리듬이 맞아드는 순간" : "신뢰가 축적되는 순간"}에 매력이 가장 크게 살아납니다. ${tail}`,
+  );
 }
 
 function appealPointFromBasis(seed: number, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence) {
   const poolByAxis: Record<PersonaNarrativeBasis["appealAxis"], string[]> = {
     "emotion-sync": [
-      "궁합 포인트 · 말의 온도를 맞추면 매력이 더 자연스럽게 보여요.",
-      "궁합 포인트 · 감정 확인 한 문장이 관계 온도를 크게 올려줘요.",
-      "궁합 포인트 · 섬세한 리액션이 신뢰를 빠르게 만들어요.",
+      "상대 마음의 결을 읽어 주는 반응이 관계의 온도를 빠르게 올려 줘요.",
+      "감정 확인 한 문장이 관계 흐름을 부드럽게 열어 줍니다.",
     ],
     "rhythm-sync": [
-      "궁합 포인트 · 약속 리듬이 맞으면 관계가 안정적으로 깊어져요.",
-      "궁합 포인트 · 연락 주기 합의만 해도 갈등이 크게 줄어요.",
-      "궁합 포인트 · 생활 템포가 맞으면 애정 표현도 자연스러워져요.",
+      "생활 템포와 대화 간격이 맞을수록 매력이 자연스럽게 살아나요.",
+      "리듬이 맞는 관계에서 존재감이 더 크게 드러나요.",
     ],
     "trust-build": [
-      "궁합 포인트 · 감정 표현 타이밍을 맞추면 신뢰가 빠르게 쌓여요.",
-      "궁합 포인트 · 작은 약속을 지키는 패턴이 매력을 키워줘요.",
-      "궁합 포인트 · 현실 계획을 함께 세우면 관계 안정감이 커져요.",
+      "작은 약속을 지키는 태도가 오래 가는 신뢰를 만들어 줘요.",
+      "감정보다 신뢰를 먼저 쌓는 방식이 가장 큰 장점이에요.",
     ],
   };
 
-  const confidenceNudge = confidence === "high"
-    ? ["핵심 신호와의 정합성이 높아요."]
+  const confidenceTail = confidence === "high"
+    ? "현재 구조상 바로 체감되기 쉬운 장점이에요."
     : confidence === "medium"
-      ? ["상황에 따라 강도가 달라질 수 있어요."]
-      : ["큰 흐름 가이드로 참고해 주세요."];
+      ? "상황에 따라 강도는 달라도 핵심 축은 유지돼요."
+      : "지금은 방향성 정도로 가볍게 참고해 주세요.";
 
-  const basisSeed = `${basis.personaTone}:${basis.relationStyle}:${basis.appealAxis}:${basis.dominantElement}:${basis.supportElement}:${confidence}`
-    .split("")
-    .reduce((sum, ch) => sum + ch.charCodeAt(0), seed);
-
-  return `${pick(basisSeed + 47, poolByAxis[basis.appealAxis])} ${pick(basisSeed + 49, confidenceNudge)}`;
+  return trimSentence(`${pick(seed + 47, poolByAxis[basis.appealAxis])} ${confidenceTail}`);
 }
 
 export function buildMockPersonaNarrative(input: UserProfileInput, providerState: ProviderState, context?: PersonaBasisContext): PersonaNarrativeSnapshot {
@@ -332,16 +386,16 @@ export function buildMockPersonaNarrative(input: UserProfileInput, providerState
   const ruleVersion = provenance.ruleVersion || PERSONA_RULE_VERSION;
   const confidence = confidenceByState(providerState);
   const personaType = classifyPersonaType(basis, confidence);
+  const analysis = context?.saju?.profile.analysis;
 
   return {
     providerState,
-    // 연결 포인트: 타입 체계를 우선 사용하고, 기존 룰 기반 생성은 보조 유지
-    personaTitle: personaType.title || personaTitleFromBasis(seed, basis, confidence),
-    personaSubtitle: trimSentence(personaType.subtitle || subtitleFromBasis(seed, basis, confidence), 84),
-    personaTraits: buildTraits(seed, basis, confidence),
+    personaTitle: analysis ? analysisTitle(analysis, basis) : personaType.title || personaTitleFromBasis(seed, basis, confidence),
+    personaSubtitle: analysis ? analysisSubtitle(analysis, basis, confidence) : trimSentence(personaType.subtitle || subtitleFromBasis(seed, basis, confidence), 84),
+    personaTraits: buildTraits(seed, basis, confidence, analysis),
     dominantElement: dominantElementLabel(basis.dominantElement),
     supportElement: supportElementLabel(basis.supportElement),
-    appealPoint: trimSentence(personaType.summary || appealPointFromBasis(seed, basis, confidence), 84),
+    appealPoint: analysis ? analysisAppealPoint(analysis, basis, confidence) : appealPointFromBasis(seed, basis, confidence),
     basisLabel: basisLabelByState(providerState),
     basisCodes: basis.basisCodes,
     confidence,

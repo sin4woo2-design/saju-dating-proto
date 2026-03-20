@@ -1,4 +1,4 @@
-import type { SajuProfile, UserProfileInput, Gender } from "../../types/saju";
+import type { SajuProfile, UserProfileInput, Gender, SajuPillarsSnapshot } from "../../types/saju";
 import type { CompatibilityConfidenceLevel, CompatibilityRawSignal, CompatibilitySubScoresV1, ProviderCompatibilityProvenance, CompatibilityBasisV1 } from "./provider-contract";
 import type { HomeNarrativeSnapshot } from "./homeNarrative";
 import type { PersonaNarrativeSnapshot } from "./personaNarrative";
@@ -37,12 +37,7 @@ export interface CompatibilityResult {
 }
 
 export interface SajuChartSnapshot {
-  pillars?: {
-    year?: string;
-    month?: string;
-    day?: string;
-    hour?: string;
-  };
+  pillars?: SajuPillarsSnapshot;
   signals?: string[];
   ruleVersion?: string;
   calculationSource?: string;

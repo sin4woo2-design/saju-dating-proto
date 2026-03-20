@@ -334,6 +334,47 @@
   padding: var(--space-4);
 }
 
+.compatBasisGrid {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.compatBasisCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: grid;
+  gap: var(--space-2);
+}
+
+.compatBasisCard strong {
+  color: var(--color-text);
+  font-size: var(--text-body);
+}
+
+.compatBasisCard p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.compatBasisCard.positive {
+  border-color: #b9d6b3;
+  background: #f7fcf5;
+}
+
+.compatBasisCard.warning {
+  border-color: #efcf9f;
+  background: #fff8ec;
+}
+
+.compatBasisCard.neutral {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+
 .compatActionList {
   margin: var(--space-2) 0 0;
   padding: 0;

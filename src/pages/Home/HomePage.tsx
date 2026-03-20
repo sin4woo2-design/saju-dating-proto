@@ -1,9 +1,10 @@
 ﻿import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
-import { calculateHomeNarrativeWithEngine, type HomeNarrativeSnapshot } from "../../lib/engine";
-import type { HomeNarrativeBasis } from "../../lib/engine/homeNarrative";
-import { calculateDailyFortuneScores } from "../../lib/dailyFortune";
+import type { HomeNarrativeSnapshot } from "../../lib/engine";
+import { buildDailyFortuneSnapshotFromProfile, calculateDailyFortuneSnapshot } from "../../lib/dailyFortune";
+import { buildMockHomeNarrative, type HomeNarrativeBasis } from "../../lib/engine/homeNarrative";
+import { calculateSajuResult } from "../../lib/sajuEngine";
 import type { UserProfileInput } from "../../types/saju";
 import "./HomePage.css";
 
@@ -93,18 +94,24 @@ function ScoreGauge({ score }: { score: number }) {
 }
 
 export default function HomePage({ me, isLoggedIn, onRequestLogin }: Props) {
-  const { total: luckScore } = calculateDailyFortuneScores(me);
   const [narrative, setNarrative] = useState<HomeNarrativeSnapshot | null>(null);
+  const [luckScore, setLuckScore] = useState(() => calculateDailyFortuneSnapshot(me).scores.total);
 
   useEffect(() => {
     let alive = true;
+    const fallbackFortune = calculateDailyFortuneSnapshot(me);
+    setLuckScore(fallbackFortune.scores.total);
 
-    calculateHomeNarrativeWithEngine(me)
+    calculateSajuResult(me)
       .then((result) => {
-        if (alive) setNarrative(result);
+        if (!alive) return;
+        setNarrative(buildMockHomeNarrative(me, result.providerState, { saju: result }));
+        setLuckScore(buildDailyFortuneSnapshotFromProfile(result.profile).scores.total);
       })
       .catch(() => {
-        if (alive) setNarrative(null);
+        if (!alive) return;
+        setNarrative(buildMockHomeNarrative(me, "mock"));
+        setLuckScore(fallbackFortune.scores.total);
       });
 
     return () => {

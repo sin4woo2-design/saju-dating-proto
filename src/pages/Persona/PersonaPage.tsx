@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import PageLayout from "../../components/layout/PageLayout";
-import { mockPersona } from "../../data/mockProfiles";
 import { useTransientMessage } from "../../hooks/useTransientMessage";
 import { usePersistedProfile } from "../../hooks/usePersistedProfile";
 import { calculatePersonaNarrativeWithEngine, type PersonaNarrativeSnapshot } from "../../lib/engine";
@@ -9,25 +8,25 @@ import "./PersonaPage.css";
 
 const fallbackNarrative: PersonaNarrativeSnapshot = {
   providerState: "mock",
-  personaTitle: "따뜻한 전략가형",
-  personaSubtitle: "부드러운 공감력과 현실 감각이 함께 작동하는 관계형 페르소나예요.",
+  personaTitle: "정서 공명 조율형",
+  personaSubtitle: "상대의 결을 먼저 읽고 호흡을 맞출수록 매력이 자연스럽게 살아나는 흐름이에요.",
   personaTraits: {
-    ageRange: mockPersona.ageRange,
-    personality: "따뜻하고 전략적인 성향",
-    career: "기획·디자인·창작형",
-    appearance: "차분하고 지적인 인상",
+    relationTempo: "빠르게 끌어당기기보다 대화 온도를 맞추며 가까워질 때 안정감이 커져요.",
+    attractionStyle: "부드러운 반응과 흐름을 읽는 말투가 가장 큰 매력 포인트예요.",
+    stableRhythm: "감정 확인이 가능한 대화와 예측 가능한 연락 템포에서 관계 만족도가 높아져요.",
+    cautionPoint: "상대 반응에만 맞추다 보면 내 리듬을 놓칠 수 있어서 생활 페이스를 먼저 챙기는 편이 좋아요.",
   },
   dominantElement: "강한 기운 · 화(火)",
   supportElement: "보완 기운 · 수(水)",
   appealPoint: "대화의 온도를 맞추면 매력이 더 강하게 드러나요.",
-  basisLabel: "기본 mock 페르소나",
+  basisLabel: "기본 mock 해석",
   basisCodes: ["MOCK_PERSONA_V1"],
   confidence: "low",
-  ruleVersion: "persona-v2",
+  ruleVersion: "persona-v3",
   provenance: {
     providerState: "mock",
     chartSource: "mock",
-    ruleVersion: "persona-v2",
+    ruleVersion: "persona-v3",
     isFallback: true,
   },
   basis: {
@@ -39,13 +38,6 @@ const fallbackNarrative: PersonaNarrativeSnapshot = {
     basisCodes: ["MOCK_PERSONA_V1"],
   },
 };
-
-function localizePersonaText(value: string) {
-  return value
-    .replace(/Warm Strategist/gi, "따뜻한 전략가형")
-    .replace(/Design\s*\/\s*Product\s*\/\s*Creative/gi, "기획·디자인·창작형")
-    .replace(/Calm\s*\/\s*Intellectual/gi, "차분하고 지적인 인상");
-}
 
 function stateLabel(providerState?: string) {
   if (providerState === "provider") return "PROVIDER";
@@ -102,14 +94,14 @@ export default function PersonaPage() {
       personaTitle: narrative.personaTitle || fallbackNarrative.personaTitle,
       personaSubtitle: narrative.personaSubtitle || fallbackNarrative.personaSubtitle,
       personaTraits: {
-        ageRange: narrative.personaTraits?.ageRange || fallbackNarrative.personaTraits.ageRange,
-        personality: narrative.personaTraits?.personality || fallbackNarrative.personaTraits.personality,
-        career: narrative.personaTraits?.career || fallbackNarrative.personaTraits.career,
-        appearance: narrative.personaTraits?.appearance || fallbackNarrative.personaTraits.appearance,
+        relationTempo: narrative.personaTraits?.relationTempo || fallbackNarrative.personaTraits.relationTempo,
+        attractionStyle: narrative.personaTraits?.attractionStyle || fallbackNarrative.personaTraits.attractionStyle,
+        stableRhythm: narrative.personaTraits?.stableRhythm || fallbackNarrative.personaTraits.stableRhythm,
+        cautionPoint: narrative.personaTraits?.cautionPoint || fallbackNarrative.personaTraits.cautionPoint,
       },
       dominantElement: narrative.dominantElement || fallbackNarrative.dominantElement,
       supportElement: narrative.supportElement || fallbackNarrative.supportElement,
-      appealPoint: (narrative.appealPoint || fallbackNarrative.appealPoint).replace("궁합 포인트 · ", ""),
+      appealPoint: narrative.appealPoint || fallbackNarrative.appealPoint,
       basisLabel: narrative.basisLabel || fallbackNarrative.basisLabel,
       basisCodes: narrative.basisCodes?.length ? narrative.basisCodes : fallbackNarrative.basisCodes,
     };
@@ -118,20 +110,20 @@ export default function PersonaPage() {
   const provenance = resolved.provenance ?? {
     providerState: resolved.providerState ?? "mock",
     chartSource: "mock",
-    ruleVersion: "persona-v2",
+    ruleVersion: "persona-v3",
     isFallback: true,
   };
 
   const provenanceLine = [
     `${stateLabel(provenance.providerState)}`,
     `${provenance.chartSource || "mock"}`,
-    `v:${provenance.ruleVersion || "v2"}`,
+    `v:${provenance.ruleVersion || "v3"}`,
   ].join(" · ");
 
   const handleShare = async () => {
     const result = await shareOrCopy({
       title: "사주 라운지 · 운명의 이상형",
-      text: `${resolved.personaTitle}\n성격: ${localizePersonaText(resolved.personaTraits.personality)}\n직업군: ${localizePersonaText(resolved.personaTraits.career)}`,
+      text: `${resolved.personaTitle}\n관계 템포: ${resolved.personaTraits.relationTempo}\n매력 축: ${resolved.appealPoint}`,
     });
 
     showMessage(result === "shared" ? "공유 완료!" : "복사 완료! 원하는 SNS에 붙여넣어 보세요.");
@@ -168,20 +160,20 @@ export default function PersonaPage() {
 
                   <div className="posterTraits">
                     <div className="traitRow">
-                      <strong>연령대</strong>
-                      <span>{resolved.personaTraits.ageRange}</span>
+                      <strong>관계 템포</strong>
+                      <span>{resolved.personaTraits.relationTempo}</span>
                     </div>
                     <div className="traitRow">
-                      <strong>성격</strong>
-                      <span>{localizePersonaText(resolved.personaTraits.personality)}</span>
+                      <strong>매력 축</strong>
+                      <span>{resolved.personaTraits.attractionStyle}</span>
                     </div>
                     <div className="traitRow">
-                      <strong>직업군</strong>
-                      <span>{localizePersonaText(resolved.personaTraits.career)}</span>
+                      <strong>편한 리듬</strong>
+                      <span>{resolved.personaTraits.stableRhythm}</span>
                     </div>
                     <div className="traitRow">
-                      <strong>인상</strong>
-                      <span>{localizePersonaText(resolved.personaTraits.appearance)}</span>
+                      <strong>주의 포인트</strong>
+                      <span>{resolved.personaTraits.cautionPoint}</span>
                     </div>
                   </div>
 
