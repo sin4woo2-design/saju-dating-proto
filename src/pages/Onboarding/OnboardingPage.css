@@ -48,3 +48,33 @@
   line-height: var(--leading-normal);
   max-width: 300px;
 }
+
+.obLoginTeaser {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-warm);
+  background: linear-gradient(180deg, #fffaf1, #ffffff);
+}
+
+.obLoginTeaser strong,
+.obLoginTeaser p {
+  margin: 0;
+}
+
+.obLoginTeaser p {
+  margin-top: 6px;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.obLoginBtn {
+  flex-shrink: 0;
+  background: var(--gradient-gold-cta);
+  border-color: var(--color-gold-600);
+  color: var(--color-text-inverse);
+}
