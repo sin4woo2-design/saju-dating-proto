@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
 import { calculateHomeNarrativeWithEngine, type HomeNarrativeSnapshot } from "../../lib/engine";
@@ -9,6 +9,8 @@ import "./HomePage.css";
 
 interface Props {
   me: UserProfileInput;
+  isLoggedIn: boolean;
+  onRequestLogin: () => void;
 }
 
 const defaultHeroLead = "오늘은 대화의 시작 톤이 흐름을 만듭니다.";
@@ -63,7 +65,6 @@ function resolveKeyword(basis?: HomeNarrativeBasis) {
   return `${byElement[basis.dominantElement]}·${toneSuffix}`;
 }
 
-/* ── Circular Score Gauge ── */
 function ScoreGauge({ score }: { score: number }) {
   const r = 54;
   const circ = 2 * Math.PI * r;
@@ -75,7 +76,9 @@ function ScoreGauge({ score }: { score: number }) {
       <svg viewBox="0 0 128 128" className="scoreGaugeRing">
         <circle cx="64" cy="64" r={r} className="gaugeTrack" />
         <circle
-          cx="64" cy="64" r={r}
+          cx="64"
+          cy="64"
+          r={r}
           className="gaugeFill"
           strokeDasharray={circ}
           strokeDashoffset={offset}
@@ -89,7 +92,7 @@ function ScoreGauge({ score }: { score: number }) {
   );
 }
 
-export default function HomePage({ me }: Props) {
+export default function HomePage({ me, isLoggedIn, onRequestLogin }: Props) {
   const { total: luckScore } = calculateDailyFortuneScores(me);
   const [narrative, setNarrative] = useState<HomeNarrativeSnapshot | null>(null);
 
@@ -107,7 +110,7 @@ export default function HomePage({ me }: Props) {
     return () => {
       alive = false;
     };
-  }, [me.birthDate, me.birthTime, me.gender]);
+  }, [me]);
 
   const summary = useMemo<[string, string, string]>(() => {
     if (!narrative?.todaySummary || narrative.todaySummary.length < 3) return defaultSummary;
@@ -151,7 +154,18 @@ export default function HomePage({ me }: Props) {
 
   return (
     <PageLayout title="" subtitle="">
-      {/* ── HERO ── */}
+      {!isLoggedIn ? (
+        <section className="homeMemberCard anim-fade-in">
+          <div>
+            <strong>로그인하면 오늘 결과와 궁합 기록을 저장할 수 있어요</strong>
+            <p>이제 구글 로그인으로 결과 저장과 이어보기를 바로 확장할 수 있어요.</p>
+          </div>
+          <button type="button" className="homeMemberBtn" onClick={onRequestLogin}>
+            로그인 연결하기
+          </button>
+        </section>
+      ) : null}
+
       <section className="homeHero anim-slide-up">
         <div className="homeHeroInner">
           <p className="homeHeroGreeting">{me.name}님의 오늘</p>
@@ -164,7 +178,6 @@ export default function HomePage({ me }: Props) {
         </div>
       </section>
 
-      {/* ── QUICK STATS ── */}
       <section className="homeQuickStats anim-fade-in anim-delay-1">
         <article className="qStatCard">
           <span className="qStatIcon">◷</span>
@@ -183,7 +196,6 @@ export default function HomePage({ me }: Props) {
         </article>
       </section>
 
-      {/* ── TODAY'S FORTUNE SUMMARY ── */}
       <section className="homeSummaryCard anim-fade-in anim-delay-2">
         <h4>오늘의 운세 요약</h4>
         <ul className="homeSummaryList">
@@ -197,7 +209,6 @@ export default function HomePage({ me }: Props) {
         </Link>
       </section>
 
-      {/* ── TODAY'S POINTS ── */}
       <section className="homePoints anim-fade-in anim-delay-3">
         <h5>오늘의 포인트</h5>
         <div className="homePointsList">
@@ -225,7 +236,6 @@ export default function HomePage({ me }: Props) {
         </div>
       </section>
 
-      {/* ── TIME FLOW ── */}
       <section className="homeTimeFlow anim-fade-in anim-delay-4">
         <h5>시간대별 흐름</h5>
         <div className="homeTimeGrid">
@@ -241,18 +251,9 @@ export default function HomePage({ me }: Props) {
           </article>
           <article className="timeCard evening">
             <small>저녁</small>
-            <b>조율</b>
+            <b>관계</b>
             <p>{timeFlow.evening}</p>
           </article>
-        </div>
-      </section>
-
-      {/* ── CONTINUE ── */}
-      <section className="homeContinue anim-fade-in anim-delay-5">
-        <small className="continueLabel">이어보기</small>
-        <div className="homeContinueActions">
-          <Link to="/compatibility" className="continueBtn">궁합 보기</Link>
-          <Link to="/persona" className="continueBtn secondary">페르소나 보기</Link>
         </div>
       </section>
     </PageLayout>

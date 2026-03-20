@@ -1965,3 +1965,65 @@ main {
     font-size: 11px;
   }
 }
+
+.topBarTitleWrap {
+  min-width: 0;
+}
+
+.topBarActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.authWelcome {
+  margin: 2px 0 0;
+  font-size: var(--text-label);
+  color: var(--color-gold-700);
+}
+
+.authWelcome.muted {
+  color: var(--color-text-muted);
+}
+
+.authChipBtn {
+  min-height: 32px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.authChipBtn.primary {
+  background: var(--gradient-gold-cta);
+  border-color: var(--color-gold-600);
+  color: var(--color-text-inverse);
+}
+
+.authNotice {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.authNotice.warning {
+  border-color: #f3d4a6;
+  background: #fff8ea;
+}
+
+.authNotice strong,
+.authNotice p {
+  margin: 0;
+}
+
+.authNotice p {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  margin-top: 4px;
+}

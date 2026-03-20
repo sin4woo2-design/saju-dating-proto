@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { BrowserRouter, NavLink, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import OnboardingPage from "./pages/Onboarding/OnboardingPage";
 import HomePage from "./pages/Home/HomePage";
@@ -7,7 +7,10 @@ import CompatibilityPage from "./pages/Compatibility/CompatibilityPage";
 import FortunePage from "./pages/Fortune/FortunePage";
 import PersonaPage from "./pages/Persona/PersonaPage";
 import InyeonPage from "./pages/Inyeon/InyeonPage";
+import AuthPrompt from "./components/AuthPrompt/AuthPrompt";
 import { usePersistedProfile } from "./hooks/usePersistedProfile";
+import { useAuth } from "./hooks/useAuth";
+import type { AuthProvider } from "./lib/auth";
 
 function ScrollToTopOnRouteChange() {
   const { pathname } = useLocation();
@@ -19,38 +22,84 @@ function ScrollToTopOnRouteChange() {
   return null;
 }
 
-export default function App() {
+function AppBody() {
   const { profile: me, setProfile: setMe } = usePersistedProfile();
+  const { isReady, user, authError, clearAuthError, signIn, signOut } = useAuth();
+  const [isAuthPromptOpen, setIsAuthPromptOpen] = useState(false);
+  const [authPromptSubtitle, setAuthPromptSubtitle] = useState<string | undefined>(undefined);
 
   const gate = useMemo(() => {
     if (!me) return <Navigate to="/onboarding" replace />;
     return null;
   }, [me]);
 
+  const openAuthPrompt = (subtitle?: string) => {
+    setAuthPromptSubtitle(subtitle);
+    setIsAuthPromptOpen(true);
+  };
+
+  const handleSignIn = (provider: AuthProvider) => {
+    const result = signIn(provider);
+    if (!result.ok && result.reason === "MISSING_CONFIG") {
+      setAuthPromptSubtitle("Supabase URL 또는 anon key가 아직 설정되지 않았어요. `.env.local`에 값을 넣어 주세요.");
+      return;
+    }
+    if (!result.ok) {
+      setAuthPromptSubtitle("현재 환경에서는 로그인 연결을 시작할 수 없어요. 브라우저에서 다시 시도해 주세요.");
+      return;
+    }
+    setIsAuthPromptOpen(false);
+  };
+
   return (
-    <BrowserRouter>
-      <ScrollToTopOnRouteChange />
+    <>
       <div className="appShell">
         <header className="topBar">
-          <h1><span className="brandMark">✦</span> 사주 라운지</h1>
-          {me ? (
-            <button
-              type="button"
-              className="resetBtn"
-              onClick={() => {
-                if (!confirm("입력 정보를 초기화하고 다시 온보딩할까요?")) return;
-                setMe(null);
-              }}
-            >
-              입력 다시하기
-            </button>
-          ) : null}
+          <div className="topBarTitleWrap">
+            <h1><span className="brandMark">✦</span> 사주 라운지</h1>
+            {user ? <p className="authWelcome">{user.name}님으로 연결됨</p> : <p className="authWelcome muted">로그인하면 결과를 저장할 수 있어요</p>}
+          </div>
+          <div className="topBarActions">
+            {me ? (
+              <button
+                type="button"
+                className="resetBtn"
+                onClick={() => {
+                  if (!confirm("입력 정보를 초기화하고 다시 온보딩할까요?")) return;
+                  setMe(null);
+                }}
+              >
+                입력 다시하기
+              </button>
+            ) : null}
+            {isReady ? (
+              user ? (
+                <button type="button" className="authChipBtn" onClick={signOut}>
+                  로그아웃
+                </button>
+              ) : (
+                <button type="button" className="authChipBtn primary" onClick={() => openAuthPrompt()}>
+                  로그인
+                </button>
+              )
+            ) : null}
+          </div>
         </header>
+
+        {authError ? (
+          <div className="authNotice warning" role="status">
+            <div>
+              <strong>로그인 안내</strong>
+              <p>{authError}</p>
+            </div>
+            <button type="button" onClick={clearAuthError}>닫기</button>
+          </div>
+        ) : null}
 
         <main>
           <Routes>
-            <Route path="/onboarding" element={<OnboardingPage onComplete={setMe} />} />
-            <Route path="/" element={me ? <HomePage me={me} /> : gate} />
+            <Route path="/onboarding" element={<OnboardingPage onComplete={setMe} onRequestLogin={() => openAuthPrompt("로그인하면 입력한 프로필과 결과를 안전하게 저장하고 다른 기기에서도 이어볼 수 있어요.")} />} />
+            <Route path="/" element={me ? <HomePage me={me} isLoggedIn={!!user} onRequestLogin={() => openAuthPrompt("로그인하면 오늘의 결과와 궁합 기록을 저장해 두고 나중에 다시 확인할 수 있어요.")} /> : gate} />
             <Route path="/mysaju" element={me ? <MySajuPage me={me} /> : gate} />
             <Route path="/fortune" element={me ? <FortunePage me={me} /> : gate} />
             <Route path="/persona" element={me ? <PersonaPage /> : gate} />
@@ -93,6 +142,22 @@ export default function App() {
           </NavLink>
         </nav>
       </div>
+
+      <AuthPrompt
+        isOpen={isAuthPromptOpen}
+        subtitle={authPromptSubtitle}
+        onClose={() => setIsAuthPromptOpen(false)}
+        onSignIn={handleSignIn}
+      />
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <ScrollToTopOnRouteChange />
+      <AppBody />
     </BrowserRouter>
   );
 }
