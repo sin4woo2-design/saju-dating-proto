@@ -5,9 +5,10 @@ import "./OnboardingPage.css";
 
 interface Props {
   onComplete: (value: UserProfileInput) => void;
+  onRequestLogin: () => void;
 }
 
-export default function OnboardingPage({ onComplete }: Props) {
+export default function OnboardingPage({ onComplete, onRequestLogin }: Props) {
   const navigate = useNavigate();
 
   const handleComplete = (value: UserProfileInput) => {
@@ -21,6 +22,15 @@ export default function OnboardingPage({ onComplete }: Props) {
         <span className="obIcon">✦</span>
         <h2>사주 라운지 시작하기</h2>
         <p>2분만 입력하면, 나와 잘 맞는 인연 스타일을 바로 확인할 수 있어요.</p>
+      </div>
+      <div className="obLoginTeaser anim-fade-in anim-delay-1">
+        <div>
+          <strong>먼저 체험하고, 마음에 들면 로그인으로 저장해도 돼요.</strong>
+          <p>Supabase 기반 카카오/구글 로그인 연결 UI까지 붙일 준비가 되어 있어요. 연결 후에는 프로필 저장과 이어보기를 붙이면 됩니다.</p>
+        </div>
+        <button type="button" className="obLoginBtn" onClick={onRequestLogin}>
+          로그인 보기
+        </button>
       </div>
       <OnboardingForm onSubmit={handleComplete} />
     </div>
