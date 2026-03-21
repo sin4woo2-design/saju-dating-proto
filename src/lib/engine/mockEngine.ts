@@ -114,6 +114,11 @@ export const mockEngine: SajuEngine = {
       source: "mock",
       providerState: "mock",
       profile: calculateSajuProfile(input),
+      chart: {
+        calculationSource: "mock",
+        ruleVersion: "mock-profile-v1",
+        signals: ["MOCK_PROFILE"],
+      },
     };
   },
   async calculateCompatibility(me, partner) {

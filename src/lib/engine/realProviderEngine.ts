@@ -61,6 +61,11 @@ export const realProviderEngine: SajuEngine = {
         providerState: "mock-fallback",
         profile: fallback.profile,
         warnings: [normalizeErrorToWarning(error), "FALLBACK_TO_MOCK_PROFILE"],
+        chart: {
+          ...(fallback.chart ?? {}),
+          calculationSource: "mock-fallback",
+          signals: [...(fallback.chart?.signals ?? []), "FALLBACK_TO_MOCK_PROFILE"],
+        },
       };
     }
   },

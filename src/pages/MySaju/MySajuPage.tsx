@@ -45,6 +45,49 @@ function statusBadgeText(providerState: string, warnings: string[]) {
   return "실계산 사용";
 }
 
+function warningDescription(code: string) {
+  if (code.includes("FALLBACK_TO_MOCK_PROFILE")) {
+    return "원국 데이터를 받지 못해 임시 mock 프로필로 전환됐어요.";
+  }
+  if (code.includes("PARTIAL")) {
+    return "일부 계산 데이터가 비어 있어 가능한 범위에서 보정해서 보여주고 있어요.";
+  }
+  if (code.includes("TIMEOUT")) {
+    return "사주 계산 서버 응답이 늦어져 임시 해석으로 전환됐어요.";
+  }
+  if (code.includes("UNAVAILABLE")) {
+    return "사주 계산 서버에 연결되지 않아 임시 해석으로 전환됐어요.";
+  }
+  if (code.includes("BAD_RESPONSE")) {
+    return "계산 응답 형식이 불완전해서 임시 해석을 사용하고 있어요.";
+  }
+  return code;
+}
+
+function providerStateLabel(providerState: "mock" | "provider" | "mock-fallback") {
+  if (providerState === "provider") return "실명식 연결";
+  if (providerState === "mock-fallback") return "fallback 전환";
+  return "mock 모드";
+}
+
+function calculationSourceLabel(source?: string) {
+  if (!source) return "미확인";
+  if (source.includes("lunar")) return "실명식 계산";
+  if (source === "mock-fallback") return "fallback 계산";
+  if (source === "mock") return "mock 계산";
+  if (source.includes("provider")) return "provider 계산";
+  return source;
+}
+
+function formatLatency(latencyMs?: number) {
+  if (!latencyMs || latencyMs <= 0) return "미기록";
+  return `${Math.round(latencyMs)}ms`;
+}
+
+function signalLabel(signal: string) {
+  return signal.replace(/_/g, " ").trim();
+}
+
 function elementColorKey(key: ElementKey) {
   const map: Record<ElementKey, string> = {
     wood: "var(--color-wood)",
@@ -142,10 +185,13 @@ export default function MySajuPage({ me }: Props) {
   const [chart, setChart] = useState<SajuChartSnapshot | undefined>(undefined);
   const [activeTab, setActiveTab] = useState<"pillars" | "ten-god" | "strength">("pillars");
   const [activePillarHint, setActivePillarHint] = useState<{ key: string; text: string } | null>(null);
+  const [reloadTick, setReloadTick] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const { message, showMessage } = useTransientMessage();
 
   useEffect(() => {
     let active = true;
+    setIsRefreshing(true);
     calculateSajuResult(me)
       .then((result) => {
         if (!active) return;
@@ -153,12 +199,14 @@ export default function MySajuPage({ me }: Props) {
         setProviderState(result.providerState);
         setWarnings(result.warnings ?? []);
         setChart(result.chart);
+        setIsRefreshing(false);
       })
       .catch(() => {
+        if (active) setIsRefreshing(false);
         if (active) showMessage("사주 계산에 실패했어요. 잠시 후 다시 시도해 주세요.");
       });
     return () => { active = false; };
-  }, [me, showMessage]);
+  }, [me, reloadTick, showMessage]);
 
   const sortedElements = useMemo(() => {
     if (!profile) return [];
@@ -213,6 +261,13 @@ export default function MySajuPage({ me }: Props) {
     showMessage(result === "shared" ? "공유 완료!" : "복사 완료!");
   };
 
+  const handleRefresh = () => {
+    if (isRefreshing) return;
+    setActivePillarHint(null);
+    setReloadTick((value) => value + 1);
+    showMessage("사주 계산을 다시 요청하고 있어요.");
+  };
+
   if (!profile || !topSummary || !detailSections) {
     return (
       <PageLayout title={`${me.name}님의 사주 리포트`}>
@@ -227,12 +282,45 @@ export default function MySajuPage({ me }: Props) {
   const tone = statusTone(providerState, warnings);
   const badgeText = statusBadgeText(providerState, warnings);
   const fallbackNote = getAnalysisFallbackNote(topSummary.analysis);
+  const statusHeadline = providerState === "provider" && hasPillars
+    ? "원국 기반 계산이 정상 연결되어 있어요."
+    : providerState === "mock-fallback"
+      ? "실시간 계산이 불안정해서 임시 해석으로 전환되었어요."
+      : providerState === "mock"
+        ? "현재는 mock 기반 계산 결과를 보고 있어요."
+        : "계산 상태를 확인하는 중이에요.";
+  const statusDescription = hasPillars
+    ? "연·월·일·시 기둥이 들어와서 일간, 월지, 십성 해석까지 함께 보여주고 있어요."
+    : "원국 기둥이 아직 없어서 오행 균형과 입력값 기반의 임시 해석이 중심이 됩니다.";
+  const statusItems = [
+    { label: "계산 방식", value: calculationSourceLabel(chart?.calculationSource) },
+    { label: "연결 상태", value: providerStateLabel(providerState) },
+    { label: "원국 상태", value: hasPillars ? "연·월·일·시 반영" : "원국 미수신" },
+    { label: "응답 시간", value: formatLatency(chart?.latencyMs) },
+  ];
+  const warningDetails = Array.from(new Set(warnings.map((warning) => warningDescription(warning))));
+  const signalPreview = Array.from(new Set((chart?.signals ?? []).map((signal) => signalLabel(signal)))).slice(0, 6);
+  const requestMeta = [
+    chart?.ruleVersion ? { label: "Rule version", value: chart.ruleVersion } : null,
+    chart?.requestId ? { label: "Request ID", value: chart.requestId } : null,
+    chart?.providerVersion ? { label: "Provider version", value: chart.providerVersion } : null,
+    chart?.engineVersion ? { label: "Engine version", value: chart.engineVersion } : null,
+  ].filter((item): item is { label: string; value: string } => Boolean(item));
 
   return (
     <PageLayout
       title={`${me.name}님의 사주 리포트`}
       subtitle="핵심은 먼저, 디테일은 아래에서 천천히 확인해보세요."
-      action={<button type="button" className="sajuShareBtn" onClick={handleShare}>공유</button>}
+      action={
+        <div className="sajuTopActions">
+          <button type="button" className="sajuActionBtn" onClick={handleShare}>
+            공유
+          </button>
+          <button type="button" className="sajuActionBtn primary" onClick={handleRefresh} disabled={isRefreshing}>
+            {isRefreshing ? "재계산 중..." : "다시 계산"}
+          </button>
+        </div>
+      }
     >
       {/* ── HERO SUMMARY ── */}
       <section className="sajuHero anim-slide-up">
@@ -253,7 +341,70 @@ export default function MySajuPage({ me }: Props) {
       </section>
 
       {/* ── SAJU TABS ── */}
-      <section className="sajuTabSection anim-fade-in anim-delay-1">
+      <section className={`calcStatusCard ${tone} anim-fade-in anim-delay-1`}>
+        <div className="calcStatusHeader">
+          <div>
+            <p className="calcEyebrow">계산 상태</p>
+            <h3>{statusHeadline}</h3>
+            <p>{statusDescription}</p>
+          </div>
+          <button type="button" className="statusRefreshBtn" onClick={handleRefresh} disabled={isRefreshing}>
+            {isRefreshing ? "계산 중..." : "다시 계산"}
+          </button>
+        </div>
+
+        <div className="calcStatusGrid">
+          {statusItems.map((item) => (
+            <article key={item.label} className="calcMetric">
+              <small>{item.label}</small>
+              <strong>{item.value}</strong>
+            </article>
+          ))}
+        </div>
+
+        {!hasPillars ? (
+          <p className="calcStatusNote">
+            현재는 원국 기둥을 아직 받지 못해서 임시 해석 중심으로 보여주고 있어요. 다시 계산에 성공하면 연주, 월주, 일주, 시주와 십성 해석이 함께 채워집니다.
+          </p>
+        ) : null}
+
+        {warningDetails.length ? (
+          <div className="calcWarningList">
+            {warningDetails.map((detail) => (
+              <div key={detail} className="calcWarningItem">
+                <strong>안내</strong>
+                <p>{detail}</p>
+              </div>
+            ))}
+          </div>
+        ) : null}
+
+        {signalPreview.length ? (
+          <div className="calcSignalGroup">
+            <strong>근거 신호</strong>
+            <div className="calcSignalChips">
+              {signalPreview.map((signal) => (
+                <span key={signal} className="sajuChip subtle">
+                  {signal}
+                </span>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+        {requestMeta.length ? (
+          <div className="calcMetaList">
+            {requestMeta.map((item) => (
+              <div key={item.label} className="calcMetaPair">
+                <span>{item.label}</span>
+                <code>{item.value}</code>
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </section>
+
+      <section className="sajuTabSection anim-fade-in anim-delay-2">
         <div className="segmentedWrap">
           <button type="button" className={activeTab === "pillars" ? "active" : ""} onClick={() => setActiveTab("pillars")}>사주원국</button>
           <button type="button" className={activeTab === "ten-god" ? "active" : ""} onClick={() => setActiveTab("ten-god")}>오행·십성</button>

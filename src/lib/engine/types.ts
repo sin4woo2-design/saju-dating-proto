@@ -41,6 +41,10 @@ export interface SajuChartSnapshot {
   signals?: string[];
   ruleVersion?: string;
   calculationSource?: string;
+  requestId?: string;
+  providerVersion?: string;
+  engineVersion?: string;
+  latencyMs?: number;
 }
 
 export interface SajuResult {

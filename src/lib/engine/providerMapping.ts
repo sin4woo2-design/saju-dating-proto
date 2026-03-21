@@ -28,6 +28,10 @@ export function mapProviderSajuResponseToProfile(raw: ProviderSajuResponse): {
     signals?: string[];
     ruleVersion?: string;
     calculationSource?: string;
+    requestId?: string;
+    providerVersion?: string;
+    engineVersion?: string;
+    latencyMs?: number;
   };
 } {
   const warnings = new Set<string>(mapProviderWarnings(raw.warnings) ?? []);
@@ -58,6 +62,10 @@ export function mapProviderSajuResponseToProfile(raw: ProviderSajuResponse): {
       signals: raw.saju.signals,
       ruleVersion: raw.saju.ruleVersion,
       calculationSource: raw.saju.calculationSource,
+      requestId: raw.meta.requestId,
+      providerVersion: raw.meta.providerVersion,
+      engineVersion: raw.meta.engineVersion,
+      latencyMs: raw.meta.latencyMs,
     },
   };
 }
