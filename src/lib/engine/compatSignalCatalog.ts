@@ -47,6 +47,26 @@ export const compatSignalCatalog = {
     label: "일간 충돌",
     desc: "해석 방식이 달라 같은 사건도 다르게 받아들일 수 있어요.",
   },
+  ELEMENT_USEFUL_TO_ME: {
+    label: "내 활용 기운 적중",
+    desc: "상대의 주도 오행이 내 명식에서 쓰기 좋은 축에 닿아 있어 관계 체감이 편안한 편이에요.",
+  },
+  ELEMENT_USEFUL_TO_PARTNER: {
+    label: "상대 활용 기운 적중",
+    desc: "내 주도 오행이 상대 명식의 활용 기운과 맞물려 상대 쪽 체감 만족도가 올라가기 쉬워요.",
+  },
+  ELEMENT_USEFUL_MUTUAL: {
+    label: "상호 활용 기운",
+    desc: "서로의 강점 오행이 각자 필요한 축에 닿아 있어 관계 리듬이 맞아들 가능성이 높아요.",
+  },
+  ELEMENT_CAUTION_MUTUAL: {
+    label: "상호 주의 기운",
+    desc: "서로의 주도 오행이 각자 주의 기운에 걸려 속도 조절과 감정 정리가 특히 중요해요.",
+  },
+  DAYMASTER_STRENGTH_COMPLEMENT: {
+    label: "강약 보완",
+    desc: "한쪽의 신강과 다른 쪽의 신약 구조가 맞물려 역할 분담과 관계 리듬이 보완될 수 있어요.",
+  },
   RELIABILITY_TIME_UNKNOWN_ME: {
     label: "내 시간 미상",
     desc: "내 출생시간이 없어 일부 신호 정확도가 낮아져요.",

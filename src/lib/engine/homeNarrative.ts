@@ -228,6 +228,11 @@ function buildAnalysisHeroSupport(analysis: SajuAnalysis, basis: HomeNarrativeBa
 }
 
 function buildAnalysisSummary(analysis: SajuAnalysis, basis: HomeNarrativeBasis): [string, string, string] {
+  if (analysis.basisOrigin === "provider" && analysis.summaryLines.length >= 3) {
+    const [line1, line2, line3] = analysis.summaryLines;
+    return [trimSentence(line1), trimSentence(line2), trimSentence(line3)];
+  }
+
   const usefulLabel = analysis.usefulElements.map((element) => elementLabel(element)).join("·");
   const cautionLabel = analysis.cautionElements.map((element) => elementLabel(element)).join("·");
   const weakestLabel = elementLabel(analysis.weakestElement);

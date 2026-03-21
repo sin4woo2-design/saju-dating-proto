@@ -39,7 +39,7 @@ export const realProviderEngine: SajuEngine = {
       });
 
       const mapped = mapProviderSajuResponseToProfile(raw);
-      const analysis = deriveSajuAnalysis(mapped.fiveElements, mapped.chart.pillars);
+      const analysis = mapped.analysis ?? deriveSajuAnalysis(mapped.fiveElements, mapped.chart.pillars);
       const copy = buildProfileCopy(mapped.fiveElements, analysis);
 
       return {

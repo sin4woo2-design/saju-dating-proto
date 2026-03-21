@@ -81,6 +81,9 @@ function scoreFromProfile(profile: SajuProfile, date: Date): DailyFortuneScores 
 function buildHeroLead(profile: SajuProfile, themeElement: ElementKey, scores: DailyFortuneScores) {
   const analysis = profile.analysis;
   if (!analysis) return `오늘은 ${elementLabel(themeElement)} 기운이 전체 흐름을 이끌어요.`;
+  if (analysis.basisOrigin === "provider" && analysis.summaryLines[0] && scores.total >= 74) {
+    return analysis.summaryLines[0];
+  }
   if (analysis.usefulElements.includes(themeElement)) {
     return `오늘은 ${elementLabel(themeElement)} 기운이 들어와 ${getAnalysisBasisPhrase(analysis)} 리듬을 부드럽게 밀어줍니다.`;
   }
@@ -96,6 +99,9 @@ function buildHeroLead(profile: SajuProfile, themeElement: ElementKey, scores: D
 function buildHeroSupport(profile: SajuProfile, themeElement: ElementKey) {
   const analysis = profile.analysis;
   if (!analysis) return "중요한 결정은 한 번 더 정리한 뒤 움직여 보세요.";
+  if (analysis.basisOrigin === "provider" && analysis.summaryLines[1]) {
+    return analysis.summaryLines[1];
+  }
   const usefulLabel = analysis.usefulElements.map((element) => elementLabel(element)).join("·");
   if (analysis.usefulElements.includes(themeElement)) {
     return `${usefulLabel} 기운을 쓰는 방식으로 말과 일의 순서를 정리하면 체감이 훨씬 좋아집니다.`;
@@ -139,6 +145,9 @@ function buildActionItems(profile: SajuProfile, themeElement: ElementKey): strin
 function buildCautionLine(profile: SajuProfile, themeElement: ElementKey) {
   const analysis = profile.analysis;
   if (!analysis) return "감정 반응보다 일정과 회복 루틴을 먼저 챙겨보세요.";
+  if (analysis.basisOrigin === "provider" && analysis.summaryLines[2]) {
+    return analysis.summaryLines[2];
+  }
   if (analysis.cautionElements.includes(themeElement)) {
     return `${elementLabel(themeElement)} 기운이 과해지면 판단이 급해질 수 있어요. 답을 내리기 전 한 템포 늦추는 편이 좋습니다.`;
   }

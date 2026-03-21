@@ -61,7 +61,7 @@ def run() -> tuple[list[dict], dict]:
 
     for s in SAMPLES:
         person = PersonInput(**{k: v for k, v in s.items() if k != "sample_id"})
-        five, pillars, signals, warnings = calculate_chart_with_lunar(person)
+        five, pillars, signals, warnings, _, _ = calculate_chart_with_lunar(person)
         strong = max(five, key=five.get)
         summary["strong_element_distribution"][strong] += 1
         if "PROVIDER_PARTIAL_DATA" in warnings:

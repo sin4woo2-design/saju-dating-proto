@@ -103,6 +103,20 @@ function joinElementLabels(elements: ElementKey[]) {
   return elements.map((element) => elementLabel(element)).join("·");
 }
 
+function formatSignedScore(value?: number) {
+  if (typeof value !== "number") return "미제공";
+  return value > 0 ? `+${value}` : `${value}`;
+}
+
+function contributionRows(weights?: Partial<Record<ElementKey, number>>) {
+  if (!weights) return [] as Array<{ key: ElementKey; value: number }>;
+
+  return (Object.entries(weights) as Array<[ElementKey, number]>)
+    .map(([key, value]) => ({ key, value }))
+    .filter((item) => item.value > 0)
+    .sort((a, b) => b.value - a.value);
+}
+
 function todayLine(analysis: SajuAnalysis) {
   const usefulLabel = joinElementLabels(analysis.usefulElements);
   const weakLabel = elementLabel(analysis.weakestElement);
@@ -147,8 +161,12 @@ function buildDetailSections(profile: SajuProfile, analysis: SajuAnalysis) {
         : `해석 기준: ${getAnalysisIdentityLabel(analysis)}`,
       `강약: ${getStrengthLabel(analysis.strengthLevel)}`,
       `${isChartDerivedAnalysis(analysis) ? "보완 기운" : "활용 기운"}: ${usefulLabel}`,
+      typeof analysis.supportScore === "number" && typeof analysis.regulatingScore === "number"
+        ? `강약 점수: 도움 ${analysis.supportScore} / 설기·제어 ${analysis.regulatingScore}`
+        : `주요 오행: 강한 축 ${elementLabel(analysis.dominantElement)} / 약한 축 ${weakLabel}`,
     ],
     personality: [
+      ...(analysis.summaryLines?.slice(0, 1) ?? []),
       profile.personalitySummary,
       monthLine,
       `강한 오행은 ${elementLabel(analysis.dominantElement)}, 가장 약한 오행은 ${weakLabel}입니다.`,
@@ -170,6 +188,7 @@ function buildDetailSections(profile: SajuProfile, analysis: SajuAnalysis) {
     ],
     cautionPatterns: [
       analysis.strengthReason,
+      ...(analysis.notes?.length ? [`근거 메모: ${analysis.notes.slice(0, 3).join(" · ")}`] : []),
       `주의 기운은 ${cautionLabel}입니다. 이 축이 과해지면 관계 판단이 급해질 수 있어요.`,
       `${weakLabel} 기운이 약한 날에는 휴식, 정리, 속도 조절을 먼저 챙기는 편이 좋습니다.`,
     ],
@@ -234,12 +253,12 @@ export default function MySajuPage({ me }: Props) {
 
   const pillarRows = useMemo(
     () => [
-      { label: "시주", value: splitPillar(chart?.pillars?.hour) },
-      { label: "일주", value: splitPillar(chart?.pillars?.day) },
-      { label: "월주", value: splitPillar(chart?.pillars?.month) },
-      { label: "연주", value: splitPillar(chart?.pillars?.year) },
+      { label: "시주", key: "hour" as const, value: splitPillar(profile?.analysis?.pillarDetails?.hour?.raw ?? chart?.pillars?.hour), detail: profile?.analysis?.pillarDetails?.hour },
+      { label: "일주", key: "day" as const, value: splitPillar(profile?.analysis?.pillarDetails?.day?.raw ?? chart?.pillars?.day), detail: profile?.analysis?.pillarDetails?.day },
+      { label: "월주", key: "month" as const, value: splitPillar(profile?.analysis?.pillarDetails?.month?.raw ?? chart?.pillars?.month), detail: profile?.analysis?.pillarDetails?.month },
+      { label: "연주", key: "year" as const, value: splitPillar(profile?.analysis?.pillarDetails?.year?.raw ?? chart?.pillars?.year), detail: profile?.analysis?.pillarDetails?.year },
     ],
-    [chart]
+    [chart, profile]
   );
 
   const hasPillars = useMemo(
@@ -251,6 +270,18 @@ export default function MySajuPage({ me }: Props) {
     () => profile?.analysis?.tenGods.filter((item) => item.pillar !== "day" && item.code) ?? [],
     [profile]
   );
+
+  const breakdownCards = useMemo(() => {
+    const breakdown = profile?.analysis?.elementBreakdown ?? chart?.breakdown;
+    if (!breakdown) return [];
+
+    return [
+      { label: "천간 기여", rows: contributionRows(breakdown.stemContribution) },
+      { label: "지지 기여", rows: contributionRows(breakdown.branchContribution) },
+      { label: "월지 보정", rows: contributionRows(breakdown.monthBranchBonusContribution) },
+      { label: "지장간 기여", rows: contributionRows(breakdown.hiddenStemContribution) },
+    ].filter((card) => card.rows.length);
+  }, [chart, profile]);
 
   const handleShare = async () => {
     if (!profile || !topSummary) return;
@@ -442,6 +473,15 @@ export default function MySajuPage({ me }: Props) {
                             {row.value.branch}
                           </button>
                         </div>
+                        {row.detail?.hiddenStems?.length ? (
+                          <p className="pillarMetaLine">지장간 · {row.detail.hiddenStems.join(" · ")}</p>
+                        ) : null}
+                        {row.detail?.stemTenGodLabel ? (
+                          <p className="pillarMetaLine">천간 십성 · {row.detail.stemTenGodLabel}</p>
+                        ) : null}
+                        {typeof row.detail?.supportWeight === "number" && row.detail.supportWeight > 0 ? (
+                          <p className="pillarMetaLine">근 보강 점수 · {row.detail.supportWeight}</p>
+                        ) : null}
                       </article>
                     );
                   })}
@@ -465,7 +505,7 @@ export default function MySajuPage({ me }: Props) {
                   <article key={`${item.pillar}-${item.stem}`} className="insightCard">
                     <small>{item.pillar === "year" ? "연간" : item.pillar === "month" ? "월간" : "시간"}</small>
                     <strong>{item.stem}</strong>
-                    <span>{item.code ? getTenGodLabel(item.code) : "해석 대기"}</span>
+                    <span>{item.label ?? (item.code ? getTenGodLabel(item.code) : "해석 대기")}</span>
                     <p>{item.summary}</p>
                   </article>
                 ))}
@@ -497,6 +537,23 @@ export default function MySajuPage({ me }: Props) {
                 <strong>{joinElementLabels(topSummary.analysis.usefulElements)}</strong>
                 <p>지금 명식에서는 이 기운을 쓰는 생활 리듬과 관계 패턴이 균형 회복에 도움 됩니다.</p>
               </article>
+              {typeof topSummary.analysis.supportScore === "number" || typeof topSummary.analysis.regulatingScore === "number" ? (
+                <article className="strengthCard">
+                  <small>강약 점수</small>
+                  <strong>{formatSignedScore(topSummary.analysis.strengthScore)}</strong>
+                  <p>
+                    도움 {formatSignedScore(topSummary.analysis.supportScore)} · 설기/제어 {formatSignedScore(topSummary.analysis.regulatingScore)}
+                    {typeof topSummary.analysis.seasonalBonus === "number" ? ` · 월지 보정 ${formatSignedScore(topSummary.analysis.seasonalBonus)}` : ""}
+                  </p>
+                </article>
+              ) : null}
+              {typeof topSummary.analysis.rootSupportScore === "number" ? (
+                <article className="strengthCard">
+                  <small>근 보강</small>
+                  <strong>{formatSignedScore(topSummary.analysis.rootSupportScore)}</strong>
+                  <p>지지에서 일간과 인성 축을 받치는 힘을 누적한 값이에요.</p>
+                </article>
+              ) : null}
             </div>
           </div>
         )}
@@ -508,6 +565,38 @@ export default function MySajuPage({ me }: Props) {
         tone="highlight"
         rows={detailSections.summaryRows}
       />
+
+      {breakdownCards.length ? (
+        <section className="breakdownCard anim-fade-in anim-delay-2">
+          <div className="fiveHeader">
+            <h4>오행 기여도 분해</h4>
+            <span className="badge">{chart?.breakdown?.ruleVersion ?? chart?.ruleVersion ?? "basis-v2"}</span>
+          </div>
+          <div className="breakdownGrid">
+            {breakdownCards.map((card) => (
+              <article key={card.label} className="breakdownSection">
+                <strong>{card.label}</strong>
+                <div className="breakdownRows">
+                  {card.rows.map((row) => (
+                    <div key={`${card.label}-${row.key}`} className="breakdownRow">
+                      <span style={{ color: elementColorKey(row.key) }}>{elementLabel(row.key)}</span>
+                      <div className="barTrack compact">
+                        <div className="barFill" style={{ width: `${Math.max(6, Math.min(100, row.value * 16))}%`, backgroundColor: elementColorKey(row.key) }} />
+                      </div>
+                      <b>{row.value.toFixed(1)}</b>
+                    </div>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+          {chart?.breakdown ? (
+            <p className="breakdownNote">
+              우승 오행은 {elementLabel(chart.breakdown.winner)}이고, {chart.breakdown.earthDampeningEnabled ? `토 감쇠 ${chart.breakdown.earthDampeningApplied.toFixed(1)}이 반영됐어요.` : "현재 토 감쇠 보정은 꺼져 있어요."}
+            </p>
+          ) : null}
+        </section>
+      ) : null}
 
       {/* ── 5 ELEMENTS CHART ── */}
       <section className="fiveBalanceCard anim-fade-in anim-delay-2">

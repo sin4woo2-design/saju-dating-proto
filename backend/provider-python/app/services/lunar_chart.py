@@ -6,7 +6,8 @@ from zoneinfo import ZoneInfo
 from lunar_python import Lunar, Solar
 
 from app.schemas import PersonInput
-from app.services.chart_rules import normalize_rule_version, score_elements
+from app.services.chart_basis import derive_chart_basis
+from app.services.chart_rules import normalize_rule_version, score_elements_with_breakdown
 
 TIME_BOUNDARY_HOUR = 23
 
@@ -28,7 +29,7 @@ def _safe_time(person: PersonInput) -> tuple[int, int, bool]:
         hour_str, minute_str = raw.split(":", 1)
         hour = max(0, min(23, int(hour_str)))
         minute = max(0, min(59, int(minute_str)))
-        adjusted = (f"{hour:02d}:{minute:02d}" != raw)
+        adjusted = f"{hour:02d}:{minute:02d}" != raw
         return hour, minute, adjusted
     except Exception:
         return 12, 0, True
@@ -97,7 +98,7 @@ def calculate_chart_with_lunar(
     }
 
     rule = normalize_rule_version(rule_version)
-    five_elements = score_elements(
+    breakdown = score_elements_with_breakdown(
         [year_gan, month_gan, day_gan, time_gan],
         [year_zhi, month_zhi, day_zhi, time_zhi],
         rule,
@@ -105,15 +106,15 @@ def calculate_chart_with_lunar(
         earth_dampening_enabled,
         earth_dampening_strength,
     )
+    five_elements = breakdown["finalNormalized"]
+    basis = derive_chart_basis(five_elements, pillars, breakdown)
 
     strong = max(five_elements, key=five_elements.get).upper()
     weak = min(five_elements, key=five_elements.get).upper()
     signals = [f"{strong}_STRONG", f"{weak}_WEAK", "LUNAR_PILLARS_APPLIED", f"RULE_{rule}", *boundary_flags]
 
     warnings: list[str] = []
-    if not person.birthTimeKnown:
-        warnings.append("PROVIDER_PARTIAL_DATA")
-    if boundary_flags:
+    if not person.birthTimeKnown or boundary_flags:
         warnings.append("PROVIDER_PARTIAL_DATA")
 
-    return five_elements, pillars, signals, list(dict.fromkeys(warnings))
+    return five_elements, pillars, signals, list(dict.fromkeys(warnings)), basis, breakdown

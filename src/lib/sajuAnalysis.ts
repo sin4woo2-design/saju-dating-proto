@@ -2,6 +2,7 @@ import type {
   ElementKey,
   FiveElementsBalance,
   SajuAnalysis,
+  SajuElementBreakdown,
   SajuPillarsSnapshot,
   SajuProfile,
   SajuSeason,
@@ -10,6 +11,7 @@ import type {
   SajuTenGodInsight,
   YinYang,
 } from "../types/saju";
+import type { ProviderElementBreakdownV2, ProviderSajuBasisV2 } from "./engine/provider-contract";
 
 type PillarKey = "year" | "month" | "day" | "hour";
 
@@ -209,6 +211,78 @@ export function getStrengthLabel(level: SajuStrengthLevel) {
 
 export function getTenGodLabel(code: SajuTenGodCode) {
   return TEN_GOD_LABELS[code];
+}
+
+function normalizeElementList(
+  values: Array<ElementKey | undefined> | undefined,
+  fallback: ElementKey[],
+) {
+  const resolved = (values ?? []).filter((value): value is ElementKey => Boolean(value));
+  return resolved.length ? uniqueElements(resolved) : fallback;
+}
+
+function normalizeSummaryLines(lines: string[] | undefined, fallback: string[]) {
+  const filtered = (lines ?? []).map((line) => line.trim()).filter(Boolean);
+  return filtered.length ? filtered.slice(0, 3) : fallback.slice(0, 3);
+}
+
+export function normalizeProviderAnalysis(
+  basis?: ProviderSajuBasisV2,
+  breakdown?: ProviderElementBreakdownV2,
+): SajuAnalysis | undefined {
+  if (!basis) return undefined;
+
+  const summaryFallback = [
+    `${basis.dayMasterLabel} 일간을 기준으로 명식의 중심축을 해석하고 있어요.`,
+    `${basis.usefulElements.map(elementLabel).join("·")} 기운을 활용할수록 흐름이 편안해져요.`,
+    `${elementLabel(basis.weakestElement)} 축은 생활 리듬에서 먼저 보완해 두는 편이 좋아요.`,
+  ];
+
+  const elementBreakdown: SajuElementBreakdown | undefined = breakdown
+    ? {
+        ruleVersion: breakdown.ruleVersion,
+        stemContribution: breakdown.stemContribution,
+        branchContribution: breakdown.branchContribution,
+        monthBranchBonusContribution: breakdown.monthBranchBonusContribution,
+        hiddenStemContribution: breakdown.hiddenStemContribution,
+        overlapMonthBonusHiddenEarth: breakdown.overlapMonthBonusHiddenEarth,
+        earthDampeningEnabled: breakdown.earthDampeningEnabled,
+        earthDampeningStrength: breakdown.earthDampeningStrength,
+        earthDampeningApplied: breakdown.earthDampeningApplied,
+        rawScore: breakdown.rawScore,
+        finalNormalized: breakdown.finalNormalized,
+        winner: breakdown.winner,
+      }
+    : undefined;
+
+  return {
+    source: "chart-derived",
+    basisOrigin: "provider",
+    dayMasterStem: basis.dayMasterStem,
+    dayMasterLabel: basis.dayMasterLabel,
+    dayMasterElement: basis.dayMasterElement,
+    dayMasterYinYang: basis.dayMasterYinYang,
+    monthBranch: basis.monthBranch,
+    monthBranchLabel: basis.monthBranchLabel,
+    season: basis.season,
+    dominantElement: basis.dominantElement,
+    weakestElement: basis.weakestElement,
+    strengthLevel: basis.strengthLevel,
+    strengthScore: basis.strengthScore,
+    supportScore: basis.supportScore,
+    regulatingScore: basis.regulatingScore,
+    seasonalBonus: basis.seasonalBonus,
+    rootSupportScore: basis.rootSupportScore,
+    strengthReason: basis.strengthReason,
+    supportElements: normalizeElementList(basis.supportElements, [basis.dayMasterElement]),
+    usefulElements: normalizeElementList(basis.usefulElements, [basis.dominantElement]),
+    cautionElements: normalizeElementList(basis.cautionElements, [basis.weakestElement]),
+    tenGods: basis.tenGods ?? [],
+    summaryLines: normalizeSummaryLines(basis.summaryLines, summaryFallback),
+    pillarDetails: basis.pillarDetails,
+    elementBreakdown,
+    notes: basis.notes,
+  };
 }
 
 export function isChartDerivedAnalysis(analysis: SajuAnalysis) {

@@ -142,6 +142,18 @@ function buildBasisHighlights(basis?: CompatibilityBasisV1): CompatibilityHighli
     });
   }
 
+  const me = basis.participants.me;
+  const partner = basis.participants.partner;
+  if (me.dayMasterLabel && partner.dayMasterLabel) {
+    const meUseful = me.usefulElements?.join("·");
+    const partnerUseful = partner.usefulElements?.join("·");
+    items.push({
+      title: "명식 맞물림",
+      body: `${me.dayMasterLabel}와 ${partner.dayMasterLabel} 기준으로 읽고 있어요.${meUseful ? ` 내 활용 기운은 ${meUseful}` : ""}${partnerUseful ? `, 상대 활용 기운은 ${partnerUseful}` : ""} 축이에요.`,
+      tone: "neutral",
+    });
+  }
+
   return items;
 }
 

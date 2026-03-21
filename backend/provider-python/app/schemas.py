@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal, Optional
+from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 WarningCode = Literal[
@@ -72,6 +72,8 @@ class SajuBody(BaseModel):
     signals: Optional[list[str]] = None
     ruleVersion: Optional[str] = None
     calculationSource: Optional[str] = None
+    basis: Optional[dict[str, Any]] = None
+    breakdown: Optional[dict[str, Any]] = None
 
 
 class CompatibilityRawSignal(BaseModel):
@@ -105,6 +107,10 @@ class CompatibilitySubScores(BaseModel):
 class CompatibilityBasisParticipant(BaseModel):
     pillars: Optional[Pillars] = None
     dayMaster: Optional[str] = None
+    dayMasterLabel: Optional[str] = None
+    strengthLevel: Optional[Literal["strong", "balanced", "weak"]] = None
+    usefulElements: Optional[list[Literal["wood", "fire", "earth", "metal", "water"]]] = None
+    cautionElements: Optional[list[Literal["wood", "fire", "earth", "metal", "water"]]] = None
     fiveElements: Optional[dict[str, int]] = None
     birthTimeKnown: Optional[bool] = None
 

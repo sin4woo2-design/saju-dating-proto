@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 
 @dataclass(frozen=True)
 class Settings:
-    provider_version: str = os.getenv("PROVIDER_VERSION", "fake-python-provider-v0")
+    provider_version: str = os.getenv("PROVIDER_VERSION", "provider-python-lunar-v1")
     cors_allow_origins: list[str] = field(
         default_factory=lambda: [
             origin.strip()
@@ -14,7 +14,7 @@ class Settings:
             if origin.strip()
         ]
     )
-    engine_version: str = os.getenv("ENGINE_VERSION", "chart-engine-v0.3")
+    engine_version: str = os.getenv("ENGINE_VERSION", "chart-engine-v0.4")
     chart_mode: str = os.getenv("CHART_ENGINE_MODE", "fake")  # fake | lunar-prep
     # chart baseline (잠정 고정): v2-month-branch-boost
     chart_rule_version: str = os.getenv("CHART_RULE_VERSION", "v2-month-branch-boost")

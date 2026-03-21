@@ -53,6 +53,8 @@ def saju_chart(req: SajuChartRequest):
             signals=result["signals"] if req.options.includeSignals else None,
             ruleVersion=result["rule_version"],
             calculationSource=result["calculation_source"],
+            basis=result.get("basis"),
+            breakdown=result.get("breakdown"),
         ),
         warnings=result["warnings"],
     )

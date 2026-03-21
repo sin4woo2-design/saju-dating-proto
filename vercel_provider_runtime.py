@@ -93,7 +93,14 @@ def read_json_body(handler: BaseHTTPRequestHandler) -> dict[str, Any] | None:
 
 
 def health_payload() -> dict[str, Any]:
-    return {"ok": True, "service": "provider-python", "mode": settings.chart_mode}
+    return {
+        "ok": True,
+        "service": "provider-python",
+        "mode": settings.chart_mode,
+        "providerVersion": settings.provider_version,
+        "engineVersion": settings.engine_version,
+        "ruleVersion": settings.chart_rule_version,
+    }
 
 
 def handle_health_request(handler: BaseHTTPRequestHandler) -> None:
@@ -139,6 +146,8 @@ def handle_saju_chart_request(handler: BaseHTTPRequestHandler) -> None:
             signals=result["signals"] if request.options.includeSignals else None,
             ruleVersion=result["rule_version"],
             calculationSource=result["calculation_source"],
+            basis=result.get("basis"),
+            breakdown=result.get("breakdown"),
         ),
         warnings=result["warnings"],
     ).model_dump(mode="json")

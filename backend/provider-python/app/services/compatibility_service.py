@@ -17,6 +17,11 @@ RAW_SIGNAL_TABLE = {
     "DAYMASTER_SUPPORT": {"code": "DAYMASTER_SUPPORT_MUTUAL", "category": "daymaster-dynamics", "polarity": "positive", "weight": 3, "note": "일간 보완"},
     "DAYMASTER_CLASH": {"code": "DAYMASTER_CLASH", "category": "daymaster-dynamics", "polarity": "negative", "weight": -4, "note": "일간 충돌"},
     "BALANCED_RHYTHM": {"code": "DAYMASTER_SUPPORT_MUTUAL", "category": "daymaster-dynamics", "polarity": "positive", "weight": 2, "note": "관계 리듬 균형"},
+    "USEFUL_MATCH_TO_ME": {"code": "ELEMENT_USEFUL_TO_ME", "category": "element-dynamics", "polarity": "positive", "weight": 2, "note": "상대 주도 오행이 내 활용 기운"},
+    "USEFUL_MATCH_TO_PARTNER": {"code": "ELEMENT_USEFUL_TO_PARTNER", "category": "element-dynamics", "polarity": "positive", "weight": 2, "note": "내 주도 오행이 상대 활용 기운"},
+    "USEFUL_MATCH_MUTUAL": {"code": "ELEMENT_USEFUL_MUTUAL", "category": "element-dynamics", "polarity": "positive", "weight": 4, "note": "서로의 주도 오행이 활용 기운에 맞음"},
+    "CAUTION_CLASH_MUTUAL": {"code": "ELEMENT_CAUTION_MUTUAL", "category": "element-dynamics", "polarity": "negative", "weight": -4, "note": "서로의 주도 오행이 주의 기운에 걸림"},
+    "STRENGTH_BALANCE_COMPLEMENT": {"code": "DAYMASTER_STRENGTH_COMPLEMENT", "category": "daymaster-dynamics", "polarity": "positive", "weight": 2, "note": "강약 구조가 상호 보완"},
 }
 
 BRANCH_HAP_PAIRS = {frozenset(("子", "丑")), frozenset(("寅", "亥")), frozenset(("卯", "戌")), frozenset(("辰", "酉")), frozenset(("巳", "申")), frozenset(("午", "未"))}
@@ -89,6 +94,39 @@ def _daymaster_signal(day_stem_a: str | None, day_stem_b: str | None) -> str:
     return "BALANCED_RHYTHM"
 
 
+def _derive_basis_signals(me_chart: dict, partner_chart: dict) -> list[str]:
+    me_basis = me_chart.get("basis") or {}
+    partner_basis = partner_chart.get("basis") or {}
+
+    me_dominant = me_basis.get("dominantElement")
+    partner_dominant = partner_basis.get("dominantElement")
+    me_useful = set(me_basis.get("usefulElements") or [])
+    partner_useful = set(partner_basis.get("usefulElements") or [])
+    me_caution = set(me_basis.get("cautionElements") or [])
+    partner_caution = set(partner_basis.get("cautionElements") or [])
+    me_strength = me_basis.get("strengthLevel")
+    partner_strength = partner_basis.get("strengthLevel")
+
+    signals: list[str] = []
+
+    if me_dominant and partner_dominant:
+        if partner_dominant in me_useful and me_dominant in partner_useful:
+            signals.append("USEFUL_MATCH_MUTUAL")
+        else:
+            if partner_dominant in me_useful:
+                signals.append("USEFUL_MATCH_TO_ME")
+            if me_dominant in partner_useful:
+                signals.append("USEFUL_MATCH_TO_PARTNER")
+
+        if partner_dominant in me_caution and me_dominant in partner_caution:
+            signals.append("CAUTION_CLASH_MUTUAL")
+
+    if {me_strength, partner_strength} == {"strong", "weak"}:
+        signals.append("STRENGTH_BALANCE_COMPLEMENT")
+
+    return signals
+
+
 def _derive_core_signals(me_chart: dict, partner_chart: dict) -> list[str]:
     signals: list[str] = []
 
@@ -115,6 +153,7 @@ def _derive_core_signals(me_chart: dict, partner_chart: dict) -> list[str]:
         signals.append("BALANCED_RHYTHM")
 
     signals.append(_daymaster_signal(me_day_stem, partner_day_stem))
+    signals.extend(_derive_basis_signals(me_chart, partner_chart))
 
     return signals
 
@@ -235,6 +274,12 @@ def _build_stem_relations(me_chart: dict, partner_chart: dict) -> list[dict]:
 def _build_element_dynamics(me_chart: dict, partner_chart: dict) -> list[dict]:
     me_top, me_second = _top_two_elements(me_chart.get("five", {}))
     partner_top, partner_second = _top_two_elements(partner_chart.get("five", {}))
+    me_basis = me_chart.get("basis") or {}
+    partner_basis = partner_chart.get("basis") or {}
+    me_useful = set(me_basis.get("usefulElements") or [])
+    partner_useful = set(partner_basis.get("usefulElements") or [])
+    me_caution = set(me_basis.get("cautionElements") or [])
+    partner_caution = set(partner_basis.get("cautionElements") or [])
 
     rows: list[dict] = []
     if (me_top, partner_top) in ELEMENT_GENERATES or (partner_top, me_top) in ELEMENT_GENERATES:
@@ -247,6 +292,17 @@ def _build_element_dynamics(me_chart: dict, partner_chart: dict) -> list[dict]:
     if (me_second, partner_second) in ELEMENT_GENERATES or (partner_second, me_second) in ELEMENT_GENERATES:
         rows.append({"type": "generates", "weight": 2, "code": "ELEMENT_GENERATES_SECOND"})
 
+    if partner_top in me_useful and me_top in partner_useful:
+        rows.append({"type": "generates", "weight": 4, "code": "ELEMENT_USEFUL_MUTUAL"})
+    else:
+        if partner_top in me_useful:
+            rows.append({"type": "generates", "weight": 2, "code": "ELEMENT_USEFUL_TO_ME"})
+        if me_top in partner_useful:
+            rows.append({"type": "generates", "weight": 2, "code": "ELEMENT_USEFUL_TO_PARTNER"})
+
+    if partner_top in me_caution and me_top in partner_caution:
+        rows.append({"type": "controls", "weight": -4, "code": "ELEMENT_CAUTION_MUTUAL"})
+
     return rows
 
 
@@ -254,12 +310,17 @@ def _build_daymaster_dynamics(me_chart: dict, partner_chart: dict) -> list[dict]
     me_day_stem, _ = _extract_stem_branch(me_chart.get("pillars", {}).get("day"))
     partner_day_stem, _ = _extract_stem_branch(partner_chart.get("pillars", {}).get("day"))
     daymaster = _daymaster_signal(me_day_stem, partner_day_stem)
+    me_strength = (me_chart.get("basis") or {}).get("strengthLevel")
+    partner_strength = (partner_chart.get("basis") or {}).get("strengthLevel")
     mapping = {
         "DAYMASTER_SUPPORT": {"type": "support", "weight": 3, "code": "DAYMASTER_SUPPORT_MUTUAL"},
         "DAYMASTER_CLASH": {"type": "clash", "weight": -3, "code": "DAYMASTER_CLASH"},
         "BALANCED_RHYTHM": {"type": "neutral", "weight": 1, "code": "DAYMASTER_BALANCED"},
     }
-    return [mapping.get(daymaster, mapping["BALANCED_RHYTHM"])]
+    rows = [mapping.get(daymaster, mapping["BALANCED_RHYTHM"])]
+    if {me_strength, partner_strength} == {"strong", "weak"}:
+        rows.append({"type": "support", "weight": 2, "code": "DAYMASTER_STRENGTH_COMPLEMENT"})
+    return rows
 
 
 def _build_basis(me: PersonInput, partner: PersonInput, me_chart: dict, partner_chart: dict, raw_signals: list[dict], confidence: str):
@@ -284,12 +345,20 @@ def _build_basis(me: PersonInput, partner: PersonInput, me_chart: dict, partner_
             "me": {
                 "pillars": me_chart.get("pillars"),
                 "dayMaster": (me_chart.get("pillars", {}).get("day") or "")[:1] or None,
+                "dayMasterLabel": (me_chart.get("basis") or {}).get("dayMasterLabel"),
+                "strengthLevel": (me_chart.get("basis") or {}).get("strengthLevel"),
+                "usefulElements": (me_chart.get("basis") or {}).get("usefulElements"),
+                "cautionElements": (me_chart.get("basis") or {}).get("cautionElements"),
                 "fiveElements": me_chart.get("five"),
                 "birthTimeKnown": me.birthTimeKnown,
             },
             "partner": {
                 "pillars": partner_chart.get("pillars"),
                 "dayMaster": (partner_chart.get("pillars", {}).get("day") or "")[:1] or None,
+                "dayMasterLabel": (partner_chart.get("basis") or {}).get("dayMasterLabel"),
+                "strengthLevel": (partner_chart.get("basis") or {}).get("strengthLevel"),
+                "usefulElements": (partner_chart.get("basis") or {}).get("usefulElements"),
+                "cautionElements": (partner_chart.get("basis") or {}).get("cautionElements"),
                 "fiveElements": partner_chart.get("five"),
                 "birthTimeKnown": partner.birthTimeKnown,
             },

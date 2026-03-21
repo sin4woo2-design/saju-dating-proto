@@ -1,4 +1,4 @@
-import type { SajuProfile, UserProfileInput, Gender, SajuPillarsSnapshot } from "../../types/saju";
+import type { SajuElementBreakdown, SajuPillarsSnapshot, SajuProfile, UserProfileInput, Gender } from "../../types/saju";
 import type { CompatibilityConfidenceLevel, CompatibilityRawSignal, CompatibilitySubScoresV1, ProviderCompatibilityProvenance, CompatibilityBasisV1 } from "./provider-contract";
 import type { HomeNarrativeSnapshot } from "./homeNarrative";
 import type { PersonaNarrativeSnapshot } from "./personaNarrative";
@@ -45,6 +45,7 @@ export interface SajuChartSnapshot {
   providerVersion?: string;
   engineVersion?: string;
   latencyMs?: number;
+  breakdown?: SajuElementBreakdown;
 }
 
 export interface SajuResult {

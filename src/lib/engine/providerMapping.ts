@@ -1,10 +1,13 @@
-import type { SajuProfile } from "../../types/saju";
+import type { SajuAnalysis, SajuProfile } from "../../types/saju";
 import type {
+  ProviderElementBreakdownV2,
   ProviderCompatibilityResponse,
+  ProviderSajuBasisV2,
   ProviderSajuResponse,
   ProviderWarningCode,
 } from "./provider-contract";
 import { isKnownCompatSignal } from "./compatSignalCatalog";
+import { normalizeProviderAnalysis } from "../sajuAnalysis";
 
 const ELEMENT_KEYS = ["wood", "fire", "earth", "metal", "water"] as const;
 const DEFAULT_ELEMENT = 50;
@@ -22,6 +25,7 @@ export function mapProviderWarnings(raw?: ProviderWarningCode[]): string[] | und
 
 export function mapProviderSajuResponseToProfile(raw: ProviderSajuResponse): {
   fiveElements: SajuProfile["fiveElements"];
+  analysis?: SajuAnalysis;
   warnings?: string[];
   chart: {
     pillars?: ProviderSajuResponse["saju"]["pillars"];
@@ -32,6 +36,7 @@ export function mapProviderSajuResponseToProfile(raw: ProviderSajuResponse): {
     providerVersion?: string;
     engineVersion?: string;
     latencyMs?: number;
+    breakdown?: ProviderElementBreakdownV2;
   };
 } {
   const warnings = new Set<string>(mapProviderWarnings(raw.warnings) ?? []);
@@ -56,6 +61,7 @@ export function mapProviderSajuResponseToProfile(raw: ProviderSajuResponse): {
 
   return {
     fiveElements,
+    analysis: normalizeProviderAnalysis(raw.saju.basis as ProviderSajuBasisV2 | undefined, raw.saju.breakdown),
     warnings: warnings.size ? Array.from(warnings) : undefined,
     chart: {
       pillars: raw.saju.pillars,
@@ -66,6 +72,7 @@ export function mapProviderSajuResponseToProfile(raw: ProviderSajuResponse): {
       providerVersion: raw.meta.providerVersion,
       engineVersion: raw.meta.engineVersion,
       latencyMs: raw.meta.latencyMs,
+      breakdown: raw.saju.breakdown,
     },
   };
 }

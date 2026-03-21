@@ -48,6 +48,90 @@ export interface ProviderMeta {
   latencyMs?: number;
 }
 
+export interface ProviderElementWeightMap {
+  wood: number;
+  fire: number;
+  earth: number;
+  metal: number;
+  water: number;
+}
+
+export interface ProviderSajuTenGodInsight {
+  pillar: "year" | "month" | "day" | "hour";
+  stem?: string;
+  code?:
+    | "peer"
+    | "rival"
+    | "food"
+    | "hurting"
+    | "indirectWealth"
+    | "directWealth"
+    | "sevenKillings"
+    | "directOfficer"
+    | "indirectResource"
+    | "directResource";
+  label?: string;
+  summary: string;
+}
+
+export interface ProviderSajuPillarDetail {
+  raw?: string;
+  stem?: string;
+  branch?: string;
+  stemLabel?: string;
+  branchLabel?: string;
+  stemElement?: "wood" | "fire" | "earth" | "metal" | "water";
+  branchElement?: "wood" | "fire" | "earth" | "metal" | "water";
+  season?: "spring" | "summer" | "transition" | "autumn" | "winter";
+  hiddenStems?: string[];
+  supportWeight?: number;
+  stemTenGodCode?: ProviderSajuTenGodInsight["code"];
+  stemTenGodLabel?: string;
+}
+
+export interface ProviderSajuBasisV2 {
+  schemaVersion: "saju-basis-v2";
+  basisOrigin?: "provider";
+  dayMasterStem?: string;
+  dayMasterLabel: string;
+  dayMasterElement: "wood" | "fire" | "earth" | "metal" | "water";
+  dayMasterYinYang?: "yin" | "yang";
+  monthBranch?: string;
+  monthBranchLabel?: string;
+  season: "spring" | "summer" | "transition" | "autumn" | "winter";
+  dominantElement: "wood" | "fire" | "earth" | "metal" | "water";
+  weakestElement: "wood" | "fire" | "earth" | "metal" | "water";
+  strengthLevel: "strong" | "balanced" | "weak";
+  strengthScore: number;
+  supportScore?: number;
+  regulatingScore?: number;
+  seasonalBonus?: number;
+  rootSupportScore?: number;
+  strengthReason: string;
+  supportElements: Array<"wood" | "fire" | "earth" | "metal" | "water">;
+  usefulElements: Array<"wood" | "fire" | "earth" | "metal" | "water">;
+  cautionElements: Array<"wood" | "fire" | "earth" | "metal" | "water">;
+  tenGods: ProviderSajuTenGodInsight[];
+  summaryLines: string[];
+  pillarDetails?: Partial<Record<"year" | "month" | "day" | "hour", ProviderSajuPillarDetail>>;
+  notes?: string[];
+}
+
+export interface ProviderElementBreakdownV2 {
+  ruleVersion: string;
+  stemContribution: ProviderElementWeightMap;
+  branchContribution: ProviderElementWeightMap;
+  monthBranchBonusContribution: ProviderElementWeightMap;
+  hiddenStemContribution: ProviderElementWeightMap;
+  overlapMonthBonusHiddenEarth: boolean;
+  earthDampeningEnabled: boolean;
+  earthDampeningStrength: number;
+  earthDampeningApplied: number;
+  rawScore: ProviderElementWeightMap;
+  finalNormalized: ProviderElementWeightMap;
+  winner: "wood" | "fire" | "earth" | "metal" | "water";
+}
+
 export interface ProviderSajuResponse {
   meta: ProviderMeta;
   saju: {
@@ -61,6 +145,8 @@ export interface ProviderSajuResponse {
     signals?: string[];
     ruleVersion?: string;
     calculationSource?: string;
+    basis?: ProviderSajuBasisV2;
+    breakdown?: ProviderElementBreakdownV2;
   };
   warnings?: ProviderWarningCode[];
 }
@@ -133,6 +219,10 @@ export interface CompatibilityBasisParticipant {
     hour?: string;
   };
   dayMaster?: string;
+  dayMasterLabel?: string;
+  strengthLevel?: "strong" | "balanced" | "weak";
+  usefulElements?: Array<"wood" | "fire" | "earth" | "metal" | "water">;
+  cautionElements?: Array<"wood" | "fire" | "earth" | "metal" | "water">;
   fiveElements?: Partial<Record<"wood" | "fire" | "earth" | "metal" | "water", number>>;
   birthTimeKnown?: boolean;
 }

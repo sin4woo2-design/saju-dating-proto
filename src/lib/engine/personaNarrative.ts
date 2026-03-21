@@ -271,6 +271,7 @@ function analysisTitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis) {
 
 function analysisSubtitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence) {
   const usefulLabel = analysis.usefulElements.map((element) => elementLabel(element)).join("·");
+  const providerLead = analysis.basisOrigin === "provider" ? analysis.summaryLines[0] : "";
   const subtitleLead = isChartDerivedAnalysis(analysis)
     ? `${getStrengthLabel(analysis.strengthLevel)} 쪽의 ${analysis.dayMasterLabel} 일간이라`
     : `${getStrengthLabel(analysis.strengthLevel)} 흐름이고 ${getAnalysisIdentityLabel(analysis)} 해석이라`;
@@ -281,7 +282,7 @@ function analysisSubtitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis, 
       : "지금은 방향성 위주로 참고해 주세요.";
 
   return trimSentence(
-    `${subtitleLead} ${usefulLabel} 기운을 닮은 관계에서 매력이 더 또렷해져요. ${axisWord(basis.appealAxis)}이 살아나는 환경에서 존재감이 커집니다. ${confidenceTail}`,
+    `${providerLead ? `${providerLead} ` : ""}${subtitleLead} ${usefulLabel} 기운을 닮은 관계에서 매력이 더 또렷해져요. ${axisWord(basis.appealAxis)}이 살아나는 환경에서 존재감이 커집니다. ${confidenceTail}`,
   );
 }
 

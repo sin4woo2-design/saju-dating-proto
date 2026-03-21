@@ -202,6 +202,11 @@ export default function CompatibilityPage({ me }: Props) {
                   source: {provenance.calculationSource} · rule: {provenance.ruleVersion}
                 </p>
               ) : null}
+              {basis?.participants.me.dayMasterLabel && basis?.participants.partner.dayMasterLabel ? (
+                <p className="compatQaLine">
+                  내 일간 {basis.participants.me.dayMasterLabel} · 상대 일간 {basis.participants.partner.dayMasterLabel}
+                </p>
+              ) : null}
             </div>
           </section>
 
