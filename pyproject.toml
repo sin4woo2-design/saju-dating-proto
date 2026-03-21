@@ -1,0 +1,9 @@
+[project]
+name = "saju-dating-proto-provider"
+version = "0.1.0"
+description = "Embedded Vercel Python provider for saju-dating-proto"
+requires-python = "~=3.12.0"
+dependencies = [
+  "pydantic==2.10.6",
+  "lunar-python==1.4.8",
+]
