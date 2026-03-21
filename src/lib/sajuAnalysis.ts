@@ -211,6 +211,35 @@ export function getTenGodLabel(code: SajuTenGodCode) {
   return TEN_GOD_LABELS[code];
 }
 
+export function isChartDerivedAnalysis(analysis: SajuAnalysis) {
+  return analysis.source === "chart-derived" && !!analysis.dayMasterStem;
+}
+
+export function getAnalysisHeadlineLabel(analysis: SajuAnalysis) {
+  return isChartDerivedAnalysis(analysis) ? analysis.dayMasterLabel : "오행 기반 임시 해석";
+}
+
+export function getAnalysisIdentityLabel(analysis: SajuAnalysis) {
+  return isChartDerivedAnalysis(analysis) ? analysis.dayMasterLabel : `${elementLabel(analysis.dayMasterElement)} 기운 중심`;
+}
+
+export function getAnalysisSubjectPhrase(analysis: SajuAnalysis) {
+  return isChartDerivedAnalysis(analysis)
+    ? `${analysis.dayMasterLabel} 일간은`
+    : `${elementLabel(analysis.dayMasterElement)} 기운이 중심인 흐름에서는`;
+}
+
+export function getAnalysisBasisPhrase(analysis: SajuAnalysis) {
+  return isChartDerivedAnalysis(analysis)
+    ? `${analysis.dayMasterLabel} 기준으로`
+    : `${elementLabel(analysis.dayMasterElement)} 기운 기준으로`;
+}
+
+export function getAnalysisFallbackNote(analysis: SajuAnalysis) {
+  if (isChartDerivedAnalysis(analysis)) return "";
+  return "원국 기둥을 불러오지 못해 오행 균형 기반으로 임시 해석 중이에요.";
+}
+
 export function describeStem(stem?: string) {
   const meta = stem ? STEM_META[stem] : undefined;
   if (!meta || !stem) return "천간 정보를 아직 읽지 못했어요.";
@@ -296,7 +325,7 @@ export function deriveSajuAnalysis(balance: FiveElementsBalance, pillars?: SajuP
   return {
     source,
     dayMasterStem: dayStem,
-    dayMasterLabel: dayStemMeta?.label ?? `${elementLabel(dayMasterElement)} 일간 추정`,
+    dayMasterLabel: dayStemMeta?.label ?? `${elementLabel(dayMasterElement)} 기운 중심`,
     dayMasterElement,
     dayMasterYinYang: dayStemMeta?.yinYang,
     monthBranch,
@@ -312,7 +341,9 @@ export function deriveSajuAnalysis(balance: FiveElementsBalance, pillars?: SajuP
     cautionElements,
     tenGods,
     summaryLines: [
-      `${dayStemMeta?.label ?? `${elementLabel(dayMasterElement)} 기운`}이 기준축이라 관계를 읽을 때도 ${elementLabel(dayMasterElement)} 기운의 쓰임을 먼저 봅니다.`,
+      dayStemMeta
+        ? `${dayStemMeta.label}이 기준축이라 관계를 읽을 때도 ${elementLabel(dayMasterElement)} 기운의 쓰임을 먼저 봅니다.`
+        : `지금은 ${elementLabel(dayMasterElement)} 기운을 기준축으로 두고 관계 흐름을 읽고 있어요.`,
       `${getStrengthLabel(strengthLevel)}이라 ${usefulElements.map(elementLabel).join("·")} 기운을 활용할수록 흐름이 부드러워집니다.`,
       `${elementLabel(weakestElement)} 기운이 가장 약해 생활 루틴에서는 이 축을 보완하는 편이 좋습니다.`,
     ],
@@ -326,13 +357,14 @@ export function buildProfileCopy(balance: FiveElementsBalance, analysis: SajuAna
   const seasonLabel = getSeasonLabel(analysis.season);
   const dominantValue = balance[analysis.dominantElement];
   const weakValue = balance[analysis.weakestElement];
+  const subjectPhrase = getAnalysisSubjectPhrase(analysis);
 
   const personalitySummary =
     analysis.strengthLevel === "strong"
-      ? `${analysis.dayMasterLabel} 일간은 ${seasonLabel} 흐름에서 힘을 받는 편이라 주도성과 판단 속도가 분명합니다. 다만 ${cautionLabel} 기운이 과해지면 단정적으로 보일 수 있어 속도를 조율할수록 강점이 살아납니다. 현재 강한 축은 ${elementLabel(analysis.dominantElement)}(${dominantValue}%)입니다.`
+      ? `${subjectPhrase} ${seasonLabel} 흐름에서 힘을 받는 편이라 주도성과 판단 속도가 분명합니다. 다만 ${cautionLabel} 기운이 과해지면 단정적으로 보일 수 있어 속도를 조율할수록 강점이 살아납니다. 현재 강한 축은 ${elementLabel(analysis.dominantElement)}(${dominantValue}%)입니다.`
       : analysis.strengthLevel === "weak"
-        ? `${analysis.dayMasterLabel} 일간은 ${seasonLabel} 흐름에서 기반을 다지며 힘을 쓰는 편이라, 사람과 환경의 흐름을 읽는 감각이 좋습니다. ${supportLabel} 기운을 채워 줄수록 안정감과 집중력이 함께 올라옵니다. 지금은 약한 ${elementLabel(analysis.weakestElement)}(${weakValue}%) 축을 보완하는 편이 좋아요.`
-        : `${analysis.dayMasterLabel} 일간은 ${seasonLabel} 흐름에서 밀고 당기는 균형이 비교적 괜찮습니다. 주도할 때와 맞춰줄 때를 구분하면 존재감이 자연스럽게 드러납니다.`;
+        ? `${subjectPhrase} ${seasonLabel} 흐름에서 기반을 다지며 힘을 쓰는 편이라, 사람과 환경의 흐름을 읽는 감각이 좋습니다. ${supportLabel} 기운을 채워 줄수록 안정감과 집중력이 함께 올라옵니다. 지금은 약한 ${elementLabel(analysis.weakestElement)}(${weakValue}%) 축을 보완하는 편이 좋아요.`
+        : `${subjectPhrase} ${seasonLabel} 흐름에서 밀고 당기는 균형이 비교적 괜찮습니다. 주도할 때와 맞춰줄 때를 구분하면 존재감이 자연스럽게 드러납니다.`;
 
   const loveStyle =
     analysis.strengthLevel === "strong"

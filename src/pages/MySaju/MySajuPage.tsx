@@ -4,7 +4,19 @@ import PageLayout from "../../components/layout/PageLayout";
 import { useTransientMessage } from "../../hooks/useTransientMessage";
 import { calculateSajuResult } from "../../lib/sajuEngine";
 import { shareOrCopy } from "../../lib/share";
-import { describeBranch, describeStem, elementLabel, getSeasonLabel, getStrengthLabel, getTenGodLabel } from "../../lib/sajuAnalysis";
+import {
+  describeBranch,
+  describeStem,
+  elementLabel,
+  getAnalysisBasisPhrase,
+  getAnalysisFallbackNote,
+  getAnalysisHeadlineLabel,
+  getAnalysisIdentityLabel,
+  getSeasonLabel,
+  getStrengthLabel,
+  getTenGodLabel,
+  isChartDerivedAnalysis,
+} from "../../lib/sajuAnalysis";
 import type { ElementKey, SajuAnalysis, SajuProfile, UserProfileInput } from "../../types/saju";
 import type { SajuChartSnapshot } from "../../lib/engine/types";
 import "./MySajuPage.css";
@@ -51,7 +63,10 @@ function joinElementLabels(elements: ElementKey[]) {
 function todayLine(analysis: SajuAnalysis) {
   const usefulLabel = joinElementLabels(analysis.usefulElements);
   const weakLabel = elementLabel(analysis.weakestElement);
-  return `${analysis.dayMasterLabel} 기준으로는 ${usefulLabel} 기운을 활용하고, 약한 ${weakLabel} 축을 생활 리듬에서 보완하는 하루가 좋아요.`;
+  if (!isChartDerivedAnalysis(analysis)) {
+    return `지금은 ${usefulLabel} 기운을 활용하고 약한 ${weakLabel} 축을 보완하는 오행 균형 기반 임시 해석을 보여주고 있어요.`;
+  }
+  return `${getAnalysisBasisPhrase(analysis)} ${usefulLabel} 기운을 활용하고, 약한 ${weakLabel} 축을 생활 리듬에서 보완하는 하루가 좋아요.`;
 }
 
 function splitPillar(value?: string) {
@@ -84,9 +99,11 @@ function buildDetailSections(profile: SajuProfile, analysis: SajuAnalysis) {
 
   return {
     summaryRows: [
-      `일간: ${analysis.dayMasterLabel}`,
+      isChartDerivedAnalysis(analysis)
+        ? `일간: ${analysis.dayMasterLabel}`
+        : `해석 기준: ${getAnalysisIdentityLabel(analysis)}`,
       `강약: ${getStrengthLabel(analysis.strengthLevel)}`,
-      `보완 기운: ${usefulLabel}`,
+      `${isChartDerivedAnalysis(analysis) ? "보완 기운" : "활용 기운"}: ${usefulLabel}`,
     ],
     personality: [
       profile.personalitySummary,
@@ -158,7 +175,7 @@ export default function MySajuPage({ me }: Props) {
       weakKey: sortedElements[sortedElements.length - 1][0],
       strong: `${elementLabel(sortedElements[0][0])} 강세`,
       weak: `${elementLabel(sortedElements[sortedElements.length - 1][0])} 보완 필요`,
-      headline: `${analysis.dayMasterLabel} · ${getStrengthLabel(analysis.strengthLevel)}`,
+      headline: `${getAnalysisHeadlineLabel(analysis)} · ${getStrengthLabel(analysis.strengthLevel)}`,
     };
   }, [profile, sortedElements]);
 
@@ -175,6 +192,11 @@ export default function MySajuPage({ me }: Props) {
       { label: "연주", value: splitPillar(chart?.pillars?.year) },
     ],
     [chart]
+  );
+
+  const hasPillars = useMemo(
+    () => pillarRows.some((row) => row.value.raw !== "-"),
+    [pillarRows]
   );
 
   const visibleTenGods = useMemo(
@@ -204,6 +226,7 @@ export default function MySajuPage({ me }: Props) {
 
   const tone = statusTone(providerState, warnings);
   const badgeText = statusBadgeText(providerState, warnings);
+  const fallbackNote = getAnalysisFallbackNote(topSummary.analysis);
 
   return (
     <PageLayout
@@ -220,6 +243,7 @@ export default function MySajuPage({ me }: Props) {
           ))}
         </div>
         <h3 className="sajuHeroTitle">{topSummary.headline}</h3>
+        {fallbackNote ? <p className="sajuHeroNote">{fallbackNote}</p> : null}
         <div className="sajuHeroChips">
           <span className="sajuChip">주도 오행 · {elementLabel(topSummary.analysis.dominantElement)}</span>
           <span className="sajuChip">보완 오행 · {elementLabel(topSummary.analysis.weakestElement)}</span>
@@ -239,37 +263,46 @@ export default function MySajuPage({ me }: Props) {
         {activeTab === "pillars" && (
           <div className="tabContent">
             <h4 className="tabTitle">사주원국 (연/월/일/시주)</h4>
-            <div className="pillarsGridRow">
-              {pillarRows.map((row) => {
-                const stemKey = `${row.label}-stem`;
-                const branchKey = `${row.label}-branch`;
-                return (
-                  <article key={row.label} className="pillarCard">
-                    <div className="pillarHead">
-                      <strong>{row.label}</strong>
-                    </div>
-                    <span className="pillarHanja">{row.value.raw}</span>
-                    <div className="pillarActions">
-                      <button
-                        type="button"
-                        className={activePillarHint?.key === stemKey ? "active" : ""}
-                        onClick={() => setActivePillarHint((prev) => prev?.key === stemKey ? null : { key: stemKey, text: `천간 ${row.value.stem} · ${pillarHintText("stem", row.value.stem)}` })}
-                      >
-                        {row.value.stem}
-                      </button>
-                      <button
-                        type="button"
-                        className={activePillarHint?.key === branchKey ? "active" : ""}
-                        onClick={() => setActivePillarHint((prev) => prev?.key === branchKey ? null : { key: branchKey, text: `지지 ${row.value.branch} · ${pillarHintText("branch", row.value.branch)}` })}
-                      >
-                        {row.value.branch}
-                      </button>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-            {activePillarHint && <div className="pillarTooltip anim-scale-in">{activePillarHint.text}</div>}
+            {hasPillars ? (
+              <>
+                <div className="pillarsGridRow">
+                  {pillarRows.map((row) => {
+                    const stemKey = `${row.label}-stem`;
+                    const branchKey = `${row.label}-branch`;
+                    return (
+                      <article key={row.label} className="pillarCard">
+                        <div className="pillarHead">
+                          <strong>{row.label}</strong>
+                        </div>
+                        <span className="pillarHanja">{row.value.raw}</span>
+                        <div className="pillarActions">
+                          <button
+                            type="button"
+                            className={activePillarHint?.key === stemKey ? "active" : ""}
+                            onClick={() => setActivePillarHint((prev) => prev?.key === stemKey ? null : { key: stemKey, text: `천간 ${row.value.stem} · ${pillarHintText("stem", row.value.stem)}` })}
+                          >
+                            {row.value.stem}
+                          </button>
+                          <button
+                            type="button"
+                            className={activePillarHint?.key === branchKey ? "active" : ""}
+                            onClick={() => setActivePillarHint((prev) => prev?.key === branchKey ? null : { key: branchKey, text: `지지 ${row.value.branch} · ${pillarHintText("branch", row.value.branch)}` })}
+                          >
+                            {row.value.branch}
+                          </button>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+                {activePillarHint && <div className="pillarTooltip anim-scale-in">{activePillarHint.text}</div>}
+              </>
+            ) : (
+              <div className="tabEmptyState">
+                <strong>사주원국을 아직 불러오지 못했어요</strong>
+                <p>현재는 원국 데이터를 받지 못해 오행 균형 기반 임시 해석만 보여주고 있어요. 실제 연결이 복구되면 연주·월주·일주·시주가 이 영역에 표시됩니다.</p>
+              </div>
+            )}
           </div>
         )}
 
@@ -287,7 +320,11 @@ export default function MySajuPage({ me }: Props) {
                 ))}
               </div>
             ) : (
-              <p className="tabHint">십성은 아직 추정 근거가 부족해 표시할 항목이 없어요.</p>
+              <p className="tabHint">
+                {isChartDerivedAnalysis(topSummary.analysis)
+                  ? "십성은 아직 추정 근거가 부족해 표시할 항목이 없어요."
+                  : "원국 천간을 불러오지 못해 십성은 아직 계산하지 못했어요."}
+              </p>
             )}
           </div>
         )}

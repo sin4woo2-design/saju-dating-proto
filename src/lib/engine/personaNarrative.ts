@@ -2,7 +2,7 @@ import type { ProviderState, SajuResult } from "./types";
 import type { ElementKey, SajuAnalysis, UserProfileInput } from "../../types/saju";
 import type { NarrativeProvenance } from "./homeNarrative";
 import { classifyPersonaType, type PersonaTypeResult } from "./personaClassifier";
-import { elementLabel, getStrengthLabel } from "../sajuAnalysis";
+import { elementLabel, getAnalysisIdentityLabel, getAnalysisSubjectPhrase, getStrengthLabel, isChartDerivedAnalysis } from "../sajuAnalysis";
 
 export type PersonaNarrativeConfidence = "high" | "medium" | "low";
 
@@ -266,11 +266,14 @@ function axisWord(axis: PersonaNarrativeBasis["appealAxis"]) {
 }
 
 function analysisTitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis) {
-  return `${analysis.dayMasterLabel} ${roleWord(basis)}`;
+  return `${getAnalysisIdentityLabel(analysis)} ${roleWord(basis)}`;
 }
 
 function analysisSubtitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence) {
   const usefulLabel = analysis.usefulElements.map((element) => elementLabel(element)).join("·");
+  const subtitleLead = isChartDerivedAnalysis(analysis)
+    ? `${getStrengthLabel(analysis.strengthLevel)} 쪽의 ${analysis.dayMasterLabel} 일간이라`
+    : `${getStrengthLabel(analysis.strengthLevel)} 흐름이고 ${getAnalysisIdentityLabel(analysis)} 해석이라`;
   const confidenceTail = confidence === "high"
     ? "지금 명식 흐름과의 연결감도 높은 편이에요."
     : confidence === "medium"
@@ -278,7 +281,7 @@ function analysisSubtitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis, 
       : "지금은 방향성 위주로 참고해 주세요.";
 
   return trimSentence(
-    `${getStrengthLabel(analysis.strengthLevel)} 쪽의 ${analysis.dayMasterLabel} 일간이라 ${usefulLabel} 기운을 닮은 관계에서 매력이 더 또렷해져요. ${axisWord(basis.appealAxis)}이 살아나는 환경에서 존재감이 커집니다. ${confidenceTail}`,
+    `${subtitleLead} ${usefulLabel} 기운을 닮은 관계에서 매력이 더 또렷해져요. ${axisWord(basis.appealAxis)}이 살아나는 환경에서 존재감이 커집니다. ${confidenceTail}`,
   );
 }
 
@@ -350,7 +353,7 @@ function analysisAppealPoint(analysis: SajuAnalysis, basis: PersonaNarrativeBasi
       : "지금은 가볍게 관계 방향을 보는 힌트로 읽어 주세요.";
 
   return trimSentence(
-    `${analysis.dayMasterLabel} 일간은 ${usefulLabel} 기운을 닮은 사람 앞에서 표정과 반응이 훨씬 자연스러워져요. ${basis.appealAxis === "emotion-sync" ? "감정의 결을 읽어 주는 순간" : basis.appealAxis === "rhythm-sync" ? "생활 리듬이 맞아드는 순간" : "신뢰가 축적되는 순간"}에 매력이 가장 크게 살아납니다. ${tail}`,
+    `${getAnalysisSubjectPhrase(analysis)} ${usefulLabel} 기운을 닮은 사람 앞에서 표정과 반응이 훨씬 자연스러워져요. ${basis.appealAxis === "emotion-sync" ? "감정의 결을 읽어 주는 순간" : basis.appealAxis === "rhythm-sync" ? "생활 리듬이 맞아드는 순간" : "신뢰가 축적되는 순간"}에 매력이 가장 크게 살아납니다. ${tail}`,
   );
 }
 

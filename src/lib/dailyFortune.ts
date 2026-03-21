@@ -1,6 +1,6 @@
 import type { ElementKey, SajuProfile, UserProfileInput } from "../types/saju";
 import { buildProfileFromFiveElements, getFiveElementsBalance } from "./engine/mockEngine";
-import { elementLabel } from "./sajuAnalysis";
+import { elementLabel, getAnalysisBasisPhrase } from "./sajuAnalysis";
 
 export interface DailyFortuneScores {
   total: number;
@@ -82,15 +82,15 @@ function buildHeroLead(profile: SajuProfile, themeElement: ElementKey, scores: D
   const analysis = profile.analysis;
   if (!analysis) return `오늘은 ${elementLabel(themeElement)} 기운이 전체 흐름을 이끌어요.`;
   if (analysis.usefulElements.includes(themeElement)) {
-    return `오늘은 ${elementLabel(themeElement)} 기운이 들어와 ${analysis.dayMasterLabel} 리듬을 부드럽게 밀어줍니다.`;
+    return `오늘은 ${elementLabel(themeElement)} 기운이 들어와 ${getAnalysisBasisPhrase(analysis)} 리듬을 부드럽게 밀어줍니다.`;
   }
   if (analysis.cautionElements.includes(themeElement)) {
     return `오늘은 ${elementLabel(themeElement)} 기운이 강하게 들어와 속도 조절이 중요한 날입니다.`;
   }
   if (scores.total >= 82) {
-    return `${analysis.dayMasterLabel} 기준으로 오늘은 흐름이 비교적 잘 맞는 편이에요.`;
+    return `${getAnalysisBasisPhrase(analysis)} 오늘은 흐름이 비교적 잘 맞는 편이에요.`;
   }
-  return `${analysis.dayMasterLabel} 기준으로 오늘은 기본기를 챙길수록 운이 살아납니다.`;
+  return `${getAnalysisBasisPhrase(analysis)} 오늘은 기본기를 챙길수록 운이 살아납니다.`;
 }
 
 function buildHeroSupport(profile: SajuProfile, themeElement: ElementKey) {

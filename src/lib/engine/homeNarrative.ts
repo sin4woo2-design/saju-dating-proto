@@ -1,6 +1,6 @@
 import type { ProviderState, SajuResult } from "./types";
 import type { SajuAnalysis, UserProfileInput } from "../../types/saju";
-import { elementLabel, getStrengthLabel } from "../sajuAnalysis";
+import { elementLabel, getAnalysisBasisPhrase, getAnalysisSubjectPhrase, getStrengthLabel } from "../sajuAnalysis";
 import { pickWithRecencyGuard } from "./variationMemory";
 
 export type NarrativeConfidence = "high" | "medium" | "low";
@@ -206,12 +206,12 @@ function buildProvenance(providerState: ProviderState, ruleVersion: string, cont
 
 function buildAnalysisHeroLead(analysis: SajuAnalysis, basis: HomeNarrativeBasis) {
   if (basis.relationTone === "soft") {
-    return `${analysis.dayMasterLabel} 일간은 오늘 대화의 온도를 먼저 맞출수록 흐름이 부드러워져요.`;
+    return `${getAnalysisSubjectPhrase(analysis)} 오늘 대화의 온도를 먼저 맞출수록 흐름이 부드러워져요.`;
   }
   if (basis.flowBias === "afternoon-peak") {
-    return `${analysis.dayMasterLabel} 일간은 오늘 핵심 결정과 중요한 대화를 오후 블록에 둘수록 안정적이에요.`;
+    return `${getAnalysisSubjectPhrase(analysis)} 오늘 핵심 결정과 중요한 대화를 오후 블록에 둘수록 안정적이에요.`;
   }
-  return `${analysis.dayMasterLabel} 일간은 오늘 말의 순서와 일정 리듬을 정리할수록 관계 피로가 줄어들어요.`;
+  return `${getAnalysisSubjectPhrase(analysis)} 오늘 말의 순서와 일정 리듬을 정리할수록 관계 피로가 줄어들어요.`;
 }
 
 function buildAnalysisHeroSupport(analysis: SajuAnalysis, basis: HomeNarrativeBasis) {
@@ -233,7 +233,7 @@ function buildAnalysisSummary(analysis: SajuAnalysis, basis: HomeNarrativeBasis)
   const weakestLabel = elementLabel(analysis.weakestElement);
 
   return [
-    trimSentence(`${analysis.dayMasterLabel} 일간은 오늘 ${usefulLabel} 기운을 닮은 태도, 즉 ${basis.relationTone === "soft" ? "부드러운 시작과 확인 질문" : "분명한 우선순위와 간결한 제안"}에서 힘이 실려요.`),
+    trimSentence(`${getAnalysisBasisPhrase(analysis)} 오늘 ${usefulLabel} 기운을 닮은 태도, 즉 ${basis.relationTone === "soft" ? "부드러운 시작과 확인 질문" : "분명한 우선순위와 간결한 제안"}에서 힘이 실려요.`),
     trimSentence(`${getStrengthLabel(analysis.strengthLevel)} 흐름이라 ${basis.focusWindow === "afternoon-focus" ? "오후 핵심 블록에 힘을 모을수록" : basis.focusWindow === "morning-setup" ? "오전 준비를 먼저 끝낼수록" : "저녁 전에 정리 루틴을 잡을수록"} 체감 안정감이 커져요.`),
     trimSentence(`${cautionLabel} 기운이 과해지면 흐름이 거칠어질 수 있으니, ${weakestLabel} 축을 보완하는 휴식과 정리 루틴을 먼저 챙겨 주세요.`),
   ];
@@ -271,7 +271,7 @@ function buildAnalysisTimeFlow(analysis: SajuAnalysis, basis: HomeNarrativeBasis
     ),
     afternoon: trimSentence(
       basis.flowBias === "afternoon-peak"
-        ? `${analysis.dayMasterLabel} 일간은 오후에 결정력과 추진력이 붙기 쉬워 핵심 대화와 중요한 작업을 이때 모으는 편이 좋아요.`
+        ? `${getAnalysisSubjectPhrase(analysis)} 오후에 결정력과 추진력이 붙기 쉬워 핵심 대화와 중요한 작업을 이때 모으는 편이 좋아요.`
         : `오후엔 피드백, 조율, 점검처럼 흐름을 다듬는 작업이 더 잘 맞아요.`,
     ),
     evening: trimSentence(
