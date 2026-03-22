@@ -3,6 +3,7 @@ import { buildProfileFromFiveElements, getFiveElementsBalance } from "./engine/m
 import {
   elementLabel,
   getAnalysisBasisPhrase,
+  polishNarrativeLine,
   getUsefulApproachLine,
   getWeakElementCareLine,
 } from "./sajuAnalysis";
@@ -87,7 +88,7 @@ function buildHeroLead(profile: SajuProfile, themeElement: ElementKey, scores: D
   const analysis = profile.analysis;
   if (!analysis) return `오늘은 ${elementLabel(themeElement)} 기운이 전체 흐름을 이끌어요.`;
   if (analysis.basisOrigin === "provider" && analysis.summaryLines[0] && scores.total >= 74) {
-    return analysis.summaryLines[0];
+    return polishNarrativeLine(analysis.summaryLines[0], analysis);
   }
   if (analysis.usefulElements.includes(themeElement)) {
     return `오늘은 ${elementLabel(themeElement)} 기운이 들어와 ${getAnalysisBasisPhrase(analysis)} 장점이 비교적 분명하게 드러나요.`;
@@ -105,7 +106,7 @@ function buildHeroSupport(profile: SajuProfile, themeElement: ElementKey) {
   const analysis = profile.analysis;
   if (!analysis) return "중요한 결정은 한 번 더 정리한 뒤 움직여 보세요.";
   if (analysis.basisOrigin === "provider" && analysis.summaryLines[1]) {
-    return analysis.summaryLines[1];
+    return polishNarrativeLine(analysis.summaryLines[1], analysis);
   }
   if (analysis.usefulElements.includes(themeElement)) {
     return `${getUsefulApproachLine(analysis.usefulElements, analysis.dominantElement)} 오늘은 그 방식으로 말과 일의 순서를 잡아 보세요.`;
@@ -149,7 +150,7 @@ function buildCautionLine(profile: SajuProfile, themeElement: ElementKey) {
   const analysis = profile.analysis;
   if (!analysis) return "감정 반응보다 일정과 회복 루틴을 먼저 챙겨보세요.";
   if (analysis.basisOrigin === "provider" && analysis.summaryLines[2]) {
-    return analysis.summaryLines[2];
+    return polishNarrativeLine(analysis.summaryLines[2], analysis);
   }
   if (analysis.cautionElements.includes(themeElement)) {
     return `${elementLabel(themeElement)} 기운이 과해지면 판단이 급해질 수 있어요. 답을 내리기 전 한 번만 더 숨을 고르는 편이 좋아요.`;

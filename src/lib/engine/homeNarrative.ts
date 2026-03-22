@@ -4,6 +4,7 @@ import {
   getAnalysisBasisPhrase,
   getAnalysisSubjectPhrase,
   getAnalysisReactionLine,
+  polishNarrativeLine,
   getStrengthLabel,
   getStrengthSupportLine,
   getUsefulApproachLine,
@@ -236,7 +237,11 @@ function buildAnalysisHeroSupport(analysis: SajuAnalysis, basis: HomeNarrativeBa
 function buildAnalysisSummary(analysis: SajuAnalysis, basis: HomeNarrativeBasis): [string, string, string] {
   if (analysis.basisOrigin === "provider" && analysis.summaryLines.length >= 3) {
     const [line1, line2, line3] = analysis.summaryLines;
-    return [trimSentence(line1), trimSentence(line2), trimSentence(line3)];
+    return [
+      trimSentence(polishNarrativeLine(line1, analysis)),
+      trimSentence(polishNarrativeLine(line2, analysis)),
+      trimSentence(polishNarrativeLine(line3, analysis)),
+    ];
   }
 
   const cautionLabel = joinElementLabels(analysis.cautionElements);
@@ -471,8 +476,8 @@ export function buildMockHomeNarrative(input: UserProfileInput, providerState: P
   const confidence = confidenceByState(providerState);
   const rotation = getRotationNonce(input);
   const analysis = context?.saju?.profile.analysis;
-  const heroLead = trimSentence(analysis ? buildAnalysisHeroLead(analysis, basis) : heroLeadFromBasis(basis));
-  const heroSupport = trimSentence(analysis ? buildAnalysisHeroSupport(analysis, basis) : heroSupportFromBasis(basis));
+  const heroLead = trimSentence(polishNarrativeLine(analysis ? buildAnalysisHeroLead(analysis, basis) : heroLeadFromBasis(basis), analysis));
+  const heroSupport = trimSentence(polishNarrativeLine(analysis ? buildAnalysisHeroSupport(analysis, basis) : heroSupportFromBasis(basis), analysis));
   const todaySummary = analysis ? buildAnalysisSummary(analysis, basis) : buildSummary(seed, basis, confidence, rotation);
 
   return {

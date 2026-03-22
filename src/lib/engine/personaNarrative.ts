@@ -6,6 +6,7 @@ import {
   elementLabel,
   getAnalysisIdentityLabel,
   getAnalysisReactionLine,
+  polishNarrativeLine,
   getStrengthLabel,
   getWeakElementCareLine,
   isChartDerivedAnalysis,
@@ -279,7 +280,7 @@ function analysisTitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis) {
 
 function analysisSubtitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence) {
   const usefulLabel = joinElementLabels(analysis.usefulElements);
-  const providerLead = analysis.basisOrigin === "provider" ? analysis.summaryLines[0] : "";
+  const providerLead = analysis.basisOrigin === "provider" ? polishNarrativeLine(analysis.summaryLines[0] ?? "", analysis) : "";
   const subtitleLead = isChartDerivedAnalysis(analysis)
     ? `${getStrengthLabel(analysis.strengthLevel)} 쪽의 ${analysis.dayMasterLabel} 일간이라`
     : `${getStrengthLabel(analysis.strengthLevel)} 흐름이고 ${getAnalysisIdentityLabel(analysis)} 해석이라`;
@@ -361,7 +362,7 @@ function analysisAppealPoint(analysis: SajuAnalysis, basis: PersonaNarrativeBasi
       : "지금은 가볍게 관계 방향을 보는 힌트로 읽어 주세요.";
 
   return trimSentence(
-    `${getAnalysisReactionLine(analysis)} ${usefulLabel} 쪽 감각이 통하는 사람 앞에서 표정과 반응이 한결 부드러워져요. ${basis.appealAxis === "emotion-sync" ? "감정의 결을 읽어 주는 순간" : basis.appealAxis === "rhythm-sync" ? "일상 템포가 맞아드는 순간" : "신뢰가 축적되는 순간"}에 매력이 가장 선명하게 드러납니다. ${tail}`,
+    `${polishNarrativeLine(getAnalysisReactionLine(analysis), analysis)} ${usefulLabel} 쪽 감각이 통하는 사람 앞에서 표정과 반응이 한결 부드러워져요. ${basis.appealAxis === "emotion-sync" ? "감정의 결을 읽어 주는 순간" : basis.appealAxis === "rhythm-sync" ? "일상 템포가 맞아드는 순간" : "신뢰가 축적되는 순간"}에 매력이 가장 선명하게 드러납니다. ${tail}`,
   );
 }
 

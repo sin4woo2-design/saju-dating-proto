@@ -344,11 +344,29 @@ export function normalizeProviderAnalysis(
     usefulElements: normalizeElementList(basis.usefulElements, [basis.dominantElement]),
     cautionElements: normalizeElementList(basis.cautionElements, [basis.weakestElement]),
     tenGods: basis.tenGods ?? [],
-    summaryLines: normalizeSummaryLines(basis.summaryLines, summaryFallback),
+    summaryLines: normalizeSummaryLines(basis.summaryLines, summaryFallback).map((line) => polishNarrativeLine(line)),
     pillarDetails: basis.pillarDetails,
     elementBreakdown,
     notes: basis.notes,
   };
+}
+
+export function polishNarrativeLine(line: string, analysis?: SajuAnalysis) {
+  const trimmed = line.trim();
+  if (!trimmed) return trimmed;
+
+  if (analysis && trimmed.includes("관계") && trimmed.includes("반응") && trimmed.includes("편")) {
+    return `관계에서는 ${ELEMENT_REACTION_HINTS[analysis.dayMasterElement]}이 보이는 사람에게 마음이 빨리 가는 편이에요.`;
+  }
+
+  return trimmed
+    .replace(/([가-힣]{2,4}) 일간은/g, "$1 기운은")
+    .replace("관계에서도", "관계에서")
+    .replace("먼저 반응하는 편이에요.", "반응이 빠른 편이에요.")
+    .replace("먼저 마음이 움직이는 편이에요.", "마음이 빨리 움직이는 편이에요.")
+    .replace("기운을 먼저 알아채는 흐름으로 읽고 있어요.", "기운이 먼저 반응하는 흐름으로 보고 있어요.")
+    .replace("말을 꺼내는 톤을 낮춰 잡을수록", "첫마디를 부드럽게 건넬수록")
+    .replace("상대 반응이 편안하게 돌아와요.", "상대 반응이 한결 부드러워져요.");
 }
 
 export function isChartDerivedAnalysis(analysis: SajuAnalysis) {
@@ -486,7 +504,7 @@ export function deriveSajuAnalysis(balance: FiveElementsBalance, pillars?: SajuP
         : `지금은 ${elementLabel(dayMasterElement)} 기운이 먼저 살아나는 흐름으로 읽고 있어요.`,
       getStrengthSupportLine(strengthLevel, usefulElements, dominantElement),
       getWeakElementCareLine(weakestElement),
-    ],
+    ].map((line) => polishNarrativeLine(line)),
   };
 }
 
