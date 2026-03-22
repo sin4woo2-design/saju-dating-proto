@@ -383,71 +383,54 @@ export default function MySajuPage({ me }: Props) {
             </div>
             {hasPillars ? (
               <>
-                <div className="pillarMatrixWrap">
-                  <div className="pillarMatrix">
-                    <div className="pillarMatrixCorner">구분</div>
-                    {pillarRows.map((row) => (
-                      <div key={`head-${row.key}`} className={`pillarMatrixHead${row.key === "day" ? " focus" : ""}`}>
-                        <strong>{row.label}</strong>
-                        <span>{row.value.raw}</span>
-                        {row.key === "day" ? <em className="pillarMatrixBadge">기준 축</em> : null}
-                      </div>
-                    ))}
+                <div className="pillarBoard">
+                  {pillarRows.map((row) => {
+                    const stemKey = `${row.label}-stem`;
+                    const branchKey = `${row.label}-branch`;
 
-                    <div className="pillarMatrixRowLabel">천간 십성</div>
-                    {pillarRows.map((row) => (
-                      <div key={`ten-god-${row.key}`} className={`pillarMatrixCell${row.key === "day" ? " focus" : ""}`}>
-                        <strong>{row.detail?.stemTenGodLabel ?? "—"}</strong>
-                      </div>
-                    ))}
-
-                    <div className="pillarMatrixRowLabel">천간</div>
-                    {pillarRows.map((row) => {
-                      const stemKey = `${row.label}-stem`;
-                      return (
+                    return (
+                      <article key={row.label} className={`pillarColumn${row.key === "day" ? " focus" : ""}`}>
+                        <div className="pillarColumnHead">
+                          <small>{row.label}</small>
+                          {row.key === "day" ? <span className="pillarColumnBadge">기준 축</span> : null}
+                        </div>
+                        <div className="pillarColumnTenGod">{row.detail?.stemTenGodLabel ?? "—"}</div>
                         <button
-                          key={`stem-${row.key}`}
                           type="button"
-                          className={`pillarMatrixAction ${elementToneClass(row.detail?.stemElement)}${row.key === "day" ? " focus" : ""}${activePillarHint?.key === stemKey ? " active" : ""}`}
+                          className={`pillarGlyphCard ${elementToneClass(row.detail?.stemElement)}${activePillarHint?.key === stemKey ? " active" : ""}`}
                           aria-pressed={activePillarHint?.key === stemKey}
                           onClick={() => setActivePillarHint((prev) => prev?.key === stemKey ? null : { key: stemKey, text: `천간 ${row.value.stem} · ${pillarHintText("stem", row.value.stem)}` })}
                         >
-                          <small>{row.detail?.stemLabel ?? "천간"}</small>
+                          <span>{row.detail?.stemLabel ?? "천간"}</span>
                           <strong>{row.value.stem}</strong>
                         </button>
-                      );
-                    })}
-
-                    <div className="pillarMatrixRowLabel">지지</div>
-                    {pillarRows.map((row) => {
-                      const branchKey = `${row.label}-branch`;
-                      return (
                         <button
-                          key={`branch-${row.key}`}
                           type="button"
-                          className={`pillarMatrixAction ${elementToneClass(row.detail?.branchElement)}${row.key === "day" ? " focus" : ""}${activePillarHint?.key === branchKey ? " active" : ""}`}
+                          className={`pillarGlyphCard ${elementToneClass(row.detail?.branchElement)}${activePillarHint?.key === branchKey ? " active" : ""}`}
                           aria-pressed={activePillarHint?.key === branchKey}
                           onClick={() => setActivePillarHint((prev) => prev?.key === branchKey ? null : { key: branchKey, text: `지지 ${row.value.branch} · ${pillarHintText("branch", row.value.branch)}` })}
                         >
-                          <small>{row.detail?.branchLabel ?? "지지"}</small>
+                          <span>{row.detail?.branchLabel ?? "지지"}</span>
                           <strong>{row.value.branch}</strong>
                         </button>
-                      );
-                    })}
-
-                    <div className="pillarMatrixRowLabel">지장간</div>
+                      </article>
+                    );
+                  })}
+                </div>
+                <div className="pillarMetaGrid">
+                  <div className="pillarMetaRow">
+                    <span className="pillarMetaLabel">지장간</span>
                     {pillarRows.map((row) => (
-                      <div key={`hidden-${row.key}`} className={`pillarMatrixCell stacked${row.key === "day" ? " focus" : ""}`}>
+                      <div key={`hidden-${row.key}`} className={`pillarMetaValue${row.key === "day" ? " focus" : ""}`}>
                         <strong>{row.detail?.hiddenStems?.join(" · ") ?? "—"}</strong>
-                        <small>{row.detail?.hiddenStems?.length ? "숨은 기운" : "표시 없음"}</small>
                       </div>
                     ))}
-
-                    <div className="pillarMatrixRowLabel">근 보강</div>
+                  </div>
+                  <div className="pillarMetaRow">
+                    <span className="pillarMetaLabel">근 보강</span>
                     {pillarRows.map((row) => (
-                      <div key={`support-${row.key}`} className={`pillarMatrixCell stacked${row.key === "day" ? " focus" : ""}`}>
+                      <div key={`support-${row.key}`} className={`pillarMetaValue${row.key === "day" ? " focus" : ""}`}>
                         <strong>{typeof row.detail?.supportWeight === "number" ? formatSignedScore(row.detail.supportWeight) : "—"}</strong>
-                        <small>{typeof row.detail?.supportWeight === "number" ? "지지에서 받는 힘" : "표시 없음"}</small>
                       </div>
                     ))}
                   </div>

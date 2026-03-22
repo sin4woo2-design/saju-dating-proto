@@ -439,159 +439,173 @@
 }
 
 /* ── Pillars Grid ── */
-.pillarsGridRow {
+.pillarBoard {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-3);
-}
-
-.pillarMatrixWrap {
-  overflow-x: auto;
-  padding-bottom: 2px;
-}
-
-.pillarMatrix {
-  min-width: 680px;
-  display: grid;
-  grid-template-columns: 86px repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
 }
 
-.pillarMatrixCorner,
-.pillarMatrixRowLabel,
-.pillarMatrixHead,
-.pillarMatrixCell,
-.pillarMatrixAction {
+.pillarColumn {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.pillarColumn.focus {
+  position: relative;
+}
+
+.pillarColumnHead,
+.pillarColumnTenGod,
+.pillarGlyphCard,
+.pillarMetaLabel,
+.pillarMetaValue {
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
   background: var(--color-surface);
 }
 
-.pillarMatrixCorner,
-.pillarMatrixRowLabel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-3);
-  font-size: var(--text-caption);
-  font-weight: var(--weight-bold);
-  color: var(--color-text-muted);
-  background: var(--color-surface-alt);
-}
-
-.pillarMatrixHead {
-  position: relative;
+.pillarColumnHead {
+  min-height: 50px;
   display: grid;
-  gap: 4px;
   align-content: center;
-  min-height: 76px;
-  padding: var(--space-3);
+  justify-items: center;
+  gap: 2px;
+  padding: 8px 6px;
   text-align: center;
   background: linear-gradient(180deg, #fffdfa, #f7f2e8);
 }
 
-.pillarMatrixHead strong {
-  font-size: var(--text-label);
+.pillarColumnHead small {
+  font-size: 12px;
   color: var(--color-text-muted);
+  font-weight: var(--weight-bold);
 }
 
-.pillarMatrixHead span {
-  font-family: "Noto Serif KR", "Batang", "Gungsuh", serif;
-  font-size: 28px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  color: var(--color-text);
-}
-
-.pillarMatrixHead.focus,
-.pillarMatrixCell.focus,
-.pillarMatrixAction.focus {
-  border-color: var(--color-border-gold);
-  box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.18);
-}
-
-.pillarMatrixBadge {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+.pillarColumnBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
   padding: 2px 7px;
   border-radius: var(--radius-pill);
   background: var(--color-gold-100);
   color: var(--color-gold-800);
   font-size: 10px;
-  font-style: normal;
   font-weight: var(--weight-bold);
 }
 
-.pillarMatrixCell,
-.pillarMatrixAction {
-  min-height: 86px;
-  padding: var(--space-3);
+.pillarColumnTenGod {
+  min-height: 42px;
   display: grid;
-  gap: 6px;
-  align-content: center;
-  justify-items: center;
-  text-align: center;
+  place-items: center;
+  padding: 6px;
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
 }
 
-.pillarMatrixCell strong,
-.pillarMatrixAction strong {
-  font-size: 28px;
+.pillarGlyphCard {
+  min-height: 108px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 6px;
+  padding: 10px 6px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+}
+
+.pillarGlyphCard:hover,
+.pillarGlyphCard.active {
+  transform: translateY(-1px);
+  border-color: var(--color-gold-300);
+}
+
+.pillarGlyphCard span {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.pillarGlyphCard strong {
+  font-family: "Noto Serif KR", "Batang", "Gungsuh", serif;
+  font-size: clamp(30px, 8vw, 44px);
   font-weight: 900;
   line-height: 1;
   color: var(--color-text);
 }
 
-.pillarMatrixCell small,
-.pillarMatrixAction small {
-  font-size: 11px;
-  color: var(--color-text-muted);
-}
-
-.pillarMatrixCell.stacked strong {
-  font-size: var(--text-body);
-  line-height: 1.25;
-}
-
-.pillarMatrixAction {
-  cursor: pointer;
-  transition: transform var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
-}
-
-.pillarMatrixAction:hover,
-.pillarMatrixAction.active {
-  transform: translateY(-1px);
-  border-color: var(--color-gold-300);
-}
-
-.pillarMatrixAction.neutral,
-.pillarMatrixCell.neutral {
+.pillarGlyphCard.neutral,
+.pillarMetaValue.neutral {
   background: linear-gradient(180deg, #ffffff, #faf7f2);
 }
 
-.pillarMatrixAction.wood,
-.pillarMatrixCell.wood {
+.pillarGlyphCard.wood,
+.pillarMetaValue.wood {
   background: linear-gradient(180deg, rgba(73, 176, 130, 0.18), rgba(255, 255, 255, 0.96));
 }
 
-.pillarMatrixAction.fire,
-.pillarMatrixCell.fire {
+.pillarGlyphCard.fire,
+.pillarMetaValue.fire {
   background: linear-gradient(180deg, rgba(255, 120, 124, 0.22), rgba(255, 255, 255, 0.96));
 }
 
-.pillarMatrixAction.earth,
-.pillarMatrixCell.earth {
+.pillarGlyphCard.earth,
+.pillarMetaValue.earth {
   background: linear-gradient(180deg, rgba(245, 194, 102, 0.24), rgba(255, 255, 255, 0.96));
 }
 
-.pillarMatrixAction.metal,
-.pillarMatrixCell.metal {
+.pillarGlyphCard.metal,
+.pillarMetaValue.metal {
   background: linear-gradient(180deg, rgba(202, 206, 217, 0.34), rgba(255, 255, 255, 0.96));
 }
 
-.pillarMatrixAction.water,
-.pillarMatrixCell.water {
+.pillarGlyphCard.water,
+.pillarMetaValue.water {
   background: linear-gradient(180deg, rgba(98, 161, 218, 0.22), rgba(255, 255, 255, 0.96));
+}
+
+.pillarColumn.focus .pillarColumnHead,
+.pillarColumn.focus .pillarColumnTenGod,
+.pillarColumn.focus .pillarGlyphCard,
+.pillarMetaValue.focus {
+  border-color: var(--color-border-gold);
+  box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.14);
+}
+
+.pillarMetaGrid {
+  display: grid;
+  gap: 10px;
+}
+
+.pillarMetaRow {
+  display: grid;
+  grid-template-columns: 72px repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pillarMetaLabel,
+.pillarMetaValue {
+  min-height: 52px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  padding: 8px 6px;
+}
+
+.pillarMetaLabel {
+  font-size: 12px;
+  font-weight: var(--weight-bold);
+  color: var(--color-text-muted);
+  background: var(--color-surface-alt);
+}
+
+.pillarMetaValue strong {
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
 }
 
 .pillarMatrixCaption {
@@ -986,15 +1000,51 @@
 }
 
 @media (max-width: 540px) {
-  .calcStatusHeader {
-    flex-direction: column;
-  }
-
-  .statusRefreshBtn {
+  .sajuTopActions {
     width: 100%;
   }
 
-  .pillarsGridRow {
-    grid-template-columns: repeat(2, 1fr);
+  .sajuActionBtn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .pillarBoard {
+    gap: 8px;
+  }
+
+  .pillarColumnHead {
+    min-height: 44px;
+    padding: 6px 4px;
+  }
+
+  .pillarColumnTenGod {
+    min-height: 36px;
+    padding: 6px 4px;
+    font-size: var(--text-sm);
+  }
+
+  .pillarGlyphCard {
+    min-height: 88px;
+    padding: 8px 4px;
+  }
+
+  .pillarGlyphCard strong {
+    font-size: clamp(24px, 7vw, 34px);
+  }
+
+  .pillarMetaRow {
+    grid-template-columns: 56px repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .pillarMetaLabel,
+  .pillarMetaValue {
+    min-height: 46px;
+    padding: 6px 4px;
+  }
+
+  .pillarMetaValue strong {
+    font-size: var(--text-sm);
   }
 }
