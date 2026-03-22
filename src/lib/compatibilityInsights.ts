@@ -149,7 +149,7 @@ function buildBasisHighlights(basis?: CompatibilityBasisV1): CompatibilityHighli
     const partnerUseful = partner.usefulElements?.join("·");
     items.push({
       title: "명식 맞물림",
-      body: `${me.dayMasterLabel}와 ${partner.dayMasterLabel} 기준으로 읽고 있어요.${meUseful ? ` 내 활용 기운은 ${meUseful}` : ""}${partnerUseful ? `, 상대 활용 기운은 ${partnerUseful}` : ""} 축이에요.`,
+      body: `${me.dayMasterLabel}와 ${partner.dayMasterLabel} 조합으로 보고 있어요.${meUseful ? ` 나는 ${meUseful} 쪽이 들어올 때 편안해지고` : ""}${partnerUseful ? `, 상대는 ${partnerUseful} 쪽에서 만족감이 커지는 편이에요.` : ""}`,
       tone: "neutral",
     });
   }
@@ -164,12 +164,12 @@ function buildStrengths(rawSignals: CompatibilityRawSignal[], score: number) {
   if (score >= 85) {
     return [
       "초반 친밀감과 대화 템포가 잘 맞아 관계가 빠르게 안정권에 들어가기 쉬워요.",
-      "감정 교류와 생활 리듬이 함께 받쳐줘서 장기 관계로도 연결될 가능성이 높아요.",
+      "감정 교류와 일상 템포가 함께 맞아 장기 관계로도 이어질 가능성이 높아요.",
     ];
   }
 
   return [
-    "서로 다른 장점을 보완해 줄 여지가 있고, 조율만 잘되면 만족도가 꽤 올라갈 수 있는 조합이에요.",
+    "서로 다른 장점을 메워 줄 여지가 있고, 조율만 잘되면 만족도가 꽤 올라갈 수 있는 조합이에요.",
   ];
 }
 
@@ -185,7 +185,7 @@ function buildCautions(rawSignals: CompatibilityRawSignal[], confidence: Compati
     cautions.push("초반에는 감정 표현 속도와 연락 리듬을 먼저 맞춰 두는 편이 좋아요.");
   }
 
-  return cautions.length ? cautions.slice(0, 3) : ["큰 충돌 신호는 적지만 생활 템포와 감정 표현 방식은 미리 합의해 두면 좋아요."];
+  return cautions.length ? cautions.slice(0, 3) : ["큰 충돌 신호는 적지만 연락 템포와 감정 표현 방식은 미리 맞춰 두면 좋아요."];
 }
 
 function buildTips(talk: number, emotion: number, lifestyle: number, confidence: CompatibilityConfidenceLevel) {
@@ -194,7 +194,7 @@ function buildTips(talk: number, emotion: number, lifestyle: number, confidence:
   tips.push(
     talk < 72
       ? "중요한 말은 결론부터 밀기보다 확인 질문 한 번을 먼저 두는 편이 안전해요."
-      : "잘 맞는 대화 리듬이 보이는 조합이라, 합이 좋은 대화 템포를 반복해서 습관으로 만드는 게 좋아요.",
+      : "대화 호흡이 괜찮은 조합이라, 잘 맞았던 말투와 템포를 반복해서 습관으로 만드는 게 좋아요.",
   );
 
   tips.push(
@@ -205,8 +205,8 @@ function buildTips(talk: number, emotion: number, lifestyle: number, confidence:
 
   tips.push(
     lifestyle < 72
-      ? "만남 빈도, 연락 주기, 돈 쓰는 방식처럼 생활 리듬 규칙을 먼저 정해 두는 편이 좋아요."
-      : "생활 루틴이 크게 어긋나지 않는 편이라 공통 루틴 하나만 만들어도 관계가 빨리 안정돼요.",
+      ? "만남 빈도, 연락 주기, 돈 쓰는 방식처럼 일상 규칙을 먼저 정해 두는 편이 좋아요."
+      : "일상 루틴이 크게 어긋나지 않는 편이라 공통 습관 하나만 만들어도 관계가 빨리 안정돼요.",
   );
 
   if (confidence === "low") {
@@ -222,15 +222,15 @@ function buildOverview(score: number, confidence: CompatibilityConfidenceLevel, 
     : "";
 
   if (score >= 85) {
-    return `서로의 리듬이 자연스럽게 맞아드는 편이라 초반 친밀감과 장기 안정감이 함께 기대되는 조합이에요. ${confidenceGuide(confidence)} ${warningLine}`.trim();
+    return `서로의 템포가 자연스럽게 맞아 초반 친밀감과 장기 안정감이 함께 기대되는 조합이에요. ${confidenceGuide(confidence)} ${warningLine}`.trim();
   }
   if (score >= 72) {
-    return `강점이 분명하고 조율 여지도 충분한 조합이에요. 대화와 생활 리듬만 조금 맞추면 만족도가 더 올라갈 수 있어요. ${confidenceGuide(confidence)} ${warningLine}`.trim();
+    return `강점이 분명하고 조율 여지도 충분한 조합이에요. 대화 방식과 일상 템포만 조금 맞추면 만족도가 더 올라갈 수 있어요. ${confidenceGuide(confidence)} ${warningLine}`.trim();
   }
   if (score >= 60) {
-    return `매력 포인트는 있지만 해석 차이와 생활 리듬 조율이 중요한 조합이에요. 속도를 내기보다 규칙을 먼저 맞추는 편이 좋아요. ${confidenceGuide(confidence)} ${warningLine}`.trim();
+    return `매력 포인트는 있지만 해석 차이와 일상 템포 조율이 중요한 조합이에요. 속도를 내기보다 규칙을 먼저 맞추는 편이 좋아요. ${confidenceGuide(confidence)} ${warningLine}`.trim();
   }
-  return `끌림은 있을 수 있지만 서로의 해석 방식과 생활 템포 차이가 크게 작동하는 조합이에요. 관계 규칙을 천천히 맞춰 가는 접근이 필요해요. ${confidenceGuide(confidence)} ${warningLine}`.trim();
+  return `끌림은 있을 수 있지만 서로의 해석 방식과 일상 템포 차이가 크게 작동하는 조합이에요. 관계 규칙을 천천히 맞춰 가는 접근이 필요해요. ${confidenceGuide(confidence)} ${warningLine}`.trim();
 }
 
 function buildReliabilityNotes(

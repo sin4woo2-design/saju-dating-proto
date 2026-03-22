@@ -2,7 +2,15 @@ import type { ProviderState, SajuResult } from "./types";
 import type { ElementKey, SajuAnalysis, UserProfileInput } from "../../types/saju";
 import type { NarrativeProvenance } from "./homeNarrative";
 import { classifyPersonaType, type PersonaTypeResult } from "./personaClassifier";
-import { elementLabel, getAnalysisIdentityLabel, getAnalysisSubjectPhrase, getStrengthLabel, isChartDerivedAnalysis } from "../sajuAnalysis";
+import {
+  elementLabel,
+  getAnalysisIdentityLabel,
+  getAnalysisReactionLine,
+  getStrengthLabel,
+  getWeakElementCareLine,
+  isChartDerivedAnalysis,
+  joinElementLabels,
+} from "../sajuAnalysis";
 
 export type PersonaNarrativeConfidence = "high" | "medium" | "low";
 
@@ -270,7 +278,7 @@ function analysisTitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis) {
 }
 
 function analysisSubtitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence) {
-  const usefulLabel = analysis.usefulElements.map((element) => elementLabel(element)).join("·");
+  const usefulLabel = joinElementLabels(analysis.usefulElements);
   const providerLead = analysis.basisOrigin === "provider" ? analysis.summaryLines[0] : "";
   const subtitleLead = isChartDerivedAnalysis(analysis)
     ? `${getStrengthLabel(analysis.strengthLevel)} 쪽의 ${analysis.dayMasterLabel} 일간이라`
@@ -282,7 +290,7 @@ function analysisSubtitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis, 
       : "지금은 방향성 위주로 참고해 주세요.";
 
   return trimSentence(
-    `${providerLead ? `${providerLead} ` : ""}${subtitleLead} ${usefulLabel} 기운을 닮은 관계에서 매력이 더 또렷해져요. ${axisWord(basis.appealAxis)}이 살아나는 환경에서 존재감이 커집니다. ${confidenceTail}`,
+    `${providerLead ? `${providerLead} ` : ""}${subtitleLead} ${usefulLabel} 쪽 감각이 통하는 사람 앞에서 매력이 더 또렷해져요. ${axisWord(basis.appealAxis)}이 살아나는 장면에서 존재감이 커집니다. ${confidenceTail}`,
   );
 }
 
@@ -294,27 +302,26 @@ function buildTraits(seed: number, basis: PersonaNarrativeBasis, confidence: Per
       : "가볍게 방향성 정도로 받아들이면 좋아요.";
 
   if (analysis) {
-    const usefulLabel = analysis.usefulElements.map((element) => elementLabel(element)).join("·");
-    const supportLabel = analysis.supportElements.map((element) => elementLabel(element)).join("·");
-    const cautionLabel = analysis.cautionElements.map((element) => elementLabel(element)).join("·");
-    const weakestLabel = elementLabel(analysis.weakestElement);
+    const usefulLabel = joinElementLabels(analysis.usefulElements);
+    const supportLabel = joinElementLabels(analysis.supportElements);
+    const cautionLabel = joinElementLabels(analysis.cautionElements);
 
     return {
       relationTempo: trimSentence(
         analysis.strengthLevel === "strong"
-          ? "처음 분위기를 잡는 속도는 빠르지만, 관계 깊이는 한 박자 쉬며 맞출 때 훨씬 안정적이에요."
+          ? "첫 분위기를 잡는 속도는 빠른 편이지만, 관계 깊이는 한 박자 쉬며 맞출 때 훨씬 안정적이에요."
           : analysis.strengthLevel === "weak"
             ? "빠른 진전보다 마음을 확인하며 천천히 가까워질 때 편안함이 커져요."
-            : "리듬이 맞으면 자연스럽게 가까워지고, 억지로 당기지 않을수록 호흡이 좋아져요.",
+            : "호흡이 맞기 시작하면 자연스럽게 가까워지고, 억지로 당기지 않을수록 매력이 오래 가요.",
       ),
       attractionStyle: trimSentence(
-        `${usefulLabel} 기운을 닮은 태도, 즉 ${basis.personaTone === "warm" ? "부드럽지만 흐름을 읽는 말투" : "정리된 말과 안정적인 반응"}가 가장 큰 매력 포인트예요. ${confidenceTail}`,
+        `${usefulLabel} 쪽 태도, 즉 ${basis.personaTone === "warm" ? "부드럽지만 상대 반응을 읽는 말투" : "정리된 말과 안정적인 반응"}가 가장 큰 매력 포인트예요. ${confidenceTail}`,
       ),
       stableRhythm: trimSentence(
-        `${supportLabel} 기운이 살아나는 환경, 곧 ${basis.relationStyle === "strategist" ? "예측 가능한 약속과 일정" : "감정 확인이 가능한 대화"}에서 관계 만족도가 높아져요.`,
+        `${supportLabel} 쪽이 살아나는 환경, 곧 ${basis.relationStyle === "strategist" ? "예측 가능한 약속과 일정" : "감정 확인이 가능한 대화"}에서 관계 만족도가 높아져요.`,
       ),
       cautionPoint: trimSentence(
-        `${cautionLabel} 기운이 과해지면 ${analysis.strengthLevel === "strong" ? "주도권을 너무 빨리 쥐려는 인상" : "상대 반응에 흔들리는 흐름"}으로 보일 수 있어요. 특히 ${weakestLabel} 축이 무너지지 않게 생활 리듬을 먼저 챙겨 주세요.`,
+        `${cautionLabel} 쪽으로 기울면 ${analysis.strengthLevel === "strong" ? "주도권을 너무 빨리 쥐려는 인상" : "상대 반응에 휘청이는 모습"}으로 보일 수 있어요. ${getWeakElementCareLine(analysis.weakestElement)}`,
       ),
     };
   }
@@ -346,7 +353,7 @@ function buildTraits(seed: number, basis: PersonaNarrativeBasis, confidence: Per
 }
 
 function analysisAppealPoint(analysis: SajuAnalysis, basis: PersonaNarrativeBasis, confidence: PersonaNarrativeConfidence) {
-  const usefulLabel = analysis.usefulElements.map((element) => elementLabel(element)).join("·");
+  const usefulLabel = joinElementLabels(analysis.usefulElements);
   const tail = confidence === "high"
     ? "현재 입력 기준에서 가장 신뢰도가 높은 매력 축이에요."
     : confidence === "medium"
@@ -354,7 +361,7 @@ function analysisAppealPoint(analysis: SajuAnalysis, basis: PersonaNarrativeBasi
       : "지금은 가볍게 관계 방향을 보는 힌트로 읽어 주세요.";
 
   return trimSentence(
-    `${getAnalysisSubjectPhrase(analysis)} ${usefulLabel} 기운을 닮은 사람 앞에서 표정과 반응이 훨씬 자연스러워져요. ${basis.appealAxis === "emotion-sync" ? "감정의 결을 읽어 주는 순간" : basis.appealAxis === "rhythm-sync" ? "생활 리듬이 맞아드는 순간" : "신뢰가 축적되는 순간"}에 매력이 가장 크게 살아납니다. ${tail}`,
+    `${getAnalysisReactionLine(analysis)} ${usefulLabel} 쪽 감각이 통하는 사람 앞에서 표정과 반응이 훨씬 자연스러워져요. ${basis.appealAxis === "emotion-sync" ? "감정의 결을 읽어 주는 순간" : basis.appealAxis === "rhythm-sync" ? "일상 템포가 맞아드는 순간" : "신뢰가 축적되는 순간"}에 매력이 가장 크게 살아납니다. ${tail}`,
   );
 }
 

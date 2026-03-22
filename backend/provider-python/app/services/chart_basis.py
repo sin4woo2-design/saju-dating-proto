@@ -147,6 +147,39 @@ def _strength_label(level: StrengthLevel) -> str:
     return "균형에 가까운 편"
 
 
+def _reaction_hint(element: ElementKey) -> str:
+    return {
+        "wood": "시작 의지와 성장성",
+        "fire": "표정과 분위기",
+        "earth": "안정감과 꾸준함",
+        "metal": "정리된 말과 분명한 기준",
+        "water": "감정의 결과 속도",
+    }[element]
+
+
+def _weak_element_care_line(element: ElementKey) -> str:
+    return {
+        "wood": "목 기운이 약한 편이라 시작을 미루지 않게 첫 단추를 작게라도 끼워 두는 편이 좋아요.",
+        "fire": "화 기운이 약한 편이라 답답함을 안에만 쌓아 두지 말고 반응을 조금 더 밖으로 꺼내는 편이 좋아요.",
+        "earth": "토 기운이 약한 편이라 흔들리는 날엔 일정과 휴식 틀을 먼저 고정해 두는 편이 좋아요.",
+        "metal": "금 기운이 약한 편이라 기준이 흐려지지 않게 우선순위를 짧게라도 적어 두는 편이 좋아요.",
+        "water": "수 기운이 약한 편이라 과열되기 쉬워서 쉬는 간격과 감정 정리를 먼저 챙기는 편이 좋아요.",
+    }[element]
+
+
+def _strength_support_line(
+    strength_level: StrengthLevel,
+    useful_elements: list[ElementKey],
+    fallback_element: ElementKey,
+) -> str:
+    labels = "·".join(ELEMENT_LABELS[element] for element in dict.fromkeys(useful_elements or [fallback_element]))
+    if strength_level == "weak":
+        return f"{labels} 쪽이 받쳐 주면 버티는 힘이 붙고 마음도 한결 안정돼요."
+    if strength_level == "strong":
+        return f"{labels} 쪽 움직임을 쓰면 힘이 한곳에 몰리지 않고 말과 행동이 더 유연해져요."
+    return f"{labels} 쪽으로 힘을 실으면 속도와 안정감이 같이 살아나요."
+
+
 def _get_ten_god_code(day_master: dict, other: dict) -> TenGodCode:
     same_polarity = day_master["yinYang"] == other["yinYang"]
 
@@ -310,19 +343,19 @@ def derive_chart_basis(
     season: SeasonKey = month_branch_meta["season"] if month_branch_meta else "transition"
     subject = day_master["label"] if day_master else f"{ELEMENT_LABELS[day_master_element]} 기운 중심"
     strength_reason = (
-        f"{month_branch_meta['label']}의 계절감과 {ELEMENT_LABELS[support_elements[0]]}·{ELEMENT_LABELS[support_elements[1]]} 기운 비중을 함께 보면 {_strength_label(strength_level)}으로 해석해요."
+        f"{month_branch_meta['label']}의 계절감과 {ELEMENT_LABELS[support_elements[0]]}·{ELEMENT_LABELS[support_elements[1]]} 쪽 비중을 함께 보면 {_strength_label(strength_level)}으로 해석해요."
         if month_branch_meta
-        else f"{ELEMENT_LABELS[support_elements[0]]}·{ELEMENT_LABELS[support_elements[1]]} 기운 비중을 중심으로 보면 {_strength_label(strength_level)} 쪽에 가까워요."
+        else f"{ELEMENT_LABELS[support_elements[0]]}·{ELEMENT_LABELS[support_elements[1]]} 쪽 비중이 받쳐 주는 구조라 {_strength_label(strength_level)}에 가깝다고 봐요."
     )
 
     summary_lines = [
         (
-            f"{subject} 일간은 관계를 읽을 때 {ELEMENT_LABELS[day_master_element]} 기운의 반응과 속도를 먼저 타는 편이에요."
+            f"{subject} 일간은 관계에서도 {_reaction_hint(day_master_element)}이 보일 때 먼저 반응하는 편이에요."
             if day_master
-            else f"지금은 {ELEMENT_LABELS[day_master_element]} 기운이 중심인 흐름으로 읽고 있어요."
+            else f"지금은 {ELEMENT_LABELS[day_master_element]} 기운이 먼저 살아나는 흐름으로 읽고 있어요."
         ),
-        f"{_strength_label(strength_level)}이라 {ELEMENT_LABELS[useful_elements[0]]}·{ELEMENT_LABELS[useful_elements[-1]]} 기운을 살릴수록 흐름이 편안해져요.",
-        f"{ELEMENT_LABELS[weakest_element]} 기운이 약해 생활 리듬에서 이 축을 보완하는 편이 좋아요.",
+        _strength_support_line(strength_level, useful_elements, dominant_element),
+        _weak_element_care_line(weakest_element),
     ]
 
     notes = [

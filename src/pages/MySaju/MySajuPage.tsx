@@ -14,7 +14,9 @@ import {
   getAnalysisIdentityLabel,
   getSeasonLabel,
   getStrengthLabel,
+  getStrengthSupportLine,
   getTenGodLabel,
+  getWeakElementCareLine,
   isChartDerivedAnalysis,
 } from "../../lib/sajuAnalysis";
 import type { ElementKey, SajuAnalysis, SajuProfile, UserProfileInput } from "../../types/saju";
@@ -118,12 +120,10 @@ function contributionRows(weights?: Partial<Record<ElementKey, number>>) {
 }
 
 function todayLine(analysis: SajuAnalysis) {
-  const usefulLabel = joinElementLabels(analysis.usefulElements);
-  const weakLabel = elementLabel(analysis.weakestElement);
   if (!isChartDerivedAnalysis(analysis)) {
-    return `지금은 ${usefulLabel} 기운을 활용하고 약한 ${weakLabel} 축을 보완하는 오행 균형 기반 임시 해석을 보여주고 있어요.`;
+    return `지금은 오행 균형을 바탕으로 읽고 있어요. ${getStrengthSupportLine(analysis.strengthLevel, analysis.usefulElements, analysis.dominantElement)} ${getWeakElementCareLine(analysis.weakestElement)}`;
   }
-  return `${getAnalysisBasisPhrase(analysis)} ${usefulLabel} 기운을 활용하고, 약한 ${weakLabel} 축을 생활 리듬에서 보완하는 하루가 좋아요.`;
+  return `${getAnalysisBasisPhrase(analysis)} ${getStrengthSupportLine(analysis.strengthLevel, analysis.usefulElements, analysis.dominantElement)} ${getWeakElementCareLine(analysis.weakestElement)}`;
 }
 
 function splitPillar(value?: string) {
@@ -160,7 +160,7 @@ function buildDetailSections(profile: SajuProfile, analysis: SajuAnalysis) {
         ? `일간: ${analysis.dayMasterLabel}`
         : `해석 기준: ${getAnalysisIdentityLabel(analysis)}`,
       `강약: ${getStrengthLabel(analysis.strengthLevel)}`,
-      `${isChartDerivedAnalysis(analysis) ? "보완 기운" : "활용 기운"}: ${usefulLabel}`,
+      `힘이 붙는 기운: ${usefulLabel}`,
       typeof analysis.supportScore === "number" && typeof analysis.regulatingScore === "number"
         ? `강약 점수: 도움 ${analysis.supportScore} / 설기·제어 ${analysis.regulatingScore}`
         : `주요 오행: 강한 축 ${elementLabel(analysis.dominantElement)} / 약한 축 ${weakLabel}`,
@@ -171,27 +171,27 @@ function buildDetailSections(profile: SajuProfile, analysis: SajuAnalysis) {
       monthLine,
       `강한 오행은 ${elementLabel(analysis.dominantElement)}, 가장 약한 오행은 ${weakLabel}입니다.`,
     ],
-    loveStyle: [
-      profile.loveStyle,
-      tenGodFocus?.code
-        ? `${getTenGodLabel(tenGodFocus.code)} 포인트가 두드러져 역할 기대치를 말로 맞출수록 관계가 편안합니다.`
-        : `${supportLabel} 기운이 보강되는 관계일수록 안정감이 커집니다.`,
+      loveStyle: [
+        profile.loveStyle,
+        tenGodFocus?.code
+          ? `${getTenGodLabel(tenGodFocus.code)} 포인트가 두드러져 기대 역할을 말로 맞춰 둘수록 관계가 훨씬 편해져요.`
+          : `${supportLabel} 쪽 안정감을 주는 관계일수록 마음이 오래 편안해집니다.`,
       analysis.strengthLevel === "strong"
         ? "호감이 생길수록 속도를 조금 늦추고 질문을 먼저 두면 관계 피로가 줄어듭니다."
         : analysis.strengthLevel === "weak"
           ? "천천히 가까워져도 꾸준히 이어 가는 리듬이 잘 맞습니다."
           : "감정 공감과 현실 조율을 함께 챙기는 대화가 잘 맞습니다.",
     ],
-    idealPartner: [
-      ...profile.idealTraits,
-      `${usefulLabel} 기운처럼 지금 명식의 균형을 맞춰 줄 수 있는 사람이 특히 잘 맞습니다.`,
-    ],
-    cautionPatterns: [
-      analysis.strengthReason,
-      ...(analysis.notes?.length ? [`근거 메모: ${analysis.notes.slice(0, 3).join(" · ")}`] : []),
-      `주의 기운은 ${cautionLabel}입니다. 이 축이 과해지면 관계 판단이 급해질 수 있어요.`,
-      `${weakLabel} 기운이 약한 날에는 휴식, 정리, 속도 조절을 먼저 챙기는 편이 좋습니다.`,
-    ],
+      idealPartner: [
+        ...profile.idealTraits,
+        `${usefulLabel} 쪽 감각처럼 지금 명식의 빈틈을 자연스럽게 메워 주는 사람이 특히 잘 맞아요.`,
+      ],
+      cautionPatterns: [
+        analysis.strengthReason,
+        ...(analysis.notes?.length ? [`근거 메모: ${analysis.notes.slice(0, 3).join(" · ")}`] : []),
+        `주의 기운은 ${cautionLabel} 쪽이에요. 이쪽으로 기울면 관계 판단이 급해질 수 있어요.`,
+        getWeakElementCareLine(analysis.weakestElement),
+      ],
   };
 }
 

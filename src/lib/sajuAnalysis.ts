@@ -92,6 +92,30 @@ const TEN_GOD_LABELS: Record<SajuTenGodCode, string> = {
   directResource: "정인",
 };
 
+const ELEMENT_REACTION_HINTS: Record<ElementKey, string> = {
+  wood: "시작 의지와 성장성",
+  fire: "표정과 분위기",
+  earth: "안정감과 꾸준함",
+  metal: "정리된 말과 분명한 기준",
+  water: "감정의 결과 속도",
+};
+
+const ELEMENT_APPROACH_HINTS: Record<ElementKey, string> = {
+  wood: "작게라도 시작점을 만들고 방향을 세우는",
+  fire: "표정과 반응을 열어 두는",
+  earth: "리듬을 고정하고 안정감을 챙기는",
+  metal: "핵심을 정리하고 기준을 세우는",
+  water: "반응을 읽고 한 박자 늦추는",
+};
+
+const WEAK_ELEMENT_CARE_LINES: Record<ElementKey, string> = {
+  wood: "목 기운이 약한 편이라 시작을 미루지 않게 첫 단추를 작게라도 끼워 두는 편이 좋아요.",
+  fire: "화 기운이 약한 편이라 답답함을 안에만 쌓아 두지 말고 반응을 조금 더 밖으로 꺼내는 편이 좋아요.",
+  earth: "토 기운이 약한 편이라 흔들리는 날엔 일정과 휴식 틀을 먼저 고정해 두는 편이 좋아요.",
+  metal: "금 기운이 약한 편이라 기준이 흐려지지 않게 우선순위를 짧게라도 적어 두는 편이 좋아요.",
+  water: "수 기운이 약한 편이라 과열되기 쉬워서 쉬는 간격과 감정 정리를 먼저 챙기는 편이 좋아요.",
+};
+
 function getGeneratedBy(element: ElementKey): ElementKey {
   const matched = Object.entries(GENERATES).find(([, value]) => value === element)?.[0] as ElementKey | undefined;
   return matched ?? "water";
@@ -108,6 +132,10 @@ function sortElements(balance: FiveElementsBalance): Array<[ElementKey, number]>
 
 function uniqueElements(elements: ElementKey[]): ElementKey[] {
   return Array.from(new Set(elements));
+}
+
+export function joinElementLabels(elements: ElementKey[]) {
+  return uniqueElements(elements).map(elementLabel).join("·");
 }
 
 function pillarStem(pillars: SajuPillarsSnapshot | undefined, pillar: PillarKey) {
@@ -213,6 +241,44 @@ export function getTenGodLabel(code: SajuTenGodCode) {
   return TEN_GOD_LABELS[code];
 }
 
+export function getElementApproachHint(element: ElementKey) {
+  return ELEMENT_APPROACH_HINTS[element];
+}
+
+export function getWeakElementCareLine(element: ElementKey) {
+  return WEAK_ELEMENT_CARE_LINES[element];
+}
+
+export function getStrengthSupportLine(
+  level: SajuStrengthLevel,
+  usefulElements: ElementKey[],
+  fallbackElement: ElementKey,
+) {
+  const labels = joinElementLabels(usefulElements.length ? usefulElements : [fallbackElement]);
+
+  if (level === "weak") {
+    return `${labels} 쪽이 받쳐 주면 버티는 힘이 붙고 마음도 한결 안정돼요.`;
+  }
+  if (level === "strong") {
+    return `${labels} 쪽 움직임을 쓰면 힘이 한곳에 몰리지 않고 말과 행동이 더 유연해져요.`;
+  }
+  return `${labels} 쪽으로 힘을 실으면 속도와 안정감이 같이 살아나요.`;
+}
+
+export function getAnalysisReactionLine(analysis: SajuAnalysis) {
+  if (!isChartDerivedAnalysis(analysis)) {
+    return `지금은 ${elementLabel(analysis.dayMasterElement)} 기운이 먼저 살아나는 흐름으로 읽고 있어요.`;
+  }
+
+  return `${analysis.dayMasterLabel} 일간은 관계에서도 ${ELEMENT_REACTION_HINTS[analysis.dayMasterElement]}이 보일 때 먼저 반응하는 편이에요.`;
+}
+
+export function getUsefulApproachLine(elements: ElementKey[], fallbackElement: ElementKey) {
+  const primary = elements[0] ?? fallbackElement;
+  const labels = joinElementLabels(elements.length ? elements : [fallbackElement]);
+  return `${labels} 쪽이 필요한 날에는 ${getElementApproachHint(primary)} 방식이 잘 맞아요.`;
+}
+
 function normalizeElementList(
   values: Array<ElementKey | undefined> | undefined,
   fallback: ElementKey[],
@@ -233,9 +299,9 @@ export function normalizeProviderAnalysis(
   if (!basis) return undefined;
 
   const summaryFallback = [
-    `${basis.dayMasterLabel} 일간을 기준으로 명식의 중심축을 해석하고 있어요.`,
-    `${basis.usefulElements.map(elementLabel).join("·")} 기운을 활용할수록 흐름이 편안해져요.`,
-    `${elementLabel(basis.weakestElement)} 축은 생활 리듬에서 먼저 보완해 두는 편이 좋아요.`,
+    `${basis.dayMasterLabel} 일간은 관계에서도 ${ELEMENT_REACTION_HINTS[basis.dayMasterElement]}이 보일 때 먼저 반응하는 편이에요.`,
+    getStrengthSupportLine(basis.strengthLevel, basis.usefulElements, basis.dominantElement),
+    getWeakElementCareLine(basis.weakestElement),
   ];
 
   const elementBreakdown: SajuElementBreakdown | undefined = breakdown
@@ -393,8 +459,8 @@ export function deriveSajuAnalysis(balance: FiveElementsBalance, pillars?: SajuP
 
   const source = pillars?.day ? "chart-derived" : "balance-derived";
   const strengthReason = source === "chart-derived"
-    ? `${monthBranchMeta?.label ?? "월지"}의 계절감과 ${supportElements.map(elementLabel).join("·")} 기운 비중을 함께 보면 ${getStrengthLabel(strengthLevel)}으로 해석돼요.`
-    : `${supportElements.map(elementLabel).join("·")} 기운 비중을 중심으로 보면 ${getStrengthLabel(strengthLevel)} 쪽에 가깝습니다.`;
+    ? `${monthBranchMeta?.label ?? "월지"}의 계절감과 ${joinElementLabels(supportElements)} 쪽 비중을 함께 보면 ${getStrengthLabel(strengthLevel)}으로 해석돼요.`
+    : `${joinElementLabels(supportElements)} 쪽 비중이 받쳐 주는 구조라 ${getStrengthLabel(strengthLevel)}에 가깝다고 봐요.`;
 
   return {
     source,
@@ -416,18 +482,18 @@ export function deriveSajuAnalysis(balance: FiveElementsBalance, pillars?: SajuP
     tenGods,
     summaryLines: [
       dayStemMeta
-        ? `${dayStemMeta.label}이 기준축이라 관계를 읽을 때도 ${elementLabel(dayMasterElement)} 기운의 쓰임을 먼저 봅니다.`
-        : `지금은 ${elementLabel(dayMasterElement)} 기운을 기준축으로 두고 관계 흐름을 읽고 있어요.`,
-      `${getStrengthLabel(strengthLevel)}이라 ${usefulElements.map(elementLabel).join("·")} 기운을 활용할수록 흐름이 부드러워집니다.`,
-      `${elementLabel(weakestElement)} 기운이 가장 약해 생활 루틴에서는 이 축을 보완하는 편이 좋습니다.`,
+        ? `${dayStemMeta.label} 일간은 관계에서도 ${ELEMENT_REACTION_HINTS[dayMasterElement]}이 보일 때 먼저 마음이 움직이는 편이에요.`
+        : `지금은 ${elementLabel(dayMasterElement)} 기운이 먼저 살아나는 흐름으로 읽고 있어요.`,
+      getStrengthSupportLine(strengthLevel, usefulElements, dominantElement),
+      getWeakElementCareLine(weakestElement),
     ],
   };
 }
 
 export function buildProfileCopy(balance: FiveElementsBalance, analysis: SajuAnalysis): Pick<SajuProfile, "personalitySummary" | "loveStyle" | "idealTraits"> {
-  const usefulLabel = analysis.usefulElements.map(elementLabel).join("·");
-  const supportLabel = analysis.supportElements.map(elementLabel).join("·");
-  const cautionLabel = analysis.cautionElements.map(elementLabel).join("·");
+  const usefulLabel = joinElementLabels(analysis.usefulElements);
+  const supportLabel = joinElementLabels(analysis.supportElements);
+  const cautionLabel = joinElementLabels(analysis.cautionElements);
   const seasonLabel = getSeasonLabel(analysis.season);
   const dominantValue = balance[analysis.dominantElement];
   const weakValue = balance[analysis.weakestElement];
@@ -435,33 +501,33 @@ export function buildProfileCopy(balance: FiveElementsBalance, analysis: SajuAna
 
   const personalitySummary =
     analysis.strengthLevel === "strong"
-      ? `${subjectPhrase} ${seasonLabel} 흐름에서 힘을 받는 편이라 주도성과 판단 속도가 분명합니다. 다만 ${cautionLabel} 기운이 과해지면 단정적으로 보일 수 있어 속도를 조율할수록 강점이 살아납니다. 현재 강한 축은 ${elementLabel(analysis.dominantElement)}(${dominantValue}%)입니다.`
+      ? `${subjectPhrase} ${seasonLabel} 흐름을 타면 판단과 추진이 빠르게 붙는 편이에요. 한 번 방향을 잡으면 밀고 가는 힘이 분명하지만, ${cautionLabel} 쪽으로 과열되면 말이 단정적으로 들릴 수 있어요. 강한 축은 ${elementLabel(analysis.dominantElement)}(${dominantValue}%)라 존재감은 이미 충분한 편이에요.`
       : analysis.strengthLevel === "weak"
-        ? `${subjectPhrase} ${seasonLabel} 흐름에서 기반을 다지며 힘을 쓰는 편이라, 사람과 환경의 흐름을 읽는 감각이 좋습니다. ${supportLabel} 기운을 채워 줄수록 안정감과 집중력이 함께 올라옵니다. 지금은 약한 ${elementLabel(analysis.weakestElement)}(${weakValue}%) 축을 보완하는 편이 좋아요.`
-        : `${subjectPhrase} ${seasonLabel} 흐름에서 밀고 당기는 균형이 비교적 괜찮습니다. 주도할 때와 맞춰줄 때를 구분하면 존재감이 자연스럽게 드러납니다.`;
+        ? `${subjectPhrase} ${seasonLabel} 흐름에서는 사람과 분위기 변화를 읽는 감각이 좋은 편이에요. 대신 혼자 버티려 들수록 소모가 빨라질 수 있어 ${supportLabel} 쪽 도움이 들어올 때 안정감과 집중력이 같이 살아나요. 특히 약한 ${elementLabel(analysis.weakestElement)}(${weakValue}%) 축은 일상 리듬으로 받쳐 주는 편이 좋아요.`
+        : `${subjectPhrase} ${seasonLabel} 흐름에서는 밀고 나갈 때와 맞춰 줄 때의 균형이 비교적 좋은 편이에요. 필요할 때 선을 세우고, 필요할 때 부드럽게 받쳐 주는 방식이 자연스럽게 살아납니다.`;
 
   const loveStyle =
     analysis.strengthLevel === "strong"
-      ? `호감이 생기면 관계의 방향을 먼저 정하는 편입니다. 그래서 ${usefulLabel} 기운처럼 대화의 온도를 낮추고 여지를 남기는 상대와 호흡이 좋아집니다.`
+      ? `호감이 생기면 관계의 방향을 먼저 잡고 싶어지는 편이에요. 그래서 ${usefulLabel} 쪽 감각처럼 숨을 고를 여지를 주고 대화 톤을 눌러 주는 상대와 호흡이 좋아요.`
       : analysis.strengthLevel === "weak"
-        ? `신뢰와 안정감을 확인한 뒤 마음을 여는 편입니다. ${supportLabel} 기운을 보완해 주는 관계일수록 오래 갈 가능성이 큽니다.`
-        : `대화와 리듬이 맞으면 관계 속도가 자연스럽게 붙는 편입니다. 감정 표현과 현실 조율이 함께 되는 관계에서 강점이 잘 드러납니다.`;
+        ? `마음을 열기 전까지는 시간이 조금 필요한 편이에요. 대신 한번 신뢰가 쌓이면 오래 가는 힘이 있어 ${supportLabel} 쪽 안정감을 주는 관계와 특히 잘 맞아요.`
+        : `대화 템포와 현실 감각이 함께 맞을 때 관계가 자연스럽게 깊어지는 편이에요. 감정 표현과 일상 조율이 같이 되는 사람 앞에서 강점이 잘 드러납니다.`;
 
   const idealTraits =
     analysis.strengthLevel === "strong"
       ? [
-          `${usefulLabel} 기운처럼 여백과 조율 감각이 있는 사람`,
+          `${usefulLabel} 쪽 감각처럼 여백과 조율이 자연스러운 사람`,
           "내 속도를 받아주되 필요할 때는 브레이크를 걸어 줄 수 있는 사람",
-          "감정 표현이 부드럽고 생활 리듬이 안정적인 사람",
+          "감정 표현이 과하지 않고 안정감 있게 이어지는 사람",
         ]
       : analysis.strengthLevel === "weak"
         ? [
-          `${supportLabel} 기운처럼 안정감과 지지력이 있는 사람`,
-          "약속과 생활 패턴이 비교적 분명한 사람",
+          `${supportLabel} 쪽 안정감처럼 곁을 단단히 잡아 주는 사람`,
+          "약속과 일상 패턴이 크게 흔들리지 않는 사람",
           "천천히 가까워져도 관계를 꾸준히 이어 갈 수 있는 사람",
         ]
       : [
-          "말의 톤과 생활 리듬이 함께 맞는 사람",
+          "말의 톤이 편안하고 기본 리듬이 비슷한 사람",
           "감정 공감과 현실 감각을 같이 갖춘 사람",
           "밀어붙이기보다 자연스럽게 합을 맞춰 가는 사람",
         ];
