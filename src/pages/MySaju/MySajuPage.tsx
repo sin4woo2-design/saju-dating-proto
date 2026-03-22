@@ -535,7 +535,7 @@ export default function MySajuPage({ me }: Props) {
               <article className="strengthCard">
                 <small>활용 기운</small>
                 <strong>{joinElementLabels(topSummary.analysis.usefulElements)}</strong>
-                <p>지금 명식에서는 이 기운을 쓰는 생활 리듬과 관계 패턴이 균형 회복에 도움 됩니다.</p>
+                <p>지금은 이 기운을 살리는 말투와 행동을 쓸수록 힘이 한쪽으로 쏠리지 않고 훨씬 자연스러워져요.</p>
               </article>
               {typeof topSummary.analysis.supportScore === "number" || typeof topSummary.analysis.regulatingScore === "number" ? (
                 <article className="strengthCard">

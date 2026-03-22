@@ -263,7 +263,7 @@ export default function CompatibilityPage({ me }: Props) {
                 <strong>생활 궁합</strong>
                 <span className="catScore">{viewModel.lifestyle}점</span>
               </div>
-              <p>{viewModel.basisHighlights[2]?.body ?? "연락 주기와 만남 빈도처럼 생활 규칙을 먼저 맞추면 안정감이 커져요."}</p>
+              <p>{viewModel.basisHighlights[2]?.body ?? "연락 간격과 만남 빈도처럼 기본 약속을 먼저 맞춰 두면 훨씬 덜 부딪혀요."}</p>
             </article>
           </section>
 

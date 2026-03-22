@@ -219,8 +219,8 @@ function subtitleFromBasis(seed: number, basis: PersonaNarrativeBasis, confidenc
     ],
     "rhythm-sync": [
       "관계 속도를 무리하게 올리지 않아 안정감이 오래갑니다.",
-      "생활 리듬이 맞을수록 매력이 더 또렷해지는 편이에요.",
-      "약속 템포를 맞추면 관계 만족도가 크게 올라가요.",
+      "생활 템포가 맞을수록 매력이 더 또렷해지는 편이에요.",
+      "약속 간격을 맞추면 관계가 훨씬 편안해져요.",
     ],
     "trust-build": [
       "감정과 현실을 함께 보며 관계의 균형을 지키는 편이에요.",
@@ -230,7 +230,7 @@ function subtitleFromBasis(seed: number, basis: PersonaNarrativeBasis, confidenc
   };
 
   const elementNudge: Record<PersonaNarrativeBasis["dominantElement"], string[]> = {
-    wood: ["성장형 관계에서 매력이 더 빠르게 드러나요.", "함께 배우는 환경에서 존재감이 커져요.", "목 기운 덕분에 발전형 관계에서 시너지가 커요."],
+    wood: ["성장형 관계에서 매력이 더 빠르게 드러나요.", "함께 배우는 환경에서 자연스럽게 눈에 띄어요.", "목 기운 덕분에 발전형 관계에서 시너지가 커요."],
     fire: ["표현력이 살아나는 순간에 호감 전환이 빨라요.", "대화 온도를 올리는 장점이 분명해요.", "화 기운이 강해 첫인상 에너지가 선명해요."],
     earth: ["안정감을 주는 태도가 장기 관계 강점이에요.", "신뢰를 쌓는 속도가 꾸준한 타입이에요.", "토 기운이 강해 관계 유지력이 높은 편이에요."],
     metal: ["기준을 정리해주는 능력이 관계 품질을 올려요.", "약속/원칙을 지키는 면이 큰 신뢰를 줘요.", "금 기운 영향으로 경계선 설정이 깔끔해요."],
@@ -290,7 +290,7 @@ function analysisSubtitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis, 
       : "지금은 방향성 위주로 참고해 주세요.";
 
   return trimSentence(
-    `${providerLead ? `${providerLead} ` : ""}${subtitleLead} ${usefulLabel} 쪽 감각이 통하는 사람 앞에서 매력이 더 또렷해져요. ${axisWord(basis.appealAxis)}이 살아나는 장면에서 존재감이 커집니다. ${confidenceTail}`,
+    `${providerLead ? `${providerLead} ` : ""}${subtitleLead} ${usefulLabel} 쪽 감각이 통하는 사람 앞에서 매력이 더 또렷해져요. ${axisWord(basis.appealAxis)}이 살아나는 장면에서 좋은 인상이 오래 남습니다. ${confidenceTail}`,
   );
 }
 
@@ -318,7 +318,7 @@ function buildTraits(seed: number, basis: PersonaNarrativeBasis, confidence: Per
         `${usefulLabel} 쪽 태도, 즉 ${basis.personaTone === "warm" ? "부드럽지만 상대 반응을 읽는 말투" : "정리된 말과 안정적인 반응"}가 가장 큰 매력 포인트예요. ${confidenceTail}`,
       ),
       stableRhythm: trimSentence(
-        `${supportLabel} 쪽이 살아나는 환경, 곧 ${basis.relationStyle === "strategist" ? "예측 가능한 약속과 일정" : "감정 확인이 가능한 대화"}에서 관계 만족도가 높아져요.`,
+        `${supportLabel} 쪽이 살아나는 환경, 곧 ${basis.relationStyle === "strategist" ? "예측 가능한 약속과 일정" : "감정 확인이 가능한 대화"}에서 마음이 훨씬 편해져요.`,
       ),
       cautionPoint: trimSentence(
         `${cautionLabel} 쪽으로 기울면 ${analysis.strengthLevel === "strong" ? "주도권을 너무 빨리 쥐려는 인상" : "상대 반응에 휘청이는 모습"}으로 보일 수 있어요. ${getWeakElementCareLine(analysis.weakestElement)}`,
@@ -327,17 +327,17 @@ function buildTraits(seed: number, basis: PersonaNarrativeBasis, confidence: Per
   }
 
   const fallbackTempo = basis.personaTone === "warm"
-    ? ["천천히 온도를 맞추며 가까워지는 편이에요.", "초반엔 부드럽게, 익숙해질수록 존재감이 커져요."]
+    ? ["천천히 온도를 맞추며 가까워지는 편이에요.", "초반엔 부드럽게, 익숙해질수록 장점이 더 잘 보여요."]
     : ["서두르기보다 기준을 확인하며 가까워지는 편이에요.", "리듬과 안정감을 먼저 확인할 때 매력이 살아나요."];
 
   const fallbackAppeal = basis.appealAxis === "emotion-sync"
     ? ["상대 마음의 결을 읽는 반응이 매력으로 이어져요.", "감정을 섬세하게 읽어 주는 태도가 강점이에요."]
     : basis.appealAxis === "rhythm-sync"
-      ? ["생활 템포가 맞을수록 존재감이 또렷해져요.", "호흡이 맞는 관계에서 매력이 크게 살아나요."]
+      ? ["생활 템포가 맞을수록 장점이 더 또렷하게 보여요.", "호흡이 맞는 관계에서 매력이 크게 살아나요."]
       : ["신뢰를 차곡차곡 쌓는 방식이 가장 큰 무기예요.", "작은 약속을 지키는 태도가 오래 기억돼요."];
 
   const fallbackRhythm = basis.relationStyle === "strategist"
-    ? ["예측 가능한 일정과 계획이 있을 때 마음이 편해져요.", "기준이 정리된 환경에서 관계 만족도가 높아져요."]
+    ? ["예측 가능한 일정과 계획이 있을 때 마음이 편해져요.", "기준이 정리된 환경에서 관계가 안정적으로 흘러가요."]
     : ["감정 확인이 오가는 대화가 이어질 때 안정감이 생겨요.", "관계의 속도를 함께 조율할 수 있을 때 편안해져요."];
 
   const fallbackCaution = basis.personaTone === "warm"
@@ -361,7 +361,7 @@ function analysisAppealPoint(analysis: SajuAnalysis, basis: PersonaNarrativeBasi
       : "지금은 가볍게 관계 방향을 보는 힌트로 읽어 주세요.";
 
   return trimSentence(
-    `${getAnalysisReactionLine(analysis)} ${usefulLabel} 쪽 감각이 통하는 사람 앞에서 표정과 반응이 훨씬 자연스러워져요. ${basis.appealAxis === "emotion-sync" ? "감정의 결을 읽어 주는 순간" : basis.appealAxis === "rhythm-sync" ? "일상 템포가 맞아드는 순간" : "신뢰가 축적되는 순간"}에 매력이 가장 크게 살아납니다. ${tail}`,
+    `${getAnalysisReactionLine(analysis)} ${usefulLabel} 쪽 감각이 통하는 사람 앞에서 표정과 반응이 훨씬 자연스러워져요. ${basis.appealAxis === "emotion-sync" ? "감정의 결을 읽어 주는 순간" : basis.appealAxis === "rhythm-sync" ? "일상 템포가 맞아드는 순간" : "신뢰가 축적되는 순간"}에 매력이 가장 선명하게 드러납니다. ${tail}`,
   );
 }
 
