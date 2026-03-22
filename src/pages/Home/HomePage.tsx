@@ -168,10 +168,10 @@ export default function HomePage({ me, isLoggedIn, onRequestLogin }: Props) {
             <aside className="homeHeroReport">
               <small>오늘의 리포트</small>
               <strong>{summary[0]}</strong>
-              <ul className="homeHeroReportList">
-                <li>{summary[1]}</li>
-                <li>{summary[2]}</li>
-              </ul>
+              <div className="homeHeroSignalRow">
+                <span>{summary[1]}</span>
+                <span>{summary[2]}</span>
+              </div>
             </aside>
           </div>
 
@@ -183,78 +183,71 @@ export default function HomePage({ me, isLoggedIn, onRequestLogin }: Props) {
         </div>
       </section>
 
-      <section className="homeApproachCard anim-fade-in anim-delay-2">
-        <span className="homeApproachEyebrow">지금 잘 맞는 접근</span>
-        <strong>{points.conversation}</strong>
-        <p>{points.caution}</p>
-        <small>오후엔 {timeFlow.afternoon}</small>
-        <Link to="/fortune" className="homeSpotlightLink">
+      <section className="homeDigestCard anim-fade-in anim-delay-2">
+        <div className="homeDigestHeader">
+          <span className="homeSectionEyebrow">오늘 먼저 보기</span>
+          <strong>{summary[0]}</strong>
+          <p>{summary[1]}</p>
+        </div>
+
+        <div className="homeDigestRows">
+          <article className="homeDigestRow">
+            <small>대화운</small>
+            <p>{points.conversation}</p>
+          </article>
+          <article className="homeDigestRow">
+            <small>재물 포인트</small>
+            <p>{points.wealth}</p>
+          </article>
+          <article className="homeDigestRow">
+            <small>주의 포인트</small>
+            <p>{points.caution}</p>
+          </article>
+        </div>
+
+        <div className="homeFlowInline">
+          <article className="homeFlowItem">
+            <span>오전</span>
+            <strong>정리</strong>
+            <p>{timeFlow.morning}</p>
+          </article>
+          <article className="homeFlowItem">
+            <span>오후</span>
+            <strong>집중</strong>
+            <p>{timeFlow.afternoon}</p>
+          </article>
+          <article className="homeFlowItem">
+            <span>저녁</span>
+            <strong>관계</strong>
+            <p>{timeFlow.evening}</p>
+          </article>
+        </div>
+
+        <Link to="/fortune" className="homeDigestLink">
           운세 흐름 더 보기
           <span className="ctaArrow">→</span>
         </Link>
       </section>
 
-      <section className="homePoints anim-fade-in anim-delay-3">
-        <h5>오늘의 포인트</h5>
-        <div className="homePointsList">
-          <div className="homePointItem">
-            <span className="pointDot conversation" />
-            <div>
-              <strong>대화운</strong>
-              <p>{points.conversation}</p>
-            </div>
-          </div>
-          <div className="homePointItem">
-            <span className="pointDot wealth" />
-            <div>
-              <strong>재물 포인트</strong>
-              <p>{points.wealth}</p>
-            </div>
-          </div>
-          <div className="homePointItem">
-            <span className="pointDot caution" />
-            <div>
-              <strong>주의 포인트</strong>
-              <p>{points.caution}</p>
-            </div>
-          </div>
+      <section className="homeExploreSection anim-fade-in anim-delay-5">
+        <div className="homeSectionHead">
+          <span className="homeSectionEyebrow">다음 탐색</span>
+          <strong>오늘 흐름에서 더 보고 싶은 카드</strong>
         </div>
-      </section>
-
-      <section className="homeTimeFlow anim-fade-in anim-delay-4">
-        <h5>시간대별 흐름</h5>
-        <div className="homeTimeGrid">
-          <article className="timeCard morning">
-            <small>오전</small>
-            <b>정리</b>
-            <p>{timeFlow.morning}</p>
-          </article>
-          <article className="timeCard afternoon">
-            <small>오후</small>
-            <b>집중</b>
-            <p>{timeFlow.afternoon}</p>
-          </article>
-          <article className="timeCard evening">
-            <small>저녁</small>
-            <b>관계</b>
-            <p>{timeFlow.evening}</p>
-          </article>
+        <div className="homeExploreDeck">
+          <Link to="/compatibility" className="homeExploreCard compatibility">
+            <span className="homeExploreOverline">Explore</span>
+            <strong>나와 잘 맞는 인연 흐름 보기</strong>
+            <p>어떤 타입과 잘 맞고 어디서 부딪히는지 가볍게 읽어볼 수 있어요.</p>
+            <span className="homeExploreArrow">궁합 열기 →</span>
+          </Link>
+          <Link to="/persona" className="homeExploreCard persona">
+            <span className="homeExploreOverline">Persona</span>
+            <strong>내 매력이 살아나는 관계 장면 보기</strong>
+            <p>가까워질수록 드러나는 내 매력 포인트를 카드처럼 볼 수 있어요.</p>
+            <span className="homeExploreArrow">페르소나 열기 →</span>
+          </Link>
         </div>
-      </section>
-
-      <section className="homeExploreDeck anim-fade-in anim-delay-5">
-        <Link to="/compatibility" className="homeExploreCard compatibility">
-          <span className="homeExploreOverline">Explore</span>
-          <strong>나와 잘 맞는 인연 흐름 보기</strong>
-          <p>궁합 신호를 보면 어떤 타입과 부딪히고 어떤 관계가 편한지 더 빨리 읽혀요.</p>
-          <span className="homeExploreArrow">궁합 열기 →</span>
-        </Link>
-        <Link to="/persona" className="homeExploreCard persona">
-          <span className="homeExploreOverline">Persona</span>
-          <strong>내 매력이 살아나는 관계 장면 보기</strong>
-          <p>첫인상보다 가까워질수록 드러나는 매력 포인트를 카드처럼 가볍게 확인해 보세요.</p>
-          <span className="homeExploreArrow">페르소나 열기 →</span>
-        </Link>
       </section>
     </PageLayout>
   );

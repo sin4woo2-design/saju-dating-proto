@@ -158,23 +158,28 @@ export default function PersonaPage() {
                     <p className="posterSubtitle">{resolved.personaSubtitle}</p>
                   </div>
 
+                  <div className="posterSignatureBlock">
+                    <span className="posterSignatureLabel">가까워질수록 드러나는 포인트</span>
+                    <p>{resolved.appealPoint}</p>
+                  </div>
+
                   <div className="posterTraits">
-                    <div className="traitRow">
+                    <article className="traitCard">
                       <strong>관계 템포</strong>
                       <span>{resolved.personaTraits.relationTempo}</span>
-                    </div>
-                    <div className="traitRow">
+                    </article>
+                    <article className="traitCard">
                       <strong>매력 축</strong>
                       <span>{resolved.personaTraits.attractionStyle}</span>
-                    </div>
-                    <div className="traitRow">
+                    </article>
+                    <article className="traitCard">
                       <strong>편한 리듬</strong>
                       <span>{resolved.personaTraits.stableRhythm}</span>
-                    </div>
-                    <div className="traitRow">
+                    </article>
+                    <article className="traitCard">
                       <strong>주의 포인트</strong>
                       <span>{resolved.personaTraits.cautionPoint}</span>
-                    </div>
+                    </article>
                   </div>
 
                   <div className="posterElements">
@@ -184,10 +189,6 @@ export default function PersonaPage() {
 
                   <div className="posterFooter">
                     <div className="footerDivider" />
-                    <p className="appealPoint">
-                      <strong>나의 매력 포인트</strong>
-                      {resolved.appealPoint}
-                    </p>
                     <div className="posterMeta">
                       <span>해석 기준: {resolved.basisLabel}</span>
                       <span className="qaLine">QA: {provenanceLine}</span>
