@@ -344,12 +344,7 @@
   color: var(--color-text);
 }
 
-.homeSpotlightGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-  gap: var(--space-3);
-}
-
+.homeApproachCard,
 .homeSpotlightCard {
   display: grid;
   gap: var(--space-3);
@@ -360,6 +355,10 @@
   box-shadow: 0 12px 26px rgba(84, 63, 33, 0.06);
 }
 
+.homeApproachCard {
+  background: linear-gradient(145deg, #fff8eb, #fffef9 56%, #f6efe3);
+}
+
 .homeSpotlightCard.signature {
   background: linear-gradient(145deg, #fff8eb, #fffdf7 54%, #f8efe0);
 }
@@ -368,6 +367,7 @@
   background: linear-gradient(145deg, #ffffff, #fbf8f3 58%, #f3eee6);
 }
 
+.homeApproachEyebrow,
 .homeSpotlightEyebrow {
   font-size: 11px;
   font-weight: var(--weight-bold);
@@ -376,6 +376,7 @@
   color: var(--color-gold-700);
 }
 
+.homeApproachCard strong,
 .homeSpotlightCard strong {
   font-size: var(--text-h3);
   line-height: 1.2;
@@ -383,12 +384,14 @@
   color: var(--color-text);
 }
 
+.homeApproachCard p,
 .homeSpotlightCard p {
   margin: 0;
   color: var(--color-text-muted);
   line-height: var(--leading-normal);
 }
 
+.homeApproachCard small,
 .homeSpotlightNote {
   color: var(--color-gold-700);
   font-size: var(--text-label);
@@ -760,7 +763,6 @@
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .homeHeroBody,
-  .homeSpotlightGrid,
   .homeExploreDeck {
     grid-template-columns: 1fr;
   }

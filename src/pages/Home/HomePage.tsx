@@ -175,7 +175,6 @@ export default function HomePage({ me, isLoggedIn, onRequestLogin }: Props) {
             </aside>
           </div>
 
-          <p className="homeHeroLead">{points.conversation}</p>
           <div className="homeHeroActions">
             <Link to="/mysaju" className="homeHeroCta">
               내 사주 상세 보기
@@ -184,39 +183,18 @@ export default function HomePage({ me, isLoggedIn, onRequestLogin }: Props) {
         </div>
       </section>
 
-      <section className="homeSpotlightGrid anim-fade-in anim-delay-2">
-        <article className="homeSpotlightCard signature">
-          <span className="homeSpotlightEyebrow">오늘의 리포트</span>
-          <strong>{summary[1]}</strong>
-          <p>{points.wealth}</p>
-          <Link to="/fortune" className="homeSpotlightLink">
-            운세 흐름 자세히 보기
-            <span className="ctaArrow">→</span>
-          </Link>
-        </article>
-
-        <article className="homeSpotlightCard soft">
-          <span className="homeSpotlightEyebrow">지금 잘 맞는 접근</span>
-          <strong>{points.conversation}</strong>
-          <p>{points.caution}</p>
-          <small className="homeSpotlightNote">오후엔 {timeFlow.afternoon}</small>
-        </article>
-      </section>
-
-      <section className="homeSummaryCard anim-fade-in anim-delay-3">
-        <h4>오늘의 운세 요약</h4>
-        <ul className="homeSummaryList">
-          <li><span className="summaryCheck">✓</span>{summary[0]}</li>
-          <li><span className="summaryCheck">✓</span>{summary[1]}</li>
-          <li><span className="summaryCheck">✓</span>{summary[2]}</li>
-        </ul>
-        <Link to="/fortune" className="homeSummaryCta">
-          운세 더 보기
+      <section className="homeApproachCard anim-fade-in anim-delay-2">
+        <span className="homeApproachEyebrow">지금 잘 맞는 접근</span>
+        <strong>{points.conversation}</strong>
+        <p>{points.caution}</p>
+        <small>오후엔 {timeFlow.afternoon}</small>
+        <Link to="/fortune" className="homeSpotlightLink">
+          운세 흐름 더 보기
           <span className="ctaArrow">→</span>
         </Link>
       </section>
 
-      <section className="homePoints anim-fade-in anim-delay-4">
+      <section className="homePoints anim-fade-in anim-delay-3">
         <h5>오늘의 포인트</h5>
         <div className="homePointsList">
           <div className="homePointItem">
@@ -243,7 +221,7 @@ export default function HomePage({ me, isLoggedIn, onRequestLogin }: Props) {
         </div>
       </section>
 
-      <section className="homeTimeFlow anim-fade-in anim-delay-5">
+      <section className="homeTimeFlow anim-fade-in anim-delay-4">
         <h5>시간대별 흐름</h5>
         <div className="homeTimeGrid">
           <article className="timeCard morning">

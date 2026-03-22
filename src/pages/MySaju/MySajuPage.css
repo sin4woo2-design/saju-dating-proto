@@ -445,6 +445,161 @@
   gap: var(--space-3);
 }
 
+.pillarMatrixWrap {
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.pillarMatrix {
+  min-width: 680px;
+  display: grid;
+  grid-template-columns: 86px repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pillarMatrixCorner,
+.pillarMatrixRowLabel,
+.pillarMatrixHead,
+.pillarMatrixCell,
+.pillarMatrixAction {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.pillarMatrixCorner,
+.pillarMatrixRowLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-muted);
+  background: var(--color-surface-alt);
+}
+
+.pillarMatrixHead {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  align-content: center;
+  min-height: 76px;
+  padding: var(--space-3);
+  text-align: center;
+  background: linear-gradient(180deg, #fffdfa, #f7f2e8);
+}
+
+.pillarMatrixHead strong {
+  font-size: var(--text-label);
+  color: var(--color-text-muted);
+}
+
+.pillarMatrixHead span {
+  font-family: "Noto Serif KR", "Batang", "Gungsuh", serif;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: var(--color-text);
+}
+
+.pillarMatrixHead.focus,
+.pillarMatrixCell.focus,
+.pillarMatrixAction.focus {
+  border-color: var(--color-border-gold);
+  box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.18);
+}
+
+.pillarMatrixBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  background: var(--color-gold-100);
+  color: var(--color-gold-800);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: var(--weight-bold);
+}
+
+.pillarMatrixCell,
+.pillarMatrixAction {
+  min-height: 86px;
+  padding: var(--space-3);
+  display: grid;
+  gap: 6px;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+}
+
+.pillarMatrixCell strong,
+.pillarMatrixAction strong {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--color-text);
+}
+
+.pillarMatrixCell small,
+.pillarMatrixAction small {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.pillarMatrixCell.stacked strong {
+  font-size: var(--text-body);
+  line-height: 1.25;
+}
+
+.pillarMatrixAction {
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+}
+
+.pillarMatrixAction:hover,
+.pillarMatrixAction.active {
+  transform: translateY(-1px);
+  border-color: var(--color-gold-300);
+}
+
+.pillarMatrixAction.neutral,
+.pillarMatrixCell.neutral {
+  background: linear-gradient(180deg, #ffffff, #faf7f2);
+}
+
+.pillarMatrixAction.wood,
+.pillarMatrixCell.wood {
+  background: linear-gradient(180deg, rgba(73, 176, 130, 0.18), rgba(255, 255, 255, 0.96));
+}
+
+.pillarMatrixAction.fire,
+.pillarMatrixCell.fire {
+  background: linear-gradient(180deg, rgba(255, 120, 124, 0.22), rgba(255, 255, 255, 0.96));
+}
+
+.pillarMatrixAction.earth,
+.pillarMatrixCell.earth {
+  background: linear-gradient(180deg, rgba(245, 194, 102, 0.24), rgba(255, 255, 255, 0.96));
+}
+
+.pillarMatrixAction.metal,
+.pillarMatrixCell.metal {
+  background: linear-gradient(180deg, rgba(202, 206, 217, 0.34), rgba(255, 255, 255, 0.96));
+}
+
+.pillarMatrixAction.water,
+.pillarMatrixCell.water {
+  background: linear-gradient(180deg, rgba(98, 161, 218, 0.22), rgba(255, 255, 255, 0.96));
+}
+
+.pillarMatrixCaption {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
 .pillarCard {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
