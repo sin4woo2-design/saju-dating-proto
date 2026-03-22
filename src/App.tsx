@@ -57,7 +57,7 @@ function AppBody() {
         <header className="topBar">
           <div className="topBarTitleWrap">
             <h1><span className="brandMark">✦</span> 사주 라운지</h1>
-            {user ? <p className="authWelcome">{user.name}님으로 연결됨</p> : <p className="authWelcome muted">로그인하면 결과를 저장할 수 있어요</p>}
+            {user ? <p className="authWelcome">{user.name}님으로 연결됨</p> : null}
           </div>
           <div className="topBarActions">
             {me ? (

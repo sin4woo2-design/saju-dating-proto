@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
 import type { HomeNarrativeSnapshot } from "../../lib/engine";
 import { buildDailyFortuneSnapshotFromProfile, calculateDailyFortuneSnapshot } from "../../lib/dailyFortune";
-import { buildMockHomeNarrative, type HomeNarrativeBasis } from "../../lib/engine/homeNarrative";
+import { buildMockHomeNarrative } from "../../lib/engine/homeNarrative";
 import { calculateSajuResult } from "../../lib/sajuEngine";
 import type { UserProfileInput } from "../../types/saju";
 import "./HomePage.css";
@@ -35,35 +35,11 @@ const defaultTimeFlow = {
   evening: "관계 대화와 마무리 정리에 좋아요.",
 };
 
-function resolveFocusWindowLabel(basis?: HomeNarrativeBasis) {
-  if (!basis) return "2-4 PM";
-  if (basis.focusWindow === "morning-setup") return "9-11 AM";
-  if (basis.focusWindow === "afternoon-focus") return "2-4 PM";
-  return "8-10 PM";
-}
-
-function resolveRelationTemperature(basis?: HomeNarrativeBasis) {
-  if (!basis) return "75°C";
-
-  if (basis.relationTone === "soft" && basis.flowBias === "steady-day") return "68°C";
-  if (basis.relationTone === "soft" && basis.flowBias === "afternoon-peak") return "72°C";
-  if (basis.relationTone === "clear" && basis.flowBias === "steady-day") return "78°C";
-  return "84°C";
-}
-
-function resolveKeyword(basis?: HomeNarrativeBasis) {
-  if (!basis) return "화합";
-
-  const byElement: Record<HomeNarrativeBasis["dominantElement"], string> = {
-    wood: "성장",
-    fire: "표현",
-    earth: "안정",
-    metal: "정리",
-    water: "공감",
-  };
-
-  const toneSuffix = basis.relationTone === "soft" ? "밸런스" : "결단";
-  return `${byElement[basis.dominantElement]}·${toneSuffix}`;
+function simplifyHeroLead(value: string) {
+  return value
+    .replace(/^[가-힣]{2,3} 일간은\s*/, "")
+    .replace(/^오행 기반 임시 해석은\s*/, "")
+    .trim();
 }
 
 function ScoreGauge({ score }: { score: number }) {
@@ -141,29 +117,12 @@ export default function HomePage({ me, isLoggedIn, onRequestLogin }: Props) {
     evening: narrative?.timeFlow?.evening || defaultTimeFlow.evening,
   };
 
-  const focusWindowLabel = resolveFocusWindowLabel(narrative?.basis);
-  const relationTemperature = resolveRelationTemperature(narrative?.basis);
-  const todayKeyword = resolveKeyword(narrative?.basis);
-  const todayMood = narrative?.basis?.relationTone === "soft" ? "부드럽게 열기" : "선명하게 정리하기";
-  const dominantElementLabel = narrative?.basis
-    ? {
-        wood: "목의 확장감",
-        fire: "화의 표현력",
-        earth: "토의 안정감",
-        metal: "금의 정리력",
-        water: "수의 공감력",
-      }[narrative.basis.dominantElement]
-    : "균형 감각";
+  const heroHeadline = useMemo(() => simplifyHeroLead(heroLead), [heroLead]);
 
   if (!narrative) {
     return (
       <PageLayout title="" subtitle="">
         <div className="homeHero skeleton" style={{ minHeight: "280px", marginBottom: "var(--space-4)" }} />
-        <div className="homeQuickStats">
-          <div className="skeleton qStatCard" style={{ height: "80px" }} />
-          <div className="skeleton qStatCard" style={{ height: "80px" }} />
-          <div className="skeleton qStatCard" style={{ height: "80px" }} />
-        </div>
         <div className="skeleton homeSummaryCard" style={{ height: "160px", marginTop: "var(--space-4)" }} />
       </PageLayout>
     );
@@ -175,7 +134,7 @@ export default function HomePage({ me, isLoggedIn, onRequestLogin }: Props) {
         <section className="homeMemberCard anim-fade-in">
           <div>
             <strong>로그인하면 오늘 결과와 궁합 기록을 저장할 수 있어요</strong>
-            <p>이제 구글 로그인으로 결과 저장과 이어보기를 바로 확장할 수 있어요.</p>
+            <p>지금 보는 결과를 저장하고 나중에 다시 이어볼 수 있어요.</p>
           </div>
           <button type="button" className="homeMemberBtn" onClick={onRequestLogin}>
             로그인 연결하기
@@ -191,69 +150,38 @@ export default function HomePage({ me, isLoggedIn, onRequestLogin }: Props) {
         </div>
         <div className="homeHeroInner">
           <div className="homeHeroTopline">
-            <span className="homeHeroKicker">Daily Saju Brief</span>
-            <span className="homeHeroMood">{todayMood}</span>
+            <span className="homeHeroKicker">오늘의 사주 브리프</span>
           </div>
 
+          <p className="homeHeroGreeting">{me.name}님의 오늘</p>
+
           <div className="homeHeroBody">
-            <div className="homeHeroPrimary">
-              <p className="homeHeroGreeting">{me.name}님의 오늘</p>
-              <div className="homeHeroGaugeWrap">
-                <ScoreGauge score={luckScore} />
-                <div className="homeHeroIntro">
-                  <p className="homeHeroLead">{heroLead}</p>
-                  <p className="homeHeroSupport">{heroSupport}</p>
-                </div>
-              </div>
-
-              <div className="homeHeroChips">
-                <span className="homeHeroChip">오늘의 결 · {todayKeyword}</span>
-                <span className="homeHeroChip subtle">핵심 시간 · {focusWindowLabel}</span>
-                <span className="homeHeroChip subtle">메인 감각 · {dominantElementLabel}</span>
-              </div>
-
-              <div className="homeHeroActions">
-                <Link to="/mysaju" className="homeHeroCta">
-                  내 사주 상세 보기
-                </Link>
-                <Link to="/persona" className="homeHeroCta secondary">
-                  오늘의 페르소나 보기
-                </Link>
+            <div className="homeHeroScorePanel">
+              <ScoreGauge score={luckScore} />
+              <div className="homeHeroScoreCopy">
+                <small>오늘의 흐름</small>
+                <strong>{heroHeadline}</strong>
+                <p>{heroSupport}</p>
               </div>
             </div>
 
-            <aside className="homeHeroAside">
-              <div className="homeHeroAsideCard">
-                <small>오늘 먼저 열어볼 포인트</small>
-                <strong>{summary[0]}</strong>
-                <p>{points.conversation}</p>
-              </div>
-              <div className="homeHeroAsideCard accent">
-                <small>지금 잘 맞는 흐름</small>
-                <strong>{timeFlow.afternoon}</strong>
-                <p>관계 온도 {relationTemperature} · {focusWindowLabel}</p>
-              </div>
+            <aside className="homeHeroReport">
+              <small>오늘의 리포트</small>
+              <strong>{summary[0]}</strong>
+              <ul className="homeHeroReportList">
+                <li>{summary[1]}</li>
+                <li>{summary[2]}</li>
+              </ul>
             </aside>
           </div>
-        </div>
-      </section>
 
-      <section className="homeQuickStats anim-fade-in anim-delay-1">
-        <article className="qStatCard">
-          <span className="qStatIcon">◷</span>
-          <span className="qStatLabel">집중 시간</span>
-          <strong className="qStatValue">{focusWindowLabel}</strong>
-        </article>
-        <article className="qStatCard">
-          <span className="qStatIcon">◔</span>
-          <span className="qStatLabel">관계 온도</span>
-          <strong className="qStatValue">{relationTemperature}</strong>
-        </article>
-        <article className="qStatCard">
-          <span className="qStatIcon">⌘</span>
-          <span className="qStatLabel">키워드</span>
-          <strong className="qStatValue">{todayKeyword}</strong>
-        </article>
+          <p className="homeHeroLead">{points.conversation}</p>
+          <div className="homeHeroActions">
+            <Link to="/mysaju" className="homeHeroCta">
+              내 사주 상세 보기
+            </Link>
+          </div>
+        </div>
       </section>
 
       <section className="homeSpotlightGrid anim-fade-in anim-delay-2">
@@ -268,14 +196,10 @@ export default function HomePage({ me, isLoggedIn, onRequestLogin }: Props) {
         </article>
 
         <article className="homeSpotlightCard soft">
-          <span className="homeSpotlightEyebrow">지금 열어보면 좋은 메뉴</span>
-          <strong>사주 리포트와 페르소나를 같이 보면 더 입체적으로 읽혀요.</strong>
+          <span className="homeSpotlightEyebrow">지금 잘 맞는 접근</span>
+          <strong>{points.conversation}</strong>
           <p>{points.caution}</p>
-          <div className="homeSpotlightActions">
-            <Link to="/mysaju" className="homeMiniCta">원국 리포트</Link>
-            <Link to="/persona" className="homeMiniCta secondary">페르소나</Link>
-            <Link to="/compatibility" className="homeMiniCta secondary">궁합 보기</Link>
-          </div>
+          <small className="homeSpotlightNote">오후엔 {timeFlow.afternoon}</small>
         </article>
       </section>
 
