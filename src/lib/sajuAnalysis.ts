@@ -501,17 +501,17 @@ export function buildProfileCopy(balance: FiveElementsBalance, analysis: SajuAna
 
   const personalitySummary =
     analysis.strengthLevel === "strong"
-      ? `${subjectPhrase} ${seasonLabel} 흐름을 타면 판단과 추진이 빠르게 붙는 편이에요. 한 번 방향을 잡으면 밀고 가는 힘이 분명하지만, ${cautionLabel} 쪽으로 과열되면 말이 단정적으로 들릴 수 있어요. 강한 축은 ${elementLabel(analysis.dominantElement)}(${dominantValue}%)라 존재감은 이미 충분한 편이에요.`
+      ? `${subjectPhrase} ${seasonLabel} 흐름을 타면 판단과 추진이 빠르게 붙는 편이에요. 한 번 방향을 잡으면 밀고 가는 힘이 분명하지만, ${cautionLabel} 쪽으로 과열되면 말이 단정적으로 들릴 수 있어요. 강한 축은 ${elementLabel(analysis.dominantElement)}(${dominantValue}%)라 주도권과 추진력은 이미 충분한 편이에요.`
       : analysis.strengthLevel === "weak"
-        ? `${subjectPhrase} ${seasonLabel} 흐름에서는 사람과 분위기 변화를 읽는 감각이 좋은 편이에요. 대신 혼자 버티려 들수록 소모가 빨라질 수 있어 ${supportLabel} 쪽 도움이 들어올 때 안정감과 집중력이 같이 살아나요. 특히 약한 ${elementLabel(analysis.weakestElement)}(${weakValue}%) 축은 일상 리듬으로 받쳐 주는 편이 좋아요.`
-        : `${subjectPhrase} ${seasonLabel} 흐름에서는 밀고 나갈 때와 맞춰 줄 때의 균형이 비교적 좋은 편이에요. 필요할 때 선을 세우고, 필요할 때 부드럽게 받쳐 주는 방식이 자연스럽게 살아납니다.`;
+        ? `${subjectPhrase} ${seasonLabel} 흐름에서는 사람과 분위기 변화를 읽는 감각이 좋은 편이에요. 대신 혼자 버티려 들수록 소모가 빨라질 수 있어 ${supportLabel} 쪽 도움이 들어올 때 안정감과 집중력이 함께 붙어요. 특히 약한 ${elementLabel(analysis.weakestElement)}(${weakValue}%) 축은 일상 리듬으로 받쳐 주는 편이 좋아요.`
+        : `${subjectPhrase} ${seasonLabel} 흐름에서는 밀고 나갈 때와 맞춰 줄 때의 균형이 비교적 좋은 편이에요. 필요할 때 선을 세우고, 필요할 때 부드럽게 받쳐 주는 방식이 잘 맞아요.`;
 
   const loveStyle =
     analysis.strengthLevel === "strong"
       ? `호감이 생기면 관계의 방향을 먼저 잡고 싶어지는 편이에요. 그래서 ${usefulLabel} 쪽 감각처럼 숨을 고를 여지를 주고 대화 톤을 눌러 주는 상대와 호흡이 좋아요.`
       : analysis.strengthLevel === "weak"
         ? `마음을 열기 전까지는 시간이 조금 필요한 편이에요. 대신 한번 신뢰가 쌓이면 오래 가는 힘이 있어 ${supportLabel} 쪽 안정감을 주는 관계와 특히 잘 맞아요.`
-        : `대화 템포와 현실 감각이 함께 맞을 때 관계가 자연스럽게 깊어지는 편이에요. 감정 표현과 일상 조율이 같이 되는 사람 앞에서 강점이 잘 드러납니다.`;
+        : `대화 템포와 현실 감각이 함께 맞을 때 관계가 깊어지는 편이에요. 감정 표현과 일상 조율이 같이 되는 사람 앞에서 강점이 더 선명하게 드러납니다.`;
 
   const idealTraits =
     analysis.strengthLevel === "strong"
@@ -529,7 +529,7 @@ export function buildProfileCopy(balance: FiveElementsBalance, analysis: SajuAna
       : [
           "말의 톤이 편안하고 기본 리듬이 비슷한 사람",
           "감정 공감과 현실 감각을 같이 갖춘 사람",
-          "밀어붙이기보다 자연스럽게 합을 맞춰 가는 사람",
+          "밀어붙이기보다 호흡을 맞춰 가는 사람",
         ];
 
   return {

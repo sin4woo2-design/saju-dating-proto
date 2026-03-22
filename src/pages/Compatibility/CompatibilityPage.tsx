@@ -249,14 +249,14 @@ export default function CompatibilityPage({ me }: Props) {
                 <strong>대화 궁합</strong>
                 <span className="catScore">{viewModel.talk}점</span>
               </div>
-              <p>{viewModel.basisHighlights[0]?.body ?? "중요한 대화는 확인 질문을 먼저 두면 장점이 더 잘 살아나요."}</p>
+              <p>{viewModel.basisHighlights[0]?.body ?? "중요한 대화는 확인 질문을 먼저 두면 장점이 더 잘 드러나요."}</p>
             </article>
             <article className="compatCategoryRow">
               <div className="catHead">
                 <strong>감정 궁합</strong>
                 <span className="catScore">{viewModel.emotion}점</span>
               </div>
-              <p>{viewModel.basisHighlights[1]?.body ?? "감정 반응 속도와 해석 차이를 천천히 맞추면 훨씬 편안해져요."}</p>
+              <p>{viewModel.basisHighlights[1]?.body ?? "감정 반응 속도와 해석 차이를 천천히 맞추면 관계가 한결 부드러워져요."}</p>
             </article>
             <article className="compatCategoryRow">
               <div className="catHead">

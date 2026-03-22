@@ -127,7 +127,7 @@ function buildBasisHighlights(basis?: CompatibilityBasisV1): CompatibilityHighli
     const meta = getCompatSignalMeta(dayMasterTop.code);
     items.push({
       title: "감정 축",
-      body: meta?.desc ?? `일간 역학 ${dayMasterTop.type} 흐름이 커서 감정 해석 방식과 안정감에 영향을 줘요.`,
+      body: meta?.desc ?? `일간 역학 ${dayMasterTop.type} 신호가 커서 감정 반응 방식과 안정감에 영향을 줘요.`,
       tone: inferRelationTone(dayMasterTop.type),
     });
   }
@@ -149,7 +149,7 @@ function buildBasisHighlights(basis?: CompatibilityBasisV1): CompatibilityHighli
     const partnerUseful = partner.usefulElements?.join("·");
     items.push({
       title: "명식 맞물림",
-      body: `${me.dayMasterLabel}와 ${partner.dayMasterLabel} 조합으로 보고 있어요.${meUseful ? ` 나는 ${meUseful} 쪽 기운이 들어올 때 훨씬 편안해지고` : ""}${partnerUseful ? `, 상대는 ${partnerUseful} 쪽에서 호흡이 잘 맞는 편이에요.` : ""}`,
+      body: `${me.dayMasterLabel}와 ${partner.dayMasterLabel} 조합으로 보고 있어요.${meUseful ? ` 나는 ${meUseful} 쪽 기운이 들어올 때 숨이 트이고` : ""}${partnerUseful ? `, 상대는 ${partnerUseful} 쪽에서 호흡이 잘 맞는 편이에요.` : ""}`,
       tone: "neutral",
     });
   }
@@ -163,13 +163,13 @@ function buildStrengths(rawSignals: CompatibilityRawSignal[], score: number) {
 
   if (score >= 85) {
     return [
-      "초반 친밀감과 대화 템포가 잘 맞아 관계가 빠르게 안정권에 들어가기 쉬워요.",
-      "감정 교류와 일상 템포가 함께 맞아 장기 관계로도 이어질 가능성이 높아요.",
+      "초반 친밀감과 대화 템포가 잘 맞아 빠르게 가까워지기 쉬운 조합이에요.",
+      "감정 교류와 일상 템포가 함께 맞아 오래 이어 갈 기반도 괜찮아요.",
     ];
   }
 
   return [
-    "서로 다른 장점을 메워 줄 여지가 있고, 조율만 잘되면 체감 만족도가 꽤 올라갈 수 있는 조합이에요.",
+    "서로 다른 장점을 메워 줄 여지가 있고, 조율만 잘되면 함께 있을 때 만족감이 꽤 올라갈 수 있는 조합이에요.",
   ];
 }
 
@@ -200,13 +200,13 @@ function buildTips(talk: number, emotion: number, lifestyle: number, confidence:
   tips.push(
     emotion < 72
       ? "감정 반응은 즉답보다 한 템포 늦춰 말하고, 해석 차이를 바로 확인해 주세요."
-      : "감정 교류가 비교적 부드러운 조합이라, 고마움이나 호감을 자주 언어화하면 만족도가 더 올라가요.",
+      : "감정 교류가 비교적 부드러운 조합이라, 고마움이나 호감을 자주 말해 줄수록 더 단단해져요.",
   );
 
   tips.push(
     lifestyle < 72
       ? "만남 빈도, 연락 주기, 돈 쓰는 방식처럼 일상 규칙을 먼저 정해 두는 편이 좋아요."
-      : "일상 루틴이 크게 어긋나지 않는 편이라 공통 습관 하나만 만들어도 관계가 빨리 자리를 잡아요.",
+      : "일상 루틴이 크게 어긋나지 않는 편이라 공통 습관 하나만 만들어도 관계가 더 빨리 안정돼요.",
   );
 
   if (confidence === "low") {
@@ -222,10 +222,10 @@ function buildOverview(score: number, confidence: CompatibilityConfidenceLevel, 
     : "";
 
   if (score >= 85) {
-    return `서로의 템포가 자연스럽게 맞아 초반 친밀감과 장기 안정감이 함께 기대되는 조합이에요. ${confidenceGuide(confidence)} ${warningLine}`.trim();
+    return `서로의 템포가 잘 맞아 초반 친밀감과 장기 안정감이 함께 기대되는 조합이에요. ${confidenceGuide(confidence)} ${warningLine}`.trim();
   }
   if (score >= 72) {
-    return `강점이 분명하고 조율 여지도 충분한 조합이에요. 대화 방식과 일상 템포만 조금 맞추면 체감 만족도가 더 올라갈 수 있어요. ${confidenceGuide(confidence)} ${warningLine}`.trim();
+    return `강점이 분명하고 조율 여지도 충분한 조합이에요. 대화 방식과 일상 템포만 조금 맞추면 함께 있을 때 만족감이 더 올라갈 수 있어요. ${confidenceGuide(confidence)} ${warningLine}`.trim();
   }
   if (score >= 60) {
     return `매력 포인트는 있지만 해석 차이와 일상 템포 조율이 중요한 조합이에요. 서두르기보다 기본 규칙을 먼저 맞추는 편이 좋아요. ${confidenceGuide(confidence)} ${warningLine}`.trim();

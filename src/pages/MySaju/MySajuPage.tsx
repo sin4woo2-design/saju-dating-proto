@@ -174,7 +174,7 @@ function buildDetailSections(profile: SajuProfile, analysis: SajuAnalysis) {
       loveStyle: [
         profile.loveStyle,
         tenGodFocus?.code
-          ? `${getTenGodLabel(tenGodFocus.code)} 포인트가 두드러져 기대 역할을 말로 맞춰 둘수록 관계가 훨씬 편해져요.`
+          ? `${getTenGodLabel(tenGodFocus.code)} 포인트가 두드러져 기대 역할을 말로 맞춰 둘수록 관계가 훨씬 매끄러워져요.`
           : `${supportLabel} 쪽 안정감을 주는 관계일수록 마음이 오래 편안해집니다.`,
       analysis.strengthLevel === "strong"
         ? "호감이 생길수록 속도를 조금 늦추고 질문을 먼저 두면 관계 피로가 줄어듭니다."
@@ -184,7 +184,7 @@ function buildDetailSections(profile: SajuProfile, analysis: SajuAnalysis) {
     ],
       idealPartner: [
         ...profile.idealTraits,
-        `${usefulLabel} 쪽 감각처럼 지금 명식의 빈틈을 자연스럽게 메워 주는 사람이 특히 잘 맞아요.`,
+        `${usefulLabel} 쪽 감각처럼 지금 명식의 빈틈을 차분히 메워 주는 사람이 특히 잘 맞아요.`,
       ],
       cautionPatterns: [
         analysis.strengthReason,
@@ -535,7 +535,7 @@ export default function MySajuPage({ me }: Props) {
               <article className="strengthCard">
                 <small>활용 기운</small>
                 <strong>{joinElementLabels(topSummary.analysis.usefulElements)}</strong>
-                <p>지금은 이 기운을 살리는 말투와 행동을 쓸수록 힘이 한쪽으로 쏠리지 않고 훨씬 자연스러워져요.</p>
+                <p>지금은 이 기운을 살리는 말투와 행동을 쓸수록 힘이 한쪽으로 쏠리지 않고 균형이 잡혀요.</p>
               </article>
               {typeof topSummary.analysis.supportScore === "number" || typeof topSummary.analysis.regulatingScore === "number" ? (
                 <article className="strengthCard">

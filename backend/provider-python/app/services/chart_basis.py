@@ -159,11 +159,11 @@ def _reaction_hint(element: ElementKey) -> str:
 
 def _weak_element_care_line(element: ElementKey) -> str:
     return {
-        "wood": "목 기운이 약한 편이라 시작을 미루지 않게 첫 단추를 작게라도 끼워 두는 편이 좋아요.",
-        "fire": "화 기운이 약한 편이라 답답함을 안에만 쌓아 두지 말고 반응을 조금 더 밖으로 꺼내는 편이 좋아요.",
-        "earth": "토 기운이 약한 편이라 흔들리는 날엔 일정과 휴식 틀을 먼저 고정해 두는 편이 좋아요.",
-        "metal": "금 기운이 약한 편이라 기준이 흐려지지 않게 우선순위를 짧게라도 적어 두는 편이 좋아요.",
-        "water": "수 기운이 약한 편이라 과열되기 쉬워서 쉬는 간격과 감정 정리를 먼저 챙기는 편이 좋아요.",
+        "wood": "목 기운이 약해서 시작을 미루지 않게 첫 단추를 작게라도 끼워 두는 편이 좋아요.",
+        "fire": "화 기운이 약해서 답답함을 안에만 쌓아 두지 말고 반응을 조금 더 밖으로 꺼내는 편이 좋아요.",
+        "earth": "토 기운이 약해서 흔들리는 날엔 일정과 휴식 틀을 먼저 고정해 두는 편이 좋아요.",
+        "metal": "금 기운이 약해서 기준이 흐려지지 않게 우선순위를 짧게라도 적어 두는 편이 좋아요.",
+        "water": "수 기운이 약해 과열되기 쉬우니 쉬는 간격과 감정 정리를 먼저 챙기는 편이 좋아요.",
     }[element]
 
 
@@ -177,7 +177,7 @@ def _strength_support_line(
         return f"{labels} 쪽이 받쳐 주면 버티는 힘이 붙고 마음도 한결 안정돼요."
     if strength_level == "strong":
         return f"{labels} 쪽 움직임을 쓰면 힘이 한곳에 몰리지 않고 말과 행동이 더 유연해져요."
-    return f"{labels} 쪽으로 힘을 실으면 속도와 안정감이 같이 살아나요."
+    return f"{labels} 쪽으로 힘을 실으면 속도와 안정감이 함께 붙어요."
 
 
 def _get_ten_god_code(day_master: dict, other: dict) -> TenGodCode:

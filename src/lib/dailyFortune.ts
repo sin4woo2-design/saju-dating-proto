@@ -90,7 +90,7 @@ function buildHeroLead(profile: SajuProfile, themeElement: ElementKey, scores: D
     return analysis.summaryLines[0];
   }
   if (analysis.usefulElements.includes(themeElement)) {
-    return `오늘은 ${elementLabel(themeElement)} 기운이 들어와 ${getAnalysisBasisPhrase(analysis)} 장점이 비교적 자연스럽게 살아나요.`;
+    return `오늘은 ${elementLabel(themeElement)} 기운이 들어와 ${getAnalysisBasisPhrase(analysis)} 장점이 비교적 분명하게 드러나요.`;
   }
   if (analysis.cautionElements.includes(themeElement)) {
     return `오늘은 ${elementLabel(themeElement)} 기운이 강해서 서두르기보다 속도를 나눠 쓰는 편이 좋아요.`;
@@ -121,7 +121,7 @@ function buildCategoryMessage(profile: SajuProfile, scores: DailyFortuneScores) 
   return {
     loveMessage:
       scores.love >= 80
-        ? `말을 많이 하기보다 톤을 맞추는 쪽이 잘 먹히는 날이에요. ${usefulLabel} 쪽 감각처럼 여지를 남기는 말이 호감을 더 자연스럽게 붙여 줘요.`
+        ? `말을 많이 하기보다 톤을 맞추는 쪽이 잘 먹히는 날이에요. ${usefulLabel} 쪽 감각처럼 여지를 남기는 말이 호감을 더 편하게 쌓아 줘요.`
         : `관계 속도를 억지로 앞당기기보다 신뢰를 쌓는 쪽이 좋아요. 약한 ${weakLabel} 축이 흔들리지 않게 감정 과열은 피하세요.`,
     workMessage:
       scores.work >= 80
@@ -154,7 +154,7 @@ function buildCautionLine(profile: SajuProfile, themeElement: ElementKey) {
   if (analysis.cautionElements.includes(themeElement)) {
     return `${elementLabel(themeElement)} 기운이 과해지면 판단이 급해질 수 있어요. 답을 내리기 전 한 번만 더 숨을 고르는 편이 좋아요.`;
   }
-  return `${elementLabel(analysis.weakestElement)} 축이 약한 흐름이라 무리해서 끌고 가기보다 속도를 나눠 쓰는 쪽이 안정적이에요.`;
+  return `${elementLabel(analysis.weakestElement)} 축이 약한 흐름이라 무리해서 끌고 가기보다 속도를 나눠 쓰는 쪽이 더 안정적이에요.`;
 }
 
 export function buildDailyFortuneSnapshotFromProfile(profile: SajuProfile, date = new Date()): DailyFortuneSnapshot {

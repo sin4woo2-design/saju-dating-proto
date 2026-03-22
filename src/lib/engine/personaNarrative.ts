@@ -219,8 +219,8 @@ function subtitleFromBasis(seed: number, basis: PersonaNarrativeBasis, confidenc
     ],
     "rhythm-sync": [
       "관계 속도를 무리하게 올리지 않아 안정감이 오래갑니다.",
-      "생활 템포가 맞을수록 매력이 더 또렷해지는 편이에요.",
-      "약속 간격을 맞추면 관계가 훨씬 편안해져요.",
+      "생활 템포가 맞을수록 장점이 더 분명하게 보이는 편이에요.",
+      "약속 간격을 맞추면 관계가 한결 안정돼요.",
     ],
     "trust-build": [
       "감정과 현실을 함께 보며 관계의 균형을 지키는 편이에요.",
@@ -230,7 +230,7 @@ function subtitleFromBasis(seed: number, basis: PersonaNarrativeBasis, confidenc
   };
 
   const elementNudge: Record<PersonaNarrativeBasis["dominantElement"], string[]> = {
-    wood: ["성장형 관계에서 매력이 더 빠르게 드러나요.", "함께 배우는 환경에서 자연스럽게 눈에 띄어요.", "목 기운 덕분에 발전형 관계에서 시너지가 커요."],
+    wood: ["성장형 관계에서 매력이 더 빠르게 드러나요.", "함께 배우는 환경에서 눈에 더 잘 띄어요.", "목 기운 덕분에 발전형 관계에서 시너지가 커요."],
     fire: ["표현력이 살아나는 순간에 호감 전환이 빨라요.", "대화 온도를 올리는 장점이 분명해요.", "화 기운이 강해 첫인상 에너지가 선명해요."],
     earth: ["안정감을 주는 태도가 장기 관계 강점이에요.", "신뢰를 쌓는 속도가 꾸준한 타입이에요.", "토 기운이 강해 관계 유지력이 높은 편이에요."],
     metal: ["기준을 정리해주는 능력이 관계 품질을 올려요.", "약속/원칙을 지키는 면이 큰 신뢰를 줘요.", "금 기운 영향으로 경계선 설정이 깔끔해요."],
@@ -239,7 +239,7 @@ function subtitleFromBasis(seed: number, basis: PersonaNarrativeBasis, confidenc
 
   const nuancePool: Record<PersonaNarrativeBasis["relationStyle"], string[]> = {
     strategist: ["관계를 구조적으로 설계하는 능력이 강해요.", "기준을 정하면 안정감이 빠르게 올라가요.", "현실 감각이 관계 품질을 높여줘요."],
-    mediator: ["상대 감정을 부드럽게 연결하는 강점이 있어요.", "대화 완충 능력이 갈등을 줄여줘요.", "관계 온도 조절이 자연스러운 편이에요."],
+    mediator: ["상대 감정을 부드럽게 연결하는 강점이 있어요.", "대화 완충 능력이 갈등을 줄여줘요.", "관계 온도 조절에 능숙한 편이에요."],
   };
 
   const basisSeed = `${basis.personaTone}:${basis.appealAxis}:${basis.dominantElement}:${basis.supportElement}:${basis.relationStyle}:${confidence}`
@@ -312,7 +312,7 @@ function buildTraits(seed: number, basis: PersonaNarrativeBasis, confidence: Per
           ? "첫 분위기를 잡는 속도는 빠른 편이지만, 관계 깊이는 한 박자 쉬며 맞출 때 훨씬 안정적이에요."
           : analysis.strengthLevel === "weak"
             ? "빠른 진전보다 마음을 확인하며 천천히 가까워질 때 편안함이 커져요."
-            : "호흡이 맞기 시작하면 자연스럽게 가까워지고, 억지로 당기지 않을수록 매력이 오래 가요.",
+            : "호흡이 맞기 시작하면 거리감이 빠르게 줄고, 억지로 당기지 않을수록 매력이 오래 가요.",
       ),
       attractionStyle: trimSentence(
         `${usefulLabel} 쪽 태도, 즉 ${basis.personaTone === "warm" ? "부드럽지만 상대 반응을 읽는 말투" : "정리된 말과 안정적인 반응"}가 가장 큰 매력 포인트예요. ${confidenceTail}`,
@@ -328,17 +328,17 @@ function buildTraits(seed: number, basis: PersonaNarrativeBasis, confidence: Per
 
   const fallbackTempo = basis.personaTone === "warm"
     ? ["천천히 온도를 맞추며 가까워지는 편이에요.", "초반엔 부드럽게, 익숙해질수록 장점이 더 잘 보여요."]
-    : ["서두르기보다 기준을 확인하며 가까워지는 편이에요.", "리듬과 안정감을 먼저 확인할 때 매력이 살아나요."];
+    : ["서두르기보다 기준을 확인하며 가까워지는 편이에요.", "리듬과 안정감을 먼저 확인할 때 매력이 더 또렷해져요."];
 
   const fallbackAppeal = basis.appealAxis === "emotion-sync"
     ? ["상대 마음의 결을 읽는 반응이 매력으로 이어져요.", "감정을 섬세하게 읽어 주는 태도가 강점이에요."]
     : basis.appealAxis === "rhythm-sync"
-      ? ["생활 템포가 맞을수록 장점이 더 또렷하게 보여요.", "호흡이 맞는 관계에서 매력이 크게 살아나요."]
+      ? ["생활 템포가 맞을수록 장점이 더 분명하게 보여요.", "호흡이 맞는 관계에서 매력이 더 선명해져요."]
       : ["신뢰를 차곡차곡 쌓는 방식이 가장 큰 무기예요.", "작은 약속을 지키는 태도가 오래 기억돼요."];
 
   const fallbackRhythm = basis.relationStyle === "strategist"
-    ? ["예측 가능한 일정과 계획이 있을 때 마음이 편해져요.", "기준이 정리된 환경에서 관계가 안정적으로 흘러가요."]
-    : ["감정 확인이 오가는 대화가 이어질 때 안정감이 생겨요.", "관계의 속도를 함께 조율할 수 있을 때 편안해져요."];
+    ? ["예측 가능한 일정과 계획이 있을 때 마음이 놓여요.", "기준이 정리된 환경에서 관계가 차분하게 이어져요."]
+    : ["감정 확인이 오가는 대화가 이어질 때 안정감이 생겨요.", "관계의 속도를 함께 조율할 수 있을 때 마음이 놓여요."];
 
   const fallbackCaution = basis.personaTone === "warm"
     ? ["상대 기분에 너무 맞추다 보면 내 리듬을 놓칠 수 있어요.", "분위기를 살피느라 하고 싶은 말을 미루지 않는 게 좋아요."]
@@ -361,7 +361,7 @@ function analysisAppealPoint(analysis: SajuAnalysis, basis: PersonaNarrativeBasi
       : "지금은 가볍게 관계 방향을 보는 힌트로 읽어 주세요.";
 
   return trimSentence(
-    `${getAnalysisReactionLine(analysis)} ${usefulLabel} 쪽 감각이 통하는 사람 앞에서 표정과 반응이 훨씬 자연스러워져요. ${basis.appealAxis === "emotion-sync" ? "감정의 결을 읽어 주는 순간" : basis.appealAxis === "rhythm-sync" ? "일상 템포가 맞아드는 순간" : "신뢰가 축적되는 순간"}에 매력이 가장 선명하게 드러납니다. ${tail}`,
+    `${getAnalysisReactionLine(analysis)} ${usefulLabel} 쪽 감각이 통하는 사람 앞에서 표정과 반응이 한결 부드러워져요. ${basis.appealAxis === "emotion-sync" ? "감정의 결을 읽어 주는 순간" : basis.appealAxis === "rhythm-sync" ? "일상 템포가 맞아드는 순간" : "신뢰가 축적되는 순간"}에 매력이 가장 선명하게 드러납니다. ${tail}`,
   );
 }
 
@@ -372,8 +372,8 @@ function appealPointFromBasis(seed: number, basis: PersonaNarrativeBasis, confid
       "감정 확인 한 문장이 관계 흐름을 부드럽게 열어 줍니다.",
     ],
     "rhythm-sync": [
-      "생활 템포와 대화 간격이 맞을수록 매력이 자연스럽게 살아나요.",
-      "리듬이 맞는 관계에서 존재감이 더 크게 드러나요.",
+      "생활 템포와 대화 간격이 맞을수록 장점이 더 또렷하게 보여요.",
+      "리듬이 맞는 관계에서 편안한 매력이 더 크게 드러나요.",
     ],
     "trust-build": [
       "작은 약속을 지키는 태도가 오래 가는 신뢰를 만들어 줘요.",
