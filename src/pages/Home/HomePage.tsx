@@ -15,7 +15,7 @@ interface Props {
 }
 
 const defaultHeroLead = "오늘은 대화의 시작 톤이 흐름을 만듭니다.";
-const defaultHeroSupport = "첫 문장을 부드럽게 열면 반응이 편안해져요.";
+const defaultHeroSupport = "첫 문장을 부드럽게 열면 반응도 한결 부드러워져요.";
 
 const defaultSummary: [string, string, string] = [
   "핵심 대화는 오늘 짧게 시작하세요.",

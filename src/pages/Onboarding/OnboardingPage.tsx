@@ -26,7 +26,7 @@ export default function OnboardingPage({ onComplete, onRequestLogin }: Props) {
       <div className="obLoginTeaser anim-fade-in anim-delay-1">
         <div>
           <strong>먼저 체험하고, 마음에 들면 로그인으로 저장해도 돼요.</strong>
-          <p>구글 로그인으로 프로필 저장과 이어보기를 자연스럽게 붙일 수 있어요.</p>
+          <p>구글 로그인으로 프로필을 저장하고 이어서 보는 흐름까지 바로 붙일 수 있어요.</p>
         </div>
         <button type="button" className="obLoginBtn" onClick={onRequestLogin}>
           로그인 보기

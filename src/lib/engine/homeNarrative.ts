@@ -256,7 +256,7 @@ function buildAnalysisPoints(analysis: SajuAnalysis, basis: HomeNarrativeBasis):
     conversation: trimSentence(
       basis.relationTone === "soft"
         ? `${usefulLabel} 쪽 감각처럼 질문을 먼저 두고 감정 확인 한 문장을 보태면 대화가 훨씬 부드럽게 이어져요.`
-        : `${usefulLabel} 쪽 감각처럼 핵심을 짧게 정리한 뒤 이유를 붙이면 설득력이 더 또렷해져요.`,
+        : `${usefulLabel} 쪽 감각처럼 핵심을 짧게 정리한 뒤 이유를 붙이면 설득 포인트가 더 분명해져요.`,
     ),
     wealth: trimSentence(
       analysis.strengthLevel === "strong"
@@ -292,7 +292,7 @@ function buildAnalysisTimeFlow(analysis: SajuAnalysis, basis: HomeNarrativeBasis
 function heroLeadFromBasis(basis: HomeNarrativeBasis) {
   if (basis.relationTone === "soft") return "오늘은 대화의 시작 톤이 흐름을 만듭니다.";
   if (basis.flowBias === "afternoon-peak") return "오늘은 핵심 타이밍을 오후에 두면 안정적입니다.";
-  return "오늘은 말의 순서를 정리할수록 관계가 편안해집니다.";
+  return "오늘은 말의 순서를 정리할수록 관계가 한결 부드러워집니다.";
 }
 
 function heroSupportFromBasis(basis: HomeNarrativeBasis) {
@@ -307,7 +307,7 @@ function summaryLinePoolByTone(tone: HomeNarrativeBasis["relationTone"]) {
       line1: [
         "핵심 대화는 오늘 짧게 시작하세요.",
         "중요한 말은 첫 문장을 가볍게 여세요.",
-        "감정 온도를 먼저 맞추면 대화가 훨씬 부드러워져요.",
+        "감정 온도를 먼저 맞추면 대화가 훨씬 매끄러워져요.",
         "질문형 첫 문장이 오늘 흐름을 부드럽게 열어요.",
         "부드러운 어조가 오늘 관계 운을 안정시켜요.",
       ],
@@ -362,12 +362,12 @@ function buildSummary(seed: number, basis: HomeNarrativeBasis, confidence: Narra
     fire: ["표현력이 올라가는 날이라 발표/대화에 강점이 있어요.", "첫인상 임팩트가 좋은 날이에요.", "화 기운 덕분에 반응 속도가 빠르고 선명해요.", "감정 전달력이 좋아 관계 온도를 올리기 유리해요."],
     earth: ["안정 루틴을 고정하면 하루 전체가 편해져요.", "정리/관리형 작업의 완성도가 높아요.", "토 기운이 받쳐줘 실무 정리력이 돋보여요.", "지속 가능한 페이스를 만들기 좋은 흐름이에요."],
     metal: ["우선순위 재정렬이 성과를 크게 올려줘요.", "기준을 정하면 실행 속도가 빨라져요.", "금 기운 영향으로 기준/원칙 정리가 강해져요.", "결정 프레임을 세우면 하루가 빠르게 정돈돼요."],
-    water: ["관찰과 공감이 필요한 작업에서 강점이 살아나요.", "깊이 있는 대화가 성과로 연결되기 좋아요.", "수 기운이 강해 맥락 읽기와 해석이 좋아져요.", "정서 흐름을 읽는 능력이 오늘 특히 선명해요."],
+    water: ["관찰과 공감이 필요한 작업에서 강점이 더 잘 드러나요.", "깊이 있는 대화가 성과로 연결되기 좋아요.", "수 기운이 강해 맥락 읽기와 해석이 좋아져요.", "정서 흐름을 읽는 능력이 오늘 특히 선명해요."],
   };
 
   const bucket = `${basis.relationTone}:${basis.flowBias}:${basis.focusWindow}:${basis.dominantElement}:${basis.supportElement}:${confidence}`;
   const nuancePool = {
-    intro: ["템포를 낮추면 기회가 보여요.", "한 문장 정리가 오늘의 성과를 만듭니다.", "우선순위를 짧게 고정하면 흐름이 살아나요."],
+    intro: ["템포를 낮추면 기회가 보여요.", "한 문장 정리가 오늘의 성과를 만듭니다.", "우선순위를 짧게 고정하면 흐름이 단단해져요."],
     bridge: ["대화의 온도 조절이 핵심이에요.", "질문형 접근이 반응을 좋게 만들어요.", "결론 전에 확인 한 번이 안전해요."],
     close: ["저녁 전에 정리하면 피로가 줄어요.", "작은 마감이 큰 안정감으로 이어져요.", "하루 끝 체크가 내일 리듬을 살려줘요."],
   } as const;

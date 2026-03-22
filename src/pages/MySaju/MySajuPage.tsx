@@ -184,7 +184,7 @@ function buildDetailSections(profile: SajuProfile, analysis: SajuAnalysis) {
     ],
       idealPartner: [
         ...profile.idealTraits,
-        `${usefulLabel} 쪽 감각처럼 지금 명식의 빈틈을 차분히 메워 주는 사람이 특히 잘 맞아요.`,
+        `${usefulLabel} 쪽 감각처럼 지금 명식의 빈틈을 차분히 받쳐 주는 사람이 특히 잘 맞아요.`,
       ],
       cautionPatterns: [
         analysis.strengthReason,

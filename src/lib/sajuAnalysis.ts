@@ -262,7 +262,7 @@ export function getStrengthSupportLine(
   if (level === "strong") {
     return `${labels} 쪽 움직임을 쓰면 힘이 한곳에 몰리지 않고 말과 행동이 더 유연해져요.`;
   }
-  return `${labels} 쪽으로 힘을 실으면 속도와 안정감이 같이 살아나요.`;
+  return `${labels} 쪽으로 힘을 실으면 속도와 안정감이 함께 붙어요.`;
 }
 
 export function getAnalysisReactionLine(analysis: SajuAnalysis) {

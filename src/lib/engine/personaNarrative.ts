@@ -290,7 +290,7 @@ function analysisSubtitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis, 
       : "지금은 방향성 위주로 참고해 주세요.";
 
   return trimSentence(
-    `${providerLead ? `${providerLead} ` : ""}${subtitleLead} ${usefulLabel} 쪽 감각이 통하는 사람 앞에서 매력이 더 또렷해져요. ${axisWord(basis.appealAxis)}이 살아나는 장면에서 좋은 인상이 오래 남습니다. ${confidenceTail}`,
+    `${providerLead ? `${providerLead} ` : ""}${subtitleLead} ${usefulLabel} 쪽 감각이 통하는 사람 앞에서 매력이 더 분명해져요. ${axisWord(basis.appealAxis)}이 살아나는 장면에서 좋은 인상이 오래 남습니다. ${confidenceTail}`,
   );
 }
 
@@ -328,7 +328,7 @@ function buildTraits(seed: number, basis: PersonaNarrativeBasis, confidence: Per
 
   const fallbackTempo = basis.personaTone === "warm"
     ? ["천천히 온도를 맞추며 가까워지는 편이에요.", "초반엔 부드럽게, 익숙해질수록 장점이 더 잘 보여요."]
-    : ["서두르기보다 기준을 확인하며 가까워지는 편이에요.", "리듬과 안정감을 먼저 확인할 때 매력이 더 또렷해져요."];
+    : ["서두르기보다 기준을 확인하며 가까워지는 편이에요.", "리듬과 안정감을 먼저 확인할 때 장점이 더 선명해져요."];
 
   const fallbackAppeal = basis.appealAxis === "emotion-sync"
     ? ["상대 마음의 결을 읽는 반응이 매력으로 이어져요.", "감정을 섬세하게 읽어 주는 태도가 강점이에요."]
