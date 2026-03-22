@@ -90,6 +90,8 @@ function signalLabel(signal: string) {
   return signal.replace(/_/g, " ").trim();
 }
 
+void [warningDescription, providerStateLabel, calculationSourceLabel, formatLatency, signalLabel];
+
 function elementColorKey(key: ElementKey) {
   const map: Record<ElementKey, string> = {
     wood: "var(--color-wood)",
@@ -313,30 +315,6 @@ export default function MySajuPage({ me }: Props) {
   const tone = statusTone(providerState, warnings);
   const badgeText = statusBadgeText(providerState, warnings);
   const fallbackNote = getAnalysisFallbackNote(topSummary.analysis);
-  const statusHeadline = providerState === "provider" && hasPillars
-    ? "원국 기반 계산이 정상 연결되어 있어요."
-    : providerState === "mock-fallback"
-      ? "실시간 계산이 불안정해서 임시 해석으로 전환되었어요."
-      : providerState === "mock"
-        ? "현재는 mock 기반 계산 결과를 보고 있어요."
-        : "계산 상태를 확인하는 중이에요.";
-  const statusDescription = hasPillars
-    ? "연·월·일·시 기둥이 들어와서 일간, 월지, 십성 해석까지 함께 보여주고 있어요."
-    : "원국 기둥이 아직 없어서 오행 균형과 입력값 기반의 임시 해석이 중심이 됩니다.";
-  const statusItems = [
-    { label: "계산 방식", value: calculationSourceLabel(chart?.calculationSource) },
-    { label: "연결 상태", value: providerStateLabel(providerState) },
-    { label: "원국 상태", value: hasPillars ? "연·월·일·시 반영" : "원국 미수신" },
-    { label: "응답 시간", value: formatLatency(chart?.latencyMs) },
-  ];
-  const warningDetails = Array.from(new Set(warnings.map((warning) => warningDescription(warning))));
-  const signalPreview = Array.from(new Set((chart?.signals ?? []).map((signal) => signalLabel(signal)))).slice(0, 6);
-  const requestMeta = [
-    chart?.ruleVersion ? { label: "Rule version", value: chart.ruleVersion } : null,
-    chart?.requestId ? { label: "Request ID", value: chart.requestId } : null,
-    chart?.providerVersion ? { label: "Provider version", value: chart.providerVersion } : null,
-    chart?.engineVersion ? { label: "Engine version", value: chart.engineVersion } : null,
-  ].filter((item): item is { label: string; value: string } => Boolean(item));
 
   return (
     <PageLayout
@@ -372,70 +350,7 @@ export default function MySajuPage({ me }: Props) {
       </section>
 
       {/* ── SAJU TABS ── */}
-      <section className={`calcStatusCard ${tone} anim-fade-in anim-delay-1`}>
-        <div className="calcStatusHeader">
-          <div>
-            <p className="calcEyebrow">계산 상태</p>
-            <h3>{statusHeadline}</h3>
-            <p>{statusDescription}</p>
-          </div>
-          <button type="button" className="statusRefreshBtn" onClick={handleRefresh} disabled={isRefreshing}>
-            {isRefreshing ? "계산 중..." : "다시 계산"}
-          </button>
-        </div>
-
-        <div className="calcStatusGrid">
-          {statusItems.map((item) => (
-            <article key={item.label} className="calcMetric">
-              <small>{item.label}</small>
-              <strong>{item.value}</strong>
-            </article>
-          ))}
-        </div>
-
-        {!hasPillars ? (
-          <p className="calcStatusNote">
-            현재는 원국 기둥을 아직 받지 못해서 임시 해석 중심으로 보여주고 있어요. 다시 계산에 성공하면 연주, 월주, 일주, 시주와 십성 해석이 함께 채워집니다.
-          </p>
-        ) : null}
-
-        {warningDetails.length ? (
-          <div className="calcWarningList">
-            {warningDetails.map((detail) => (
-              <div key={detail} className="calcWarningItem">
-                <strong>안내</strong>
-                <p>{detail}</p>
-              </div>
-            ))}
-          </div>
-        ) : null}
-
-        {signalPreview.length ? (
-          <div className="calcSignalGroup">
-            <strong>근거 신호</strong>
-            <div className="calcSignalChips">
-              {signalPreview.map((signal) => (
-                <span key={signal} className="sajuChip subtle">
-                  {signal}
-                </span>
-              ))}
-            </div>
-          </div>
-        ) : null}
-
-        {requestMeta.length ? (
-          <div className="calcMetaList">
-            {requestMeta.map((item) => (
-              <div key={item.label} className="calcMetaPair">
-                <span>{item.label}</span>
-                <code>{item.value}</code>
-              </div>
-            ))}
-          </div>
-        ) : null}
-      </section>
-
-      <section className="sajuTabSection anim-fade-in anim-delay-2">
+      <section className="sajuTabSection anim-fade-in anim-delay-1">
         <div className="segmentedWrap">
           <button type="button" className={activeTab === "pillars" ? "active" : ""} onClick={() => setActiveTab("pillars")}>사주원국</button>
           <button type="button" className={activeTab === "ten-god" ? "active" : ""} onClick={() => setActiveTab("ten-god")}>오행·십성</button>
@@ -444,7 +359,11 @@ export default function MySajuPage({ me }: Props) {
 
         {activeTab === "pillars" && (
           <div className="tabContent">
-            <h4 className="tabTitle">사주원국 (연/월/일/시주)</h4>
+            <div className="sajuOriginIntro">
+              <p className="sajuOriginEyebrow">사주 원국</p>
+              <h4 className="tabTitle">연주·월주·일주·시주를 한눈에 볼 수 있어요</h4>
+              <p className="sajuOriginHint">네 기둥을 먼저 보고, 아래 천간과 지지를 눌러 각 축의 뜻을 바로 확인해 보세요.</p>
+            </div>
             {hasPillars ? (
               <>
                 <div className="pillarsGridRow">
@@ -452,36 +371,45 @@ export default function MySajuPage({ me }: Props) {
                     const stemKey = `${row.label}-stem`;
                     const branchKey = `${row.label}-branch`;
                     return (
-                      <article key={row.label} className="pillarCard">
+                      <article key={row.label} className={`pillarCard${row.key === "day" ? " focus" : ""}`}>
                         <div className="pillarHead">
                           <strong>{row.label}</strong>
+                          {row.key === "day" ? <span className="pillarBadge">기준 축</span> : null}
                         </div>
-                        <span className="pillarHanja">{row.value.raw}</span>
+                        <div className="pillarMain">
+                          <span className="pillarHanja">{row.value.raw}</span>
+                        </div>
                         <div className="pillarActions">
                           <button
                             type="button"
                             className={activePillarHint?.key === stemKey ? "active" : ""}
+                            aria-pressed={activePillarHint?.key === stemKey}
                             onClick={() => setActivePillarHint((prev) => prev?.key === stemKey ? null : { key: stemKey, text: `천간 ${row.value.stem} · ${pillarHintText("stem", row.value.stem)}` })}
                           >
-                            {row.value.stem}
+                            <small>천간</small>
+                            <strong>{row.value.stem}</strong>
                           </button>
                           <button
                             type="button"
                             className={activePillarHint?.key === branchKey ? "active" : ""}
+                            aria-pressed={activePillarHint?.key === branchKey}
                             onClick={() => setActivePillarHint((prev) => prev?.key === branchKey ? null : { key: branchKey, text: `지지 ${row.value.branch} · ${pillarHintText("branch", row.value.branch)}` })}
                           >
-                            {row.value.branch}
+                            <small>지지</small>
+                            <strong>{row.value.branch}</strong>
                           </button>
                         </div>
-                        {row.detail?.hiddenStems?.length ? (
-                          <p className="pillarMetaLine">지장간 · {row.detail.hiddenStems.join(" · ")}</p>
-                        ) : null}
-                        {row.detail?.stemTenGodLabel ? (
-                          <p className="pillarMetaLine">천간 십성 · {row.detail.stemTenGodLabel}</p>
-                        ) : null}
-                        {typeof row.detail?.supportWeight === "number" && row.detail.supportWeight > 0 ? (
-                          <p className="pillarMetaLine">근 보강 점수 · {row.detail.supportWeight}</p>
-                        ) : null}
+                        <div className="pillarMetaList">
+                          {row.detail?.hiddenStems?.length ? (
+                            <span className="pillarMetaChip">지장간 {row.detail.hiddenStems.join(" · ")}</span>
+                          ) : null}
+                          {row.detail?.stemTenGodLabel ? (
+                            <span className="pillarMetaChip">천간 십성 {row.detail.stemTenGodLabel}</span>
+                          ) : null}
+                          {typeof row.detail?.supportWeight === "number" && row.detail.supportWeight > 0 ? (
+                            <span className="pillarMetaChip">근 보강 {formatSignedScore(row.detail.supportWeight)}</span>
+                          ) : null}
+                        </div>
                       </article>
                     );
                   })}

@@ -293,6 +293,39 @@
   justify-content: flex-end;
 }
 
+.sajuOriginIntro {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-gold);
+  background: linear-gradient(180deg, #fffdf8, #ffffff);
+  box-shadow: var(--shadow-sm);
+}
+
+.sajuOriginEyebrow,
+.sajuOriginHint {
+  margin: 0;
+}
+
+.sajuOriginEyebrow {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.sajuOriginHint {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: var(--leading-normal);
+}
+
+.sajuOriginIntro .tabTitle {
+  margin: 0;
+}
+
 .sajuActionBtn,
 .sajuShareBtn {
   font-size: var(--text-caption);
@@ -371,6 +404,11 @@
   color: var(--color-text);
 }
 
+.tabContent {
+  display: grid;
+  gap: var(--space-3);
+}
+
 .tabHint {
   margin: 0;
   font-size: var(--text-sm);
@@ -404,17 +442,17 @@
 .pillarsGridRow {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 .pillarCard {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-3) var(--space-2);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4);
   display: grid;
-  justify-items: center;
-  gap: var(--space-2);
+  align-content: start;
+  gap: var(--space-3);
   box-shadow: var(--shadow-sm);
   transition: transform var(--duration-fast) var(--ease-out);
 }
@@ -424,38 +462,87 @@
   border-color: var(--color-border-warm);
 }
 
+.pillarCard.focus {
+  border-color: var(--color-border-gold);
+  background: linear-gradient(180deg, #fffdf8, #ffffff);
+}
+
+.pillarHead {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  align-items: center;
+}
+
 .pillarHead strong {
   font-size: var(--text-caption);
   color: var(--color-text-muted);
   font-weight: var(--weight-bold);
 }
 
+.pillarBadge {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-gold-100);
+  color: var(--color-gold-800);
+  font-weight: var(--weight-bold);
+  white-space: nowrap;
+}
+
+.pillarMain {
+  display: grid;
+  place-items: center;
+  padding: var(--space-4) 0;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, #fffdfa, #f8f4eb);
+  border: 1px solid rgba(212, 175, 55, 0.14);
+}
+
 .pillarHanja {
   font-family: 'Noto Serif KR', 'Batang', 'Gungsuh', serif;
-  font-size: 28px;
+  font-size: 34px;
   font-weight: 900;
   color: var(--color-text);
   letter-spacing: 2px;
   line-height: 1.1;
-  margin: var(--space-1) 0;
 }
 
 .pillarActions {
   display: grid;
-  gap: 4px;
+  gap: 8px;
   width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .pillarActions button {
   width: 100%;
   font-size: 11px;
-  padding: 4px 0;
+  padding: 8px 0 10px;
   background: var(--color-surface-alt);
   border: 1px solid transparent;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: var(--color-text-secondary);
   cursor: pointer;
   transition: all var(--duration-fast) var(--ease-out);
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+}
+
+.pillarActions button small,
+.pillarActions button strong {
+  display: block;
+}
+
+.pillarActions button small {
+  font-size: 10px;
+  color: inherit;
+}
+
+.pillarActions button strong {
+  font-size: var(--text-body);
+  color: inherit;
 }
 
 .pillarActions button:hover,
@@ -474,7 +561,23 @@
   border-radius: var(--radius-md);
   font-size: var(--text-sm);
   line-height: var(--leading-normal);
-  text-align: center;
+  text-align: left;
+}
+
+.pillarMetaList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pillarMetaChip {
+  font-size: 11px;
+  line-height: 1.3;
+  padding: 5px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
 }
 
 /* ── 5 Elements Balance ── */
