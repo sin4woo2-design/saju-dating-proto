@@ -125,7 +125,7 @@ function todayLine(analysis: SajuAnalysis) {
   if (!isChartDerivedAnalysis(analysis)) {
     return `지금은 오행 균형을 바탕으로 읽고 있어요. ${getStrengthSupportLine(analysis.strengthLevel, analysis.usefulElements, analysis.dominantElement)} ${getWeakElementCareLine(analysis.weakestElement)}`;
   }
-  return `${getAnalysisBasisPhrase(analysis)} ${getStrengthSupportLine(analysis.strengthLevel, analysis.usefulElements, analysis.dominantElement)} ${getWeakElementCareLine(analysis.weakestElement)}`;
+  return `${getAnalysisBasisPhrase(analysis)} ${getStrengthSupportLine(analysis.strengthLevel, analysis.usefulElements, analysis.dominantElement)} 오늘은 ${getWeakElementCareLine(analysis.weakestElement)}`;
 }
 
 function splitPillar(value?: string) {
@@ -168,7 +168,7 @@ function buildDetailSections(profile: SajuProfile, analysis: SajuAnalysis) {
   const cautionLabel = joinElementLabels(analysis.cautionElements);
   const weakLabel = elementLabel(analysis.weakestElement);
   const monthLine = analysis.monthBranchLabel
-    ? `${analysis.monthBranchLabel} 월지가 계절의 중심축으로 작동합니다.`
+    ? `${analysis.monthBranchLabel} 월지가 계절의 중심축으로 작동해요.`
     : `${getSeasonLabel(analysis.season)} 흐름을 기준 계절감으로 해석하고 있어요.`;
   const tenGodFocus = analysis.tenGods.find((item) => item.pillar === "month" && item.code)
     ?? analysis.tenGods.find((item) => item.pillar !== "day" && item.code);
@@ -179,7 +179,7 @@ function buildDetailSections(profile: SajuProfile, analysis: SajuAnalysis) {
         ? `일간: ${analysis.dayMasterLabel}`
         : `해석 기준: ${getAnalysisIdentityLabel(analysis)}`,
       `강약: ${getStrengthLabel(analysis.strengthLevel)}`,
-      `힘이 붙는 기운: ${usefulLabel}`,
+      `잘 받는 기운: ${usefulLabel}`,
       typeof analysis.supportScore === "number" && typeof analysis.regulatingScore === "number"
         ? `강약 점수: 도움 ${analysis.supportScore} / 설기·제어 ${analysis.regulatingScore}`
         : `주요 오행: 강한 축 ${elementLabel(analysis.dominantElement)} / 약한 축 ${weakLabel}`,
@@ -188,27 +188,27 @@ function buildDetailSections(profile: SajuProfile, analysis: SajuAnalysis) {
       ...(analysis.summaryLines?.slice(0, 1) ?? []),
       profile.personalitySummary,
       monthLine,
-      `강한 오행은 ${elementLabel(analysis.dominantElement)}, 가장 약한 오행은 ${weakLabel}입니다.`,
+      `강한 오행은 ${elementLabel(analysis.dominantElement)}이고, 가장 약한 오행은 ${weakLabel}예요.`,
     ],
       loveStyle: [
         profile.loveStyle,
         tenGodFocus?.code
           ? `${getTenGodLabel(tenGodFocus.code)} 포인트가 두드러져 기대 역할을 말로 맞춰 둘수록 관계가 훨씬 매끄러워져요.`
-          : `${supportLabel} 쪽 안정감을 주는 관계일수록 마음이 오래 편안해집니다.`,
+          : `${supportLabel} 안정감이 살아나는 관계일수록 마음이 오래 편안해져요.`,
       analysis.strengthLevel === "strong"
-        ? "호감이 생길수록 속도를 조금 늦추고 질문을 먼저 두면 관계 피로가 줄어듭니다."
+        ? "호감이 생길수록 속도를 조금 늦추고 질문을 먼저 두면 관계 피로가 줄어들어요."
         : analysis.strengthLevel === "weak"
-          ? "천천히 가까워져도 꾸준히 이어 가는 리듬이 잘 맞습니다."
-          : "감정 공감과 현실 조율을 함께 챙기는 대화가 잘 맞습니다.",
+          ? "천천히 가까워져도 꾸준히 이어 가는 리듬이 잘 맞아요."
+          : "감정 공감과 현실 조율을 함께 챙기는 대화가 잘 맞아요.",
     ],
       idealPartner: [
         ...profile.idealTraits,
-        `${usefulLabel} 쪽 감각처럼 지금 명식의 빈틈을 차분히 받쳐 주는 사람이 특히 잘 맞아요.`,
+        `${usefulLabel} 감각처럼 지금 명식의 빈틈을 차분히 받쳐 주는 사람이 특히 잘 맞아요.`,
       ],
       cautionPatterns: [
         analysis.strengthReason,
         ...(analysis.notes?.length ? [`근거 메모: ${analysis.notes.slice(0, 3).join(" · ")}`] : []),
-        `주의 기운은 ${cautionLabel} 쪽이에요. 이쪽으로 기울면 관계 판단이 급해질 수 있어요.`,
+        `주의가 필요한 쪽은 ${cautionLabel}이에요. 이 성향이 과하게 올라오면 관계 판단이 급해질 수 있어요.`,
         getWeakElementCareLine(analysis.weakestElement),
       ],
   };
@@ -441,7 +441,7 @@ export default function MySajuPage({ me }: Props) {
             ) : (
               <div className="tabEmptyState">
                 <strong>사주원국을 아직 불러오지 못했어요</strong>
-                <p>현재는 원국 데이터를 받지 못해 오행 균형 기반 임시 해석만 보여주고 있어요. 실제 연결이 복구되면 연주·월주·일주·시주가 이 영역에 표시됩니다.</p>
+                <p>현재는 원국 데이터를 받지 못해 오행 균형 기반 임시 해석만 보여주고 있어요. 실제 연결이 복구되면 연주·월주·일주·시주가 이 영역에 표시돼요.</p>
               </div>
             )}
           </div>

@@ -64,11 +64,17 @@ function pick<T>(seed: number, list: readonly T[]) {
   return list[seed % list.length];
 }
 
-function trimSentence(value: string, cap = 84) {
+function trimSentence(value: string, cap = 96) {
   if (!value) return "분석 중인 명식이라 한 호흡 쉬어가며 읽어 주세요.";
-  if (value.length <= cap) return value;
-  const sliced = value.slice(0, cap).trim();
-  return sliced.endsWith(".") ? sliced : `${sliced}.`;
+  const normalized = value.replace(/\s+/g, " ").trim();
+  if (normalized.length <= cap) return normalized;
+
+  const sliced = normalized.slice(0, cap).trim();
+  const safeBoundary = sliced.replace(/\s+\S*$/, "").trim();
+  const finalText = safeBoundary.length >= Math.floor(cap * 0.6) ? safeBoundary : sliced;
+
+  if (/[.!?…]$/.test(finalText)) return finalText;
+  return `${finalText}…`;
 }
 
 function elementBySeed(seed: number): PersonaNarrativeBasis["dominantElement"] {
@@ -219,7 +225,7 @@ function subtitleFromBasis(seed: number, basis: PersonaNarrativeBasis, confidenc
       "말보다 분위기에서 진심이 먼저 전달되는 타입이에요.",
     ],
     "rhythm-sync": [
-      "관계 속도를 무리하게 올리지 않아 안정감이 오래갑니다.",
+      "관계 속도를 무리하게 올리지 않아 안정감이 오래가요.",
       "생활 템포가 맞을수록 장점이 더 분명하게 보이는 편이에요.",
       "약속 간격을 맞추면 관계가 한결 안정돼요.",
     ],
@@ -282,16 +288,16 @@ function analysisSubtitle(analysis: SajuAnalysis, basis: PersonaNarrativeBasis, 
   const usefulLabel = joinElementLabels(analysis.usefulElements);
   const providerLead = analysis.basisOrigin === "provider" ? polishNarrativeLine(analysis.summaryLines[0] ?? "", analysis) : "";
   const subtitleLead = isChartDerivedAnalysis(analysis)
-    ? `${getStrengthLabel(analysis.strengthLevel)} 쪽의 ${analysis.dayMasterLabel} 일간이라`
-    : `${getStrengthLabel(analysis.strengthLevel)} 흐름이고 ${getAnalysisIdentityLabel(analysis)} 해석이라`;
+    ? `${getStrengthLabel(analysis.strengthLevel)} 타입이라`
+    : `${getStrengthLabel(analysis.strengthLevel)} 타입이라`;
   const confidenceTail = confidence === "high"
-    ? "지금 명식 흐름과의 연결감도 높은 편이에요."
+    ? "지금 명식과의 연결감도 높은 편이에요."
     : confidence === "medium"
       ? "일부는 fallback이지만 해석 축은 유지되고 있어요."
       : "지금은 방향성 위주로 참고해 주세요.";
 
   return trimSentence(
-    `${providerLead ? `${providerLead} ` : ""}${subtitleLead} ${usefulLabel} 쪽 감각이 통하는 사람 앞에서 매력이 더 분명해져요. ${axisWord(basis.appealAxis)}이 살아나는 장면에서 좋은 인상이 오래 남습니다. ${confidenceTail}`,
+    `${providerLead ? `${providerLead} ` : ""}${subtitleLead} ${usefulLabel} 감각이 통하는 사람 앞에서 매력이 더 또렷하게 보여요. ${axisWord(basis.appealAxis)}이 살아나는 장면에서 좋은 인상이 오래 남아요. ${confidenceTail}`,
   );
 }
 
@@ -316,13 +322,13 @@ function buildTraits(seed: number, basis: PersonaNarrativeBasis, confidence: Per
             : "호흡이 맞기 시작하면 거리감이 빠르게 줄고, 억지로 당기지 않을수록 매력이 오래 가요.",
       ),
       attractionStyle: trimSentence(
-        `${usefulLabel} 쪽 태도, 즉 ${basis.personaTone === "warm" ? "부드럽지만 상대 반응을 읽는 말투" : "정리된 말과 안정적인 반응"}가 가장 큰 매력 포인트예요. ${confidenceTail}`,
+        `${basis.personaTone === "warm" ? "부드럽지만 상대 반응을 읽는 말투" : "정리된 말과 안정적인 반응"}가 가장 큰 매력 포인트예요. ${usefulLabel} 감각이 잘 살아나는 장면에서 특히 더 자연스럽게 보여요. ${confidenceTail}`,
       ),
       stableRhythm: trimSentence(
-        `${supportLabel} 쪽이 살아나는 환경, 곧 ${basis.relationStyle === "strategist" ? "예측 가능한 약속과 일정" : "감정 확인이 가능한 대화"}에서 마음이 훨씬 편해져요.`,
+        `${basis.relationStyle === "strategist" ? "예측 가능한 약속과 일정" : "감정 확인이 가능한 대화"}가 이어질 때 마음이 훨씬 편해져요. ${supportLabel}이 받쳐 주는 환경일수록 장점도 오래가요.`,
       ),
       cautionPoint: trimSentence(
-        `${cautionLabel} 쪽으로 기울면 ${analysis.strengthLevel === "strong" ? "주도권을 너무 빨리 쥐려는 인상" : "상대 반응에 휘청이는 모습"}으로 보일 수 있어요. ${getWeakElementCareLine(analysis.weakestElement)}`,
+        `${cautionLabel} 성향이 과하게 올라오면 ${analysis.strengthLevel === "strong" ? "주도권을 너무 빨리 쥐려는 인상" : "상대 반응에 쉽게 흔들리는 모습"}으로 보일 수 있어요. ${getWeakElementCareLine(analysis.weakestElement)}`,
       ),
     };
   }
@@ -362,7 +368,7 @@ function analysisAppealPoint(analysis: SajuAnalysis, basis: PersonaNarrativeBasi
       : "지금은 가볍게 관계 방향을 보는 힌트로 읽어 주세요.";
 
   return trimSentence(
-    `${polishNarrativeLine(getAnalysisReactionLine(analysis), analysis)} ${usefulLabel} 쪽 감각이 통하는 사람 앞에서 표정과 반응이 한결 부드러워져요. ${basis.appealAxis === "emotion-sync" ? "감정의 결을 읽어 주는 순간" : basis.appealAxis === "rhythm-sync" ? "일상 템포가 맞아드는 순간" : "신뢰가 축적되는 순간"}에 매력이 가장 선명하게 드러납니다. ${tail}`,
+    `${polishNarrativeLine(getAnalysisReactionLine(analysis), analysis)} ${usefulLabel} 감각이 통하는 사람 앞에서는 표정과 반응이 한결 자연스러워져요. ${basis.appealAxis === "emotion-sync" ? "감정의 결을 읽어 주는 순간" : basis.appealAxis === "rhythm-sync" ? "일상 템포가 맞아드는 순간" : "신뢰가 차곡차곡 쌓이는 순간"}에 매력이 가장 또렷하게 보여요. ${tail}`,
   );
 }
 
@@ -370,7 +376,7 @@ function appealPointFromBasis(seed: number, basis: PersonaNarrativeBasis, confid
   const poolByAxis: Record<PersonaNarrativeBasis["appealAxis"], string[]> = {
     "emotion-sync": [
       "상대 마음의 결을 읽어 주는 반응이 관계의 온도를 빠르게 올려 줘요.",
-      "감정 확인 한 문장이 관계 흐름을 부드럽게 열어 줍니다.",
+      "감정 확인 한 문장이 관계 흐름을 부드럽게 열어 줘요.",
     ],
     "rhythm-sync": [
       "생활 템포와 대화 간격이 맞을수록 장점이 더 또렷하게 보여요.",

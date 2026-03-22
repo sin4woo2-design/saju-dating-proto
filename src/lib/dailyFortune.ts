@@ -2,7 +2,6 @@ import type { ElementKey, SajuProfile, UserProfileInput } from "../types/saju";
 import { buildProfileFromFiveElements, getFiveElementsBalance } from "./engine/mockEngine";
 import {
   elementLabel,
-  getAnalysisBasisPhrase,
   polishNarrativeLine,
   getUsefulApproachLine,
   getWeakElementCareLine,
@@ -91,15 +90,15 @@ function buildHeroLead(profile: SajuProfile, themeElement: ElementKey, scores: D
     return polishNarrativeLine(analysis.summaryLines[0], analysis);
   }
   if (analysis.usefulElements.includes(themeElement)) {
-    return `오늘은 ${elementLabel(themeElement)} 기운이 들어와 ${getAnalysisBasisPhrase(analysis)} 장점이 비교적 분명하게 드러나요.`;
+    return `오늘은 ${elementLabel(themeElement)} 감각이 살아나 평소 장점이 더 또렷하게 보여요.`;
   }
   if (analysis.cautionElements.includes(themeElement)) {
-    return `오늘은 ${elementLabel(themeElement)} 기운이 강해서 서두르기보다 속도를 나눠 쓰는 편이 좋아요.`;
+    return `오늘은 ${elementLabel(themeElement)} 성향이 강하게 올라와 서두르기보다 속도를 나눠 쓰는 편이 좋아요.`;
   }
   if (scores.total >= 82) {
-    return `${getAnalysisBasisPhrase(analysis)} 오늘은 밀고 나갈 때와 멈출 때의 타이밍이 비교적 잘 맞는 날이에요.`;
+    return "오늘은 밀고 나갈 때와 멈출 때의 타이밍이 비교적 잘 맞는 날이에요.";
   }
-  return `${getAnalysisBasisPhrase(analysis)} 오늘은 무리해서 넓히기보다 기본 흐름을 지킬수록 힘이 붙어요.`;
+  return "오늘은 무리해서 넓히기보다 기본 페이스를 지킬수록 힘이 붙어요.";
 }
 
 function buildHeroSupport(profile: SajuProfile, themeElement: ElementKey) {
@@ -122,12 +121,12 @@ function buildCategoryMessage(profile: SajuProfile, scores: DailyFortuneScores) 
   return {
     loveMessage:
       scores.love >= 80
-        ? `말을 많이 하기보다 톤을 맞추는 쪽이 잘 먹히는 날이에요. ${usefulLabel} 쪽 감각처럼 여지를 남기는 말이 호감을 더 편하게 쌓아 줘요.`
-        : `관계 속도를 억지로 앞당기기보다 신뢰를 쌓는 쪽이 좋아요. 약한 ${weakLabel} 축이 흔들리지 않게 감정 과열은 피하세요.`,
+        ? `말을 많이 하기보다 톤을 맞추는 쪽이 잘 먹히는 날이에요. ${usefulLabel} 감각처럼 여지를 남기는 말이 호감을 더 편하게 쌓아 줘요.`
+        : `관계 속도를 억지로 앞당기기보다 신뢰를 쌓는 쪽이 좋아요. 약한 ${weakLabel} 쪽이 흔들리지 않게 감정 과열은 피하세요.`,
     workMessage:
       scores.work >= 80
-        ? "우선순위와 마감 순서를 먼저 고정하면 성과 체감이 큽니다. 중요한 일은 한 번에 하나씩 묶어 가는 편이 좋아요."
-        : "오늘은 확장보다 정리가 더 중요해요. 작은 누락을 줄이는 쪽이 전체 흐름을 살립니다.",
+        ? "우선순위와 마감 순서를 먼저 고정하면 성과 체감이 커져요. 중요한 일은 한 번에 하나씩 묶어 가는 편이 좋아요."
+        : "오늘은 확장보다 정리가 더 중요해요. 작은 누락을 줄이는 쪽이 전체 흐름을 살려 줘요.",
     healthMessage:
       scores.health >= 78
         ? "컨디션은 버틸 만한 편이지만, 괜찮다고 넘기지 말고 쉬는 타이밍을 먼저 잡아 두는 게 좋아요."
@@ -138,11 +137,15 @@ function buildCategoryMessage(profile: SajuProfile, scores: DailyFortuneScores) 
 function buildActionItems(profile: SajuProfile, themeElement: ElementKey): string[] {
   const analysis = profile.analysis;
   const weakLabel = analysis ? elementLabel(analysis.weakestElement) : "리듬";
+  const approachLine = getUsefulApproachLine(
+    profile.analysis?.usefulElements ?? [],
+    profile.analysis?.dominantElement ?? themeElement,
+  ).replace("잘 맞아요.", "중요한 대화나 작업에 바로 써 보기");
 
   return [
-    `${elementLabel(themeElement)} 테마가 강한 날이니 오늘 꼭 끝낼 일 3가지만 먼저 고정하기`,
-    `${getUsefulApproachLine(profile.analysis?.usefulElements ?? [], profile.analysis?.dominantElement ?? themeElement).replace("잘 맞아요.", "중요한 대화나 작업에 바로 써 보기")}`,
-    `${weakLabel} 축이 흔들리지 않게 저녁 전 정리와 휴식 순서 잡기`,
+    `${elementLabel(themeElement)} 테마가 강한 날이니 오늘 꼭 끝낼 일 3가지만 먼저 정하기`,
+    approachLine,
+    `${weakLabel} 쪽이 흔들리지 않게 저녁 전 정리와 쉬는 순서 먼저 잡기`,
   ];
 }
 
@@ -153,9 +156,9 @@ function buildCautionLine(profile: SajuProfile, themeElement: ElementKey) {
     return polishNarrativeLine(analysis.summaryLines[2], analysis);
   }
   if (analysis.cautionElements.includes(themeElement)) {
-    return `${elementLabel(themeElement)} 기운이 과해지면 판단이 급해질 수 있어요. 답을 내리기 전 한 번만 더 숨을 고르는 편이 좋아요.`;
+    return `${elementLabel(themeElement)} 쪽 성향이 과하게 올라오면 판단이 급해질 수 있어요. 답을 내리기 전 한 번만 더 숨을 고르는 편이 좋아요.`;
   }
-  return `${elementLabel(analysis.weakestElement)} 축이 약한 흐름이라 무리해서 끌고 가기보다 속도를 나눠 쓰는 쪽이 더 안정적이에요.`;
+  return `${elementLabel(analysis.weakestElement)} 쪽이 쉽게 지칠 수 있어서 무리해서 끌고 가기보다 속도를 나눠 쓰는 편이 더 안정적이에요.`;
 }
 
 export function buildDailyFortuneSnapshotFromProfile(profile: SajuProfile, date = new Date()): DailyFortuneSnapshot {

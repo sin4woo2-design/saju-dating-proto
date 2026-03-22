@@ -122,7 +122,7 @@ export default function PersonaPage() {
 
   const handleShare = async () => {
     const result = await shareOrCopy({
-      title: "사주 라운지 · 운명의 이상형",
+      title: "사주 라운지 · 나의 페르소나",
       text: `${resolved.personaTitle}\n관계 템포: ${resolved.personaTraits.relationTempo}\n매력 축: ${resolved.appealPoint}`,
     });
 
@@ -130,15 +130,15 @@ export default function PersonaPage() {
   };
 
   return (
-    <PageLayout title="운명의 이상형 페르소나" subtitle="캡처해서 공유하기 좋은 포스터 카드예요.">
+    <PageLayout title="나의 페르소나" subtitle="내가 관계에서 어떤 인상과 리듬을 만드는지 보는 카드예요.">
       <div className="personaLayout anim-slide-up">
         {isLoading ? (
           <div className="personaPosterWrapper">
             <div className="personaGlowBg" />
             <article className="personaPosterCard">
               <div className="posterInnerBorder" style={{ textAlign: "center", padding: "3rem 1.25rem" }}>
-                <span className="posterOverline">Saju Lounge Persona</span>
-                <h3 className="posterTitle" style={{ marginTop: "0.5rem" }}>페르소나 분석 중…</h3>
+                <span className="posterOverline">My Persona</span>
+                <h3 className="posterTitle" style={{ marginTop: "0.5rem" }}>나의 페르소나 분석 중…</h3>
                 <p className="posterSubtitle">실데이터를 불러오는 중이에요. 잠시만 기다려 주세요.</p>
               </div>
             </article>
@@ -153,7 +153,7 @@ export default function PersonaPage() {
                 <div className="posterInnerBorder">
 
                   <div className="posterHeader">
-                    <span className="posterOverline">Saju Lounge Persona</span>
+                    <span className="posterOverline">My Persona</span>
                     <h3 className="posterTitle">{resolved.personaTitle}</h3>
                     <p className="posterSubtitle">{resolved.personaSubtitle}</p>
                   </div>
@@ -185,7 +185,7 @@ export default function PersonaPage() {
                   <div className="posterFooter">
                     <div className="footerDivider" />
                     <p className="appealPoint">
-                      <strong>궁합 포인트</strong>
+                      <strong>나의 매력 포인트</strong>
                       {resolved.appealPoint}
                     </p>
                     <div className="posterMeta">

@@ -1,8 +1,6 @@
 import type { ProviderState, SajuResult } from "./types";
 import type { SajuAnalysis, UserProfileInput } from "../../types/saju";
 import {
-  getAnalysisBasisPhrase,
-  getAnalysisSubjectPhrase,
   getAnalysisReactionLine,
   polishNarrativeLine,
   getStrengthLabel,
@@ -89,11 +87,17 @@ function pick<T>(seed: number, list: readonly T[]): T {
   return list[seed % list.length];
 }
 
-function trimSentence(value: string, cap = 84) {
+function trimSentence(value: string, cap = 96) {
   if (!value) return "흐름 데이터를 정리 중이에요.";
-  if (value.length <= cap) return value;
-  const sliced = value.slice(0, cap).trim();
-  return sliced.endsWith(".") ? sliced : `${sliced}.`;
+  const normalized = value.replace(/\s+/g, " ").trim();
+  if (normalized.length <= cap) return normalized;
+
+  const sliced = normalized.slice(0, cap).trim();
+  const safeBoundary = sliced.replace(/\s+\S*$/, "").trim();
+  const finalText = safeBoundary.length >= Math.floor(cap * 0.6) ? safeBoundary : sliced;
+
+  if (/[.!?…]$/.test(finalText)) return finalText;
+  return `${finalText}…`;
 }
 
 function uniqueLine(value: string, used: Set<string>, fallback: string) {
@@ -214,14 +218,14 @@ function buildProvenance(providerState: ProviderState, ruleVersion: string, cont
   };
 }
 
-function buildAnalysisHeroLead(analysis: SajuAnalysis, basis: HomeNarrativeBasis) {
+function buildAnalysisHeroLead(basis: HomeNarrativeBasis) {
   if (basis.relationTone === "soft") {
-    return `${getAnalysisSubjectPhrase(analysis)} 오늘은 말을 꺼내는 톤을 낮춰 잡을수록 상대 반응이 편안하게 돌아와요.`;
+    return "오늘은 첫마디를 부드럽게 건넬수록 대화가 한결 편해져요.";
   }
   if (basis.flowBias === "afternoon-peak") {
-    return `${getAnalysisSubjectPhrase(analysis)} 오늘 중요한 결정은 오전에 흩뿌리기보다 오후 한 번에 모을 때 힘이 붙어요.`;
+    return "중요한 결정은 오전에 흩어 두기보다 오후에 한 번에 모을 때 힘이 붙어요.";
   }
-  return `${getAnalysisSubjectPhrase(analysis)} 오늘은 말의 순서와 일정만 정돈해도 괜한 소모가 꽤 줄어들어요.`;
+  return "오늘은 말의 순서와 일정만 정리해도 괜한 소모가 꽤 줄어요.";
 }
 
 function buildAnalysisHeroSupport(analysis: SajuAnalysis, basis: HomeNarrativeBasis) {
@@ -229,9 +233,9 @@ function buildAnalysisHeroSupport(analysis: SajuAnalysis, basis: HomeNarrativeBa
     return `${getUsefulApproachLine(analysis.usefulElements, analysis.dominantElement)} 오전에 우선순위만 잡아 둬도 하루가 덜 흔들려요.`;
   }
   if (basis.focusWindow === "evening-wrap") {
-    return getWeakElementCareLine(analysis.weakestElement);
+    return `${getWeakElementCareLine(analysis.weakestElement)} 저녁엔 마무리 순서까지 가볍게 정리해 두면 좋아요.`;
   }
-  return `${getStrengthLabel(analysis.strengthLevel)} 흐름이라 오후 집중 구간에 핵심 안건을 모을수록 손에 잡히는 결과가 나와요.`;
+  return `${getStrengthSupportLine(analysis.strengthLevel, analysis.usefulElements, analysis.dominantElement)} 핵심 안건은 오후에 모아 두는 편이 좋아요.`;
 }
 
 function buildAnalysisSummary(analysis: SajuAnalysis, basis: HomeNarrativeBasis): [string, string, string] {
@@ -247,43 +251,40 @@ function buildAnalysisSummary(analysis: SajuAnalysis, basis: HomeNarrativeBasis)
   const cautionLabel = joinElementLabels(analysis.cautionElements);
 
   return [
-    trimSentence(`${getAnalysisBasisPhrase(analysis)} 오늘은 ${basis.relationTone === "soft" ? "부드러운 첫마디와 확인 질문" : "짧고 분명한 제안"}에서 힘이 붙어요. ${getAnalysisReactionLine(analysis)}`),
+    trimSentence(`${getAnalysisReactionLine(analysis)} 오늘은 ${basis.relationTone === "soft" ? "첫마디를 부드럽게 열고 확인 질문을 하나 더하는 편이" : "핵심을 짧게 정리해 제안하는 편이"} 더 잘 맞아요.`),
     trimSentence(`${getStrengthSupportLine(analysis.strengthLevel, analysis.usefulElements, analysis.dominantElement)} ${basis.focusWindow === "afternoon-focus" ? "핵심 안건은 오후에 몰아 두는 편이 좋아요." : basis.focusWindow === "morning-setup" ? "오전엔 준비만 끝내 둬도 흐름이 단단해져요." : "저녁엔 마무리 루틴까지 짧게 챙기면 좋아요."}`),
-    trimSentence(`${cautionLabel} 쪽으로 과열되면 말과 반응이 거칠어질 수 있어요. ${getWeakElementCareLine(analysis.weakestElement)}`),
+    trimSentence(`${cautionLabel} 성향이 과하게 올라오면 말이 급해지거나 반응이 흔들릴 수 있어요. ${getWeakElementCareLine(analysis.weakestElement)}`),
   ];
 }
 
 function buildAnalysisPoints(analysis: SajuAnalysis, basis: HomeNarrativeBasis): HomeTodayPoints {
-  const usefulLabel = joinElementLabels(analysis.usefulElements);
   const cautionLabel = joinElementLabels(analysis.cautionElements);
 
   return {
     conversation: trimSentence(
       basis.relationTone === "soft"
-        ? `${usefulLabel} 쪽 감각처럼 질문을 먼저 두고 감정 확인 한 문장을 보태면 대화가 훨씬 부드럽게 이어져요.`
-        : `${usefulLabel} 쪽 감각처럼 핵심을 짧게 정리한 뒤 이유를 붙이면 설득 포인트가 더 분명해져요.`,
+        ? `질문을 먼저 두고 감정 확인 한 문장을 보태면 대화가 훨씬 부드럽게 이어져요.`
+        : `핵심을 짧게 정리한 뒤 이유를 붙이면 설득 포인트가 더 또렷해져요.`,
     ),
     wealth: trimSentence(
       analysis.strengthLevel === "strong"
         ? "지출과 일정 모두 한 번에 넓게 벌리기보다 꼭 필요한 것만 남겨 두는 편이 유리해요."
         : "당장 기분을 달래는 소비보다 반복 지출과 고정비부터 정리할 때 마음이 덜 분주해져요.",
     ),
-    caution: trimSentence(`${cautionLabel} 쪽이 과하면 판단이 급해지거나 반응이 흔들릴 수 있어요. ${getWeakElementCareLine(analysis.weakestElement)}`),
+    caution: trimSentence(`${cautionLabel} 성향이 과하게 올라오면 판단이 급해지거나 반응이 흔들릴 수 있어요. ${getWeakElementCareLine(analysis.weakestElement)}`),
   };
 }
 
 function buildAnalysisTimeFlow(analysis: SajuAnalysis, basis: HomeNarrativeBasis): HomeTimeFlow {
-  const usefulLabel = joinElementLabels(analysis.usefulElements);
-
   return {
     morning: trimSentence(
       basis.focusWindow === "morning-setup"
-        ? `${usefulLabel} 쪽 감각을 살려 오전엔 우선순위와 일정부터 정리하세요.`
+        ? "오전엔 우선순위와 일정부터 정리해 두는 편이 좋아요."
         : "오전엔 작은 할 일부터 가볍게 끝내며 몸을 깨우는 편이 좋아요.",
     ),
     afternoon: trimSentence(
       basis.flowBias === "afternoon-peak"
-        ? `${getAnalysisSubjectPhrase(analysis)} 오후에 결정력과 추진이 붙기 쉬워 중요한 대화와 핵심 작업을 이때 모아 두는 편이 좋아요.`
+        ? `${getStrengthLabel(analysis.strengthLevel)} 타입이라 오후에 결정력과 추진이 붙기 쉬워요. 중요한 대화와 핵심 작업을 이때 모아 두는 편이 좋아요.`
         : "오후엔 피드백, 조율, 점검처럼 이미 벌여 둔 일을 다듬는 쪽이 잘 맞아요.",
     ),
     evening: trimSentence(
@@ -295,9 +296,9 @@ function buildAnalysisTimeFlow(analysis: SajuAnalysis, basis: HomeNarrativeBasis
 }
 
 function heroLeadFromBasis(basis: HomeNarrativeBasis) {
-  if (basis.relationTone === "soft") return "오늘은 대화의 시작 톤이 흐름을 만듭니다.";
-  if (basis.flowBias === "afternoon-peak") return "오늘은 핵심 타이밍을 오후에 두면 안정적입니다.";
-  return "오늘은 말의 순서를 정리할수록 관계가 한결 부드러워집니다.";
+  if (basis.relationTone === "soft") return "오늘은 대화의 시작 톤이 흐름을 만들어요.";
+  if (basis.flowBias === "afternoon-peak") return "오늘은 핵심 타이밍을 오후에 두면 더 안정적이에요.";
+  return "오늘은 말의 순서를 정리할수록 관계가 한결 부드러워져요.";
 }
 
 function heroSupportFromBasis(basis: HomeNarrativeBasis) {
@@ -372,7 +373,7 @@ function buildSummary(seed: number, basis: HomeNarrativeBasis, confidence: Narra
 
   const bucket = `${basis.relationTone}:${basis.flowBias}:${basis.focusWindow}:${basis.dominantElement}:${basis.supportElement}:${confidence}`;
   const nuancePool = {
-    intro: ["템포를 낮추면 기회가 보여요.", "한 문장 정리가 오늘의 성과를 만듭니다.", "우선순위를 짧게 고정하면 흐름이 단단해져요."],
+    intro: ["템포를 낮추면 기회가 보여요.", "한 문장 정리가 오늘의 성과를 만들어요.", "우선순위를 짧게 고정하면 흐름이 단단해져요."],
     bridge: ["대화의 온도 조절이 핵심이에요.", "질문형 접근이 반응을 좋게 만들어요.", "결론 전에 확인 한 번이 안전해요."],
     close: ["저녁 전에 정리하면 피로가 줄어요.", "작은 마감이 큰 안정감으로 이어져요.", "하루 끝 체크가 내일 리듬을 살려줘요."],
   } as const;
@@ -476,7 +477,7 @@ export function buildMockHomeNarrative(input: UserProfileInput, providerState: P
   const confidence = confidenceByState(providerState);
   const rotation = getRotationNonce(input);
   const analysis = context?.saju?.profile.analysis;
-  const heroLead = trimSentence(polishNarrativeLine(analysis ? buildAnalysisHeroLead(analysis, basis) : heroLeadFromBasis(basis), analysis));
+  const heroLead = trimSentence(polishNarrativeLine(analysis ? buildAnalysisHeroLead(basis) : heroLeadFromBasis(basis), analysis));
   const heroSupport = trimSentence(polishNarrativeLine(analysis ? buildAnalysisHeroSupport(analysis, basis) : heroSupportFromBasis(basis), analysis));
   const todaySummary = analysis ? buildAnalysisSummary(analysis, basis) : buildSummary(seed, basis, confidence, rotation);
 
